@@ -30,21 +30,36 @@ class DummyDataController {
         players["\(player5.username)"] = player5
         players["\(player6.username)"] = player6
 
-        
-        let basketball:GameType = GameType.init(id: "1", name: "basketball", displayName: "Baksetball", sortOrder: 1, imageName: "basketball.jpg")
-        let soccer:GameType = GameType.init(id: "1", name: "soccer", displayName: "Soccer", sortOrder: 2, imageName: "soccer.jpg")
-        let baseball:GameType = GameType.init(id: "1", name: "baseball", displayName: "Baseball", sortOrder: 3, imageName: "baseball.jpg")
+    
+        let basketball:GameType = GameType.init(id: "1", name: "basketball", displayName: "Basketball", sortOrder: 1, imageName: "basketball.jpg")
+        let soccer:GameType = GameType.init(id: "2", name: "soccer", displayName: "Soccer", sortOrder: 2, imageName: "soccer.jpg")
+        let baseball:GameType = GameType.init(id: "3", name: "baseball", displayName: "Baseball", sortOrder: 3, imageName: "baseball.jpg")
         
         gameType["\(basketball.id)"] = basketball
         gameType["\(soccer.id)"] = soccer
         gameType["\(baseball.id)"] = baseball
         
         
-        let game1: Game = Game.init(id: "100", gameSizeInPlayers: 20, availableSlots: 3, eventDate: NSDate(), owner: player1, location: 5)
-        let game2: Game = Game.init(id: "200", gameSizeInPlayers: 15, availableSlots: 6, eventDate: NSDate(), owner: player2, location: 7)
+        let game1: Game = Game.init(id: "100", gameType: soccer, gameSizeInPlayers: 10, availableSlots: 3, eventDate: NSDate(), owner: player1, location: 5)
+        let game2: Game = Game.init(id: "200", gameType: soccer,  gameSizeInPlayers: 20, availableSlots: 6, eventDate: NSDate(), owner: player2, location: 7)
+        let game3: Game = Game.init(id: "300", gameType: soccer,  gameSizeInPlayers: 30, availableSlots: 9, eventDate: NSDate(), owner: player2, location: 7)
+        let game4: Game = Game.init(id: "400", gameType: basketball,  gameSizeInPlayers: 5, availableSlots: 4, eventDate: NSDate(), owner: player2, location: 7)
+        let game5: Game = Game.init(id: "500", gameType: basketball,  gameSizeInPlayers: 15, availableSlots: 8, eventDate: NSDate(), owner: player2, location: 7)
+        let game6: Game = Game.init(id: "600", gameType: basketball,  gameSizeInPlayers: 25, availableSlots: 12, eventDate: NSDate(), owner: player2, location: 7)
+        let game7: Game = Game.init(id: "700", gameType: baseball,  gameSizeInPlayers: 8, availableSlots: 5, eventDate: NSDate(), owner: player2, location: 7)
+        let game8: Game = Game.init(id: "800", gameType: baseball,  gameSizeInPlayers: 16, availableSlots: 10, eventDate: NSDate(), owner: player2, location: 7)
+        let game9: Game = Game.init(id: "900", gameType: baseball,  gameSizeInPlayers: 24, availableSlots: 15, eventDate: NSDate(), owner: player2, location: 7)
         
         games[game1.id] = game1
         games[game2.id] = game2
+        games[game3.id] = game3
+        games[game4.id] = game4
+        games[game5.id] = game5
+        games[game6.id] = game6
+        games[game7.id] = game7
+        games[game8.id] = game8
+        games[game9.id] = game9
+        
         
     }
     

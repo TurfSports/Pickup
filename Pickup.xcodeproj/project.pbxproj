@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02B4E2F31C53FD2F000CC86C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B4E2F21C53FD2F000CC86C /* GamesViewController.swift */; };
+		02B4E2F51C53FD4D000CC86C /* GameDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B4E2F41C53FD4D000CC86C /* GameDetailViewController.swift */; };
 		02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE277D1C4DD58F0062C890 /* AppDelegate.swift */; };
 		02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27811C4DD58F0062C890 /* Main.storyboard */; };
 		02BE27851C4DD58F0062C890 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27841C4DD58F0062C890 /* Assets.xcassets */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		02B4E2F21C53FD2F000CC86C /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
+		02B4E2F41C53FD4D000CC86C /* GameDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameDetailViewController.swift; path = ../GameDetailViewController.swift; sourceTree = "<group>"; };
 		02BE277A1C4DD58F0062C890 /* Pickup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pickup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BE277D1C4DD58F0062C890 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02BE27821C4DD58F0062C890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 		02ED11EB1C518FFF001923EB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				02B4E2F41C53FD4D000CC86C /* GameDetailViewController.swift */,
+				02B4E2F21C53FD2F000CC86C /* GamesViewController.swift */,
 				02F08F3F1C52ADF600A76EFB /* HomeViewController.swift */,
 				02F08F3B1C52A7DF00A76EFB /* DummyDataController.swift */,
 				02BE277D1C4DD58F0062C890 /* AppDelegate.swift */,
@@ -171,6 +177,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02B4E2F31C53FD2F000CC86C /* GamesViewController.swift in Sources */,
+				02B4E2F51C53FD4D000CC86C /* GameDetailViewController.swift in Sources */,
 				02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */,
 				02ED11ED1C51904C001923EB /* GameType.swift in Sources */,
 				02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */,
