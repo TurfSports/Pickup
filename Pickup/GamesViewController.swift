@@ -39,9 +39,11 @@ class GamesViewController: UIViewController, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "GameCell")
+        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "GameCell")
+//        let cell = tableView.dequeueReusableCellWithIdentifier("GameCell", forIndexPath: indexPath)
+        
         cell.textLabel?.text = "\(games[indexPath.row].owner.username)"
-        cell.detailTextLabel?.text = "\(games[indexPath.row].gameSizeInPlayers)"
+        cell.detailTextLabel?.text = "\(games[indexPath.row].location)"
         return cell
     }
     

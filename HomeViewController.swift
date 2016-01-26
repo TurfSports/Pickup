@@ -25,7 +25,6 @@ class HomeViewController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         dummyData = DummyDataController.init()
-        print("viewDidLoad")
     }
     
     //MARK: - TableView Delegate
@@ -35,11 +34,22 @@ class HomeViewController: UIViewController, UITableViewDelegate {
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "GameTypeCell")
+        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "GameTypeCell")
+        
         gameTypes = loadGameTypeArray(dummyData.gameType)
         
         cell.textLabel?.text = gameTypes[indexPath.row].displayName
+        cell.imageView?.image = UIImage(named: gameTypes[indexPath.row].imageName)
+        cell.imageView?.layer.frame.size = CGSizeMake(10.0, 10.0)
+        cell.imageView?.layer.cornerRadius = 50
+        cell.imageView?.layer.masksToBounds = true
+        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        
         return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 100
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -50,9 +60,11 @@ class HomeViewController: UIViewController, UITableViewDelegate {
     //MARK: - Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let gamesViewController = segue.destinationViewController as! GamesViewController
-        gamesViewController.games  = loadGameArray(dummyData.games, gameType: selectedGameType)
-        gamesViewController.gameType = selectedGameType
+        if segue.identifier == SEGUE_SHOW_GAMES {
+            let gamesViewController = segue.destinationViewController as! GamesViewController
+            gamesViewController.games  = loadGameArray(dummyData.games, gameType: selectedGameType)
+            gamesViewController.gameType = selectedGameType
+        }
     }
     
     //MARK: - Custom functions
@@ -78,7 +90,6 @@ class HomeViewController: UIViewController, UITableViewDelegate {
         }
         return gameArray
     }
-    
 }
-    
+
 
