@@ -82,7 +82,9 @@
                             <constraint firstItem="ILK-Wn-g8T" firstAttribute="top" secondItem="LSM-6T-VoS" secondAttribute="topMargin" id="qtk-bh-HkQ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Sports" id="3ws-tf-bGz"/>
+                    <navigationItem key="navigationItem" title="Pickup" id="3ws-tf-bGz">
+                        <barButtonItem key="backBarButtonItem" title="Sports" id="bCo-6C-4Qb"/>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gqZ-I7-diI" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -44,6 +44,7 @@ class HomeViewController: UIViewController, UITableViewDelegate {
         cell.imageView?.layer.cornerRadius = 50
         cell.imageView?.layer.masksToBounds = true
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        cell.backgroundColor = Theme.primaryLightColor
         
         return cell
     }
