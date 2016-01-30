@@ -40,7 +40,7 @@ class HomeViewController: UIViewController, UITableViewDelegate {
         
         cell.textLabel?.text = gameTypes[indexPath.row].displayName
         cell.imageView?.image = UIImage(named: gameTypes[indexPath.row].imageName)
-        styleCell(cell)
+        Theme.applyThemeToCell(cell)
         
         return cell
     }
@@ -65,18 +65,6 @@ class HomeViewController: UIViewController, UITableViewDelegate {
     }
     
     //MARK: - Custom functions
-    
-    func styleCell(cell: UITableViewCell) {
-        cell.imageView?.layer.cornerRadius = 50
-        cell.imageView?.layer.masksToBounds = true
-        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-        cell.backgroundColor = Theme.primaryLightColor
-        
-        let bgColorView = UIView()
-        bgColorView.backgroundColor = UIColor.whiteColor()
-        cell.selectedBackgroundView = bgColorView
-        
-    }
     
     func loadGameTypeArray(dict: Dictionary<String, GameType>) -> Array<GameType> {
         

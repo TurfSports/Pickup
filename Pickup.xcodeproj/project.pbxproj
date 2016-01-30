@@ -14,6 +14,7 @@
 		02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE277D1C4DD58F0062C890 /* AppDelegate.swift */; };
 		02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27811C4DD58F0062C890 /* Main.storyboard */; };
 		02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27861C4DD58F0062C890 /* LaunchScreen.storyboard */; };
+		02D149241C5C81C500458F65 /* ParseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D149231C5C81C500458F65 /* ParseInterface.swift */; };
 		02ED11ED1C51904C001923EB /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED11EC1C51904C001923EB /* GameType.swift */; };
 		02F08F381C529FEE00A76EFB /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F371C529FEE00A76EFB /* Game.swift */; };
 		02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F391C52A5ED00A76EFB /* Player.swift */; };
@@ -32,6 +33,7 @@
 		02BE27821C4DD58F0062C890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		02BE27871C4DD58F0062C890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02BE27891C4DD58F0062C890 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		02D149231C5C81C500458F65 /* ParseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseInterface.swift; sourceTree = "<group>"; };
 		02D821711C5C2EA7000999B6 /* Pickup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pickup-Bridging-Header.h"; sourceTree = "<group>"; };
 		02ED11EC1C51904C001923EB /* GameType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameType.swift; path = ../GameType.swift; sourceTree = "<group>"; };
 		02F08F371C529FEE00A76EFB /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = ../Game.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 		02D821751C5C2F38000999B6 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				02D149231C5C81C500458F65 /* ParseInterface.swift */,
 				02D821711C5C2EA7000999B6 /* Pickup-Bridging-Header.h */,
 			);
 			name = SupportFiles;
@@ -267,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				025330F71C56FAA600B6ABDD /* Theme.swift in Sources */,
+				02D149241C5C81C500458F65 /* ParseInterface.swift in Sources */,
 				02B4E2F31C53FD2F000CC86C /* GamesViewController.swift in Sources */,
 				02B4E2F51C53FD4D000CC86C /* GameDetailViewController.swift in Sources */,
 				02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */,

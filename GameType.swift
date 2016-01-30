@@ -23,5 +23,6 @@ class GameType {
         self.sortOrder = sortOrder
         self.imageName = imageName
     }
+
     
 }
