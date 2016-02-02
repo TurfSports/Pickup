@@ -36,14 +36,37 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="sSR-NR-OXe" customClass="PFTableViewCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="100" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="sSR-NR-OXe" customClass="HomeTableViewCell" customModule="Pickup" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sSR-NR-OXe" id="2Rb-wl-y6Y">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pRq-rN-30u">
+                                            <rect key="frame" x="8" y="0.0" width="43" height="43"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="43" id="QH7-d4-tAX"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sport Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GwQ-xa-nAl">
+                                            <rect key="frame" x="75" y="11" width="92" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="GwQ-xa-nAl" firstAttribute="leading" secondItem="pRq-rN-30u" secondAttribute="trailing" constant="24" id="633-cw-MrG"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="pRq-rN-30u" secondAttribute="bottom" constant="-8" id="b4c-Od-cVK"/>
+                                        <constraint firstItem="pRq-rN-30u" firstAttribute="top" secondItem="2Rb-wl-y6Y" secondAttribute="topMargin" constant="-8" id="hEG-uM-OG9"/>
+                                        <constraint firstItem="pRq-rN-30u" firstAttribute="leading" secondItem="2Rb-wl-y6Y" secondAttribute="leadingMargin" id="weW-Fe-AdB"/>
+                                        <constraint firstItem="GwQ-xa-nAl" firstAttribute="centerY" secondItem="2Rb-wl-y6Y" secondAttribute="centerY" id="zaU-lS-0eR"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="imgSport" destination="pRq-rN-30u" id="M2s-52-2y2"/>
+                                    <outlet property="lblSport" destination="GwQ-xa-nAl" id="Iye-CV-vWt"/>
                                     <segue destination="4zV-eA-gW1" kind="show" identifier="showGamesTableViewController" id="PW2-Iq-ium"/>
                                 </connections>
                             </tableViewCell>

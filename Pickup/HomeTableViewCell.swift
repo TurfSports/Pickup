@@ -10,6 +10,10 @@ import UIKit
 
 class HomeTableViewCell: UITableViewCell {
 
+    
+    @IBOutlet weak var imgSport: UIImageView!
+    @IBOutlet weak var lblSport: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -17,7 +21,7 @@ class HomeTableViewCell: UITableViewCell {
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
+
         // Configure the view for the selected state
     }
 

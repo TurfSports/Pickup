@@ -45,20 +45,25 @@ class HomeTableViewController: PFQueryTableViewController {
     //override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> PFTableViewCell {
         
-        let cell = PFTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+        var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as? PFTableViewCell
+            
+        if cell == nil {
+            cell = PFTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+        }
+
         
         if let imageName = object?["imageName"] as? String {
             let image = UIImage(named: imageName)
-            cell.imageView?.image = image
+            cell?.imageView!.image = image
         }
         
         if let displayName = object?["displayName"] as? String {
-            cell.textLabel?.text = displayName
+            cell?.textLabel!.text = displayName
         }
         
-        Theme.applyThemeToCell(cell)
+        Theme.applyThemeToCell(cell!)
         
-        return cell
+        return cell!
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
