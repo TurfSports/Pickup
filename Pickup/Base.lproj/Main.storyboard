@@ -60,7 +60,7 @@
             </objects>
             <point key="canvasLocation" x="75.5" y="119.5"/>
         </scene>
-        <!--Games Table View Controller-->
+        <!--Games-->
         <scene sceneID="7x8-St-eLV">
             <objects>
                 <tableViewController id="4zV-eA-gW1" customClass="GamesTableViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
@@ -86,6 +86,9 @@
                             <outlet property="delegate" destination="4zV-eA-gW1" id="okj-Bi-kM2"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Games" id="Wyc-N5-ign">
+                        <barButtonItem key="backBarButtonItem" title="Games" id="IY1-Ds-r1k"/>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4BC-iv-k3f" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -121,6 +124,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="275" id="dz3-Xg-Uil"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="hUl-GN-0zr" id="RrK-Ze-bDd"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -134,8 +140,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="6lX-J0-E1j" secondAttribute="trailing" constant="-20" id="fjP-Hk-Ukb"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="69c-0L-iRF"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="gameMap" destination="6lX-J0-E1j" id="RNu-tD-YGs"/>
                         <outlet property="lblOwner" destination="add-SG-jCv" id="BRj-bz-r11"/>
                         <outlet property="lblSlotsAvailable" destination="53e-qg-OcY" id="kBh-Sn-JRD"/>
                     </connections>

@@ -52,7 +52,6 @@ class HomeTableViewController: PFQueryTableViewController {
             cell.imageView?.image = image
         }
         
-        // Extract values from the PFObject to display in the table cell
         if let displayName = object?["displayName"] as? String {
             cell.textLabel?.text = displayName
         }

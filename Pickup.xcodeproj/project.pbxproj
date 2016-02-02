@@ -25,6 +25,9 @@
 		024027021C5FE031002F1B39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 024027011C5FE031002F1B39 /* Assets.xcassets */; };
 		024027041C5FE16C002F1B39 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024027031C5FE16C002F1B39 /* HomeTableViewController.swift */; };
 		025330F71C56FAA600B6ABDD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025330F61C56FAA600B6ABDD /* Theme.swift */; };
+		02B2F87B1C602E99009863AB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02B2F87A1C602E99009863AB /* MapKit.framework */; };
+		02B2F87E1C606018009863AB /* TNRB-Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 02B2F87D1C606018009863AB /* TNRB-Location.gpx */; };
+		02B2F8801C60666C009863AB /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */; };
 		02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE277D1C4DD58F0062C890 /* AppDelegate.swift */; };
 		02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27811C4DD58F0062C890 /* Main.storyboard */; };
 		02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27861C4DD58F0062C890 /* LaunchScreen.storyboard */; };
@@ -52,6 +55,9 @@
 		024027011C5FE031002F1B39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		024027031C5FE16C002F1B39 /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		025330F61C56FAA600B6ABDD /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		02B2F87A1C602E99009863AB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		02B2F87D1C606018009863AB /* TNRB-Location.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "TNRB-Location.gpx"; path = "../TNRB-Location.gpx"; sourceTree = "<group>"; };
+		02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		02BE277A1C4DD58F0062C890 /* Pickup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pickup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BE277D1C4DD58F0062C890 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02BE27821C4DD58F0062C890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -67,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02B2F87B1C602E99009863AB /* MapKit.framework in Frameworks */,
 				024027001C5FDFD0002F1B39 /* libsqlite3.tbd in Frameworks */,
 				024026FE1C5FDFC5002F1B39 /* libz.tbd in Frameworks */,
 				024026FC1C5FDFBF002F1B39 /* SystemConfiguration.framework in Frameworks */,
@@ -89,6 +96,7 @@
 		024026CC1C5FDD83002F1B39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				02B2F87A1C602E99009863AB /* MapKit.framework */,
 				024026FF1C5FDFD0002F1B39 /* libsqlite3.tbd */,
 				024026FD1C5FDFC5002F1B39 /* libz.tbd */,
 				024026FB1C5FDFBF002F1B39 /* SystemConfiguration.framework */,
@@ -139,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				02BE27891C4DD58F0062C890 /* Info.plist */,
+				02B2F87D1C606018009863AB /* TNRB-Location.gpx */,
 			);
 			name = SupportFiles;
 			sourceTree = "<group>";
@@ -167,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				024027031C5FE16C002F1B39 /* HomeTableViewController.swift */,
+				02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */,
 				0223A0591C5FF85700B5A966 /* GamesTableViewController.swift */,
 				0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */,
 				02BE277D1C4DD58F0062C890 /* AppDelegate.swift */,
@@ -235,6 +245,7 @@
 			files = (
 				02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */,
 				024027021C5FE031002F1B39 /* Assets.xcassets in Resources */,
+				02B2F87E1C606018009863AB /* TNRB-Location.gpx in Resources */,
 				02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +263,7 @@
 				02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */,
 				024027041C5FE16C002F1B39 /* HomeTableViewController.swift in Sources */,
 				02ED11ED1C51904C001923EB /* GameType.swift in Sources */,
+				02B2F8801C60666C009863AB /* HomeTableViewCell.swift in Sources */,
 				02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */,
 				02F08F381C529FEE00A76EFB /* Game.swift in Sources */,
 			);
