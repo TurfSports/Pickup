@@ -17,6 +17,8 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var lblLocationName: UILabel!
     @IBOutlet weak var lblOpenings: UILabel!
     @IBOutlet weak var mapGame: MKMapView!
+    @IBOutlet weak var lblGameNotes: UILabel!
+    @IBOutlet weak var imgGameType: UIImageView!
     
     var game:PFObject!
     let ANNOTATION_ID = "Pin"
@@ -51,6 +53,10 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
                 mapGame.addAnnotation(annotation)
             }
         }
+        
+        imgGameType.image = UIImage(named: "basketballIcon")
+        imgGameType.layer.cornerRadius = 47
+        imgGameType.layer.masksToBounds = true
         
         
         

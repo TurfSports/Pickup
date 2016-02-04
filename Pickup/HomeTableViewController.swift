@@ -54,12 +54,10 @@ class HomeTableViewController: PFQueryTableViewController {
         
         if let imageName = object?["imageName"] as? String {
             let image = UIImage(named: imageName)
-//            cell?.imageView!.image = image
             cell?.imgSport.image = image
         }
         
         if let displayName = object?["displayName"] as? String {
-//            cell?.textLabel.text = displayName
             cell?.lblSport.text = displayName
         }
         
