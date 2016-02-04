@@ -13,9 +13,11 @@ import MapKit
 class GameDetailsViewController: UIViewController, MKMapViewDelegate {
 
     
-    @IBOutlet weak var gameMap: MKMapView!
-    @IBOutlet weak var lblOwner: UILabel!
-    @IBOutlet weak var lblSlotsAvailable: UILabel!
+
+    @IBOutlet weak var lblLocationName: UILabel!
+    @IBOutlet weak var lblOpenings: UILabel!
+    @IBOutlet weak var mapGame: MKMapView!
+    
     var game:PFObject!
     let ANNOTATION_ID = "Pin"
     
@@ -23,14 +25,12 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let username = game?["owner"]["username"] as? String {
-            lblOwner.text = username
+        if let locationName = game?["locationName"] as? String {
+            lblLocationName.text = locationName
         }
         
         if let slotsAvailable = game?["slotsAvailable"] as? Int {
-            if let totalSlots = game?["totalSlots"] as? Int {
-                lblSlotsAvailable.text = "\(slotsAvailable) / \(totalSlots) slots"
-            }
+                lblOpenings.text = "\(slotsAvailable) openings"
         }
         
         if let latitude:CLLocationDegrees = game?["location"].latitude {
@@ -42,13 +42,13 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
                 let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
                 let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
                 
-                gameMap.setRegion(region, animated: true)
+                mapGame.setRegion(region, animated: true)
                 
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = location
-                annotation.title = "Hello"
+                annotation.title = "Basketball"
                 
-                gameMap.addAnnotation(annotation)
+                mapGame.addAnnotation(annotation)
             }
         }
         

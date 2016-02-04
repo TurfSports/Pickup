@@ -43,22 +43,24 @@ class HomeTableViewController: PFQueryTableViewController {
     }
     
     //override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> PFTableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> HomeTableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as? PFTableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as? HomeTableViewCell
             
         if cell == nil {
-            cell = PFTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+            cell = HomeTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
         }
 
         
         if let imageName = object?["imageName"] as? String {
             let image = UIImage(named: imageName)
-            cell?.imageView!.image = image
+//            cell?.imageView!.image = image
+            cell?.imgSport.image = image
         }
         
         if let displayName = object?["displayName"] as? String {
-            cell?.textLabel!.text = displayName
+//            cell?.textLabel.text = displayName
+            cell?.lblSport.text = displayName
         }
         
         Theme.applyThemeToCell(cell!)
@@ -66,9 +68,9 @@ class HomeTableViewController: PFQueryTableViewController {
         return cell!
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier(SEGUE_SHOW_GAMES, sender: self)
-    }
+//    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+////        performSegueWithIdentifier(SEGUE_SHOW_GAMES, sender: self)
+//    }
     
     //MARK: - Navigation
     

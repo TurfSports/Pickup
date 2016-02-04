@@ -77,7 +77,7 @@ class GamesTableViewController: PFQueryTableViewController, CLLocationManagerDel
             }
         }
         
-        Theme.applyThemeToCell(cell)
+//        Theme.applyThemeToCell(cell)
         
         return cell
     }

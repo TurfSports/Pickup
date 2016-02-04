@@ -15,7 +15,6 @@ struct Theme {
     static let PRIMARY_LIGHT_COLOR:UIColor = UIColor(red: 207.0/255, green: 216.0/255, blue: 220.0/255, alpha: 1.0)
     
     static let GAME_TYPE_CELL_HEIGHT = CGFloat(100.00)
-    static let GAME_TYPE_CORNER_RADIUS = GAME_TYPE_CELL_HEIGHT / 2
  
     static func applyTheme() {
         let sharedApplication = UIApplication.sharedApplication()
@@ -25,14 +24,11 @@ struct Theme {
         UITableView.appearance().backgroundColor = UIColor.whiteColor()
     }
 
-    static func applyThemeToCell(cell: UITableViewCell) {
-        cell.imageView?.layer.cornerRadius = GAME_TYPE_CORNER_RADIUS
-        cell.imageView?.layer.masksToBounds = true
-        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+    static func applyThemeToCell(cell: HomeTableViewCell) {
+//        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         cell.backgroundColor = UIColor.whiteColor()
-        
         let bgColorView = UIView()
-        bgColorView.backgroundColor = UIColor.whiteColor()
+        bgColorView.backgroundColor = PRIMARY_LIGHT_COLOR
         cell.selectedBackgroundView = bgColorView
     }
     
