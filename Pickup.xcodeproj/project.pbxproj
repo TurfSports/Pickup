@@ -23,7 +23,6 @@
 		024026FE1C5FDFC5002F1B39 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026FD1C5FDFC5002F1B39 /* libz.tbd */; };
 		024027001C5FDFD0002F1B39 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026FF1C5FDFD0002F1B39 /* libsqlite3.tbd */; };
 		024027021C5FE031002F1B39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 024027011C5FE031002F1B39 /* Assets.xcassets */; };
-		024027041C5FE16C002F1B39 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024027031C5FE16C002F1B39 /* HomeTableViewController.swift */; };
 		025330F71C56FAA600B6ABDD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025330F61C56FAA600B6ABDD /* Theme.swift */; };
 		02B2F87B1C602E99009863AB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02B2F87A1C602E99009863AB /* MapKit.framework */; };
 		02B2F87E1C606018009863AB /* TNRB-Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 02B2F87D1C606018009863AB /* TNRB-Location.gpx */; };
@@ -32,6 +31,7 @@
 		02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27811C4DD58F0062C890 /* Main.storyboard */; };
 		02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27861C4DD58F0062C890 /* LaunchScreen.storyboard */; };
 		02ED11ED1C51904C001923EB /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED11EC1C51904C001923EB /* GameType.swift */; };
+		02ED31BB1C693CEF00B53DD3 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */; };
 		02F08F381C529FEE00A76EFB /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F371C529FEE00A76EFB /* Game.swift */; };
 		02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F391C52A5ED00A76EFB /* Player.swift */; };
 /* End PBXBuildFile section */
@@ -53,7 +53,6 @@
 		024026FD1C5FDFC5002F1B39 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		024026FF1C5FDFD0002F1B39 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		024027011C5FE031002F1B39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		024027031C5FE16C002F1B39 /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		025330F61C56FAA600B6ABDD /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		02B2F87A1C602E99009863AB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		02B2F87D1C606018009863AB /* TNRB-Location.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "TNRB-Location.gpx"; path = "../TNRB-Location.gpx"; sourceTree = "<group>"; };
@@ -64,6 +63,7 @@
 		02BE27871C4DD58F0062C890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02BE27891C4DD58F0062C890 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02ED11EC1C51904C001923EB /* GameType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameType.swift; path = ../GameType.swift; sourceTree = "<group>"; };
+		02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeTableViewController.swift; path = ../HomeTableViewController.swift; sourceTree = "<group>"; };
 		02F08F371C529FEE00A76EFB /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = ../Game.swift; sourceTree = "<group>"; };
 		02F08F391C52A5ED00A76EFB /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -175,7 +175,7 @@
 		02ED11EB1C518FFF001923EB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				024027031C5FE16C002F1B39 /* HomeTableViewController.swift */,
+				02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */,
 				02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */,
 				0223A0591C5FF85700B5A966 /* GamesTableViewController.swift */,
 				0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */,
@@ -261,9 +261,9 @@
 				0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */,
 				0223A05A1C5FF85700B5A966 /* GamesTableViewController.swift in Sources */,
 				02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */,
-				024027041C5FE16C002F1B39 /* HomeTableViewController.swift in Sources */,
 				02ED11ED1C51904C001923EB /* GameType.swift in Sources */,
 				02B2F8801C60666C009863AB /* HomeTableViewCell.swift in Sources */,
+				02ED31BB1C693CEF00B53DD3 /* HomeTableViewController.swift in Sources */,
 				02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */,
 				02F08F381C529FEE00A76EFB /* Game.swift in Sources */,
 			);

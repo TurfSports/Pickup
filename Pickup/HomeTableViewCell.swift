@@ -9,7 +9,7 @@
 import UIKit
 import ParseUI
 
-class HomeTableViewCell: PFTableViewCell {
+class HomeTableViewCell: UITableViewCell {
 
     
     @IBOutlet weak var imgSport: UIImageView!
