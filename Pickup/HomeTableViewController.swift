@@ -38,6 +38,7 @@ class HomeTableViewController: PFQueryTableViewController {
     
     
     //MARK: - Table View Delegate
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return Theme.GAME_TYPE_CELL_HEIGHT
     }
@@ -46,7 +47,8 @@ class HomeTableViewController: PFQueryTableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> HomeTableViewCell {
         
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as? HomeTableViewCell
-            
+        
+        
         if cell == nil {
             cell = HomeTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
         }
@@ -60,6 +62,7 @@ class HomeTableViewController: PFQueryTableViewController {
         if let displayName = object?["displayName"] as? String {
             cell?.lblSport.text = displayName
         }
+        
         
         Theme.applyThemeToCell(cell!)
         
@@ -84,6 +87,10 @@ class HomeTableViewController: PFQueryTableViewController {
         }
 
     }
+    
+    //MARK: - Success will happen
+    //TODO: Get the table view to update after query returns
+    
     
 }
 

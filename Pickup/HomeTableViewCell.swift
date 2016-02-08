@@ -14,12 +14,12 @@ class HomeTableViewCell: PFTableViewCell {
     
     @IBOutlet weak var imgSport: UIImageView!
     @IBOutlet weak var lblSport: UILabel!
+    @IBOutlet weak var lblAvailableGames: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         self.imgSport?.layer.cornerRadius = Theme.GAME_TYPE_CELL_HEIGHT / 2 - 4
-//        print("Height: \(self.imgSport.bounds.height), Width \(self.imgSport.bounds.width)")
         self.imgSport?.layer.masksToBounds = true
         
         // Initialization code

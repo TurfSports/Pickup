@@ -37,19 +37,10 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         if let latitude:CLLocationDegrees = game?["location"].latitude {
             if let longitude:CLLocationDegrees = game?["location"].longitude {
-                let latDelta:CLLocationDegrees = 0.01
-                let longDelta:CLLocationDegrees = 0.01
-                let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
-                
-                let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-                let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
-                
-                mapGame.setRegion(region, animated: true)
-                
+                let location = setLocationOnMap(latitude, longitude: longitude)
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = location
-                annotation.title = "Basketball"
-                
+                annotation.title = game?["locationName"] as? String
                 mapGame.addAnnotation(annotation)
             }
         }
@@ -62,6 +53,11 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         
         // Do any additional setup after loading the view.
+    }
+    
+    
+    @IBAction func btnJoinGame(sender: AnyObject) {
+        
     }
 
     
@@ -76,6 +72,22 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         // NEEDSWORK: begin editing suggestion for this geoplace
     }
+    
+    // MARK: - Private functions
+    
+    private func setLocationOnMap(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> CLLocationCoordinate2D {
+        
+        let latDelta:CLLocationDegrees = 0.01
+        let longDelta:CLLocationDegrees = 0.01
+        let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
+        
+        let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+        let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+        mapGame.setRegion(region, animated: false)
+        
+        return location
+    }
+    
     
 
 

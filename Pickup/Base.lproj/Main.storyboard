@@ -61,11 +61,19 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeQ-4o-6Ak">
+                                            <rect key="frame" x="307" y="11" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="GwQ-xa-nAl" firstAttribute="leading" secondItem="pRq-rN-30u" secondAttribute="trailing" constant="15" id="71j-tm-Ivr"/>
                                         <constraint firstItem="pRq-rN-30u" firstAttribute="top" secondItem="2Rb-wl-y6Y" secondAttribute="topMargin" constant="-4" id="8FE-0m-SZ0"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="pRq-rN-30u" secondAttribute="bottom" constant="-4" id="9cd-2V-5dS"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="ZeQ-4o-6Ak" secondAttribute="trailing" constant="18" id="Abz-wJ-ji4"/>
+                                        <constraint firstItem="ZeQ-4o-6Ak" firstAttribute="centerY" secondItem="2Rb-wl-y6Y" secondAttribute="centerY" id="GME-HI-Fx5"/>
                                         <constraint firstItem="pRq-rN-30u" firstAttribute="leading" secondItem="2Rb-wl-y6Y" secondAttribute="leadingMargin" constant="-4" id="Tru-9N-kwk"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="GwQ-xa-nAl" secondAttribute="bottom" constant="3" id="ZGQ-Zy-aym"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="pRq-rN-30u" secondAttribute="bottom" constant="-8" id="b4c-Od-cVK"/>
@@ -85,6 +93,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="imgSport" destination="pRq-rN-30u" id="M2s-52-2y2"/>
+                                    <outlet property="lblAvailableGames" destination="ZeQ-4o-6Ak" id="KV6-C0-Sko"/>
                                     <outlet property="lblSport" destination="GwQ-xa-nAl" id="Iye-CV-vWt"/>
                                     <segue destination="4zV-eA-gW1" kind="show" identifier="showGamesTableViewController" id="PW2-Iq-ium"/>
                                 </connections>
@@ -171,7 +180,11 @@
                                 </constraints>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="pQR-R7-u2i"/>
-                                    <barButtonItem title="Join Game" id="fj3-YZ-qvi"/>
+                                    <barButtonItem title="Join Game" id="fj3-YZ-qvi">
+                                        <connections>
+                                            <action selector="btnJoinGame:" destination="hUl-GN-0zr" id="uts-i3-z59"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -190,7 +203,7 @@
                                     <constraint firstAttribute="width" constant="80" id="iZg-2W-lVd"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="These are the game notes" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyh-Lp-nfA">
@@ -199,7 +212,7 @@
                                     <constraint firstAttribute="height" constant="31" id="Sul-pR-C31"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11:00 AM" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PeR-xc-NKO">
@@ -208,7 +221,7 @@
                                     <constraint firstAttribute="width" constant="80" id="EgR-th-u2o"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="15"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="basketballIcon" translatesAutoresizingMaskIntoConstraints="NO" id="bOJ-O1-QRr">
@@ -225,7 +238,7 @@
                                     <constraint firstAttribute="height" constant="29" id="G2z-ZQ-rlC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
