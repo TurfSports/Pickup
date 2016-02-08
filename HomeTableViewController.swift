@@ -7,17 +7,16 @@
 //
 
 import UIKit
+import Parse
 
 class HomeTableViewController: UITableViewController {
+    
+    var gameTypes:[GameType] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        loadObjectsFromParse()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -28,25 +27,52 @@ class HomeTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 3
+        return gameTypes.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> HomeTableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? HomeTableViewCell
 
-        cell.textLabel!.text = "Hello"
+        cell?.lblSport.text = gameTypes[indexPath.row].displayName
+        cell?.imgSport.image = UIImage(named: gameTypes[indexPath.row].imageName)
+        
 
-        return cell
+        return cell!
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 100
     }
 
 
+    private func loadObjectsFromParse() {
+        let query = PFQuery(className: "GameType")
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if let gameTypeObjects = objects {
+                
+                self.gameTypes.removeAll(keepCapacity: true)
+                
+                for gameTypeObject in gameTypeObjects {
+                    
+//                    query.whereKey(<#T##key: String##String#>, containedIn: <#T##[AnyObject]#>)
+//                    query.countObjectsInBackgroundWithBlock({ (count, error) -> Void in
+//                        <#code#>
+//                    })
+                    
+                    let gameType = GameTypeFactory.convertParseObject(gameTypeObject)
+                    self.gameTypes.append(gameType)
+                }
+            }
+            
+            self.tableView.reloadData()
+        }
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

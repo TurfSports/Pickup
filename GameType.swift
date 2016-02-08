@@ -16,12 +16,19 @@ class GameType {
     var sortOrder:Int
     let imageName:String
     
+    var gameCount:Int
+    
     init (id: String, name: String, displayName: String, sortOrder: Int, imageName: String) {
         self.id = id
         self.name = name
         self.displayName = displayName
         self.sortOrder = sortOrder
         self.imageName = imageName
+        self.gameCount = 0
+    }
+    
+    func increaseGameCount() {
+        gameCount += 1
     }
 
     
