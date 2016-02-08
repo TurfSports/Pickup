@@ -27,8 +27,8 @@ class GameType {
         self.gameCount = 0
     }
     
-    func increaseGameCount() {
-        gameCount += 1
+    func increaseGameCount(count: Int) {
+        gameCount += count
     }
 
     

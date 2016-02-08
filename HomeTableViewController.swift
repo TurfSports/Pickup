@@ -38,8 +38,11 @@ class HomeTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> HomeTableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? HomeTableViewCell
 
-        cell?.lblSport.text = gameTypes[indexPath.row].displayName
-        cell?.imgSport.image = UIImage(named: gameTypes[indexPath.row].imageName)
+        let selectedGameType = gameTypes[indexPath.row]
+        
+        cell?.lblSport.text = selectedGameType.displayName
+        cell?.imgSport.image = UIImage(named: selectedGameType.imageName)
+        cell?.lblAvailableGames.text = "\(selectedGameType.gameCount)"
         
 
         return cell!
@@ -51,20 +54,22 @@ class HomeTableViewController: UITableViewController {
 
 
     private func loadObjectsFromParse() {
-        let query = PFQuery(className: "GameType")
-        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        let gameTypeQuery = PFQuery(className: "GameType")
+        gameTypeQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameTypeObjects = objects {
                 
                 self.gameTypes.removeAll(keepCapacity: true)
                 
                 for gameTypeObject in gameTypeObjects {
+                    let gameQuery = PFQuery(className: "Game")
+                    gameQuery.whereKey("gameType", equalTo: gameTypeObject)
                     
-//                    query.whereKey(<#T##key: String##String#>, containedIn: <#T##[AnyObject]#>)
-//                    query.countObjectsInBackgroundWithBlock({ (count, error) -> Void in
-//                        <#code#>
-//                    })
+                    gameQuery.countObjectsInBackgroundWithBlock({ (count: Int, error: NSError?) -> Void in
+                        var gameCount:Int = count
+                    })
                     
                     let gameType = GameTypeFactory.convertParseObject(gameTypeObject)
+                    gameType.increaseGameCount(gameCount)
                     self.gameTypes.append(gameType)
                 }
             }
@@ -72,6 +77,21 @@ class HomeTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
+    
+//    private func loadGameCounts() {
+//        var gameCount = 0
+//        let gameQuery = PFQuery(className: "Game")
+//        gameQuery.whereKey("GameType", equalTo: gameTypeObject)
+//        
+//        gameTypeQuery.countObjectsInBackgroundWithBlock({ (count: Int32, error: NSError?) -> Void in
+//            if error == nil {
+//                print(count)
+//                gameCount = Int(count)
+//            } else {
+//                print(error)
+//            }
+//        })
+//    }
     
     /*
     // Override to support conditional editing of the table view.
