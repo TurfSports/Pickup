@@ -95,7 +95,6 @@
                                     <outlet property="imgSport" destination="pRq-rN-30u" id="M2s-52-2y2"/>
                                     <outlet property="lblAvailableGames" destination="ZeQ-4o-6Ak" id="KV6-C0-Sko"/>
                                     <outlet property="lblSport" destination="GwQ-xa-nAl" id="Iye-CV-vWt"/>
-                                    <segue destination="4zV-eA-gW1" kind="show" identifier="showGamesTableViewController" id="PW2-Iq-ium"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -110,6 +109,9 @@
                         <barButtonItem key="rightBarButtonItem" title="Settings" id="z7y-KW-e6G"/>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <segue destination="4zV-eA-gW1" kind="show" identifier="showGamesTableViewController" id="6wj-Kr-fHS"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9A5-t6-d05" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -118,22 +120,19 @@
         <!--Games-->
         <scene sceneID="7x8-St-eLV">
             <objects>
-                <tableViewController id="4zV-eA-gW1" customClass="GamesTableViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="4zV-eA-gW1" customClass="GameTableViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="3ls-wg-pNB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="EF9-s4-X0m" customClass="PFTableViewCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="EF9-s4-X0m">
                                 <rect key="frame" x="0.0" y="92" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EF9-s4-X0m" id="ENP-Dc-I7I">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="gww-MU-JdE"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -145,6 +144,9 @@
                         <barButtonItem key="backBarButtonItem" title="Games" id="IY1-Ds-r1k"/>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="1rT-JO-RWk"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4BC-iv-k3f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -282,7 +284,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4sV-WC-uDn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2060.5" y="573.5"/>
+            <point key="canvasLocation" x="1983.5" y="278.5"/>
         </scene>
     </scenes>
     <resources>

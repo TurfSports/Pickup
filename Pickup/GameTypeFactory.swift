@@ -22,7 +22,6 @@ class GameTypeFactory {
         
         let gameType = GameType.init(id: id, name: name, displayName: displayName, sortOrder: sortOrder, imageName: imageName)
         
-        
         return gameType
     }
     

@@ -11,14 +11,26 @@ import Parse
 
 class HomeTableViewController: UITableViewController {
     
+    let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     var gameTypes:[GameType] = []
+    var gameCountLoaded:Bool = false {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         loadObjectsFromParse()
-        
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(false)
+        tableView.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -42,7 +54,7 @@ class HomeTableViewController: UITableViewController {
         
         cell?.lblSport.text = selectedGameType.displayName
         cell?.imgSport.image = UIImage(named: selectedGameType.imageName)
-        cell?.lblAvailableGames.text = "\(selectedGameType.gameCount)"
+        cell?.lblAvailableGames.text = "\(selectedGameType.gameCount) games"
         
 
         return cell!
@@ -61,15 +73,19 @@ class HomeTableViewController: UITableViewController {
                 self.gameTypes.removeAll(keepCapacity: true)
                 
                 for gameTypeObject in gameTypeObjects {
+                    var gameCount:Int = 0
+                    
                     let gameQuery = PFQuery(className: "Game")
                     gameQuery.whereKey("gameType", equalTo: gameTypeObject)
                     
-                    gameQuery.countObjectsInBackgroundWithBlock({ (count: Int, error: NSError?) -> Void in
-                        var gameCount:Int = count
+                    let gameType = GameTypeFactory.convertParseObject(gameTypeObject)
+                    
+                    gameQuery.countObjectsInBackgroundWithBlock({ (count: Int32, error: NSError?) -> Void in
+                        gameCount = Int(count)
+                        gameType.increaseGameCount(gameCount)
+                        self.gameCountLoaded = true
                     })
                     
-                    let gameType = GameTypeFactory.convertParseObject(gameTypeObject)
-                    gameType.increaseGameCount(gameCount)
                     self.gameTypes.append(gameType)
                 }
             }
@@ -77,64 +93,60 @@ class HomeTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
-    
-//    private func loadGameCounts() {
-//        var gameCount = 0
-//        let gameQuery = PFQuery(className: "Game")
-//        gameQuery.whereKey("GameType", equalTo: gameTypeObject)
-//        
-//        gameTypeQuery.countObjectsInBackgroundWithBlock({ (count: Int32, error: NSError?) -> Void in
-//            if error == nil {
-//                print(count)
-//                gameCount = Int(count)
-//            } else {
-//                print(error)
-//            }
-//        })
-//    }
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == SEGUE_SHOW_GAMES {
+            let gamesViewController = segue.destinationViewController as! GameTableViewController
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+//                gameDetailsViewController.game = gameTypes[indexPath.row]
+                //TODO: Set the variables necessary
+            }
+            gamesViewController.navigationItem.leftItemsSupplementBackButton = true
+        }
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        performSegueWithIdentifier(SEGUE_SHOW_GAMES, sender: self)
+    }
+    
+    
+    /*
+    // Override to support conditional editing of the table view.
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    // Return false if you do not want the specified item to be editable.
+    return true
+    }
+    */
+    
+    /*
+    // Override to support editing the table view.
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    if editingStyle == .Delete {
+    // Delete the row from the data source
+    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+    } else if editingStyle == .Insert {
+    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }
+    }
+    */
+    
+    //TODO: Consider allowing user to rearrange the sports
+    
+    /*
+    // Override to support rearranging the table view.
+    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    
+    }
+    */
+    
+    /*
+    // Override to support conditional rearranging of the table view.
+    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    // Return false if you do not want the item to be re-orderable.
+    return true
     }
     */
 
