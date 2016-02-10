@@ -126,13 +126,37 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="EF9-s4-X0m">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="EF9-s4-X0m" customClass="GameTableViewCell" customModule="Pickup" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EF9-s4-X0m" id="ENP-Dc-I7I">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ir-2F-3sg">
+                                            <rect key="frame" x="21" y="11" width="115" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R0b-5c-Aqt">
+                                            <rect key="frame" x="317" y="11" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="0Ir-2F-3sg" firstAttribute="centerY" secondItem="ENP-Dc-I7I" secondAttribute="centerY" id="LQU-qt-kUS"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="R0b-5c-Aqt" secondAttribute="trailing" constant="8" id="Qsf-fJ-ZaY"/>
+                                        <constraint firstItem="R0b-5c-Aqt" firstAttribute="centerY" secondItem="ENP-Dc-I7I" secondAttribute="centerY" id="fDP-fi-8e3"/>
+                                        <constraint firstItem="0Ir-2F-3sg" firstAttribute="leading" secondItem="ENP-Dc-I7I" secondAttribute="leadingMargin" constant="13" id="iy9-Op-DFl"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="lblDistance" destination="R0b-5c-Aqt" id="E0K-96-haA"/>
+                                    <outlet property="lblLocationName" destination="0Ir-2F-3sg" id="OJD-8f-4mY"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

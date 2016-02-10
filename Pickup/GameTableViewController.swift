@@ -24,6 +24,10 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         super.viewDidLoad()
         loadGamesFromParse()
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        setUsersCurrentLocation()
+    }
 
     // MARK: - Table view data source
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -35,15 +39,16 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         return games.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> GameTableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? GameTableViewCell
         
         let game = games[indexPath.row]
         
-        cell.textLabel?.text = game.locationName
+        cell?.lblLocationName.text = game.locationName
+//        cell?.lblDistance.text = "\(game.)"
         
-        return cell
+        return cell!
     }
     
 
