@@ -35,7 +35,6 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
         return games.count
     }
 
@@ -46,7 +45,16 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         let game = games[indexPath.row]
         
         cell?.lblLocationName.text = game.locationName
-//        cell?.lblDistance.text = "\(game.)"
+        
+        let latitude:CLLocationDegrees = game.latitude
+        let longitude:CLLocationDegrees = game.longitude
+        let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
+        if self.currentLocation != nil {
+            if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!) {
+                cell?.lblDistance.text = "\(distance) mi"
+            }
+        }
+        
         
         return cell!
     }
