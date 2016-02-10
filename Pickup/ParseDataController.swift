@@ -14,7 +14,11 @@ class ParseDataController {
     var gameTypes:[GameType] = []
     var games:[Game] = []
     
-    var gameTypesLoaded:Bool = false
+    var gameTypesLoaded:Bool = false {
+        didSet {
+            print ("LOADED!!!!")
+        }
+    }
     
     var gamesLoaded:Bool = false {
         didSet {
@@ -32,6 +36,7 @@ class ParseDataController {
     init() {}
     
     func getGameTypes() -> [GameType] {
+        loadGameTypesFromParse()
         return gameTypes
     }
     
@@ -53,10 +58,11 @@ class ParseDataController {
                 for gameTypeObject in gameTypeObjects {
                     let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
                     gameTypes.append(gameType)
+                    self.gameTypesLoaded = true
                 }
             }
             
-            self.gameTypesLoaded = true
+
         }
     }
     

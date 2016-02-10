@@ -15,6 +15,7 @@ class HomeTableViewController: UITableViewController {
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     var gameTypes:[GameType] = []
+//    var gameTypes:[PFObject] = []
     var gameCountLoaded:Bool = false {
         didSet {
             self.tableView.reloadData()
@@ -24,21 +25,18 @@ class HomeTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        data = ParseDataController.init()
-        
-        gameTypes = data.getGameTypes()
-        
-        while !data.gameTypesLoaded {
-            print("Still loading game types")
-        }
-        
-//        loadGameTypesFromParse()
+//        data = ParseDataController.init()
+//        
+//        gameTypes = data.getGameTypes()
+//        
+//        tableView.reloadData()
+        loadGameTypesFromParse()
         
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(false)
-        tableView.reloadData()
+//        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,13 +57,12 @@ class HomeTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> HomeTableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? HomeTableViewCell
 
-        let selectedGameType = gameTypes[indexPath.row]
+        let gameType = gameTypes[indexPath.row]
         
-        cell?.lblSport.text = selectedGameType.displayName
-        cell?.imgSport.image = UIImage(named: selectedGameType.imageName)
-        cell?.lblAvailableGames.text = "\(selectedGameType.gameCount) games"
+        cell?.lblSport.text = gameType.displayName
+        cell?.imgSport.image = UIImage(named: gameType.imageName)
+        cell?.lblAvailableGames.text = "\(gameType.gameCount) games"
         
-
         return cell!
     }
     
@@ -110,7 +107,7 @@ class HomeTableViewController: UITableViewController {
         if segue.identifier == SEGUE_SHOW_GAMES {
             let gamesViewController = segue.destinationViewController as! GameTableViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                gamesViewController.selectedGameType = gameTypes[indexPath.row].name
+                gamesViewController.selectedGameType = gameTypes[indexPath.row]
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true
         }
@@ -120,42 +117,5 @@ class HomeTableViewController: UITableViewController {
         performSegueWithIdentifier(SEGUE_SHOW_GAMES, sender: self)
     }
     
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    //TODO: Consider allowing user to rearrange the sports
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the item to be re-orderable.
-    return true
-    }
-    */
 
 }

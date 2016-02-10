@@ -14,7 +14,7 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let METERS_IN_MILE = 1609.34
-    var selectedGameType = ""
+    var selectedGameType:GameType!
     var games:[Game] = []
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation?
@@ -22,26 +22,56 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        loadGamesFromParse()
     }
 
     // MARK: - Table view data source
-
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        return 1
+        return games.count
     }
 
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        
+        let game = games[indexPath.row]
+        
+        cell.textLabel?.text = game.locationName
+        
+        return cell
+    }
+    
 
+    //MARK: - Parse
+    private func loadGamesFromParse() {
+        let gameQuery = PFQuery(className: "Game")
+        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+        gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if let gameObjects = objects {
+                
+                self.games.removeAll(keepCapacity: true)
+                
+                for gameObject in gameObjects {
+                    print(gameObject.objectId)
+//                    self.games.append(gameObject)
+                    let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
+                    print(game)
+                    self.games.append(game)
+                }
+            }
+            
+            self.tableView.reloadData()
+        }
+    }
+    
+    
+    
+    //MARK: - Navigation
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
     }
@@ -58,14 +88,7 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        
-        
-        return cell
-    }
-    
+
 
     
     
@@ -103,41 +126,6 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         return round(number * divisor) / divisor
     }
     
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
 
 }
