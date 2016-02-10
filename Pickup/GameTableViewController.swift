@@ -8,24 +8,20 @@
 
 import UIKit
 import CoreLocation
+import Parse
 
 class GameTableViewController: UITableViewController, CLLocationManagerDelegate {
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let METERS_IN_MILE = 1609.34
-//    var gameType:PFObject!
+    var selectedGameType = ""
+    var games:[Game] = []
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,12 +32,12 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+
         return 1
     }
 
@@ -70,7 +66,11 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         return cell
     }
     
+
+    
+    
     //MARK: - Location
+    //TODO: Abstract location methods into their own class
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let location:CLLocationCoordinate2D = manager.location!.coordinate

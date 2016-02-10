@@ -11,6 +11,8 @@ import Parse
 
 class HomeTableViewController: UITableViewController {
     
+    var data:ParseDataController!
+    
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     var gameTypes:[GameType] = []
     var gameCountLoaded:Bool = false {
@@ -19,11 +21,19 @@ class HomeTableViewController: UITableViewController {
         }
     }
     
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadObjectsFromParse()
+        data = ParseDataController.init()
+        
+        gameTypes = data.getGameTypes()
+        
+        while !data.gameTypesLoaded {
+            print("Still loading game types")
+        }
+        
+//        loadGameTypesFromParse()
+        
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -45,7 +55,6 @@ class HomeTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gameTypes.count
     }
-
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> HomeTableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? HomeTableViewCell
@@ -61,11 +70,11 @@ class HomeTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100
+        return Theme.GAME_TYPE_CELL_HEIGHT
     }
 
 
-    private func loadObjectsFromParse() {
+    private func loadGameTypesFromParse() {
         let gameTypeQuery = PFQuery(className: "GameType")
         gameTypeQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameTypeObjects = objects {
@@ -78,7 +87,7 @@ class HomeTableViewController: UITableViewController {
                     let gameQuery = PFQuery(className: "Game")
                     gameQuery.whereKey("gameType", equalTo: gameTypeObject)
                     
-                    let gameType = GameTypeFactory.convertParseObject(gameTypeObject)
+                    let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
                     
                     gameQuery.countObjectsInBackgroundWithBlock({ (count: Int32, error: NSError?) -> Void in
                         gameCount = Int(count)
@@ -101,8 +110,7 @@ class HomeTableViewController: UITableViewController {
         if segue.identifier == SEGUE_SHOW_GAMES {
             let gamesViewController = segue.destinationViewController as! GameTableViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
-//                gameDetailsViewController.game = gameTypes[indexPath.row]
-                //TODO: Set the variables necessary
+                gamesViewController.selectedGameType = gameTypes[indexPath.row].name
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true
         }

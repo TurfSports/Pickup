@@ -1,5 +1,5 @@
 //
-//  GameTypeParseController.swift
+//  GameTypeConverter.swift
 //  Pickup
 //
 //  Created by Nathan Dudley on 2/8/16.
@@ -9,7 +9,7 @@
 import Foundation
 import Parse
 
-class GameTypeFactory {
+class GameTypeConverter {
     
 
     static func convertParseObject (gameTypeObject: PFObject) -> GameType {
