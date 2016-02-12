@@ -13,11 +13,9 @@ class GameConverter {
     
     static func convertParseObject(gameObject: PFObject, selectedGameType: GameType) -> Game {
      
-        print("entered Conversion")
         
         let id = gameObject.objectId!
         let gameType = selectedGameType
-        print("gameType set")
         let totalSlots = gameObject["totalSlots"] as! Int
         let availableSlots = gameObject["slotsAvailable"] as! Int
         let eventDate = gameObject["date"] as! NSDate
