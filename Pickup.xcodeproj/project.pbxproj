@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */; };
-		0223A05A1C5FF85700B5A966 /* GamesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223A0591C5FF85700B5A966 /* GamesTableViewController.swift */; };
 		0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */; };
 		024026EA1C5FDF61002F1B39 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026E71C5FDF61002F1B39 /* ParseUI.framework */; };
 		024026EB1C5FDF61002F1B39 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026E81C5FDF61002F1B39 /* Bolts.framework */; };
@@ -43,7 +42,6 @@
 
 /* Begin PBXFileReference section */
 		021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
-		0223A0591C5FF85700B5A966 /* GamesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesTableViewController.swift; sourceTree = "<group>"; };
 		0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
 		024026E71C5FDF61002F1B39 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		024026E81C5FDF61002F1B39 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -188,7 +186,6 @@
 			children = (
 				02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */,
 				02ED31BE1C696C2000B53DD3 /* GameTableViewController.swift */,
-				0223A0591C5FF85700B5A966 /* GamesTableViewController.swift */,
 				0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */,
 				02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */,
 				02EFBF551C6BEB9B001774A2 /* GamesTableViewCell.swift */,
@@ -285,7 +282,6 @@
 				021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */,
 				02EFBF561C6BEB9B001774A2 /* GamesTableViewCell.swift in Sources */,
 				0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */,
-				0223A05A1C5FF85700B5A966 /* GamesTableViewController.swift in Sources */,
 				02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */,
 				02ED11ED1C51904C001923EB /* GameType.swift in Sources */,
 				02ED31C11C6992B500B53DD3 /* GameConverter.swift in Sources */,
