@@ -20,13 +20,14 @@ class GameConverter {
         let availableSlots = gameObject["slotsAvailable"] as! Int
         let eventDate = gameObject["date"] as! NSDate
         let locationName = gameObject["locationName"] as! String
-//        let owner = gameObject["owner"] as? String
+        let owner = gameObject["owner"].objectId!
+        let gameNotes = gameObject["gameNotes"] as! String
+        
         let latitude =  gameObject["location"]!.latitude
         let longitude = gameObject["location"]!.longitude
-        let game = Game.init(id: id, gameType: gameType, totalSlots: totalSlots, availableSlots: availableSlots, eventDate: eventDate, locationName: locationName)
+        let game = Game.init(id: id, gameType: gameType, totalSlots: totalSlots, availableSlots: availableSlots, eventDate: eventDate, locationName: locationName, ownerId: owner!, gameNotes: gameNotes)
         
         game.setCoordinates(latitude, longitude: longitude)
-        
         
         return game
     }

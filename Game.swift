@@ -19,20 +19,24 @@ class Game {
     var availableSlots:Int
     var eventDate:NSDate
     var locationName:String
-//    lazy var owner:Player
+    var ownerId:String
+    var gameNotes:String
     lazy var latitude:Double = 0.0
     lazy var longitude:Double = 0.0
     
 //    lazy var players:[String: Player] = [:]
     
     init (id: String, gameType: GameType, totalSlots: Int,
-        availableSlots: Int, eventDate: NSDate, locationName: String) {
+        availableSlots: Int, eventDate: NSDate, locationName: String,
+        ownerId: String, gameNotes: String) {
         self.id = id
         self.gameType = gameType
         self.totalSlots = totalSlots
         self.availableSlots = availableSlots
         self.eventDate = eventDate
         self.locationName = locationName
+        self.ownerId = ownerId
+        self.gameNotes = gameNotes
     }
     
     func setCoordinates (latitude: Double, longitude: Double) {

@@ -45,6 +45,7 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         let game = games[indexPath.row]
         
         cell?.lblLocationName.text = game.locationName
+        cell?.lblDistance.text = ""
         
         let latitude:CLLocationDegrees = game.latitude
         let longitude:CLLocationDegrees = game.longitude
@@ -70,10 +71,7 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
                 self.games.removeAll(keepCapacity: true)
                 
                 for gameObject in gameObjects {
-                    print(gameObject.objectId)
-//                    self.games.append(gameObject)
                     let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
-                    print(game)
                     self.games.append(game)
                 }
             }
@@ -93,9 +91,9 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
-//                let row = Int(indexPath.row)
-//                gameDetailsViewController.game = (objects![row])
+                gameDetailsViewController.game = games[indexPath.row]
             }
+            
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
         }
         

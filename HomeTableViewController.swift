@@ -15,7 +15,6 @@ class HomeTableViewController: UITableViewController {
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     var gameTypes:[GameType] = []
-//    var gameTypes:[PFObject] = []
     var gameCountLoaded:Bool = false {
         didSet {
             self.tableView.reloadData()
@@ -25,18 +24,12 @@ class HomeTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        data = ParseDataController.init()
-//        
-//        gameTypes = data.getGameTypes()
-//        
-//        tableView.reloadData()
         loadGameTypesFromParse()
-        
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(false)
-//        tableView.reloadData()
+
     }
     
     override func didReceiveMemoryWarning() {

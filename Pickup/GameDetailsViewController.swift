@@ -19,45 +19,102 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapGame: MKMapView!
     @IBOutlet weak var lblGameNotes: UILabel!
     @IBOutlet weak var imgGameType: UIImageView!
+    @IBOutlet weak var lblAddress: UILabel!
     
-    var game:PFObject!
+    var address: String! {
+        didSet {
+            lblAddress.text = address
+        }
+    }
+    
+    var game:Game!
     let ANNOTATION_ID = "Pin"
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let locationName = game?["locationName"] as? String {
-            lblLocationName.text = locationName
-        }
+        lblLocationName.text = game.locationName
+        lblOpenings.text = ("\(game.availableSlots) openings")
+        lblGameNotes.text = game.gameNotes
+        lblAddress.text = ""
         
-        if let slotsAvailable = game?["slotsAvailable"] as? Int {
-                lblOpenings.text = "\(slotsAvailable) openings"
-        }
+        let location = setLocationOnMap(game.latitude, longitude: game.longitude)
         
-        if let latitude:CLLocationDegrees = game?["location"].latitude {
-            if let longitude:CLLocationDegrees = game?["location"].longitude {
-                let location = setLocationOnMap(latitude, longitude: longitude)
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = location
-                annotation.title = game?["locationName"] as? String
-                mapGame.addAnnotation(annotation)
-            }
-        }
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = location
+        annotation.title = game.locationName
+        mapGame.addAnnotation(annotation)
         
-        imgGameType.image = UIImage(named: "basketballIcon")
+        
+        imgGameType.image = UIImage(named: game.gameType.imageName)
         imgGameType.layer.cornerRadius = 47
         imgGameType.layer.masksToBounds = true
         
+        let geoCoder = CLGeocoder()
+        let gameLocation = CLLocation(latitude: game.latitude, longitude: game.longitude)
         
+        geoCoder.reverseGeocodeLocation(gameLocation, completionHandler: { (placemarks, error) -> Void in
+            
+            // Place details
+            var placeMark: CLPlacemark!
+            placeMark = placemarks?[0]
+            self.address = ""
+            
+            if let locationName = placeMark.addressDictionary!["Name"] as? NSString {
+                self.address = self.address + "\(locationName)"
+            }
+            
+            if let street = placeMark.addressDictionary!["Thoroughfare"] as? NSString {
+                self.address = self.address + "\n\(street)"
+
+            }
         
+            if let city = placeMark.addressDictionary!["City"] as? NSString {
+                self.address = self.address + "\n\(city)"
+
+            }
+            
+            if let state = placeMark.addressDictionary!["State"] as? NSString {
+                self.address = self.address + ", \(state)"
+                
+            }
+            
+            if let zip = placeMark.addressDictionary!["ZIP"] as? NSString {
+                self.address = self.address + "\n\(zip)"
+
+            }
+            
+        })
         
-        // Do any additional setup after loading the view.
     }
     
     
     @IBAction func btnJoinGame(sender: AnyObject) {
         
+        //Get the PFObject for game
+        //Add the current user as a player in the game
+        joinPFUserToPFGame()
+        
+    }
+    
+    //MARK: - Load game from parse
+    private func joinPFUserToPFGame() {
+        let gameQuery = PFQuery(className: "Game")
+        gameQuery.whereKey("objectId", equalTo: self.game.id)
+        
+        gameQuery.getFirstObjectInBackgroundWithBlock {
+            (object: PFObject?, error: NSError?) -> Void in
+            if error != nil || object == nil {
+                print("The getFirstObject on Game request failed.")
+            } else {
+                let currentUser = PFUser.currentUser()
+                let gameRelations = object?.relationForKey("players")
+                gameRelations?.addObject(currentUser!)
+                object?.saveInBackground()
+            }
+        }
+    
     }
 
     

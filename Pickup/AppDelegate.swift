@@ -23,6 +23,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("vXTZeIEcllE2fqSPJab5OdZkCbB9TmfW9DIutXJn",
             clientKey: "xUjfmNs7umcLNLUdINYj6jfe5Y4dQx6CT8JMEpqJ")
         
+        let currentUser = PFUser.currentUser()
+        
+        if currentUser == nil {
+            PFAnonymousUtils.logInWithBlock {
+                (user: PFUser?, error: NSError?) -> Void in
+                if error != nil || user == nil {
+                    print("Anonymous login failed.")
+                } else {
+                    user!["deviceType"] = UIDevice.currentDevice().name
+                    user?.saveInBackground()
+                }
+            }
+        }
+        
         return true
     }
 

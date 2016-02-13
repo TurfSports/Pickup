@@ -8,13 +8,17 @@
 
 import Foundation
 
+
 class Player {
     
+    let id:String
     let username:String
     
-    init (username: String) {
+    init (id:String, username: String) {
+        self.id = id
         self.username = username
     }
     
+
     
 }
