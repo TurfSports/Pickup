@@ -98,7 +98,7 @@ class HomeTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SHOW_GAMES {
-            let gamesViewController = segue.destinationViewController as! GameTableViewController
+            let gamesViewController = segue.destinationViewController as! GameListViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 gamesViewController.selectedGameType = gameTypes[indexPath.row]
             }

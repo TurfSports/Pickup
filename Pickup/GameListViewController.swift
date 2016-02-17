@@ -1,8 +1,8 @@
 //
-//  GameTableViewController.swift
+//  GameListViewController.swift
 //  Pickup
 //
-//  Created by Nathan Dudley on 2/8/16.
+//  Created by Nathan Dudley on 2/16/16.
 //  Copyright © 2016 Pickup. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import Parse
 
-class GameTableViewController: UITableViewController, CLLocationManagerDelegate {
+class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, UITabBarControllerDelegate {
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let METERS_IN_MILE = 1609.34
@@ -19,26 +19,34 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation?
     
+    @IBOutlet weak var tabBar: UITabBar!
+    @IBOutlet weak var tableGameList: UITableView!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadGamesFromParse()
+        tabBar.selectedItem = tabBar.items![0] as UITabBarItem;
+
+        // Do any additional setup after loading the view.
     }
-    
+
     override func viewDidAppear(animated: Bool) {
         setUsersCurrentLocation()
     }
-
+    
+    
     // MARK: - Table view data source
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return games.count
     }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> GameTableViewCell {
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> GameTableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? GameTableViewCell
         
@@ -60,7 +68,15 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         return cell!
     }
     
-
+    //MARK: - Tab Bar Delegate
+    
+    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+        print(item.tag)
+        if item.tag == 2 {
+            print("Here I need to segue")
+        }
+    }
+    
     //MARK: - Parse
     private func loadGamesFromParse() {
         let gameQuery = PFQuery(className: "Game")
@@ -76,21 +92,20 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
                 }
             }
             
-            self.tableView.reloadData()
+            self.tableGameList.reloadData()
         }
     }
-    
-    
+
     
     //MARK: - Navigation
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
-            if let indexPath = self.tableView.indexPathForSelectedRow {
+            if let indexPath = tableGameList.indexPathForSelectedRow {
                 gameDetailsViewController.game = games[indexPath.row]
             }
             
@@ -99,11 +114,7 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         
     }
     
-
-
-    
-    
-    //MARK: - Location
+    //MARK: - Location Delegate
     //TODO: Abstract location methods into their own class
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
@@ -114,9 +125,9 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
             locationManager.stopUpdatingLocation()
         }
         
-        tableView.reloadData()
+        tableGameList.reloadData()
     }
-    
+         
     func setUsersCurrentLocation() {
         self.locationManager.requestWhenInUseAuthorization()
         
@@ -137,6 +148,5 @@ class GameTableViewController: UITableViewController, CLLocationManagerDelegate 
         return round(number * divisor) / divisor
     }
     
-
 
 }
