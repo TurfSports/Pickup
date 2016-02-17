@@ -22,7 +22,6 @@
 		024026FC1C5FDFBF002F1B39 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026FB1C5FDFBF002F1B39 /* SystemConfiguration.framework */; };
 		024026FE1C5FDFC5002F1B39 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026FD1C5FDFC5002F1B39 /* libz.tbd */; };
 		024027001C5FDFD0002F1B39 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026FF1C5FDFD0002F1B39 /* libsqlite3.tbd */; };
-		024027021C5FE031002F1B39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 024027011C5FE031002F1B39 /* Assets.xcassets */; };
 		025330F71C56FAA600B6ABDD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025330F61C56FAA600B6ABDD /* Theme.swift */; };
 		02947B4E1C6FAB9200283778 /* PlayerTypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */; };
 		02B2F87B1C602E99009863AB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02B2F87A1C602E99009863AB /* MapKit.framework */; };
@@ -57,7 +56,6 @@
 		024026FB1C5FDFBF002F1B39 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		024026FD1C5FDFC5002F1B39 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		024026FF1C5FDFD0002F1B39 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		024027011C5FE031002F1B39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		025330F61C56FAA600B6ABDD /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTypeConverter.swift; sourceTree = "<group>"; };
 		02B2F87A1C602E99009863AB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -129,7 +127,6 @@
 			children = (
 				02BE277C1C4DD58F0062C890 /* Pickup */,
 				02BE277B1C4DD58F0062C890 /* Products */,
-				024027011C5FE031002F1B39 /* Assets.xcassets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -267,7 +264,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */,
-				024027021C5FE031002F1B39 /* Assets.xcassets in Resources */,
 				02B2F87E1C606018009863AB /* TNRB-Location.gpx in Resources */,
 				02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */,
 			);
