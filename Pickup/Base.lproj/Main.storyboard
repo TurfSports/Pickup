@@ -148,6 +148,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="b1X-ua-1wf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H32-h5-FfA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -220,7 +223,7 @@
                         <outlet property="tabBar" destination="dKo-ol-Gyz" id="7k0-hj-aH2"/>
                         <outlet property="tableGameList" destination="7yx-aF-a8u" id="ER7-GE-5Dr"/>
                         <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="gsA-UD-Nep"/>
-                        <segue destination="JgN-wE-xAG" kind="show" identifier="showGameMapView" id="1Eh-GZ-Fd3"/>
+                        <segue destination="JgN-wE-xAG" kind="show" identifier="showGamesMapView" id="1Eh-GZ-Fd3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="741-Dl-cDc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -371,4 +374,7 @@
     <resources>
         <image name="basketballIcon" width="100" height="100"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="b1X-ua-1wf"/>
+    </inferredMetricsTieBreakers>
 </document>

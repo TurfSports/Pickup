@@ -13,6 +13,8 @@ import Parse
 class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, UITabBarControllerDelegate {
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
+    let SEGUE_SHOW_GAMES_MAP = "showGamesMapView"
+    
     let METERS_IN_MILE = 1609.34
     var selectedGameType:GameType!
     var games:[Game] = []
@@ -109,8 +111,9 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             if let indexPath = tableGameList.indexPathForSelectedRow {
                 gameDetailsViewController.game = games[indexPath.row]
             }
-            
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
+        } else if segue.identifier == SEGUE_SHOW_GAMES_MAP {
+            //let gameMapViewController = segue.destinationViewController as! GameMapViewController
         }
         
     }
