@@ -151,7 +151,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H32-h5-FfA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1433.5" y="586.5"/>
+            <point key="canvasLocation" x="1433.5" y="626.5"/>
         </scene>
         <!--Game List View Controller-->
         <scene sceneID="XwK-KG-R5D">
@@ -220,6 +220,7 @@
                         <outlet property="tabBar" destination="dKo-ol-Gyz" id="7k0-hj-aH2"/>
                         <outlet property="tableGameList" destination="7yx-aF-a8u" id="ER7-GE-5Dr"/>
                         <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="gsA-UD-Nep"/>
+                        <segue destination="JgN-wE-xAG" kind="show" identifier="showGameMapView" id="1Eh-GZ-Fd3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="741-Dl-cDc" userLabel="First Responder" sceneMemberID="firstResponder"/>

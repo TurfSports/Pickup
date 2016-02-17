@@ -23,11 +23,12 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     @IBOutlet weak var tableGameList: UITableView!
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadGamesFromParse()
-        tabBar.selectedItem = tabBar.items![0] as UITabBarItem;
+        tabBar.selectedItem = tabBar.items![0] as UITabBarItem
+        tabBar.items![0].tag = 0
+        tabBar.items![1].tag = 1
 
         // Do any additional setup after loading the view.
     }
@@ -72,7 +73,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         print(item.tag)
-        if item.tag == 2 {
+        if item.tag == 1 {
             print("Here I need to segue")
         }
     }

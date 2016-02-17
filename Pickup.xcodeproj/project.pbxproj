@@ -188,8 +188,8 @@
 		02ED11EB1C518FFF001923EB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				02DB6FF21C7415E800FF5C20 /* GameListViewController.swift */,
 				02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */,
+				02DB6FF21C7415E800FF5C20 /* GameListViewController.swift */,
 				0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */,
 				02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */,
 				02DB6FF01C74153F00FF5C20 /* GameMapViewController.swift */,
