@@ -30,6 +30,7 @@
 		02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE277D1C4DD58F0062C890 /* AppDelegate.swift */; };
 		02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27811C4DD58F0062C890 /* Main.storyboard */; };
 		02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BE27861C4DD58F0062C890 /* LaunchScreen.storyboard */; };
+		02DB6FEF1C740FEB00FF5C20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02DB6FEE1C740FEB00FF5C20 /* Assets.xcassets */; };
 		02ED11ED1C51904C001923EB /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED11EC1C51904C001923EB /* GameType.swift */; };
 		02ED31BB1C693CEF00B53DD3 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */; };
 		02ED31BD1C6940A900B53DD3 /* GameTypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED31BC1C6940A900B53DD3 /* GameTypeConverter.swift */; };
@@ -66,6 +67,7 @@
 		02BE27821C4DD58F0062C890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		02BE27871C4DD58F0062C890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02BE27891C4DD58F0062C890 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		02DB6FEE1C740FEB00FF5C20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02ED11EC1C51904C001923EB /* GameType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameType.swift; path = ../GameType.swift; sourceTree = "<group>"; };
 		02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeTableViewController.swift; path = ../HomeTableViewController.swift; sourceTree = "<group>"; };
 		02ED31BC1C6940A900B53DD3 /* GameTypeConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeConverter.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			children = (
 				02BE277C1C4DD58F0062C890 /* Pickup */,
 				02BE277B1C4DD58F0062C890 /* Products */,
+				02DB6FEE1C740FEB00FF5C20 /* Assets.xcassets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -265,6 +268,7 @@
 			files = (
 				02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */,
 				02B2F87E1C606018009863AB /* TNRB-Location.gpx in Resources */,
+				02DB6FEF1C740FEB00FF5C20 /* Assets.xcassets in Resources */,
 				02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

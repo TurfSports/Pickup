@@ -118,21 +118,6 @@
             </objects>
             <point key="canvasLocation" x="887.5" y="119.5"/>
         </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="zvh-tG-XUD">
-            <objects>
-                <tabBarController id="tyj-L7-CUZ" sceneMemberID="viewController">
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="QB9-rf-xYT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vTQ-k3-ffP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="673.5" y="892.5"/>
-        </scene>
         <!--View Controller-->
         <scene sceneID="h30-3u-LKp">
             <objects>
@@ -155,7 +140,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H32-h5-FfA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1231.5" y="892.5"/>
+            <point key="canvasLocation" x="1209.5" y="926.5"/>
         </scene>
         <!--Games-->
         <scene sceneID="7x8-St-eLV">
