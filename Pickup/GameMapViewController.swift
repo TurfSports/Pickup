@@ -9,9 +9,13 @@
 import UIKit
 import MapKit
 
-class GameMapViewController: UIViewController, MKMapViewDelegate {
+class GameMapViewController: UIViewController, MKMapViewDelegate, UITabBarControllerDelegate {
 
+    let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
+    let SEGUE_SHOW_GAMES_LIST = "showGamesList"
+    
     @IBOutlet weak var gameMap: MKMapView!
+    @IBOutlet weak var tabBar: UITabBar!
     
     
     let ANNOTATION_ID = "Pin"
@@ -19,11 +23,16 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
     let MIN_LATLON = -180.0
     
     var games:[Game]!
+    var selectedGameType:GameType!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         computeViewSettings()
+        
+        tabBar.selectedItem = tabBar.items![1] as UITabBarItem
+        tabBar.items![0].tag = 0
+        tabBar.items![1].tag = 1
         
         for game in games {
             let location = setLocationOnMap(game.latitude, longitude: game.longitude)
@@ -31,24 +40,50 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
             let annotation = MKPointAnnotation()
             annotation.coordinate = location
             annotation.title = game.locationName
+            annotation.subtitle = dateStringForAnnotation(game.eventDate)
+            annotation.setValue(game, forKey: "game")
             gameMap.addAnnotation(annotation)
         }
         
-
-        // Do any additional setup after loading the view.
+    }
+    
+    //MARK: - Tab bar controller delegate
+    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+        print(item.tag)
+        if item.tag == 0 {
+            performSegueWithIdentifier(SEGUE_SHOW_GAMES_LIST, sender: self)
+        }
     }
     
 
     // MARK: - Map view delegate
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        let view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: ANNOTATION_ID)
-        view.canShowCallout = true
-        return view
+        
+        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(ANNOTATION_ID) as? MKPinAnnotationView
+        
+        if pinView == nil {
+            //println("Pinview was nil")
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: ANNOTATION_ID)
+            pinView!.canShowCallout = true
+            pinView!.animatesDrop = true
+        }
+        
+        
+        let button = UIButton(type: UIButtonType.DetailDisclosure) as UIButton // button with info sign in it
+        pinView?.rightCalloutAccessoryView = button
+        
+        
+        return pinView
+        
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         // NEEDSWORK: begin editing suggestion for this geoplace
+        print("Tapped yo")
+        if control == view.rightCalloutAccessoryView {
+//            performSegueWithIdentifier("toTheMoon", sender: view)
+        }
     }
     
     // MARK: - Private functions
@@ -98,15 +133,33 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    
+    //MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
+            let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
+//            if let indexPath = tableGameList.indexPathForSelectedRow {
+//                gameDetailsViewController.game = games[indexPath.row]
+//            }
+            gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
+        } else if segue.identifier == SEGUE_SHOW_GAMES_LIST {
+            let gameListViewController = segue.destinationViewController as! GameListViewController
+            gameListViewController.games = self.games
+            gameListViewController.selectedGameType = self.selectedGameType
+        }
+        
     }
-    */
+    
+    //MARK: - Date functions
+    func dateStringForAnnotation(date: NSDate) -> String {
+        
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.dateFormat = "MMM d - h a"
+        
+        return dayTimePeriodFormatter.stringFromDate(date)
+    }
+    
+    
 
 }

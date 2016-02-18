@@ -118,10 +118,10 @@
             </objects>
             <point key="canvasLocation" x="887.5" y="119.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Game Map View Controller-->
         <scene sceneID="h30-3u-LKp">
             <objects>
-                <viewController id="JgN-wE-xAG" sceneMemberID="viewController">
+                <viewController id="JgN-wE-xAG" customClass="GameMapViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kq8-Xq-5Ny"/>
                         <viewControllerLayoutGuide type="bottom" id="gmh-LT-dSr"/>
@@ -132,6 +132,9 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Jpu-uH-8no">
                                 <rect key="frame" x="0.0" y="20" width="375" height="598"/>
+                                <connections>
+                                    <outlet property="delegate" destination="JgN-wE-xAG" id="Zh2-kg-f38"/>
+                                </connections>
                             </mapView>
                             <tabBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EyI-eM-dTI">
                                 <rect key="frame" x="0.0" y="618" width="375" height="49"/>
@@ -149,7 +152,10 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="gameMap" destination="Jpu-uH-8no" id="wZN-pb-hxA"/>
+                        <outlet property="tabBar" destination="EyI-eM-dTI" id="Kos-Dg-5uC"/>
                         <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="b1X-ua-1wf"/>
+                        <segue destination="Q6f-CY-rt6" kind="show" identifier="showGamesList" id="snr-zh-0XG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H32-h5-FfA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -184,7 +190,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="gp4-Rg-32C" customClass="GameTableViewCell" customModule="Pickup" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gp4-Rg-32C" id="Str-Se-foR">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -242,7 +248,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="add-SG-jCv">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Location Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="add-SG-jCv">
                                 <rect key="frame" x="18" y="78" width="177" height="33"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="33" id="PUf-I2-9R6"/>
@@ -250,7 +256,7 @@
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="27"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6lX-J0-E1j">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6lX-J0-E1j">
                                 <rect key="frame" x="-4" y="347" width="383" height="276"/>
                                 <connections>
                                     <outlet property="delegate" destination="hUl-GN-0zr" id="RrK-Ze-bDd"/>
@@ -275,7 +281,7 @@
                                     </mask>
                                 </variation>
                             </toolbar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 openings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="53e-qg-OcY">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="10 openings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="53e-qg-OcY">
                                 <rect key="frame" x="16" y="114" width="126" height="28"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="nBU-sR-OS4"/>
@@ -283,7 +289,7 @@
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feb 5" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eV5-xV-NPY">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Feb 5" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eV5-xV-NPY">
                                 <rect key="frame" x="18" y="176" width="80" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="lqD-Hk-hFJ"/>
@@ -293,7 +299,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="These are the game notes" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyh-Lp-nfA">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="These are the game notes" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyh-Lp-nfA">
                                 <rect key="frame" x="12" y="270" width="343" height="71"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="71" id="Sd7-TO-Vkv"/>
@@ -302,7 +308,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11:00 AM" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PeR-xc-NKO">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="11:00 AM" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PeR-xc-NKO">
                                 <rect key="frame" x="62" y="176" width="80" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="tqk-bz-mRS"/>
@@ -311,13 +317,13 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="basketballIcon" translatesAutoresizingMaskIntoConstraints="NO" id="bOJ-O1-QRr">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="basketballIcon" translatesAutoresizingMaskIntoConstraints="NO" id="bOJ-O1-QRr">
                                 <rect key="frame" x="266" y="110" width="93" height="93"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="93" id="4UN-vf-0JF"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5789 Cupertino, CA" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UOj-EY-POL">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="5789 Cupertino, CA" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UOj-EY-POL">
                                 <rect key="frame" x="18" y="204" width="251" height="75"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -375,6 +381,7 @@
         <image name="basketballIcon" width="100" height="100"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="snr-zh-0XG"/>
         <segue reference="b1X-ua-1wf"/>
     </inferredMetricsTieBreakers>
 </document>

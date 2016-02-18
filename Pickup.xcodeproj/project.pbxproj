@@ -190,9 +190,9 @@
 			children = (
 				02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */,
 				02DB6FF21C7415E800FF5C20 /* GameListViewController.swift */,
+				02DB6FF01C74153F00FF5C20 /* GameMapViewController.swift */,
 				0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */,
 				02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */,
-				02DB6FF01C74153F00FF5C20 /* GameMapViewController.swift */,
 				02EFBF551C6BEB9B001774A2 /* GamesTableViewCell.swift */,
 				02BE277D1C4DD58F0062C890 /* AppDelegate.swift */,
 			);

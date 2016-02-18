@@ -71,12 +71,11 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         return cell!
     }
     
-    //MARK: - Tab Bar Delegate
+    //MARK: - Tab Bar Controller Delegate
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-        print(item.tag)
         if item.tag == 1 {
-            print("Here I need to segue")
+            performSegueWithIdentifier(SEGUE_SHOW_GAMES_MAP, sender: self)
         }
     }
     
@@ -113,7 +112,9 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             }
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
         } else if segue.identifier == SEGUE_SHOW_GAMES_MAP {
-            //let gameMapViewController = segue.destinationViewController as! GameMapViewController
+            let gameMapViewController = segue.destinationViewController as! GameMapViewController
+            gameMapViewController.games = self.games
+            gameMapViewController.selectedGameType = self.selectedGameType
         }
         
     }
