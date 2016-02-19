@@ -23,7 +23,9 @@
 		024026FE1C5FDFC5002F1B39 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026FD1C5FDFC5002F1B39 /* libz.tbd */; };
 		024027001C5FDFD0002F1B39 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026FF1C5FDFD0002F1B39 /* libsqlite3.tbd */; };
 		025330F71C56FAA600B6ABDD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025330F61C56FAA600B6ABDD /* Theme.swift */; };
+		02599E8B1C75896500ECE1A9 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02599E8A1C75896500ECE1A9 /* NewGameViewController.swift */; };
 		02947B4E1C6FAB9200283778 /* PlayerTypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */; };
+		02AB4F961C754FA800DAEF0E /* GamePointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB4F951C754FA800DAEF0E /* GamePointAnnotation.swift */; };
 		02B2F87B1C602E99009863AB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02B2F87A1C602E99009863AB /* MapKit.framework */; };
 		02B2F87E1C606018009863AB /* TNRB-Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 02B2F87D1C606018009863AB /* TNRB-Location.gpx */; };
 		02B2F8801C60666C009863AB /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */; };
@@ -59,7 +61,9 @@
 		024026FD1C5FDFC5002F1B39 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		024026FF1C5FDFD0002F1B39 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		025330F61C56FAA600B6ABDD /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		02599E8A1C75896500ECE1A9 /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
 		02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTypeConverter.swift; sourceTree = "<group>"; };
+		02AB4F951C754FA800DAEF0E /* GamePointAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamePointAnnotation.swift; path = ../GamePointAnnotation.swift; sourceTree = "<group>"; };
 		02B2F87A1C602E99009863AB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		02B2F87D1C606018009863AB /* TNRB-Location.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "TNRB-Location.gpx"; path = "../TNRB-Location.gpx"; sourceTree = "<group>"; };
 		02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
@@ -192,6 +196,8 @@
 				02DB6FF21C7415E800FF5C20 /* GameListViewController.swift */,
 				02DB6FF01C74153F00FF5C20 /* GameMapViewController.swift */,
 				0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */,
+				02599E8A1C75896500ECE1A9 /* NewGameViewController.swift */,
+				02AB4F951C754FA800DAEF0E /* GamePointAnnotation.swift */,
 				02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */,
 				02EFBF551C6BEB9B001774A2 /* GamesTableViewCell.swift */,
 				02BE277D1C4DD58F0062C890 /* AppDelegate.swift */,
@@ -286,10 +292,12 @@
 				025330F71C56FAA600B6ABDD /* Theme.swift in Sources */,
 				02947B4E1C6FAB9200283778 /* PlayerTypeConverter.swift in Sources */,
 				021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */,
+				02AB4F961C754FA800DAEF0E /* GamePointAnnotation.swift in Sources */,
 				02EFBF561C6BEB9B001774A2 /* GamesTableViewCell.swift in Sources */,
 				0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */,
 				02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */,
 				02DB6FF11C74153F00FF5C20 /* GameMapViewController.swift in Sources */,
+				02599E8B1C75896500ECE1A9 /* NewGameViewController.swift in Sources */,
 				02ED11ED1C51904C001923EB /* GameType.swift in Sources */,
 				02ED31C11C6992B500B53DD3 /* GameConverter.swift in Sources */,
 				02B2F8801C60666C009863AB /* HomeTableViewCell.swift in Sources */,

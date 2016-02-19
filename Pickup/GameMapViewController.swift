@@ -9,13 +9,11 @@
 import UIKit
 import MapKit
 
-class GameMapViewController: UIViewController, MKMapViewDelegate, UITabBarControllerDelegate {
+class GameMapViewController: UIViewController, MKMapViewDelegate {
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
-    let SEGUE_SHOW_GAMES_LIST = "showGamesList"
     
     @IBOutlet weak var gameMap: MKMapView!
-    @IBOutlet weak var tabBar: UITabBar!
     
     
     let ANNOTATION_ID = "Pin"
@@ -24,36 +22,28 @@ class GameMapViewController: UIViewController, MKMapViewDelegate, UITabBarContro
     
     var games:[Game]!
     var selectedGameType:GameType!
+    var selectedGame:Game!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         computeViewSettings()
         
-        tabBar.selectedItem = tabBar.items![1] as UITabBarItem
-        tabBar.items![0].tag = 0
-        tabBar.items![1].tag = 1
         
         for game in games {
             let location = setLocationOnMap(game.latitude, longitude: game.longitude)
             
-            let annotation = MKPointAnnotation()
+            let annotation = GamePointAnnotation()
             annotation.coordinate = location
             annotation.title = game.locationName
             annotation.subtitle = dateStringForAnnotation(game.eventDate)
-            annotation.setValue(game, forKey: "game")
+            annotation.game = game
             gameMap.addAnnotation(annotation)
         }
         
     }
     
-    //MARK: - Tab bar controller delegate
-    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-        print(item.tag)
-        if item.tag == 0 {
-            performSegueWithIdentifier(SEGUE_SHOW_GAMES_LIST, sender: self)
-        }
-    }
+
     
 
     // MARK: - Map view delegate
@@ -73,16 +63,20 @@ class GameMapViewController: UIViewController, MKMapViewDelegate, UITabBarContro
         let button = UIButton(type: UIButtonType.DetailDisclosure) as UIButton // button with info sign in it
         pinView?.rightCalloutAccessoryView = button
         
+        //TODO: - Consider adding a custom color 
+        //http://stackoverflow.com/questions/2370567/custon-mkpinannotationcolor
         
         return pinView
         
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        // NEEDSWORK: begin editing suggestion for this geoplace
-        print("Tapped yo")
-        if control == view.rightCalloutAccessoryView {
-//            performSegueWithIdentifier("toTheMoon", sender: view)
+
+        if let annotation = view.annotation as? GamePointAnnotation {
+            self.selectedGame = annotation.game
+            if control == view.rightCalloutAccessoryView {
+                performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: view)
+            }
         }
     }
     
@@ -139,23 +133,17 @@ class GameMapViewController: UIViewController, MKMapViewDelegate, UITabBarContro
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
-//            if let indexPath = tableGameList.indexPathForSelectedRow {
-//                gameDetailsViewController.game = games[indexPath.row]
-//            }
+            gameDetailsViewController.game = self.selectedGame
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
-        } else if segue.identifier == SEGUE_SHOW_GAMES_LIST {
-            let gameListViewController = segue.destinationViewController as! GameListViewController
-            gameListViewController.games = self.games
-            gameListViewController.selectedGameType = self.selectedGameType
+            
         }
-        
     }
     
     //MARK: - Date functions
     func dateStringForAnnotation(date: NSDate) -> String {
         
         let dayTimePeriodFormatter = NSDateFormatter()
-        dayTimePeriodFormatter.dateFormat = "MMM d - h a"
+        dayTimePeriodFormatter.dateFormat = "MMM d - h:mm a"
         
         return dayTimePeriodFormatter.stringFromDate(date)
     }

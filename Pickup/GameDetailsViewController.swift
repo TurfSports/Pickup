@@ -20,6 +20,10 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var lblGameNotes: UILabel!
     @IBOutlet weak var imgGameType: UIImageView!
     @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var lblDay: UILabel!
+    @IBOutlet weak var lblHour: UILabel!
+    
+    
     
     var address: String! {
         didSet {
@@ -34,9 +38,13 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         lblLocationName.text = game.locationName
         lblOpenings.text = ("\(game.availableSlots) openings")
         lblGameNotes.text = game.gameNotes
+        lblDay.text = dayForLabel(game.eventDate)
+        lblHour.text = hourForLabel(game.eventDate)
         lblAddress.text = ""
         
         let location = setLocationOnMap(game.latitude, longitude: game.longitude)
@@ -145,6 +153,22 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         return location
     }
     
+    //MARK: - Date functions
+    func dayForLabel(date: NSDate) -> String {
+        
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.dateFormat = "MMM d"
+        
+        return dayTimePeriodFormatter.stringFromDate(date)
+    }
+    
+    func hourForLabel(date: NSDate) -> String {
+        
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.dateFormat = "h:mm a"
+        
+        return dayTimePeriodFormatter.stringFromDate(date)
+    }
     
 
 

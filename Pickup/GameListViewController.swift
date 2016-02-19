@@ -10,27 +10,31 @@ import UIKit
 import CoreLocation
 import Parse
 
-class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, UITabBarControllerDelegate {
+class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate {
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let SEGUE_SHOW_GAMES_MAP = "showGamesMapView"
     
+    var sectionTitles:[String] = []
+    
     let METERS_IN_MILE = 1609.34
     var selectedGameType:GameType!
-    var games:[Game] = []
+    var games:[Game] = [] //TODO: Perhaps add a getset to sort when Parse returns games
+    var sortedGames:[[Game]] = [[]]
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation?
     
-    @IBOutlet weak var tabBar: UITabBar!
     @IBOutlet weak var tableGameList: UITableView!
+    @IBOutlet weak var btnViewMap: UIBarButtonItem!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableGameList.tableFooterView = UIView(frame: CGRect.zero)
         loadGamesFromParse()
-        tabBar.selectedItem = tabBar.items![0] as UITabBarItem
-        tabBar.items![0].tag = 0
-        tabBar.items![1].tag = 1
+        
+        self.title = selectedGameType.displayName
+        btnViewMap.tintColor = Theme.PRIMARY_DARK_COLOR
 
         // Do any additional setup after loading the view.
     }
@@ -42,41 +46,52 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return sortedGames.count
+    }
+    
+    
+    func tableView(tableView : UITableView,  titleForHeaderInSection section: Int)->String {
+        var sectionTitle = ""
+        
+        if !sectionTitles.isEmpty {
+            sectionTitle = sectionTitles[section]
+        }
+        
+        return sectionTitle
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return games.count
+        return sortedGames[section].count
     }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 50
+    }
+    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> GameTableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? GameTableViewCell
         
-        let game = games[indexPath.row]
-        
-        cell?.lblLocationName.text = game.locationName
-        cell?.lblDistance.text = ""
-        
-        let latitude:CLLocationDegrees = game.latitude
-        let longitude:CLLocationDegrees = game.longitude
-        let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-        if self.currentLocation != nil {
-            if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!) {
-                cell?.lblDistance.text = "\(distance) mi"
+        if !sortedGames.isEmpty {
+
+            let game = sortedGames[indexPath.section][indexPath.row]
+            
+            cell?.lblLocationName.text = game.locationName
+            cell?.lblDistance.text = ""
+            
+            let latitude:CLLocationDegrees = game.latitude
+            let longitude:CLLocationDegrees = game.longitude
+            let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
+            if self.currentLocation != nil {
+                if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!) {
+                    cell?.lblDistance.text = "\(distance) mi"
+                }
             }
+            
+        
         }
-        
-        
         return cell!
-    }
-    
-    //MARK: - Tab Bar Controller Delegate
-    
-    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-        if item.tag == 1 {
-            performSegueWithIdentifier(SEGUE_SHOW_GAMES_MAP, sender: self)
-        }
     }
     
     //MARK: - Parse
@@ -94,6 +109,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                 }
             }
             
+            self.sortedGames = self.sortGamesByDate(self.games)
             self.tableGameList.reloadData()
         }
     }
@@ -151,6 +167,88 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     func roundToDecimalPlaces(number: Double, places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return round(number * divisor) / divisor
+    }
+    
+    //MARK: - Sort Dates
+    //TODO: Abstract date functions into separate class
+    func sortGamesByDate(games: [Game]) -> [[Game]] {
+
+        var todayGames:[Game] = []
+        var tomorrowGames:[Game] = []
+        var thisWeekGames:[Game] = []
+        var nextWeekGames:[Game] = []
+        var combinedGamesArray:[[Game]] = [[]]
+        
+        for game in games {
+            
+            switch(dateCompare(game.eventDate)) {
+                case "TODAY":
+                    todayGames.append(game)
+                    break
+                case "TOMORROW":
+                    tomorrowGames.append(game)
+                    break
+                case "THIS WEEK":
+                    thisWeekGames.append(game)
+                    break
+                case "NEXT WEEK":
+                    nextWeekGames.append(game)
+                    break
+                default:
+                    break
+            }
+        }
+        
+        combinedGamesArray.removeAll()
+        sectionTitles.removeAll()
+        
+        if !todayGames.isEmpty {
+            combinedGamesArray.append(todayGames)
+            self.sectionTitles.append("Today")
+        }
+        
+        if !tomorrowGames.isEmpty {
+            combinedGamesArray.append(tomorrowGames)
+            self.sectionTitles.append("Tomorrow")
+        }
+        
+        if !thisWeekGames.isEmpty {
+            combinedGamesArray.append(thisWeekGames)
+            self.sectionTitles.append("Later this week")
+        }
+        
+        if !nextWeekGames.isEmpty {
+            combinedGamesArray.append(nextWeekGames)
+            self.sectionTitles.append("Next week")
+        }
+        
+        return combinedGamesArray
+        
+    }
+    
+    //TODO: Make the returned result an enum
+    func dateCompare(eventDate: NSDate) -> String {
+        
+        let dateComparisonResult:NSComparisonResult = NSDate().compare(eventDate)
+        var resultString:String = ""
+        
+        if dateComparisonResult == NSComparisonResult.OrderedAscending || dateComparisonResult == NSComparisonResult.OrderedSame
+        {
+            let todayWeekday = NSCalendar.currentCalendar().components([.Weekday], fromDate: NSDate()).weekday
+            let eventWeekday = NSCalendar.currentCalendar().components([.Weekday], fromDate: eventDate).weekday
+            
+            if todayWeekday == eventWeekday {
+                resultString = "TODAY"
+            } else if todayWeekday + 1 == eventWeekday {
+                resultString = "TOMORROW"
+            } else if eventWeekday > todayWeekday {
+                resultString = "THIS WEEK"
+            } else {
+                resultString = "NEXT WEEK"
+            }
+        }
+        
+        return resultString
     }
     
 
