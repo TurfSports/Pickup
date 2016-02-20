@@ -18,6 +18,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate {
     
     var dateRowSelected:Bool = false
     
+    //TODO: Constrain the date picker to disallow scheduling beyond the following week
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
         lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
     }
@@ -47,13 +48,20 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
+        
         if indexPath.section == 1 {
             dateRowSelected = !dateRowSelected
-            tableView.reloadData()
+            animateReloadTableView()
         }
         
+        if indexPath.section == 0 {
+            
+        }
         
+        if indexPath.section != 1 && dateRowSelected == true {
+            dateRowSelected = !dateRowSelected
+            animateReloadTableView()
+        }
     }
     
     //TODO: Animate this
@@ -73,6 +81,17 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate {
         }
         
         return rowHeight
+    }
+    
+    private func animateReloadTableView() -> Void {
+        UIView.transitionWithView(tableView,
+            duration:0.35,
+            options: [.AllowAnimatedContent, .TransitionCrossDissolve],
+            animations:
+            { () -> Void in
+                self.tableView.reloadData()
+            },
+            completion: nil);
     }
     
     
