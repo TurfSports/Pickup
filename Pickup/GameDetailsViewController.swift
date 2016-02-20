@@ -43,8 +43,8 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         lblLocationName.text = game.locationName
         lblOpenings.text = ("\(game.availableSlots) openings")
         lblGameNotes.text = game.gameNotes
-        lblDay.text = dayForLabel(game.eventDate)
-        lblHour.text = hourForLabel(game.eventDate)
+        lblDay.text = DateUtilities.dateString(game.eventDate, dateFormatString: DateFormatter.MONTH_ABBR_AND_DAY.rawValue)
+        lblHour.text = DateUtilities.dateString(game.eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
         lblAddress.text = ""
         
         let location = setLocationOnMap(game.latitude, longitude: game.longitude)
@@ -89,13 +89,14 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
             }
             
             if let zip = placeMark.addressDictionary!["ZIP"] as? NSString {
-                self.address = self.address + "\n\(zip)"
+                self.address = self.address + " \(zip)"
 
             }
             
         })
         
     }
+    
     
     
     @IBAction func btnJoinGame(sender: AnyObject) {
@@ -153,23 +154,5 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         return location
     }
     
-    //MARK: - Date functions
-    func dayForLabel(date: NSDate) -> String {
-        
-        let dayTimePeriodFormatter = NSDateFormatter()
-        dayTimePeriodFormatter.dateFormat = "MMM d"
-        
-        return dayTimePeriodFormatter.stringFromDate(date)
-    }
-    
-    func hourForLabel(date: NSDate) -> String {
-        
-        let dayTimePeriodFormatter = NSDateFormatter()
-        dayTimePeriodFormatter.dateFormat = "h:mm a"
-        
-        return dayTimePeriodFormatter.stringFromDate(date)
-    }
-    
-
 
 }

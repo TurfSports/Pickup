@@ -36,15 +36,13 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
             let annotation = GamePointAnnotation()
             annotation.coordinate = location
             annotation.title = game.locationName
-            annotation.subtitle = dateStringForAnnotation(game.eventDate)
+            annotation.subtitle = DateUtilities.dateString(game.eventDate,
+                dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue) - \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
             annotation.game = game
             gameMap.addAnnotation(annotation)
         }
         
     }
-    
-
-    
 
     // MARK: - Map view delegate
     
@@ -138,16 +136,5 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
             
         }
     }
-    
-    //MARK: - Date functions
-    func dateStringForAnnotation(date: NSDate) -> String {
-        
-        let dayTimePeriodFormatter = NSDateFormatter()
-        dayTimePeriodFormatter.dateFormat = "MMM d - h:mm a"
-        
-        return dayTimePeriodFormatter.stringFromDate(date)
-    }
-    
-    
 
 }

@@ -13,6 +13,8 @@ class GameTableViewCell: UITableViewCell {
     
     @IBOutlet weak var lblLocationName: UILabel!
     @IBOutlet weak var lblDistance: UILabel!
+    @IBOutlet weak var lblGameDate: UILabel!
+
     
     override func awakeFromNib() {
         super.awakeFromNib()

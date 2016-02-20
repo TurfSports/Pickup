@@ -15,6 +15,7 @@ struct Theme {
     static let PRIMARY_LIGHT_COLOR:UIColor = UIColor(red: 207.0/255, green: 216.0/255, blue: 220.0/255, alpha: 1.0)
     
     static let GAME_TYPE_CELL_HEIGHT = CGFloat(100.00)
+    static let GAME_LIST_ROW_HEIGHT = CGFloat(75.00)
  
     static func applyTheme() {
         let sharedApplication = UIApplication.sharedApplication()

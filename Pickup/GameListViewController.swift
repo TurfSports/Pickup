@@ -36,7 +36,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         self.title = selectedGameType.displayName
         btnViewMap.tintColor = Theme.PRIMARY_DARK_COLOR
 
-        // Do any additional setup after loading the view.
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -65,7 +64,14 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 50
+        return Theme.GAME_LIST_ROW_HEIGHT
+    }
+    
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
+        header.textLabel?.textAlignment = .Center
     }
     
     
@@ -78,6 +84,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let game = sortedGames[indexPath.section][indexPath.row]
             
             cell?.lblLocationName.text = game.locationName
+            cell?.lblGameDate.text = relevantDateInfo(game.eventDate)
             cell?.lblDistance.text = ""
             
             let latitude:CLLocationDegrees = game.latitude
@@ -124,7 +131,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
             if let indexPath = tableGameList.indexPathForSelectedRow {
-                gameDetailsViewController.game = games[indexPath.row]
+                gameDetailsViewController.game = sortedGames[indexPath.section][indexPath.row]
             }
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
         } else if segue.identifier == SEGUE_SHOW_GAMES_MAP {
@@ -226,7 +233,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
     }
     
-    //TODO: Make the returned result an enum
+    //TODO: Make the returned result an enum. Abstract out to Date Utilities
     func dateCompare(eventDate: NSDate) -> String {
         
         let dateComparisonResult:NSComparisonResult = NSDate().compare(eventDate)
@@ -249,6 +256,30 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         }
         
         return resultString
+    }
+    
+    func relevantDateInfo(eventDate: NSDate) -> String {
+        
+        var relevantDateString = ""
+        
+        switch(dateCompare(eventDate)) {
+            case "TODAY":
+                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
+                break
+            case "TOMORROW":
+                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
+                break
+            case "THIS WEEK":
+                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue)\t\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+                break
+            case "NEXT WEEK":
+                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)\t\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+                break
+            default:
+                break
+        }
+        
+        return relevantDateString
     }
     
 
