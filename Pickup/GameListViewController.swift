@@ -19,7 +19,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     let METERS_IN_MILE = 1609.34
     var selectedGameType:GameType!
-    var games:[Game] = [] //TODO: Perhaps add a getset to sort when Parse returns games
+    var games:[Game] = []
     var sortedGames:[[Game]] = [[]]
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation?
@@ -178,6 +178,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     //MARK: - Sort Dates
     //TODO: Abstract date functions into separate class
+    //TODO: Fix date sort. It's not working correctly
     func sortGamesByDate(games: [Game]) -> [[Game]] {
 
         var todayGames:[Game] = []
