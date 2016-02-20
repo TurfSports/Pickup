@@ -31,7 +31,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    var game:Game!
+    var game: Game!
     let ANNOTATION_ID = "Pin"
     
     

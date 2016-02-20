@@ -14,6 +14,8 @@ class HomeTableViewController: UITableViewController {
     var data:ParseDataController!
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
+    let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
+    
     var gameTypes:[GameType] = []
     var gameCountLoaded:Bool = false {
         didSet {
@@ -98,6 +100,9 @@ class HomeTableViewController: UITableViewController {
                 gamesViewController.selectedGameType = gameTypes[indexPath.row]
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true
+        } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
+            let newGameViewController = segue.destinationViewController as! NewGameTableViewController
+            newGameViewController.gameTypes = self.gameTypes
         }
     }
     

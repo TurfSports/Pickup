@@ -1,5 +1,5 @@
 //
-//  NewGameViewController.swift
+//  NewGameTableViewController.swift
 //  Pickup
 //
 //  Created by Nathan Dudley on 2/17/16.
@@ -8,14 +8,22 @@
 
 import UIKit
 
-class NewGameViewController: UIViewController, UIPickerViewDelegate {
+class NewGameTableViewController: UITableViewController, UIPickerViewDelegate {
 
-    let sports = ["Basketball", "Football", "Soccer"]
+    var gameTypes: [GameType]!
+    
+    @IBOutlet weak var lblSport: UILabel!
+    @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var lblDate: UILabel!
+    
+    var dateRowSelected:Bool = false
+    
+    @IBAction func datePickerValueChanged(sender: UIDatePicker) {
+        lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
     // returns the number of 'columns' to display.
@@ -26,13 +34,47 @@ class NewGameViewController: UIViewController, UIPickerViewDelegate {
     // returns the # of rows in each component..
 
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return sports.count
+        return gameTypes.count
     }
 
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return sports[row]
+        return gameTypes[row].displayName
     }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        lblSport.text = gameTypes[row].displayName
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
+        if indexPath.section == 1 {
+            dateRowSelected = !dateRowSelected
+            tableView.reloadData()
+        }
+        
+        
+    }
+    
+    //TODO: Animate this
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        var rowHeight:CGFloat = 44.0
+        
+        if indexPath.section == 1 && indexPath.row == 1 {
+            if dateRowSelected == false {
+                datePicker.hidden = true
+                rowHeight = 0.0
+            } else {
+                datePicker.hidden = false
+                rowHeight = 220.0
+            }
+            
+        }
+        
+        return rowHeight
+    }
+    
     
 
     /*
