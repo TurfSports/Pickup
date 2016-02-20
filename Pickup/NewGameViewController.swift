@@ -16,6 +16,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate {
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var lblDate: UILabel!
     
+    var sportRowSelected:Bool = false
     var dateRowSelected:Bool = false
     
     //TODO: Constrain the date picker to disallow scheduling beyond the following week
@@ -55,19 +56,36 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate {
         }
         
         if indexPath.section == 0 {
-            
+            sportRowSelected = !sportRowSelected
+            animateReloadTableView()
         }
         
         if indexPath.section != 1 && dateRowSelected == true {
             dateRowSelected = !dateRowSelected
             animateReloadTableView()
         }
+        
+        if indexPath.section != 0 && sportRowSelected == true {
+            sportRowSelected = !sportRowSelected
+            animateReloadTableView()
+        }
     }
     
-    //TODO: Animate this
+    override func tableView(tableView : UITableView,  titleForHeaderInSection section: Int) -> String {
+        return " "
+    }
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         var rowHeight:CGFloat = 44.0
+        
+        if indexPath.section == 0 && indexPath.row == 1 {
+            if sportRowSelected == false {
+                rowHeight = 0.0
+            } else {
+                rowHeight = 130.0
+            }
+        }
         
         if indexPath.section == 1 && indexPath.row == 1 {
             if dateRowSelected == false {
@@ -77,7 +95,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate {
                 datePicker.hidden = false
                 rowHeight = 220.0
             }
-            
         }
         
         return rowHeight
