@@ -14,11 +14,13 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let SEGUE_SHOW_GAMES_MAP = "showGamesMapView"
+    let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
     
     var sectionTitles:[String] = []
     
     let METERS_IN_MILE = 1609.34
     var selectedGameType:GameType!
+    var gameTypes:[GameType]!
     var games:[Game] = []
     var sortedGames:[[Game]] = [[]]
     let locationManager = CLLocationManager()
@@ -138,6 +140,10 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let gameMapViewController = segue.destinationViewController as! GameMapViewController
             gameMapViewController.games = self.games
             gameMapViewController.selectedGameType = self.selectedGameType
+        } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
+            let newGameTableViewController = segue.destinationViewController as! NewGameTableViewController
+            newGameTableViewController.selectedGameType = self.selectedGameType
+            newGameTableViewController.gameTypes = self.gameTypes
         }
         
     }

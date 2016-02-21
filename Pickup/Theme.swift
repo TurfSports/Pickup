@@ -19,7 +19,7 @@ struct Theme {
  
     static func applyTheme() {
         let sharedApplication = UIApplication.sharedApplication()
-        sharedApplication.delegate?.window??.tintColor = PRIMARY_LIGHT_COLOR
+        sharedApplication.delegate?.window??.tintColor = PRIMARY_DARK_COLOR
         UINavigationBar.appearance().barTintColor = PRIMARY_DARK_COLOR
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         UITableView.appearance().backgroundColor = UIColor.whiteColor()

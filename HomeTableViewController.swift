@@ -26,6 +26,7 @@ class HomeTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
         loadGameTypesFromParse()
     }
 
@@ -51,7 +52,15 @@ class HomeTableViewController: UITableViewController {
         
         cell?.lblSport.text = gameType.displayName
         cell?.imgSport.image = UIImage(named: gameType.imageName)
-        cell?.lblAvailableGames.text = "\(gameType.gameCount) games"
+        if self.gameCountLoaded {
+            if gameType.gameCount > 0 {
+                cell?.lblAvailableGames.text = "\(gameType.gameCount) games"
+            } else {
+                cell?.lblAvailableGames.text = "No games"
+            }
+            
+        }
+        
         
         return cell!
     }
@@ -98,6 +107,7 @@ class HomeTableViewController: UITableViewController {
             let gamesViewController = segue.destinationViewController as! GameListViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 gamesViewController.selectedGameType = gameTypes[indexPath.row]
+                gamesViewController.gameTypes = self.gameTypes
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
