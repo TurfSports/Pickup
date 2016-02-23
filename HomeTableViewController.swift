@@ -111,7 +111,7 @@ class HomeTableViewController: UITableViewController {
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
-            let newGameViewController = segue.destinationViewController as! NewGameTableViewController
+            let newGameViewController = segue.destinationViewController as! NewGameViewController
             newGameViewController.gameTypes = self.gameTypes
         }
     }

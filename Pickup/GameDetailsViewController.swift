@@ -23,7 +23,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var lblDay: UILabel!
     @IBOutlet weak var lblHour: UILabel!
     @IBOutlet weak var btnJoinGame: UIBarButtonItem!
-    @IBOutlet weak var btnOpenMaps: UIBarButtonItem!
+    @IBOutlet weak var btnOpenMaps: UIButton!
     @IBOutlet weak var btnAddToCalendar: UIButton!
     
     

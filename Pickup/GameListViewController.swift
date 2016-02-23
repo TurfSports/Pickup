@@ -30,6 +30,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     @IBOutlet weak var btnViewMap: UIBarButtonItem!
     
     
+    //MARK: - Table View Lifecycle Management
     override func viewDidLoad() {
         super.viewDidLoad()
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
@@ -141,14 +142,14 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             gameMapViewController.games = self.games
             gameMapViewController.selectedGameType = self.selectedGameType
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
-            let newGameTableViewController = segue.destinationViewController as! NewGameTableViewController
+            let newGameTableViewController = segue.destinationViewController as! NewGameViewController
             newGameTableViewController.selectedGameType = self.selectedGameType
             newGameTableViewController.gameTypes = self.gameTypes
         }
         
     }
     
-    //MARK: - Location Delegate
+    //MARK: - Location Manager Delegate
     //TODO: Abstract location methods into their own class
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         

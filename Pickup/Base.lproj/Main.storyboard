@@ -110,7 +110,7 @@
                         <barButtonItem key="leftBarButtonItem" title="My Games" id="NSb-I1-dsB"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="z7y-KW-e6G">
                             <connections>
-                                <segue destination="318-L6-dtC" kind="show" identifier="showNewGameTableViewController" id="Xg8-9a-qeD"/>
+                                <segue destination="hrM-Oc-YiX" kind="show" identifier="showNewGameTableViewController" id="aD7-tm-JKR"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -124,6 +124,50 @@
             <point key="canvasLocation" x="1293.5" y="-276.5"/>
         </scene>
         <!--New Game-->
+        <scene sceneID="KcI-bl-x3q">
+            <objects>
+                <viewController id="hrM-Oc-YiX" customClass="NewGameViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TQt-tT-NFB"/>
+                        <viewControllerLayoutGuide type="bottom" id="nQK-w2-h3R"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LoK-Bm-HFr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xF1-RH-uXB">
+                                <rect key="frame" x="-4" y="623" width="383" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="bht-ej-sgM"/>
+                                    <barButtonItem title="Create Game" id="GgU-Pr-Idv"/>
+                                </items>
+                            </toolbar>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fNj-k9-c82">
+                                <rect key="frame" x="-4" y="64" width="383" height="559"/>
+                                <connections>
+                                    <segue destination="318-L6-dtC" kind="embed" id="kbS-Pu-p70"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="fNj-k9-c82" secondAttribute="trailing" constant="-20" id="Giw-Z8-AWf"/>
+                            <constraint firstItem="fNj-k9-c82" firstAttribute="top" secondItem="TQt-tT-NFB" secondAttribute="bottom" id="Lc5-t4-JG6"/>
+                            <constraint firstItem="xF1-RH-uXB" firstAttribute="top" secondItem="fNj-k9-c82" secondAttribute="bottom" id="NXK-tN-Fl6"/>
+                            <constraint firstItem="xF1-RH-uXB" firstAttribute="leading" secondItem="LoK-Bm-HFr" secondAttribute="leadingMargin" constant="-20" id="bBf-4J-5tz"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="xF1-RH-uXB" secondAttribute="trailing" constant="-20" id="i5N-qK-yI6"/>
+                            <constraint firstItem="fNj-k9-c82" firstAttribute="leading" secondItem="LoK-Bm-HFr" secondAttribute="leadingMargin" constant="-20" id="zEF-9d-Sq2"/>
+                            <constraint firstItem="nQK-w2-h3R" firstAttribute="top" secondItem="xF1-RH-uXB" secondAttribute="bottom" id="zhL-ff-cSc"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="New Game" id="1xO-KQ-pBf"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n2L-Mj-XY7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1522.5" y="650.5"/>
+        </scene>
+        <!--New Game Table View Controller-->
         <scene sceneID="mka-fd-UBa">
             <objects>
                 <tableViewController id="318-L6-dtC" customClass="NewGameTableViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
@@ -132,7 +176,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <mapView key="tableFooterView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Cup-cl-wxo">
-                            <rect key="frame" x="0.0" y="786" width="375" height="331"/>
+                            <rect key="frame" x="0.0" y="722" width="375" height="395"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <connections>
                                 <outlet property="delegate" destination="Igq-Im-NnI" id="fgC-ea-9qs"/>
@@ -142,7 +186,7 @@
                             <tableViewSection headerTitle="Section-1" id="zaU-fe-hEn">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Kaz-mB-wFz">
-                                        <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kaz-mB-wFz" id="dbc-RT-jRc">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -173,7 +217,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="130" id="r6w-pj-lFK">
-                                        <rect key="frame" x="0.0" y="136" width="375" height="130"/>
+                                        <rect key="frame" x="0.0" y="72" width="375" height="130"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r6w-pj-lFK" id="srV-hX-qDT">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="129"/>
@@ -189,7 +233,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="bPY-qy-JPy">
-                                        <rect key="frame" x="0.0" y="266" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="202" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bPY-qy-JPy" id="ppH-Qb-AaQ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -217,7 +261,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="130" id="P4X-xD-jId">
-                                        <rect key="frame" x="0.0" y="310" width="375" height="130"/>
+                                        <rect key="frame" x="0.0" y="246" width="375" height="130"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="P4X-xD-jId" id="Uda-5J-jC7">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="129"/>
@@ -237,7 +281,7 @@
                             <tableViewSection headerTitle="Section-2" id="tMZ-z4-MJs">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="UsW-c8-fwY">
-                                        <rect key="frame" x="0.0" y="468" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="404" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UsW-c8-fwY" id="pDS-cF-MZe">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -268,7 +312,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="230" id="dR4-aC-ckV">
-                                        <rect key="frame" x="0.0" y="512" width="375" height="230"/>
+                                        <rect key="frame" x="0.0" y="448" width="375" height="230"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dR4-aC-ckV" id="mLL-uA-fNo">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="229"/>
@@ -287,7 +331,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="woR-YC-hD5">
-                                        <rect key="frame" x="0.0" y="742" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="678" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="woR-YC-hD5" id="6cI-p6-JjW">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -320,7 +364,6 @@
                             <outlet property="delegate" destination="318-L6-dtC" id="Kiz-zN-tPR"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="New Game" id="U28-V0-JdD"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="1115"/>
                     <connections>
@@ -335,7 +378,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rmI-eK-ckz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1517.5" y="874.5"/>
+            <point key="canvasLocation" x="1522.5" y="1680.5"/>
         </scene>
         <!--Game Map View Controller-->
         <scene sceneID="h30-3u-LKp">
@@ -473,7 +516,7 @@
                         <barButtonItem key="backBarButtonItem" title="Games" id="zH5-r7-Jk6"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="age-NC-m5h">
                             <connections>
-                                <segue destination="318-L6-dtC" kind="show" identifier="showNewGameTableViewController" id="gaf-vJ-RbG"/>
+                                <segue destination="hrM-Oc-YiX" kind="show" identifier="showNewGameTableViewController" id="HR3-Vf-b57"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -517,7 +560,6 @@
                                     <constraint firstAttribute="height" constant="44" id="E6r-dc-EcG"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="Open in Maps" id="VKU-VA-fN2"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="pQR-R7-u2i"/>
                                     <barButtonItem title="Join Game" id="fj3-YZ-qvi">
                                         <connections>
@@ -578,11 +620,20 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WvQ-Ae-5lc">
+                                <rect key="frame" x="12" y="309" width="95" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="jVf-JS-gLj"/>
+                                </constraints>
+                                <state key="normal" title="Open in Maps"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="UOj-EY-POL" firstAttribute="leading" secondItem="add-SG-jCv" secondAttribute="leading" id="1ni-wb-8mL"/>
                             <constraint firstItem="53e-qg-OcY" firstAttribute="leading" secondItem="eV5-xV-NPY" secondAttribute="leading" id="3EZ-vm-4z9"/>
+                            <constraint firstItem="6lX-J0-E1j" firstAttribute="top" secondItem="WvQ-Ae-5lc" secondAttribute="bottom" constant="8" id="4Nu-dj-WVe"/>
+                            <constraint firstItem="WvQ-Ae-5lc" firstAttribute="leading" secondItem="UOj-EY-POL" secondAttribute="leading" id="4io-79-bst"/>
                             <constraint firstItem="6lX-J0-E1j" firstAttribute="leading" secondItem="d7j-c3-R95" secondAttribute="leading" id="5C6-kJ-oLb"/>
                             <constraint firstItem="UOj-EY-POL" firstAttribute="centerY" secondItem="fyh-Lp-nfA" secondAttribute="centerY" id="6BW-aw-fv5"/>
                             <constraint firstItem="add-SG-jCv" firstAttribute="leading" secondItem="cj6-SN-aEl" secondAttribute="leadingMargin" constant="-4" id="Czk-B3-cvs"/>
@@ -631,7 +682,7 @@
                     <connections>
                         <outlet property="btnAddToCalendar" destination="uIG-IR-KNN" id="gnO-KF-kc7"/>
                         <outlet property="btnJoinGame" destination="fj3-YZ-qvi" id="TsL-ud-sFa"/>
-                        <outlet property="btnOpenMaps" destination="VKU-VA-fN2" id="nwZ-VI-hXW"/>
+                        <outlet property="btnOpenMaps" destination="WvQ-Ae-5lc" id="2iL-Cy-Rkl"/>
                         <outlet property="imgGameType" destination="bOJ-O1-QRr" id="Zvs-Gq-zOZ"/>
                         <outlet property="lblAddress" destination="UOj-EY-POL" id="DsH-Lz-UiU"/>
                         <outlet property="lblDay" destination="eV5-xV-NPY" id="5xo-69-kpb"/>
@@ -651,7 +702,7 @@
         <image name="basketballIcon" width="100" height="100"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="HR3-Vf-b57"/>
         <segue reference="gsA-UD-Nep"/>
-        <segue reference="gaf-vJ-RbG"/>
     </inferredMetricsTieBreakers>
 </document>

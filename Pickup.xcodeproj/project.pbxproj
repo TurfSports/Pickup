@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */; };
 		0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */; };
+		023AC1931C7C323300AAA494 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023AC1921C7C323300AAA494 /* NewGameViewController.swift */; };
 		024026EA1C5FDF61002F1B39 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026E71C5FDF61002F1B39 /* ParseUI.framework */; };
 		024026EB1C5FDF61002F1B39 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026E81C5FDF61002F1B39 /* Bolts.framework */; };
 		024026EC1C5FDF61002F1B39 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026E91C5FDF61002F1B39 /* Parse.framework */; };
@@ -23,7 +24,7 @@
 		024026FE1C5FDFC5002F1B39 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026FD1C5FDFC5002F1B39 /* libz.tbd */; };
 		024027001C5FDFD0002F1B39 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026FF1C5FDFD0002F1B39 /* libsqlite3.tbd */; };
 		025330F71C56FAA600B6ABDD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025330F61C56FAA600B6ABDD /* Theme.swift */; };
-		02599E8B1C75896500ECE1A9 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02599E8A1C75896500ECE1A9 /* NewGameViewController.swift */; };
+		02599E8B1C75896500ECE1A9 /* NewGameTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02599E8A1C75896500ECE1A9 /* NewGameTableViewController.swift */; };
 		02947B4E1C6FAB9200283778 /* PlayerTypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */; };
 		02A8F2591C77F41900A04DE6 /* DateFormatterEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A8F2581C77F41900A04DE6 /* DateFormatterEnum.swift */; };
 		02A8F25B1C77F6F300A04DE6 /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */; };
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
 		0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
+		023AC1921C7C323300AAA494 /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
 		024026E71C5FDF61002F1B39 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		024026E81C5FDF61002F1B39 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		024026E91C5FDF61002F1B39 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
@@ -63,7 +65,7 @@
 		024026FD1C5FDFC5002F1B39 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		024026FF1C5FDFD0002F1B39 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		025330F61C56FAA600B6ABDD /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		02599E8A1C75896500ECE1A9 /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
+		02599E8A1C75896500ECE1A9 /* NewGameTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameTableViewController.swift; sourceTree = "<group>"; };
 		02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTypeConverter.swift; sourceTree = "<group>"; };
 		02A8F2581C77F41900A04DE6 /* DateFormatterEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateFormatterEnum.swift; path = ../DateFormatterEnum.swift; sourceTree = "<group>"; };
 		02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateUtilities.swift; path = ../DateUtilities.swift; sourceTree = "<group>"; };
@@ -202,7 +204,8 @@
 				02DB6FF21C7415E800FF5C20 /* GameListViewController.swift */,
 				02DB6FF01C74153F00FF5C20 /* GameMapViewController.swift */,
 				0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */,
-				02599E8A1C75896500ECE1A9 /* NewGameViewController.swift */,
+				023AC1921C7C323300AAA494 /* NewGameViewController.swift */,
+				02599E8A1C75896500ECE1A9 /* NewGameTableViewController.swift */,
 				02AB4F951C754FA800DAEF0E /* GamePointAnnotation.swift */,
 				02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */,
 				02EFBF551C6BEB9B001774A2 /* GameTableViewCell.swift */,
@@ -303,7 +306,7 @@
 				0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */,
 				02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */,
 				02DB6FF11C74153F00FF5C20 /* GameMapViewController.swift in Sources */,
-				02599E8B1C75896500ECE1A9 /* NewGameViewController.swift in Sources */,
+				02599E8B1C75896500ECE1A9 /* NewGameTableViewController.swift in Sources */,
 				02A8F2591C77F41900A04DE6 /* DateFormatterEnum.swift in Sources */,
 				02ED11ED1C51904C001923EB /* GameType.swift in Sources */,
 				02ED31C11C6992B500B53DD3 /* GameConverter.swift in Sources */,
@@ -312,6 +315,7 @@
 				02DB6FF31C7415E800FF5C20 /* GameListViewController.swift in Sources */,
 				02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */,
 				02F08F381C529FEE00A76EFB /* Game.swift in Sources */,
+				023AC1931C7C323300AAA494 /* NewGameViewController.swift in Sources */,
 				02ED31BD1C6940A900B53DD3 /* GameTypeConverter.swift in Sources */,
 				02A8F25B1C77F6F300A04DE6 /* DateUtilities.swift in Sources */,
 			);
