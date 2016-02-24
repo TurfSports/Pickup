@@ -46,22 +46,13 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default,handler: nil))
         alertController.addAction(UIAlertAction(title: "Join", style: UIAlertActionStyle.Default, handler: { action in
-            switch action.style {
-            case .Default:
-                print("default")
-                
-            case .Cancel:
-                print("cancel")
-                
-            case .Destructive:
-                print("destructive")
-            }
+            self.joinPFUserToPFGame()
         }))
         
         self.presentViewController(alertController, animated: true, completion: nil)
     
         
-        joinPFUserToPFGame()
+        
         
     }
     
@@ -69,6 +60,11 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let embeddedViewController = segue.destinationViewController as? GameDetailsTableViewController
         embeddedViewController?.game = self.game
+    }
+    
+    func adjustScreenForJoinedUser() {
+        //Apparently text is no the right object
+//        self.btnJoinGame.text = "Leave game"
     }
     
     //MARK: - Load game from parse
