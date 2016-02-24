@@ -185,7 +185,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     //MARK: - Sort Dates
     //TODO: Abstract date functions into separate class
-    //TODO: Fix date sort. It's not working correctly
     func sortGamesByDate(games: [Game]) -> [[Game]] {
 
         var todayGames:[Game] = []
@@ -194,8 +193,16 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         var nextWeekGames:[Game] = []
         var combinedGamesArray:[[Game]] = [[]]
         
-        for game in games {
+        //Sort the games with earliest game first
+        //TODO: This won't work on a new year
+        let sortedGameArray = games.sort { (gameOne, gameTwo) -> Bool in
+            let firstElementDay = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: gameOne.eventDate)
+            let secondElementDay = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: gameTwo.eventDate)
             
+            return firstElementDay < secondElementDay
+        }
+        
+        for game in sortedGameArray {
             switch(dateCompare(game.eventDate)) {
                 case "TODAY":
                     todayGames.append(game)
@@ -252,11 +259,14 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let todayWeekday = NSCalendar.currentCalendar().components([.Weekday], fromDate: NSDate()).weekday
             let eventWeekday = NSCalendar.currentCalendar().components([.Weekday], fromDate: eventDate).weekday
             
-            if todayWeekday == eventWeekday {
+            let today = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: NSDate())
+            let eventDay = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: eventDate)
+            
+            if todayWeekday == eventWeekday && today == eventDay {
                 resultString = "TODAY"
-            } else if todayWeekday + 1 == eventWeekday {
+            } else if todayWeekday + 1 == eventWeekday && today + 1 == eventDay  {
                 resultString = "TOMORROW"
-            } else if eventWeekday > todayWeekday {
+            } else if eventWeekday > todayWeekday && today + 7 >= eventDay {
                 resultString = "THIS WEEK"
             } else {
                 resultString = "NEXT WEEK"
@@ -281,7 +291,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                 relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue)\t\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
                 break
             case "NEXT WEEK":
-                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)\t\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)\t\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
                 break
             default:
                 break

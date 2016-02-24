@@ -22,7 +22,7 @@ struct Theme {
         sharedApplication.delegate?.window??.tintColor = PRIMARY_DARK_COLOR
         UINavigationBar.appearance().barTintColor = PRIMARY_DARK_COLOR
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
-        UITableView.appearance().backgroundColor = UIColor.whiteColor()
+//        UITableView.appearance().backgroundColor = UIColor.whiteColor()
     }
 
     static func applyThemeToCell(cell: HomeTableViewCell) {
