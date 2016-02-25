@@ -26,9 +26,10 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation?
     
+    @IBOutlet weak var btnAddNewGame: UIBarButtonItem!
     @IBOutlet weak var tableGameList: UITableView!
     @IBOutlet weak var btnViewMap: UIBarButtonItem!
-    
+    @IBOutlet weak var toolBar: UIToolbar!
     
     //MARK: - Table View Lifecycle Management
     override func viewDidLoad() {
@@ -37,8 +38,11 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         loadGamesFromParse()
         
         self.title = selectedGameType.displayName
-        btnViewMap.tintColor = Theme.PRIMARY_DARK_COLOR
+        
 
+        btnViewMap.tintColor = Theme.PRIMARY_DARK_COLOR
+        btnAddNewGame.tintColor = Theme.ACCENT_COLOR
+        
     }
 
     override func viewDidAppear(animated: Bool) {

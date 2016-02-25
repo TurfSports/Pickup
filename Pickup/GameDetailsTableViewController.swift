@@ -30,11 +30,12 @@ class GameDetailsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
         btnOpenMaps.tintColor = Theme.PRIMARY_DARK_COLOR
         btnAddToCalendar.tintColor = Theme.PRIMARY_DARK_COLOR
         
         lblGameNotes.text = game.gameNotes
+        lblGameNotes.sizeToFit()
+        
         lblDay.text = DateUtilities.dateString(game.eventDate, dateFormatString: DateFormatter.MONTH_DAY_YEAR.rawValue)
         lblTime.text = DateUtilities.dateString(game.eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
         lblAddress.text = ""
@@ -51,11 +52,6 @@ class GameDetailsTableViewController: UITableViewController {
             
             if let locationName = placeMark.addressDictionary!["Name"] as? NSString {
                 self.address = self.address + "\(locationName)"
-            }
-            
-            if let street = placeMark.addressDictionary!["Thoroughfare"] as? NSString {
-                self.address = self.address + "\n\(street)"
-                
             }
             
             if let city = placeMark.addressDictionary!["City"] as? NSString {
@@ -76,6 +72,13 @@ class GameDetailsTableViewController: UITableViewController {
         })
         
     }
-
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
 
 }

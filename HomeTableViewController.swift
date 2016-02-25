@@ -11,8 +11,6 @@ import Parse
 
 class HomeTableViewController: UITableViewController {
     
-    var data:ParseDataController!
-    
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
     
@@ -23,9 +21,12 @@ class HomeTableViewController: UITableViewController {
         }
     }
     
+    @IBOutlet weak var addNewGameButton: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addNewGameButton.tintColor = Theme.ACCENT_COLOR
         self.navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
         loadGameTypesFromParse()
     }
