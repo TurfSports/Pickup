@@ -25,7 +25,6 @@ class HomeTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         addNewGameButton.tintColor = Theme.ACCENT_COLOR
         self.navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
         loadGameTypesFromParse()
@@ -59,7 +58,8 @@ class HomeTableViewController: UITableViewController {
             } else {
                 cell?.lblAvailableGames.text = "No games"
             }
-            
+        } else {
+            cell?.lblAvailableGames.text = ""
         }
         
         

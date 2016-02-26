@@ -292,10 +292,10 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                 relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
                 break
             case "THIS WEEK":
-                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue)\t\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
                 break
             case "NEXT WEEK":
-                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)\t\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
                 break
             default:
                 break

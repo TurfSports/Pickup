@@ -7,10 +7,9 @@
 //
 
 import UIKit
-import MapKit
-import CoreLocation
 
-class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
+
+class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate {
 
     let GAME_TYPE_PICKER = 0
     let NUMBER_OF_PLAYERS_PICKER = 1
@@ -24,20 +23,13 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, M
     @IBOutlet weak var lblPlayers: UILabel!
     @IBOutlet weak var sportPicker: UIPickerView!
     @IBOutlet weak var numberOfPlayersPicker: UIPickerView!
-    @IBOutlet weak var newGameMap: MKMapView!
+    @IBOutlet weak var btnMap: UIButton!
+    @IBOutlet weak var txtGameNotes: UITextView!
+    
     
     var selectedGameType: GameType!
     var gameTypes: [GameType]!
-    let locationManager = CLLocationManager()
-    var currentLocation:CLLocation? {
-        didSet {
-            computeViewSettings()
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2DMake((currentLocation?.coordinate.latitude)!, (currentLocation?.coordinate.longitude)!)
-            annotation.title = "Current Location"
-            newGameMap.addAnnotation(annotation)
-        }
-    }
+
     
     var sportRowSelected:Bool = false
     var dateRowSelected:Bool = false
@@ -50,6 +42,17 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, M
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let dummyViewHeight: CGFloat = 40
+        let dummyView:UIView = UIView.init(frame: CGRectMake(0, 0, self.tableView.bounds.size.width, dummyViewHeight))
+        self.tableView.tableHeaderView = dummyView
+        self.tableView.contentInset = UIEdgeInsetsMake(-dummyViewHeight, 0, 0, 0)
+        
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
+        btnMap.tintColor = Theme.ACCENT_COLOR
+        
+        self.datePicker.minimumDate = NSDate()
+        self.datePicker.maximumDate = NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60)
         
         if selectedGameType != nil {
             lblSport.text = selectedGameType.displayName
@@ -67,9 +70,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, M
         
     }
     
-    override func viewDidAppear(animated: Bool) {
-        setUsersCurrentLocation()
-    }
     
     // returns the number of 'columns' to display.
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -159,7 +159,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, M
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        var rowHeight:CGFloat = 44.0
+        var rowHeight:CGFloat = UITableViewAutomaticDimension
         
         if indexPath.section == 0 && indexPath.row == 1 {
             if sportRowSelected == false {
@@ -187,7 +187,15 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, M
             }
         }
         
+        if indexPath.section == 2 && indexPath.row == 0 {
+            rowHeight = 170.0
+        }
+        
         return rowHeight
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
     
     private func animateReloadTableView() -> Void {
@@ -201,64 +209,14 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, M
             completion: nil);
     }
     
-    
-    //MARK: - Location Manager Delegate
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        let location:CLLocationCoordinate2D = manager.location!.coordinate
-        currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        
-        if currentLocation != nil {
-            locationManager.stopUpdatingLocation()
-        }
-        
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
-    func setUsersCurrentLocation() {
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
-    
-    
-    func computeViewSettings() {
-        
-        let latDelta:CLLocationDegrees = 0.01
-        let longDelta:CLLocationDegrees = 0.01
-        
-        let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
-        let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake((currentLocation?.coordinate.latitude)!, (currentLocation?.coordinate.longitude)!)
-        
-        let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
-        newGameMap.setRegion(region, animated: false)
-        
-    }
-    
-    //MARK: - Map View Delegate
-    
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        
-        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(ANNOTATION_ID) as? MKPinAnnotationView
-        
-        if pinView == nil {
-            //println("Pinview was nil")
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: ANNOTATION_ID)
-            pinView!.canShowCallout = true
-            pinView!.animatesDrop = true
-        }
-        
-        //TODO: - Consider adding a custom color
-        //http://stackoverflow.com/questions/2370567/custon-mkpinannotationcolor
-        
-        return pinView
-        
-    }
-
-    
     
 
 }

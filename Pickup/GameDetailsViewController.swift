@@ -43,13 +43,29 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         //Get the PFObject for game
         //Add the current user as a player in the game
+        let title = self.btnJoinGame.title
+        var message = "Are you sure you want to join this game?"
+        var alertTitle = "Join"
         
-        let alertController = UIAlertController(title: "Join Game", message:
-            "Are you sure you want to join this game?", preferredStyle: UIAlertControllerStyle.Alert)
+        if title == "Leave Game" {
+            message = "Are you sure you want to leave this game?"
+            alertTitle = "Leave"
+        }
+        
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: UIAlertControllerStyle.Alert)
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default,handler: nil))
-        alertController.addAction(UIAlertAction(title: "Join", style: UIAlertActionStyle.Default, handler: { action in
-            self.joinPFUserToPFGame()
+        alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.Default, handler: { action in
+            
+            if self.btnJoinGame.title == "Join Game" {
+                self.joinPFUserToPFGame()
+                self.adjustScreenForJoinedUser()
+            } else {
+                self.removePFUserFromPFGame()
+                self.adjustScreenForLeavingUser()
+            }
+
         }))
         
         self.presentViewController(alertController, animated: true, completion: nil)
