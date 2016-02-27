@@ -25,7 +25,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     @IBOutlet weak var numberOfPlayersPicker: UIPickerView!
     @IBOutlet weak var btnMap: UIButton!
     @IBOutlet weak var txtGameNotes: UITextView!
-    
+    @IBOutlet weak var lblAddress: UIView!
     
     var selectedGameType: GameType!
     var gameTypes: [GameType]!
@@ -54,6 +54,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.datePicker.minimumDate = NSDate()
         self.datePicker.maximumDate = NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60)
         
+        //lblAddress.hidden = true
+        
         if selectedGameType != nil {
             lblSport.text = selectedGameType.displayName
             //TODO: Get selected game type from picker
@@ -62,16 +64,16 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             sportPicker.selectRow(0, inComponent: 0, animated: false)
         }
         
+        
         lblPlayers.text = "\(10)"
         numberOfPlayersPicker.selectRow(10 - MIN_PLAYERS, inComponent: 0, animated: false)
         
-        //TODO: Only allow a certain date range
+        //Round to nearest five minutes increment
         lblDate.text = DateUtilities.dateString(NSDate(), dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
         
     }
     
     
-    // returns the number of 'columns' to display.
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -216,6 +218,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    //TODO: Change segue
+    override func performSegueWithIdentifier(identifier: String, sender: AnyObject?) {
+        //I need to segue to the map view with the view controller and the map button
     }
     
 
