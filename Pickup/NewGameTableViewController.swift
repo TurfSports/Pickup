@@ -42,6 +42,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("viewDidLoad")
         
         let dummyViewHeight: CGFloat = 40
         let dummyView:UIView = UIView.init(frame: CGRectMake(0, 0, self.tableView.bounds.size.width, dummyViewHeight))
@@ -54,7 +55,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.datePicker.minimumDate = NSDate()
         self.datePicker.maximumDate = NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60)
         
-        //lblAddress.hidden = true
+        
         
         if selectedGameType != nil {
             lblSport.text = selectedGameType.displayName
@@ -160,8 +161,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-        var rowHeight:CGFloat = UITableViewAutomaticDimension
+
+        var rowHeight:CGFloat = 44 //UITableViewAutomaticDimension
         
         if indexPath.section == 0 && indexPath.row == 1 {
             if sportRowSelected == false {
@@ -196,9 +197,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         return rowHeight
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
     
     private func animateReloadTableView() -> Void {
         UIView.transitionWithView(tableView,

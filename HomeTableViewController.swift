@@ -105,15 +105,17 @@ class HomeTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SHOW_GAMES {
-            let gamesViewController = segue.destinationViewController as! GameListViewController
+            let gamesViewController = segue.destinationViewController as! GameListTableViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 gamesViewController.selectedGameType = gameTypes[indexPath.row]
                 gamesViewController.gameTypes = self.gameTypes
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
-            let newGameViewController = segue.destinationViewController as! NewGameViewController
-            newGameViewController.gameTypes = self.gameTypes
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
+            print(self.gameTypes)
+            newGameTableViewController.gameTypes = self.gameTypes
         }
     }
     

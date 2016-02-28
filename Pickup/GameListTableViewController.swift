@@ -1,5 +1,5 @@
 //
-//  GameListViewController.swift
+//  GameListTableViewController.swift
 //  Pickup
 //
 //  Created by Nathan Dudley on 2/16/16.
@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import Parse
 
-class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate {
+class GameListTableViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate {
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let SEGUE_SHOW_GAMES_MAP = "showGamesMapView"
@@ -146,7 +146,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             gameMapViewController.games = self.games
             gameMapViewController.selectedGameType = self.selectedGameType
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
-            let newGameTableViewController = segue.destinationViewController as! NewGameViewController
+            let newGameTableViewController = segue.destinationViewController as! NewGameTableViewController
             newGameTableViewController.selectedGameType = self.selectedGameType
             newGameTableViewController.gameTypes = self.gameTypes
         }
