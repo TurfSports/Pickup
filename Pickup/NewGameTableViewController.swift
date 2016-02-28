@@ -9,7 +9,7 @@
 import UIKit
 
 
-class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate {
+class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate {
 
     let GAME_TYPE_PICKER = 0
     let NUMBER_OF_PLAYERS_PICKER = 1
@@ -17,6 +17,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     let MIN_PLAYERS = 5
     let ANNOTATION_ID = "Pin"
     
+    @IBOutlet weak var btnCancel: UIBarButtonItem!
+    @IBOutlet weak var btnCreate: UIBarButtonItem!
     @IBOutlet weak var lblSport: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var lblDate: UILabel!
@@ -25,16 +27,24 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     @IBOutlet weak var numberOfPlayersPicker: UIPickerView!
     @IBOutlet weak var btnMap: UIButton!
     @IBOutlet weak var txtGameNotes: UITextView!
-    @IBOutlet weak var lblAddress: UIView!
+    @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet weak var txtLocationName: UITextField!
     
     var selectedGameType: GameType!
     var gameTypes: [GameType]!
+    var address: String?
 
     
     var sportRowSelected:Bool = false
     var dateRowSelected:Bool = false
     var playerRowSelected:Bool = false
+    var addressLoaded = false
     
+    @IBAction func cancelNewGame(sender: UIBarButtonItem) {
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
+    }
     //TODO: Constrain the date picker to disallow scheduling beyond the following week
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
         lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
@@ -42,7 +52,16 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
+        
+        txtGameNotes.delegate = self
+        txtLocationName.delegate = self
+        
+        if address != nil {
+            lblAddress.text = address
+        }
+
+        btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
+        btnCreate.tintColor = Theme.ACCENT_COLOR
         
         let dummyViewHeight: CGFloat = 40
         let dummyView:UIView = UIView.init(frame: CGRectMake(0, 0, self.tableView.bounds.size.width, dummyViewHeight))
@@ -147,6 +166,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             dateRowSelected = !dateRowSelected
             sportRowSelected = false
             playerRowSelected = false
+        } else if indexPath.section == 1 && indexPath.row == 2 {
+            //TODO - Figure out why this is not working
+            self.txtLocationName.becomeFirstResponder()
+            sportRowSelected = false
+            dateRowSelected = false
+            playerRowSelected = false
         } else {
             sportRowSelected = false
             dateRowSelected = false
@@ -209,14 +234,37 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             completion: nil);
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        self.view.endEditing(true)
+    
+    //MARK: - Text Field Delegate
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        print(textField.description)
+        return true
     }
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        print("touchesBegan")
+    }
+    
+
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+//        print("textFieldShouldReturn")
         textField.resignFirstResponder()
         return true
     }
+    
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        textView.becomeFirstResponder()
+//        print("editing text view")
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+//        print("didChange")
+    }
+    
+    
     
     //TODO: Change segue
     override func performSegueWithIdentifier(identifier: String, sender: AnyObject?) {

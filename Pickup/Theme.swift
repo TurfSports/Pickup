@@ -28,7 +28,6 @@ struct Theme {
     }
 
     static func applyThemeToCell(cell: HomeTableViewCell) {
-//        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         cell.backgroundColor = UIColor.whiteColor()
         let bgColorView = UIView()
         bgColorView.backgroundColor = PRIMARY_LIGHT_COLOR

@@ -114,7 +114,6 @@ class HomeTableViewController: UITableViewController {
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
             let navigationController = segue.destinationViewController as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
-            print(self.gameTypes)
             newGameTableViewController.gameTypes = self.gameTypes
         }
     }

@@ -146,9 +146,10 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
             gameMapViewController.games = self.games
             gameMapViewController.selectedGameType = self.selectedGameType
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
-            let newGameTableViewController = segue.destinationViewController as! NewGameTableViewController
-            newGameTableViewController.selectedGameType = self.selectedGameType
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             newGameTableViewController.gameTypes = self.gameTypes
+            newGameTableViewController.selectedGameType = self.selectedGameType
         }
         
     }
