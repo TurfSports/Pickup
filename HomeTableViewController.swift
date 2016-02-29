@@ -83,6 +83,8 @@ class HomeTableViewController: UITableViewController {
                     
                     let gameQuery = PFQuery(className: "Game")
                     gameQuery.whereKey("gameType", equalTo: gameTypeObject)
+                    gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate())
+                    gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
                     
                     let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
                     

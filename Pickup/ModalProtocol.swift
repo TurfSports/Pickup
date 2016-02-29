@@ -12,4 +12,5 @@ import CoreLocation
 protocol NewGameTableViewDelegate {
     func setGameLocationCoordinate(coordinate: CLLocationCoordinate2D)
     func setGameAddress(address: String)
+    func setGameLocationName(locationName: String)
 }

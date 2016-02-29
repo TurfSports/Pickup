@@ -17,8 +17,9 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     var newGameTableViewDelegate: NewGameTableViewDelegate?
     
-    var locationName:String!
     var address = ""
+    var locationName = ""
+    var gameLocation: CLLocationCoordinate2D?
     
     
     @IBOutlet weak var newGameMap: MKMapView!
@@ -42,7 +43,9 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         if address == "" {
             //TODO: Make an alert that no location was selected
         } else {
-            newGameTableViewDelegate?.setGameLocationCoordinate("Hello")
+            newGameTableViewDelegate?.setGameLocationCoordinate(self.gameLocation!)
+            newGameTableViewDelegate?.setGameAddress(self.address)
+            newGameTableViewDelegate?.setGameLocationName(self.locationName)
             self.dismissViewControllerAnimated(true, completion: nil)
         }
         
@@ -132,6 +135,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         removePreviousAnnotation()
         setAnnotation(coordinate)
         
+        self.gameLocation = coordinate
         buildAddressString(coordinate)
     }
     
@@ -139,9 +143,6 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
-        if self.locationName != nil {
-            annotation.title = self.locationName
-        }
         
         self.newGameMap.addAnnotation(annotation)
         
@@ -165,6 +166,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
             
             if let locationName = placeMark.addressDictionary!["Name"] as? NSString {
                 self.address = self.address + "\(locationName)"
+                self.locationName = locationName as String
             }
             
             if let city = placeMark.addressDictionary!["City"] as? NSString {

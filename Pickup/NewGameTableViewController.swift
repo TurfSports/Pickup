@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import Parse
 
 
 class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate, NewGameTableViewDelegate {
@@ -32,12 +33,23 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var txtLocationName: UITextField!
     
-    var selectedGameType: GameType!
-    var gameTypes: [GameType]!
-    var address: String?
-    var gameLocation: CLLocationCoordinate2D?
-
     
+    //For saving to parse
+    var selectedGameType: GameType!
+    var playersNeeded: Int?
+    var gameLocName: String?
+    var gameDate: NSDate?
+    var gameLocation: CLLocationCoordinate2D?
+    var gameNotes: String?
+    
+    
+    var gameTypes: [GameType]!
+    var address: String? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+
     var sportRowSelected:Bool = false
     var dateRowSelected:Bool = false
     var playerRowSelected:Bool = false
@@ -48,7 +60,19 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.dismissViewControllerAnimated(true, completion: nil)
         
     }
-    //TODO: Constrain the date picker to disallow scheduling beyond the following week
+    
+    @IBAction func createNewGame(sender: UIBarButtonItem) {
+        
+        //validate user input
+        //create game object
+        let currenUser = PFUser.currentUser()
+            // Maybe I could do validation here
+        let newGame: Game = Game.init(id: "_newGame", gameType: selectedGameType, totalSlots: playersNeeded!, availableSlots: playersNeeded!, eventDate: gameDate!, locationName: gameLocName!, ownerId: (currenUser?.objectId)!, gameNotes: gameNotes!)
+        
+        saveGameParseObject(newGame)
+        //look at how to save this in the background
+    }
+    
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
         lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
     }
@@ -58,6 +82,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         txtGameNotes.delegate = self
         txtLocationName.delegate = self
+        txtLocationName.hidden = true
         
         if address != nil {
             lblAddress.text = address
@@ -126,9 +151,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         switch(pickerView.tag) {
             case GAME_TYPE_PICKER:
+                selectedGameType = gameTypes[row]
                 rowContents = gameTypes[row].displayName
                 break
             case NUMBER_OF_PLAYERS_PICKER:
+                playersNeeded = row + MIN_PLAYERS
                 rowContents = "\(row + MIN_PLAYERS)"
                 break
             default:
@@ -170,13 +197,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             sportRowSelected = false
             playerRowSelected = false
         } else if indexPath.section == 1 && indexPath.row == 2 {
-            //TODO - Figure out why this is not working
-            self.txtLocationName.becomeFirstResponder()
-            sportRowSelected = false
-            dateRowSelected = false
-            playerRowSelected = false
-        } else if indexPath.section == 1 && indexPath.row == 3 {
-            //perform map segue
+            performSegueWithIdentifier(SEGUE_NEW_GAME_MAP, sender: self)
             sportRowSelected = false
             dateRowSelected = false
             playerRowSelected = false
@@ -223,15 +244,17 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             }
         }
         
-        if indexPath.section == 2 && indexPath.row == 0 {
-            rowHeight = 170.0
-        }
-        
-        if indexPath.section == 1 && indexPath.row == 3 {
+        if indexPath.section == 1 && indexPath.row == 2 {
             if address != nil {
                 rowHeight = 115
             }
         }
+        
+        if indexPath.section == 2 && indexPath.row == 0 {
+            rowHeight = 170.0
+        }
+        
+
         
         return rowHeight
     }
@@ -251,8 +274,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     //MARK: - Text Field Delegate
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        return true
+    func textFieldDidEndEditing(textField: UITextField) {
+        self.gameNotes = textField.text
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -261,31 +284,38 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-//        print("textFieldShouldReturn")
         textField.resignFirstResponder()
         return true
     }
     
-
-    func textViewDidBeginEditing(textView: UITextView) {
-        textView.becomeFirstResponder()
-//        print("editing text view")
-    }
-    
-    func textViewDidChange(textView: UITextView) {
-//        print("didChange")
-    }
     
     //MARK: - New Game Table View Delegate
 
     func setGameLocationCoordinate(coordinate: CLLocationCoordinate2D) {
-        <#code#>
+        self.gameLocation = coordinate
+    }
+    
+    func setGameLocationName(locationName: String) {
+        txtLocationName.hidden = false
+        gameLocName = locationName
+        txtLocationName.text = locationName
+        txtLocationName.becomeFirstResponder()
     }
     
     func setGameAddress(address: String) {
-        <#code#>
+        self.address = address
+        lblAddress.text = address
     }
+    
+    
+    //MARK: - Parse
+    func saveGameParseObject(game: Game) {
+        
+    }
+    
 
+    //MARK: - Navigation
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_NEW_GAME_MAP {
             let newGameMapViewController = segue.destinationViewController as? NewGameMapViewController

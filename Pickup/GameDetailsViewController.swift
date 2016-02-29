@@ -18,7 +18,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var lblOpenings: UILabel!
     @IBOutlet weak var imgGameType: UIImageView!
     @IBOutlet weak var btnJoinGame: UIBarButtonItem!
-    @IBOutlet weak var toolbar: UIToolbar!
     
     var game: Game!
     
@@ -27,8 +26,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         
         
-        btnJoinGame.tintColor = Theme.PRIMARY_DARK_COLOR
-        
+        btnJoinGame.tintColor = Theme.ACCENT_COLOR
         
         lblLocationName.text = game.locationName
         lblOpenings.text = ("\(game.availableSlots) openings")
