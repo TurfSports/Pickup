@@ -10,16 +10,20 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UIBarPositioningDelegate {
 
     let ANNOTATION_ID = "Pin"
     let SEGUE_NEW_GAME = "showNewGameTableViewController"
     
+    var newGameTableViewDelegate: NewGameTableViewDelegate?
+    
     var locationName:String!
     var address = ""
     
+    
     @IBOutlet weak var newGameMap: MKMapView!
     @IBOutlet weak var btnSaveLocation: UIBarButtonItem!
+    @IBOutlet weak var btnCancel: UIBarButtonItem!
     
     
     let locationManager = CLLocationManager()
@@ -28,13 +32,18 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
             computeViewSettings()
         }
     }
+
+    @IBAction func cancelModal(sender: UIBarButtonItem) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     @IBAction func saveLocation(sender: UIBarButtonItem) {
         
         if address == "" {
             //TODO: Make an alert that no location was selected
         } else {
-            performSegueWithIdentifier(SEGUE_NEW_GAME, sender: self)
+            newGameTableViewDelegate?.setGameLocationCoordinate("Hello")
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
         
     }
@@ -43,8 +52,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         super.viewDidLoad()
         
         btnSaveLocation.tintColor = Theme.ACCENT_COLOR
-        navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
-        
+        print(address)
         setGestureRecognizer()
         setUsersCurrentLocation()
     }
@@ -96,7 +104,6 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(ANNOTATION_ID) as? MKPinAnnotationView
         
         if pinView == nil {
-            //println("Pinview was nil")
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: ANNOTATION_ID)
             pinView!.canShowCallout = true
             pinView!.animatesDrop = true
@@ -152,7 +159,6 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         geoCoder.reverseGeocodeLocation(gameLocation, completionHandler: { (placemarks, error) -> Void in
             
-            // Place details
             var placeMark: CLPlacemark!
             placeMark = placemarks?[0]
             self.address = ""
@@ -173,21 +179,19 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
             
             if let zip = placeMark.addressDictionary!["ZIP"] as? NSString {
                 self.address = self.address + " \(zip)"
-                
             }
             
         })
         
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == SEGUE_NEW_GAME {
-            let newGameTableViewController = segue.destinationViewController as? NewGameTableViewController
-            
-            newGameTableViewController?.address = self.address
-            
-        }
+    
+    //MARK: - Bar Positioning Delegate
+    
+    func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
+        return .TopAttached
     }
+    
     
     
     

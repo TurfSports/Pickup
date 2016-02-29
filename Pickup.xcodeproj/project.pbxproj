@@ -46,6 +46,7 @@
 		02EFBF561C6BEB9B001774A2 /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EFBF551C6BEB9B001774A2 /* GameTableViewCell.swift */; };
 		02F08F381C529FEE00A76EFB /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F371C529FEE00A76EFB /* Game.swift */; };
 		02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F391C52A5ED00A76EFB /* Player.swift */; };
+		02F5D0101C84C12F00A95B92 /* ModalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F5D00F1C84C12F00A95B92 /* ModalProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,7 @@
 		02EFBF551C6BEB9B001774A2 /* GameTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTableViewCell.swift; sourceTree = "<group>"; };
 		02F08F371C529FEE00A76EFB /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = ../Game.swift; sourceTree = "<group>"; };
 		02F08F391C52A5ED00A76EFB /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		02F5D00F1C84C12F00A95B92 /* ModalProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 		02D821751C5C2F38000999B6 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				02F5D00F1C84C12F00A95B92 /* ModalProtocol.swift */,
 				02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */,
 				02BE27891C4DD58F0062C890 /* Info.plist */,
 				02B2F87D1C606018009863AB /* TNRB-Location.gpx */,
@@ -302,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				025330F71C56FAA600B6ABDD /* Theme.swift in Sources */,
+				02F5D0101C84C12F00A95B92 /* ModalProtocol.swift in Sources */,
 				02947B4E1C6FAB9200283778 /* PlayerTypeConverter.swift in Sources */,
 				021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */,
 				02AB4F961C754FA800DAEF0E /* GamePointAnnotation.swift in Sources */,

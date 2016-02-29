@@ -7,15 +7,17 @@
 //
 
 import UIKit
+import CoreLocation
 
 
-class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate {
+class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate, NewGameTableViewDelegate {
 
     let GAME_TYPE_PICKER = 0
     let NUMBER_OF_PLAYERS_PICKER = 1
     let MAX_PLAYERS = 20
     let MIN_PLAYERS = 5
     let ANNOTATION_ID = "Pin"
+    let SEGUE_NEW_GAME_MAP = "showNewGameMap"
     
     @IBOutlet weak var btnCancel: UIBarButtonItem!
     @IBOutlet weak var btnCreate: UIBarButtonItem!
@@ -33,6 +35,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     var selectedGameType: GameType!
     var gameTypes: [GameType]!
     var address: String?
+    var gameLocation: CLLocationCoordinate2D?
 
     
     var sportRowSelected:Bool = false
@@ -172,6 +175,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             sportRowSelected = false
             dateRowSelected = false
             playerRowSelected = false
+        } else if indexPath.section == 1 && indexPath.row == 3 {
+            //perform map segue
+            sportRowSelected = false
+            dateRowSelected = false
+            playerRowSelected = false
         } else {
             sportRowSelected = false
             dateRowSelected = false
@@ -219,6 +227,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             rowHeight = 170.0
         }
         
+        if indexPath.section == 1 && indexPath.row == 3 {
+            if address != nil {
+                rowHeight = 115
+            }
+        }
+        
         return rowHeight
     }
     
@@ -238,7 +252,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     //MARK: - Text Field Delegate
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        print(textField.description)
         return true
     }
     
@@ -246,7 +259,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 //        print("touchesBegan")
     }
     
-
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
 //        print("textFieldShouldReturn")
@@ -254,7 +266,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         return true
     }
     
-    
+
     func textViewDidBeginEditing(textView: UITextView) {
         textView.becomeFirstResponder()
 //        print("editing text view")
@@ -264,11 +276,21 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 //        print("didChange")
     }
     
+    //MARK: - New Game Table View Delegate
+
+    func setGameLocationCoordinate(coordinate: CLLocationCoordinate2D) {
+        <#code#>
+    }
     
-    
-    //TODO: Change segue
-    override func performSegueWithIdentifier(identifier: String, sender: AnyObject?) {
-        //I need to segue to the map view with the view controller and the map button
+    func setGameAddress(address: String) {
+        <#code#>
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == SEGUE_NEW_GAME_MAP {
+            let newGameMapViewController = segue.destinationViewController as? NewGameMapViewController
+            newGameMapViewController?.newGameTableViewDelegate = self
+        }
     }
     
 
