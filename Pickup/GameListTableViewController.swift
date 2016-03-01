@@ -97,7 +97,6 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
             cell?.lblGameDate.text = relevantDateInfo(game.eventDate)
             cell?.lblDistance.text = ""
             
-            print(game.userJoined)
             if game.userJoined == true {
                 cell?.backgroundColor = Theme.ACCENT_COLOR_LIGHT
             } else {

@@ -164,7 +164,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
             let gameIdArray = joinedGames.mutableCopy()
-            gameIdArray.addObject(game.id)
             print(gameIdArray)
             NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
         } else {
@@ -179,7 +178,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
             let gameIdArray = joinedGames.mutableCopy()
-            gameIdArray.removeObject(game.id)
             print(gameIdArray)
             NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
         }
