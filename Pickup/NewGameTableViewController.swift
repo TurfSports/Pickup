@@ -69,12 +69,15 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             // Maybe I could do validation here
         let newGame: Game = Game.init(id: "_newGame", gameType: selectedGameType, totalSlots: playersNeeded!, availableSlots: playersNeeded!, eventDate: gameDate!, locationName: gameLocName!, ownerId: (currenUser?.objectId)!, gameNotes: gameNotes!)
         
-        saveGameParseObject(newGame)
+        saveParseGameObject(newGame)
         //look at how to save this in the background
     }
     
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
         lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+        
+        self.gameDate = sender.date
+        
     }
     
     override func viewDidLoad() {
@@ -91,11 +94,20 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
         btnCreate.tintColor = Theme.ACCENT_COLOR
         
+        //Set the initial values
+        self.gameDate = NSDate()
+        self.playersNeeded = 10
+        if self.selectedGameType == nil {
+            self.selectedGameType = self.gameTypes[0]
+        }
+        
+        //Get rid of extra space up top
         let dummyViewHeight: CGFloat = 40
         let dummyView:UIView = UIView.init(frame: CGRectMake(0, 0, self.tableView.bounds.size.width, dummyViewHeight))
         self.tableView.tableHeaderView = dummyView
         self.tableView.contentInset = UIEdgeInsetsMake(-dummyViewHeight, 0, 0, 0)
         
+        //Attempting to get rid of extra cell on bottom, not sure if this is working
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         btnMap.tintColor = Theme.ACCENT_COLOR
         
@@ -274,20 +286,21 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     //MARK: - Text Field Delegate
     
-    func textFieldDidEndEditing(textField: UITextField) {
-        self.gameNotes = textField.text
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        print("touchesBegan")
-    }
-    
-    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
+    
+    //MARK: - Text View Delegate
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        self.gameNotes = textView.text
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        self.gameNotes = textView.text
+    }
     
     //MARK: - New Game Table View Delegate
 
@@ -309,11 +322,31 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     
     //MARK: - Parse
-    func saveGameParseObject(game: Game) {
+    
+    func saveParseGameObject(game: Game) {
         
+        let gameObject = PFObject(className: "Game")
+        
+        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id)
+        gameObject["date"] = self.gameDate
+        gameObject["slotsAvailable"] = self.playersNeeded
+        gameObject["totalSlots"] = self.playersNeeded
+        let point = PFGeoPoint(latitude:self.gameLocation!.latitude, longitude: self.gameLocation!.longitude)
+        gameObject["location"] = point
+        gameObject["locationName"] = self.gameLocName
+        gameObject["gameNotes"] = self.gameNotes
+        gameObject["owner"] = PFUser.currentUser()
+        
+        gameObject.saveInBackgroundWithBlock {
+            (success: Bool, error: NSError?) -> Void in
+            if (success) {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                //TODO: Add some sort of alert to say that the game could not be saved
+            }
+        }
     }
     
-
     //MARK: - Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

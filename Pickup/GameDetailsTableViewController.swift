@@ -29,7 +29,6 @@ class GameDetailsTableViewController: UITableViewController {
     }
     
     @IBAction func addToCalendar(sender: UIButton) {
-        
         insertGameIntoCalendar()
         UIApplication.sharedApplication().openURL(NSURL(string: "calshow:\(game.eventDate.timeIntervalSinceReferenceDate)")!)
     }
@@ -41,12 +40,20 @@ class GameDetailsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        btnAddToCalendar.hidden = true
 
-        btnOpenMaps.tintColor = Theme.PRIMARY_DARK_COLOR
-        btnAddToCalendar.tintColor = Theme.PRIMARY_DARK_COLOR
+        btnOpenMaps.tintColor = Theme.ACCENT_COLOR
+        btnAddToCalendar.tintColor = Theme.ACCENT_COLOR
+        
+        if game.userJoined == true {
+            btnAddToCalendar.hidden = false
+        }
         
         lblGameNotes.text = game.gameNotes
+        if game.gameNotes == "" {
+            lblGameNotes.text = "No notes for this game"
+        }
+        
         lblGameNotes.sizeToFit()
         
         lblDay.text = DateUtilities.dateString(game.eventDate, dateFormatString: DateFormatter.MONTH_DAY_YEAR.rawValue)
@@ -106,10 +113,8 @@ class GameDetailsTableViewController: UITableViewController {
     func insertGameIntoCalendar () -> String {
         
         var resultString = ""
-        // 1
         let eventStore = EKEventStore()
         
-        // 2
         switch EKEventStore.authorizationStatusForEntityType(.Event) {
         case .Authorized:
             insertEvent(eventStore)
@@ -117,7 +122,6 @@ class GameDetailsTableViewController: UITableViewController {
         case .Denied:
             resultString = "Access denied to event store"
         case .NotDetermined:
-            // 3
             eventStore.requestAccessToEntityType(.Event, completion:
                 {[weak self] (granted: Bool, error: NSError?) -> Void in
                     if granted {

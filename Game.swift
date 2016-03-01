@@ -21,6 +21,7 @@ class Game {
     var locationName:String
     var ownerId:String
     var gameNotes:String
+    lazy var userJoined = false
     lazy var latitude:Double = 0.0
     lazy var longitude:Double = 0.0
     

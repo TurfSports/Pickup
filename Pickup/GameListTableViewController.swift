@@ -44,6 +44,8 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
         btnAddNewGame.tintColor = Theme.ACCENT_COLOR
         
     }
+    
+    //MARK: - View Lifecycle
 
     override func viewDidAppear(animated: Bool) {
         setUsersCurrentLocation()
@@ -51,6 +53,7 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
     
     
     // MARK: - Table view data source
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return sortedGames.count
     }
@@ -94,6 +97,13 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
             cell?.lblGameDate.text = relevantDateInfo(game.eventDate)
             cell?.lblDistance.text = ""
             
+            print(game.userJoined)
+            if game.userJoined == true {
+                cell?.backgroundColor = Theme.ACCENT_COLOR_LIGHT
+            } else {
+                cell?.backgroundColor = UIColor.whiteColor()
+            }
+            
             let latitude:CLLocationDegrees = game.latitude
             let longitude:CLLocationDegrees = game.longitude
             let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
@@ -102,23 +112,29 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
                     cell?.lblDistance.text = "\(distance) mi"
                 }
             }
-            
-        
         }
+        
         return cell!
     }
     
     //MARK: - Parse
+    
     private func loadGamesFromParse() {
         let gameQuery = PFQuery(className: "Game")
         gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+        
         gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameObjects = objects {
-                
                 self.games.removeAll(keepCapacity: true)
-                
                 for gameObject in gameObjects {
                     let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
+                    
+                    if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
+                        if joinedGames.containsObject(game.id) {
+                            game.userJoined = true
+                        }
+                    }
+                    
                     self.games.append(game)
                 }
             }
@@ -130,6 +146,7 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
 
     
     //MARK: - Navigation
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
     }

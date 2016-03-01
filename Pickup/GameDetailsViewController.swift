@@ -21,7 +21,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     
     var game: Game!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +30,11 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         lblLocationName.text = game.locationName
         lblOpenings.text = ("\(game.availableSlots) openings")
         
+        if game.userJoined == true {
+            btnJoinGame.title = "Leave Game"
+        } else {
+            btnJoinGame.title = "Join Game"
+        }
         
         imgGameType.image = UIImage(named: game.gameType.imageName)
         
@@ -42,10 +46,11 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         //Get the PFObject for game
         //Add the current user as a player in the game
         let title = self.btnJoinGame.title
+        
         var message = "Are you sure you want to join this game?"
         var alertTitle = "Join"
-        
-        if title == "Leave Game" {
+
+        if game.userJoined == true {
             message = "Are you sure you want to leave this game?"
             alertTitle = "Leave"
         }
@@ -56,12 +61,21 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default,handler: nil))
         alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.Default, handler: { action in
             
-            if self.btnJoinGame.title == "Join Game" {
+            if self.game.userJoined == false {
+                //Join user to game
                 self.joinPFUserToPFGame()
+                self.addGameToUserDefaults()
+                self.game.availableSlots += -1
                 self.adjustScreenForJoinedUser()
+                self.game.userJoined = !self.game.userJoined
             } else {
+                //Remove user from game
                 self.removePFUserFromPFGame()
+                self.removeGameFromUserDefaults()
+                self.game.userJoined = !self.game.userJoined
+                self.game.availableSlots += 1
                 self.adjustScreenForLeavingUser()
+
             }
 
         }))
@@ -78,15 +92,25 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     
     func adjustScreenForJoinedUser() {
         self.btnJoinGame.title = "Leave Game"
-        lblOpenings.text = ("\(game.availableSlots - 1) openings")
+        lblOpenings.text = ("\(game.availableSlots) openings")
+        
+        if let gameDetailsTableViewController = self.childViewControllers.first as? GameDetailsTableViewController {
+            gameDetailsTableViewController.btnAddToCalendar.hidden = false
+        }
+
     }
     
     func adjustScreenForLeavingUser() {
         self.btnJoinGame.title = "Join Game"
         lblOpenings.text = ("\(game.availableSlots) openings")
+        
+        if let gameDetailsTableViewController = self.childViewControllers.first as? GameDetailsTableViewController {
+            gameDetailsTableViewController.btnAddToCalendar.hidden = true
+        }
+        
     }
     
-    //MARK: - Load game from parse
+    //MARK: - Parse
     private func joinPFUserToPFGame() {
         let gameQuery = PFQuery(className: "Game")
         gameQuery.whereKey("objectId", equalTo: self.game.id)
@@ -99,6 +123,12 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
                 let currentUser = PFUser.currentUser()
                 let gameRelations = object?.relationForKey("players")
                 gameRelations?.addObject(currentUser!)
+                
+                //Decrement slots available
+                var slotsAvailable = object?["slotsAvailable"] as! Int
+                slotsAvailable += -1
+                object?["slotsAvailable"] = slotsAvailable
+                
                 object?.saveInBackground()
             }
         }
@@ -118,7 +148,40 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
                 let gameRelations = object?.relationForKey("players")
                 gameRelations?.removeObject(currentUser!)
                 object?.saveInBackground()
+                
+                //Increment slots available
+                var slotsAvailable = object?["slotsAvailable"] as! Int
+                slotsAvailable += 1
+                object?["slotsAvailable"] = slotsAvailable
             }
+        }
+        
+    }
+    
+    //MARK: - User Defaults
+    
+    private func addGameToUserDefaults() {
+        
+        if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
+            let gameIdArray = joinedGames.mutableCopy()
+            gameIdArray.addObject(game.id)
+            print(gameIdArray)
+            NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
+        } else {
+            var gameIdArray: [String] = []
+            gameIdArray.append(game.id)
+            NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
+        }
+        
+    }
+    
+    private func removeGameFromUserDefaults() {
+        
+        if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
+            let gameIdArray = joinedGames.mutableCopy()
+            gameIdArray.removeObject(game.id)
+            print(gameIdArray)
+            NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
         }
         
     }

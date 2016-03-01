@@ -14,6 +14,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
 
     let ANNOTATION_ID = "Pin"
     let SEGUE_NEW_GAME = "showNewGameTableViewController"
+    let PRESS_DURATION = 1.0
     
     var newGameTableViewDelegate: NewGameTableViewDelegate?
     
@@ -25,6 +26,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     @IBOutlet weak var newGameMap: MKMapView!
     @IBOutlet weak var btnSaveLocation: UIBarButtonItem!
     @IBOutlet weak var btnCancel: UIBarButtonItem!
+    @IBOutlet weak var lblPressAndHoldTip: UILabel!
     
     
     let locationManager = CLLocationManager()
@@ -54,8 +56,9 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
         btnSaveLocation.tintColor = Theme.ACCENT_COLOR
-        print(address)
+        
         setGestureRecognizer()
         setUsersCurrentLocation()
     }
@@ -73,7 +76,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("error:: \(error)")
+//        print("error:: \(error)")
     }
     
     func setUsersCurrentLocation() {
@@ -123,7 +126,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     func setGestureRecognizer() {
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "action:")
         
-        longPressGestureRecognizer.minimumPressDuration = 1.5
+        longPressGestureRecognizer.minimumPressDuration = PRESS_DURATION
         newGameMap.addGestureRecognizer(longPressGestureRecognizer)
     }
     
@@ -132,6 +135,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         let touchPoint = gestureRecognizer.locationInView(self.newGameMap)
         let coordinate: CLLocationCoordinate2D = newGameMap.convertPoint(touchPoint, toCoordinateFromView: self.newGameMap)
         
+        lblPressAndHoldTip.hidden = true
         removePreviousAnnotation()
         setAnnotation(coordinate)
         
@@ -186,7 +190,6 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         })
         
     }
-    
     
     //MARK: - Bar Positioning Delegate
     
