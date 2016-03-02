@@ -46,6 +46,7 @@
 		02EFBF561C6BEB9B001774A2 /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EFBF551C6BEB9B001774A2 /* GameTableViewCell.swift */; };
 		02F08F381C529FEE00A76EFB /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F371C529FEE00A76EFB /* Game.swift */; };
 		02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F391C52A5ED00A76EFB /* Player.swift */; };
+		02F269591C87A37300D46519 /* MyGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F269581C87A37300D46519 /* MyGamesViewController.swift */; };
 		02F5D0101C84C12F00A95B92 /* ModalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F5D00F1C84C12F00A95B92 /* ModalProtocol.swift */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +92,7 @@
 		02EFBF551C6BEB9B001774A2 /* GameTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTableViewCell.swift; sourceTree = "<group>"; };
 		02F08F371C529FEE00A76EFB /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = ../Game.swift; sourceTree = "<group>"; };
 		02F08F391C52A5ED00A76EFB /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		02F269581C87A37300D46519 /* MyGamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyGamesViewController.swift; sourceTree = "<group>"; };
 		02F5D00F1C84C12F00A95B92 /* ModalProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -205,6 +207,7 @@
 		02ED11EB1C518FFF001923EB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				02F269581C87A37300D46519 /* MyGamesViewController.swift */,
 				02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */,
 				02DB6FF21C7415E800FF5C20 /* GameListTableViewController.swift */,
 				02DB6FF01C74153F00FF5C20 /* GameMapViewController.swift */,
@@ -304,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02F269591C87A37300D46519 /* MyGamesViewController.swift in Sources */,
 				025330F71C56FAA600B6ABDD /* Theme.swift in Sources */,
 				02F5D0101C84C12F00A95B92 /* ModalProtocol.swift in Sources */,
 				02947B4E1C6FAB9200283778 /* PlayerTypeConverter.swift in Sources */,

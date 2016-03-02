@@ -25,8 +25,6 @@ class Game {
     lazy var latitude:Double = 0.0
     lazy var longitude:Double = 0.0
     
-//    lazy var players:[String: Player] = [:]
-    
     init (id: String, gameType: GameType, totalSlots: Int,
         availableSlots: Int, eventDate: NSDate, locationName: String,
         ownerId: String, gameNotes: String) {
