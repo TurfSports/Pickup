@@ -14,7 +14,6 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
 
     let ANNOTATION_ID = "Pin"
     let SEGUE_NEW_GAME = "showNewGameTableViewController"
-    let PRESS_DURATION = 0.75
     
     var newGameTableViewDelegate: NewGameTableViewDelegate?
     
@@ -26,7 +25,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     @IBOutlet weak var newGameMap: MKMapView!
     @IBOutlet weak var btnSaveLocation: UIBarButtonItem!
     @IBOutlet weak var btnCancel: UIBarButtonItem!
-    @IBOutlet weak var lblPressAndHoldTip: UILabel!
+    @IBOutlet weak var lblTapTip: UILabel!
     
     
     let locationManager = CLLocationManager()
@@ -58,6 +57,11 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
         btnSaveLocation.tintColor = Theme.ACCENT_COLOR
+        
+        if self.gameLocation != nil {
+            btnSaveLocation.title = "Change Location"
+            //TODO: Drop geo point of currently selected location
+        }
         
         setGestureRecognizer()
         setUsersCurrentLocation()
@@ -124,10 +128,8 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     //MARK: - Gesture recognizer
     func setGestureRecognizer() {
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "action:")
-        
-        longPressGestureRecognizer.minimumPressDuration = PRESS_DURATION
-        newGameMap.addGestureRecognizer(longPressGestureRecognizer)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "action:")
+        newGameMap.addGestureRecognizer(tapGestureRecognizer)
     }
     
     func action(gestureRecognizer: UIGestureRecognizer) {
@@ -135,7 +137,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         let touchPoint = gestureRecognizer.locationInView(self.newGameMap)
         let coordinate: CLLocationCoordinate2D = newGameMap.convertPoint(touchPoint, toCoordinateFromView: self.newGameMap)
         
-        lblPressAndHoldTip.hidden = true
+        lblTapTip.hidden = true
         removePreviousAnnotation()
         setAnnotation(coordinate)
         

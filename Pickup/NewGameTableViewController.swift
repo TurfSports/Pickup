@@ -42,7 +42,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     var gameLocation: CLLocationCoordinate2D?
     var gameNotes: String? = ""
     
-    
     var gameTypes: [GameType]!
     var address: String? {
         didSet {
@@ -80,11 +79,13 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         txtGameNotes.delegate = self
         txtLocationName.delegate = self
+        txtLocationName.enabled = false
         txtLocationName.hidden = true
         
         if address != nil {
@@ -291,6 +292,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         return true
     }
     
+    func textFieldDidBeginEditing(textField: UITextField) {
+        textField.selectAll(self)
+    }
+    
+
+    
     
     //MARK: - Text View Delegate
     
@@ -302,6 +309,14 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.gameNotes = textView.text
     }
     
+    func textViewDidBeginEditing(textView: UITextView) {
+        if textView.text == "Add notes..." {
+            textView.text = ""
+        }
+    }
+    
+
+    
     //MARK: - New Game Table View Delegate
 
     func setGameLocationCoordinate(coordinate: CLLocationCoordinate2D) {
@@ -309,10 +324,17 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     func setGameLocationName(locationName: String) {
+        
         txtLocationName.hidden = false
-        gameLocName = locationName
+        txtLocationName.enabled = true
+        txtLocationName.text = ""
+        self.gameLocName = locationName
         txtLocationName.text = locationName
         txtLocationName.becomeFirstResponder()
+    }
+    
+    func setLocationTitle() {
+        txtLocationName.text = self.gameLocName
     }
     
     func setGameAddress(address: String) {
@@ -374,6 +396,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         if segue.identifier == SEGUE_NEW_GAME_MAP {
             let newGameMapViewController = segue.destinationViewController as? NewGameMapViewController
             newGameMapViewController?.newGameTableViewDelegate = self
+            if self.gameLocName != nil && self.gameLocation != nil {
+                newGameMapViewController?.locationName = self.gameLocName!
+                newGameMapViewController?.gameLocation = self.gameLocation!
+            }
+            
         }
     }
     
