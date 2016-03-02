@@ -24,31 +24,32 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
     var games:[Game] = []
     var sortedGames:[[Game]] = [[]]
     let locationManager = CLLocationManager()
-    var currentLocation:CLLocation?
+    var currentLocation:CLLocation? {
+        didSet {
+            loadGamesFromParse()
+        }
+    }
     
     @IBOutlet weak var btnAddNewGame: UIBarButtonItem!
     @IBOutlet weak var tableGameList: UITableView!
     @IBOutlet weak var btnViewMap: UIBarButtonItem!
     @IBOutlet weak var toolBar: UIToolbar!
     
-    //MARK: - Table View Lifecycle Management
+    //MARK: - View Lifecycle Management
     override func viewDidLoad() {
         super.viewDidLoad()
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
-        loadGamesFromParse()
+        setUsersCurrentLocation()
         
         self.title = selectedGameType.displayName
         
-
         btnViewMap.tintColor = Theme.PRIMARY_DARK_COLOR
         btnAddNewGame.tintColor = Theme.ACCENT_COLOR
         
     }
     
-    //MARK: - View Lifecycle
-
     override func viewDidAppear(animated: Bool) {
-        setUsersCurrentLocation()
+        self.tableGameList.reloadData()
     }
     
     
@@ -98,9 +99,11 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
             cell?.lblDistance.text = ""
             
             if game.userJoined == true {
-                cell?.backgroundColor = Theme.ACCENT_COLOR_LIGHT
+                cell?.lblJoined.hidden = false
+                cell?.imgCheckCircle.hidden = false
             } else {
-                cell?.backgroundColor = UIColor.whiteColor()
+                cell?.lblJoined.hidden = true
+                cell?.imgCheckCircle.hidden = true
             }
             
             let latitude:CLLocationDegrees = game.latitude
@@ -120,7 +123,12 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
     
     private func loadGamesFromParse() {
         let gameQuery = PFQuery(className: "Game")
+        let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
+        
         gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+        gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:15.0)
+        gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
+        gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
         
         gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameObjects = objects {
@@ -152,15 +160,18 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
+            
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
             if let indexPath = tableGameList.indexPathForSelectedRow {
                 gameDetailsViewController.game = sortedGames[indexPath.section][indexPath.row]
             }
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
+            
         } else if segue.identifier == SEGUE_SHOW_GAMES_MAP {
             let gameMapViewController = segue.destinationViewController as! GameMapViewController
             gameMapViewController.games = self.games
             gameMapViewController.selectedGameType = self.selectedGameType
+            
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
             let navigationController = segue.destinationViewController as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
@@ -272,7 +283,9 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
     //TODO: Make the returned result an enum. Abstract out to Date Utilities
     func dateCompare(eventDate: NSDate) -> String {
         
-        let dateComparisonResult:NSComparisonResult = NSDate().compare(eventDate)
+        let dateToday: NSDate = NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60)
+        
+        let dateComparisonResult:NSComparisonResult = dateToday.compare(eventDate)
         var resultString:String = ""
         
         if dateComparisonResult == NSComparisonResult.OrderedAscending || dateComparisonResult == NSComparisonResult.OrderedSame

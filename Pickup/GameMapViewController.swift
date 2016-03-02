@@ -27,19 +27,22 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.title = "Today's Games"
         computeViewSettings()
         
-        
         for game in games {
-            let location = setLocationOnMap(game.latitude, longitude: game.longitude)
             
-            let annotation = GamePointAnnotation()
-            annotation.coordinate = location
-            annotation.title = game.locationName
-            annotation.subtitle = DateUtilities.dateString(game.eventDate,
-                dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue) - \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
-            annotation.game = game
-            gameMap.addAnnotation(annotation)
+            if NSCalendar.currentCalendar().compareDate(game.eventDate, toDate: NSDate(), toUnitGranularity: .Day) == NSComparisonResult.OrderedSame {
+                let location = setLocationOnMap(game.latitude, longitude: game.longitude)
+                
+                let annotation = GamePointAnnotation()
+                annotation.coordinate = location
+                annotation.title = game.locationName
+                annotation.subtitle = DateUtilities.dateString(game.eventDate,
+                    dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue) - \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+                annotation.game = game
+                gameMap.addAnnotation(annotation)
+            }
         }
         
     }
@@ -51,7 +54,6 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
         var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(ANNOTATION_ID) as? MKPinAnnotationView
         
         if pinView == nil {
-            //println("Pinview was nil")
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: ANNOTATION_ID)
             pinView!.canShowCallout = true
             pinView!.animatesDrop = true

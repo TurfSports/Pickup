@@ -164,7 +164,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
             let gameIdArray = joinedGames.mutableCopy()
-            print(gameIdArray)
+            gameIdArray.addObject(game.id)
             NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
         } else {
             var gameIdArray: [String] = []

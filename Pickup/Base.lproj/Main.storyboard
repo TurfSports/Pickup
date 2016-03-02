@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -107,15 +108,19 @@
                     <navigationItem key="navigationItem" title="Pickup" id="cMr-sO-ctt">
                         <barButtonItem key="backBarButtonItem" title="Sports" id="XKZ-fm-dPh"/>
                         <barButtonItem key="leftBarButtonItem" title="My Games" id="NSb-I1-dsB"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="z7y-KW-e6G">
-                            <connections>
-                                <segue destination="d1I-4M-Fr0" kind="presentation" identifier="showNewGameTableViewController" modalTransitionStyle="flipHorizontal" id="g09-s2-G55"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="z7y-KW-e6G">
+                                <connections>
+                                    <segue destination="d1I-4M-Fr0" kind="presentation" identifier="showNewGameTableViewController" modalTransitionStyle="flipHorizontal" id="g09-s2-G55"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="settingsIcon" id="8zz-2e-Ilk"/>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="addNewGameButton" destination="z7y-KW-e6G" id="JTW-kE-ilv"/>
+                        <outlet property="settingsButton" destination="8zz-2e-Ilk" id="TYa-pl-wvA"/>
                         <segue destination="Q6f-CY-rt6" kind="show" identifier="showGamesTableViewController" id="PR9-um-aFv"/>
                     </connections>
                 </tableViewController>
@@ -602,7 +607,7 @@
             </objects>
             <point key="canvasLocation" x="2014.5" y="1757.5"/>
         </scene>
-        <!--Game Map View Controller-->
+        <!--Today's Games-->
         <scene sceneID="h30-3u-LKp">
             <objects>
                 <viewController id="JgN-wE-xAG" customClass="GameMapViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
@@ -629,7 +634,7 @@
                             <constraint firstItem="gmh-LT-dSr" firstAttribute="top" secondItem="Jpu-uH-8no" secondAttribute="bottom" id="teN-xS-tWf"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="I2A-vl-IxY">
+                    <navigationItem key="navigationItem" title="Today's Games" id="I2A-vl-IxY">
                         <barButtonItem key="backBarButtonItem" title="Map" id="oAs-Ib-rvz"/>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
@@ -658,56 +663,105 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="75" id="gp4-Rg-32C" customClass="GameTableViewCell" customModule="Pickup" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="114" width="375" height="75"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="94" id="gp4-Rg-32C" customClass="GameTableViewCell" customModule="Pickup" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="114" width="375" height="94"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gp4-Rg-32C" id="Str-Se-foR">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="swf-Tv-esR">
-                                                    <rect key="frame" x="8" y="15" width="70" height="22"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <rect key="frame" x="8" y="12" width="78" height="24"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p40-ZK-dFh">
-                                                    <rect key="frame" x="307" y="28" width="60" height="18"/>
+                                                    <rect key="frame" x="8" y="58" width="60" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ThM-R7-UiJ">
-                                                    <rect key="frame" x="8" y="41" width="33" height="18"/>
+                                                    <rect key="frame" x="8" y="38" width="33" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkcircleIcon" translatesAutoresizingMaskIntoConstraints="NO" id="YDl-Uc-fea">
+                                                    <rect key="frame" x="343" y="35" width="24" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="gjr-OG-3jt"/>
+                                                        <constraint firstAttribute="height" constant="24" id="xE9-aX-GQB"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joined" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Oo-95-INf">
+                                                    <rect key="frame" x="289" y="38" width="46" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                                    <color key="textColor" red="0.30588235289999999" green="0.36862745099999999" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="ThM-R7-UiJ" secondAttribute="bottom" id="4MT-eY-mIH"/>
-                                                <constraint firstItem="swf-Tv-esR" firstAttribute="leading" secondItem="Str-Se-foR" secondAttribute="leadingMargin" id="Grq-Ng-8Ie"/>
+                                                <constraint firstItem="YDl-Uc-fea" firstAttribute="centerY" secondItem="p40-ZK-dFh" secondAttribute="centerY" id="6eu-Ja-iXa"/>
+                                                <constraint firstItem="p40-ZK-dFh" firstAttribute="leading" secondItem="YDl-Uc-fea" secondAttribute="trailing" constant="8" id="6jC-ls-jPa"/>
+                                                <constraint firstItem="p40-ZK-dFh" firstAttribute="leading" secondItem="ThM-R7-UiJ" secondAttribute="leading" id="E8p-rF-8Vw"/>
+                                                <constraint firstItem="p40-ZK-dFh" firstAttribute="top" secondItem="ThM-R7-UiJ" secondAttribute="bottom" constant="2" id="G5k-W3-RcU"/>
                                                 <constraint firstItem="ThM-R7-UiJ" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" id="Hue-Bs-fVq"/>
-                                                <constraint firstItem="ThM-R7-UiJ" firstAttribute="top" secondItem="swf-Tv-esR" secondAttribute="bottom" constant="4" id="S9V-a3-uqj"/>
-                                                <constraint firstItem="swf-Tv-esR" firstAttribute="top" secondItem="Str-Se-foR" secondAttribute="top" constant="15" id="Xw5-df-fX3"/>
+                                                <constraint firstItem="p40-ZK-dFh" firstAttribute="top" secondItem="ThM-R7-UiJ" secondAttribute="bottom" constant="3" id="IxC-3Y-fcj"/>
+                                                <constraint firstItem="YDl-Uc-fea" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" id="Mwh-6R-q1P"/>
+                                                <constraint firstItem="p40-ZK-dFh" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" id="OQH-mn-VdV"/>
+                                                <constraint firstItem="YDl-Uc-fea" firstAttribute="leading" secondItem="5Oo-95-INf" secondAttribute="trailing" constant="5" id="Q4p-c9-bwI"/>
+                                                <constraint firstItem="ThM-R7-UiJ" firstAttribute="top" secondItem="swf-Tv-esR" secondAttribute="bottom" constant="2" id="S9V-a3-uqj"/>
                                                 <constraint firstItem="p40-ZK-dFh" firstAttribute="leading" secondItem="ThM-R7-UiJ" secondAttribute="trailing" constant="29" id="ZCM-na-Ins"/>
-                                                <constraint firstItem="p40-ZK-dFh" firstAttribute="trailing" secondItem="Str-Se-foR" secondAttribute="trailingMargin" id="cDp-nk-Qiz"/>
-                                                <constraint firstItem="ThM-R7-UiJ" firstAttribute="leading" secondItem="swf-Tv-esR" secondAttribute="leading" id="jcL-l1-oKF"/>
-                                                <constraint firstItem="p40-ZK-dFh" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" id="m2Y-2i-esT"/>
+                                                <constraint firstItem="YDl-Uc-fea" firstAttribute="centerY" secondItem="ThM-R7-UiJ" secondAttribute="centerY" id="ZI3-FR-1ir"/>
+                                                <constraint firstItem="ThM-R7-UiJ" firstAttribute="top" secondItem="swf-Tv-esR" secondAttribute="bottom" constant="1" id="Za4-sM-87k"/>
+                                                <constraint firstItem="5Oo-95-INf" firstAttribute="baseline" secondItem="ThM-R7-UiJ" secondAttribute="baseline" id="dII-Fx-WTw"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="YDl-Uc-fea" secondAttribute="trailing" id="hfT-ZE-Ivj"/>
+                                                <constraint firstItem="ThM-R7-UiJ" firstAttribute="top" secondItem="swf-Tv-esR" secondAttribute="bottom" constant="2" id="ivJ-o8-VDg"/>
+                                                <constraint firstItem="ThM-R7-UiJ" firstAttribute="leading" secondItem="swf-Tv-esR" secondAttribute="leading" id="jkj-AQ-e1p"/>
                                                 <constraint firstItem="swf-Tv-esR" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" id="oIR-me-nUS"/>
+                                                <constraint firstItem="YDl-Uc-fea" firstAttribute="leading" secondItem="5Oo-95-INf" secondAttribute="trailing" constant="8" id="sYC-Sf-pfg"/>
+                                                <constraint firstItem="p40-ZK-dFh" firstAttribute="trailing" secondItem="YDl-Uc-fea" secondAttribute="trailing" id="u1F-j0-tJE"/>
+                                                <constraint firstItem="5Oo-95-INf" firstAttribute="centerY" secondItem="YDl-Uc-fea" secondAttribute="centerY" id="wJ9-HU-xqd"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="oIR-me-nUS"/>
                                                     <exclude reference="4MT-eY-mIH"/>
                                                     <exclude reference="Hue-Bs-fVq"/>
+                                                    <exclude reference="S9V-a3-uqj"/>
+                                                    <exclude reference="Za4-sM-87k"/>
+                                                    <exclude reference="6jC-ls-jPa"/>
+                                                    <exclude reference="IxC-3Y-fcj"/>
+                                                    <exclude reference="OQH-mn-VdV"/>
                                                     <exclude reference="ZCM-na-Ins"/>
+                                                    <exclude reference="u1F-j0-tJE"/>
+                                                    <exclude reference="dII-Fx-WTw"/>
+                                                    <exclude reference="6eu-Ja-iXa"/>
+                                                    <exclude reference="Q4p-c9-bwI"/>
+                                                    <exclude reference="ZI3-FR-1ir"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstItem="swf-Tv-esR" firstAttribute="top" secondItem="gp4-Rg-32C" secondAttribute="top" constant="12" id="Apf-Gb-1Ou"/>
+                                            <constraint firstItem="swf-Tv-esR" firstAttribute="leading" secondItem="gp4-Rg-32C" secondAttribute="leading" constant="8" id="N4m-jV-kGY"/>
+                                            <constraint firstAttribute="trailing" secondItem="YDl-Uc-fea" secondAttribute="trailing" constant="8" id="Xg3-jg-UY0"/>
+                                            <constraint firstAttribute="trailing" secondItem="p40-ZK-dFh" secondAttribute="trailing" constant="8" id="h5C-YR-03U"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="h5C-YR-03U"/>
+                                                <exclude reference="Xg3-jg-UY0"/>
+                                            </mask>
+                                        </variation>
                                         <connections>
+                                            <outlet property="imgCheckCircle" destination="YDl-Uc-fea" id="LO9-Vn-YUg"/>
                                             <outlet property="lblDistance" destination="p40-ZK-dFh" id="Upa-G5-6PA"/>
                                             <outlet property="lblGameDate" destination="ThM-R7-UiJ" id="pcp-Y6-E1S"/>
+                                            <outlet property="lblJoined" destination="5Oo-95-INf" id="0me-Gx-Q1X"/>
                                             <outlet property="lblLocationName" destination="swf-Tv-esR" id="dLE-ZO-3Uq"/>
                                         </connections>
                                     </tableViewCell>
@@ -1134,9 +1188,11 @@
     </scenes>
     <resources>
         <image name="basketballIcon" width="100" height="100"/>
+        <image name="checkcircleIcon" width="48" height="48"/>
+        <image name="settingsIcon" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gsA-UD-Nep"/>
-        <segue reference="J4I-yY-pBk"/>
+        <segue reference="g09-s2-G55"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -14,7 +14,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
 
     let ANNOTATION_ID = "Pin"
     let SEGUE_NEW_GAME = "showNewGameTableViewController"
-    let PRESS_DURATION = 1.0
+    let PRESS_DURATION = 0.75
     
     var newGameTableViewDelegate: NewGameTableViewDelegate?
     

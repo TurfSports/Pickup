@@ -8,8 +8,9 @@
 
 import UIKit
 import Parse
+import CoreLocation
 
-class HomeTableViewController: UITableViewController {
+class HomeTableViewController: UITableViewController, CLLocationManagerDelegate {
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
@@ -20,19 +21,29 @@ class HomeTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
+    let locationManager = CLLocationManager()
+    var currentLocation:CLLocation? {
+        didSet {
+            loadGameTypesFromParse()
+        }
+    }
     
     @IBOutlet weak var addNewGameButton: UIBarButtonItem!
-
+    @IBOutlet weak var settingsButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         addNewGameButton.tintColor = Theme.ACCENT_COLOR
+        settingsButton.tintColor = Theme.PRIMARY_LIGHT_COLOR
         self.navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
-        loadGameTypesFromParse()
+        
+        setUsersCurrentLocation()
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(false)
-
+        self.tableView.reloadData()
     }
     
     // MARK: - Table view data source
@@ -52,6 +63,7 @@ class HomeTableViewController: UITableViewController {
         
         cell?.lblSport.text = gameType.displayName
         cell?.imgSport.image = UIImage(named: gameType.imageName)
+        
         if self.gameCountLoaded {
             if gameType.gameCount > 0 {
                 cell?.lblAvailableGames.text = "\(gameType.gameCount) games"
@@ -70,7 +82,9 @@ class HomeTableViewController: UITableViewController {
         return Theme.GAME_TYPE_CELL_HEIGHT
     }
 
-
+    
+    //MARK: - Parse
+    
     private func loadGameTypesFromParse() {
         let gameTypeQuery = PFQuery(className: "GameType")
         gameTypeQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -83,8 +97,12 @@ class HomeTableViewController: UITableViewController {
                     
                     let gameQuery = PFQuery(className: "Game")
                     gameQuery.whereKey("gameType", equalTo: gameTypeObject)
-                    gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate())
+                    gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
                     gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
+
+                    let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
+                    
+                    gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:15.0)
                     
                     let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
                     
@@ -101,6 +119,31 @@ class HomeTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
+    
+    //MARK: - Location Manager Delegate
+
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        let location:CLLocationCoordinate2D = manager.location!.coordinate
+        currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        
+        if currentLocation != nil {
+            locationManager.stopUpdatingLocation()
+        }
+        
+        self.tableView.reloadData()
+    }
+    
+    func setUsersCurrentLocation() {
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
 
     // MARK: - Navigation
 

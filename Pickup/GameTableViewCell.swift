@@ -14,7 +14,8 @@ class GameTableViewCell: UITableViewCell {
     @IBOutlet weak var lblLocationName: UILabel!
     @IBOutlet weak var lblDistance: UILabel!
     @IBOutlet weak var lblGameDate: UILabel!
-
+    @IBOutlet weak var imgCheckCircle: UIImageView!
+    @IBOutlet weak var lblJoined: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

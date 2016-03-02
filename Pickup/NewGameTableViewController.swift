@@ -40,7 +40,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     var gameLocName: String?
     var gameDate: NSDate?
     var gameLocation: CLLocationCoordinate2D?
-    var gameNotes: String?
+    var gameNotes: String? = ""
     
     
     var gameTypes: [GameType]!
@@ -329,22 +329,43 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id)
         gameObject["date"] = self.gameDate
-        gameObject["slotsAvailable"] = self.playersNeeded
-        gameObject["totalSlots"] = self.playersNeeded
         let point = PFGeoPoint(latitude:self.gameLocation!.latitude, longitude: self.gameLocation!.longitude)
         gameObject["location"] = point
         gameObject["locationName"] = self.gameLocName
         gameObject["gameNotes"] = self.gameNotes
         gameObject["owner"] = PFUser.currentUser()
+        gameObject.relationForKey("players").addObject(PFUser.currentUser()!)
+        gameObject["totalSlots"] = self.playersNeeded
+        gameObject["slotsAvailable"] = self.playersNeeded! - 1
         
         gameObject.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in
             if (success) {
+                let gameId = gameObject.objectId! as String
+                print(gameId)
+                self.addGameToUserDefaults(gameId)
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 //TODO: Add some sort of alert to say that the game could not be saved
             }
         }
+    }
+    
+    //MARK: - User Defaults
+    
+    private func addGameToUserDefaults(gameId: String) {
+        
+        if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
+            let gameIdArray = joinedGames.mutableCopy()
+            gameIdArray.addObject(gameId)
+            print(gameIdArray)
+            NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
+        } else {
+            var gameIdArray: [String] = []
+            gameIdArray.append(gameId)
+            NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
+        }
+        
     }
     
     //MARK: - Navigation
@@ -356,5 +377,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
     }
     
+
 
 }
