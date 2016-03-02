@@ -45,6 +45,8 @@ class GameDetailsTableViewController: UITableViewController {
         btnOpenMaps.tintColor = Theme.ACCENT_COLOR
         btnAddToCalendar.tintColor = Theme.ACCENT_COLOR
         
+        self.tableView.tableFooterView = UIView.init(frame: CGRectZero)
+        
         if game.userJoined == true {
             btnAddToCalendar.hidden = false
         }
