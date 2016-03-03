@@ -21,6 +21,8 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     var locationName = ""
     var gameLocation: CLLocationCoordinate2D?
     
+    var locationStatus: LocationStatus = .LOCATION_NOT_SET
+    let rightNavBarButtonTitle: [LocationStatus: String] = [.LOCATION_NOT_SET: "Set Location", .LOCATION_SET: "Change Location"]
     
     @IBOutlet weak var newGameMap: MKMapView!
     @IBOutlet weak var btnSaveLocation: UIBarButtonItem!
@@ -58,13 +60,19 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
         btnSaveLocation.tintColor = Theme.ACCENT_COLOR
         
-        if self.gameLocation != nil {
-            btnSaveLocation.title = "Change Location"
-            //TODO: Drop geo point of currently selected location
+        setUsersCurrentLocation()
+        setUpMapScreen()
+    }
+    
+    private func setUpMapScreen() {
+        
+        btnSaveLocation.title = rightNavBarButtonTitle[locationStatus]!
+        if locationStatus == .LOCATION_SET {
+            //dropGameAnnotation
+        } else {
+            setGestureRecognizer()
         }
         
-        setGestureRecognizer()
-        setUsersCurrentLocation()
     }
 
     //MARK: - Location Manager Delegate

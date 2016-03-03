@@ -33,6 +33,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var txtLocationName: UITextField!
     
+    var gameStatus = GameStatus.CREATE
+    let editButtonTitle: [GameStatus: String] = [.CREATE: "Create", .EDIT: "Save"]
     
     //For saving to parse
     var selectedGameType: GameType!
@@ -130,7 +132,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         numberOfPlayersPicker.selectRow(10 - MIN_PLAYERS, inComponent: 0, animated: false)
         
         //Round to nearest five minutes increment
-        lblDate.text = DateUtilities.dateString(NSDate(), dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+        self.datePicker.date = earliestSuggestedGameTime()
+        lblDate.text = DateUtilities.dateString(self.datePicker.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
         
     }
     
@@ -364,7 +367,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             (success: Bool, error: NSError?) -> Void in
             if (success) {
                 let gameId = gameObject.objectId! as String
-                print(gameId)
                 self.addGameToUserDefaults(gameId)
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
@@ -380,7 +382,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
             let gameIdArray = joinedGames.mutableCopy()
             gameIdArray.addObject(gameId)
-            print(gameIdArray)
             NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
         } else {
             var gameIdArray: [String] = []
@@ -390,12 +391,35 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
     }
     
+    //MARK: - Date Time
+    
+    func earliestSuggestedGameTime() -> NSDate {
+        let calendar = NSCalendar.currentCalendar()
+        let date = NSDate()
+        let minuteComponent = calendar.components([.Minute], fromDate: date)
+        let remainder = minuteComponent.minute % 10
+        let minutesToAdd: Int
+        if remainder < 5 {
+            minutesToAdd = 10 - remainder
+        } else {
+            minutesToAdd = 15 - remainder
+        }
+        
+        let components = NSDateComponents()
+        components.minute = minutesToAdd
+        return calendar.dateByAddingComponents(components, toDate: date, options: .MatchFirst)!
+    }
+    
     //MARK: - Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
         if segue.identifier == SEGUE_NEW_GAME_MAP {
+            
             let newGameMapViewController = segue.destinationViewController as? NewGameMapViewController
+            
             newGameMapViewController?.newGameTableViewDelegate = self
+            
             if self.gameLocName != nil && self.gameLocation != nil {
                 newGameMapViewController?.locationName = self.gameLocName!
                 newGameMapViewController?.gameLocation = self.gameLocation!

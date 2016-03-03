@@ -131,9 +131,18 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
     
     //MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
+            
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
             gameDetailsViewController.game = self.selectedGame
+            
+            if self.selectedGame.userJoined == true {
+                gameDetailsViewController.userStatus = .USER_JOINED
+            } else {
+                gameDetailsViewController.userStatus = .USER_NOT_JOINED
+            }
+            
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
             
         }

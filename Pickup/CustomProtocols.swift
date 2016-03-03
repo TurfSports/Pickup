@@ -1,5 +1,5 @@
 //
-//  ModalProtocol.swift
+//  CustomProtocols.swift
 //  Pickup
 //
 //  Created by Nathan Dudley on 2/29/16.
@@ -13,4 +13,8 @@ protocol NewGameTableViewDelegate {
     func setGameLocationCoordinate(coordinate: CLLocationCoordinate2D)
     func setGameAddress(address: String)
     func setGameLocationName(locationName: String)
+}
+
+protocol MyGamesTableViewDelegate {
+    func removeGame(game: Game)
 }

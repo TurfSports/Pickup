@@ -18,8 +18,20 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var lblOpenings: UILabel!
     @IBOutlet weak var imgGameType: UIImageView!
     @IBOutlet weak var btnJoinGame: UIBarButtonItem!
+    @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var btnCancelGame: UIBarButtonItem!
+    
+    
+    var myGamesTableViewDelegate: MyGamesTableViewDelegate?
+    
+    let navBarButtonTitleOptions: [UserStatus: String] = [.USER_NOT_JOINED: "Join Game", .USER_JOINED: "Leave Game", .USER_OWNED: "Edit Game"]
+    let bottomBarVisible: [UserStatus: Bool] = [.USER_NOT_JOINED: false, .USER_JOINED: false, .USER_OWNED: true]
+    let alertAction: [UserStatus: String] = [.USER_NOT_JOINED: "join", .USER_JOINED: "leave", .USER_OWNED: "cancel"]
+    let alertTitle: [UserStatus: String] = [.USER_NOT_JOINED: "Join", .USER_JOINED: "Leave", .USER_OWNED: "Yes"]
+    let alertCancelTitle: [UserStatus: String] = [.USER_NOT_JOINED: "Cancel", .USER_JOINED: "Cancel", .USER_OWNED: "No"]
     
     var game: Game!
+    var userStatus: UserStatus = .USER_NOT_JOINED
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,15 +39,22 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         btnJoinGame.tintColor = Theme.ACCENT_COLOR
         
+        if userStatus != .USER_NOT_JOINED {
+            if let gameDetailsTableViewController = self.childViewControllers.first as? GameDetailsTableViewController {
+                gameDetailsTableViewController.btnAddToCalendar.hidden = false
+            }
+        }
+        
+        if userStatus == .USER_OWNED {
+            toolBar.hidden = false
+        } else {
+            toolBar.hidden = true
+        }
+        
         lblLocationName.text = game.locationName
         lblOpenings.text = ("\(game.availableSlots) openings")
         
-        if game.userJoined == true {
-            btnJoinGame.title = "Leave Game"
-        } else {
-            btnJoinGame.title = "Join Game"
-        }
-        
+        btnJoinGame.title = navBarButtonTitleOptions[userStatus]
         imgGameType.image = UIImage(named: game.gameType.imageName)
         
     }
@@ -43,45 +62,68 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func btnJoinGame(sender: AnyObject) {
         
-        //Get the PFObject for game
-        //Add the current user as a player in the game
-        let title = self.btnJoinGame.title
-        
-        var message = "Are you sure you want to join this game?"
-        var alertTitle = "Join"
-
-        if game.userJoined == true {
-            message = "Are you sure you want to leave this game?"
-            alertTitle = "Leave"
+        if userStatus == .USER_OWNED {
+            
+            //Edit the game
+            
+        } else {
+            let message = "Are you sure you want to \(self.alertAction[userStatus]!) this game?"
+            let alertTitle = "\(self.alertTitle[userStatus]!)"
+            let alertCancelTitle = "\(self.alertCancelTitle[userStatus]!)"
+            
+            let alertController = UIAlertController(title: title, message:
+                message, preferredStyle: UIAlertControllerStyle.Alert)
+            
+            alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.Default,handler: nil))
+            alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.Default, handler: { action in
+                
+                switch(self.userStatus) {
+                    
+                case .USER_NOT_JOINED:
+                    self.joinGame()
+                    break
+                case .USER_JOINED:
+                    self.leaveGame()
+                    break
+                default:
+                    break
+                }
+                
+            }))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+            
         }
         
-        let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: UIAlertControllerStyle.Alert)
+    }
+    
+    private func joinGame() {
+        self.joinPFUserToPFGame()
+        self.addGameToUserDefaults()
+        self.game.availableSlots += -1
+        self.game.userJoined = !self.game.userJoined
+        self.userStatus = .USER_JOINED
+        self.viewDidLoad()
+    }
+    
+    private func leaveGame() {
+        self.removePFUserFromPFGame()
+        self.removeGameFromUserDefaults()
+        self.game.userJoined = !self.game.userJoined
+        self.game.availableSlots += 1
+        self.userStatus = .USER_NOT_JOINED
         
-        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default,handler: nil))
-        alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.Default, handler: { action in
-            
-            if self.game.userJoined == false {
-                //Join user to game
-                self.joinPFUserToPFGame()
-                self.addGameToUserDefaults()
-                self.game.availableSlots += -1
-                self.adjustScreenForJoinedUser()
-                self.game.userJoined = !self.game.userJoined
-            } else {
-                //Remove user from game
-                self.removePFUserFromPFGame()
-                self.removeGameFromUserDefaults()
-                self.game.userJoined = !self.game.userJoined
-                self.game.availableSlots += 1
-                self.adjustScreenForLeavingUser()
-
-            }
-
-        }))
+        if myGamesTableViewDelegate != nil {
+            myGamesTableViewDelegate?.removeGame(self.game)
+            navigationController?.popViewControllerAnimated(true)
+        }
         
-        self.presentViewController(alertController, animated: true, completion: nil)
-        
+        self.viewDidLoad()
+    }
+    
+    private func deleteGame() {
+        //TODO: Mark game as cancelled
+        //Segue back to my games
     }
     
     
@@ -89,26 +131,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         let embeddedViewController = segue.destinationViewController as? GameDetailsTableViewController
         embeddedViewController?.game = self.game
     }
-    
-    func adjustScreenForJoinedUser() {
-        self.btnJoinGame.title = "Leave Game"
-        lblOpenings.text = ("\(game.availableSlots) openings")
-        
-        if let gameDetailsTableViewController = self.childViewControllers.first as? GameDetailsTableViewController {
-            gameDetailsTableViewController.btnAddToCalendar.hidden = false
-        }
 
-    }
-    
-    func adjustScreenForLeavingUser() {
-        self.btnJoinGame.title = "Join Game"
-        lblOpenings.text = ("\(game.availableSlots) openings")
-        
-        if let gameDetailsTableViewController = self.childViewControllers.first as? GameDetailsTableViewController {
-            gameDetailsTableViewController.btnAddToCalendar.hidden = true
-        }
-        
-    }
     
     //MARK: - Parse
     private func joinPFUserToPFGame() {
@@ -178,7 +201,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
             let gameIdArray = joinedGames.mutableCopy()
-            print(gameIdArray)
+            gameIdArray.removeObject(game.id)
             NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
         }
         

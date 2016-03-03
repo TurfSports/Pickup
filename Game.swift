@@ -22,6 +22,7 @@ class Game {
     var ownerId:String
     var gameNotes:String
     lazy var userJoined = false
+    lazy var userIsOwner = false
     lazy var latitude:Double = 0.0
     lazy var longitude:Double = 0.0
     
@@ -42,7 +43,5 @@ class Game {
         self.latitude = latitude
         self.longitude = longitude
     }
-    
-//    func setOwner 
     
 }

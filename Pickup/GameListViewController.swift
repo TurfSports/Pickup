@@ -1,5 +1,5 @@
 //
-//  GameListTableViewController.swift
+//  GameListViewController.swift
 //  Pickup
 //
 //  Created by Nathan Dudley on 2/16/16.
@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import Parse
 
-class GameListTableViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate {
+class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate {
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let SEGUE_SHOW_GAMES_MAP = "showGamesMapView"
@@ -85,6 +85,12 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
         header.textLabel?.textAlignment = .Center
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
+    }
+    
+
+    //MARK: - Table View Data Source
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> GameTableViewCell {
         
@@ -151,35 +157,6 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
         }
     }
 
-    
-    //MARK: - Navigation
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
-            
-            let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
-            if let indexPath = tableGameList.indexPathForSelectedRow {
-                gameDetailsViewController.game = sortedGames[indexPath.section][indexPath.row]
-            }
-            gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
-            
-        } else if segue.identifier == SEGUE_SHOW_GAMES_MAP {
-            let gameMapViewController = segue.destinationViewController as! GameMapViewController
-            gameMapViewController.games = self.games
-            gameMapViewController.selectedGameType = self.selectedGameType
-            
-        } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
-            let navigationController = segue.destinationViewController as! UINavigationController
-            let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
-            newGameTableViewController.gameTypes = self.gameTypes
-            newGameTableViewController.selectedGameType = self.selectedGameType
-        }
-        
-    }
     
     //MARK: - Location Manager Delegate
     //TODO: Abstract location methods into their own class
@@ -332,6 +309,42 @@ class GameListTableViewController: UIViewController, UITableViewDelegate, CLLoca
         }
         
         return relevantDateString
+    }
+    
+    //MARK: - Navigation
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
+            
+            let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
+            if let indexPath = tableGameList.indexPathForSelectedRow {
+                let game = sortedGames[indexPath.section][indexPath.row]
+                
+                gameDetailsViewController.game = game
+                
+                if game.userJoined == true {
+                    gameDetailsViewController.userStatus = .USER_JOINED
+                } else {
+                    gameDetailsViewController.userStatus = .USER_NOT_JOINED
+                }
+            }
+            
+            gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
+            
+        } else if segue.identifier == SEGUE_SHOW_GAMES_MAP {
+            
+            let gameMapViewController = segue.destinationViewController as! GameMapViewController
+            gameMapViewController.games = self.games
+            gameMapViewController.selectedGameType = self.selectedGameType
+            
+        } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
+            
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
+            newGameTableViewController.gameTypes = self.gameTypes
+            newGameTableViewController.selectedGameType = self.selectedGameType
+        }
+        
     }
     
 

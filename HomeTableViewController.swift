@@ -14,6 +14,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
+    let  SEGUE_SHOW_MY_GAMES = "showMyGamesViewController"
     
     var gameTypes:[GameType] = []
     var gameCountLoaded:Bool = false {
@@ -150,7 +151,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SHOW_GAMES {
-            let gamesViewController = segue.destinationViewController as! GameListTableViewController
+            let gamesViewController = segue.destinationViewController as! GameListViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 gamesViewController.selectedGameType = gameTypes[indexPath.row]
                 gamesViewController.gameTypes = self.gameTypes
@@ -160,6 +161,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
             let navigationController = segue.destinationViewController as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             newGameTableViewController.gameTypes = self.gameTypes
+        } else if segue.identifier == SEGUE_SHOW_MY_GAMES {
+            let myGamesViewController = segue.destinationViewController as! MyGamesViewController
+            myGamesViewController.gameTypes = self.gameTypes
         }
     }
     
