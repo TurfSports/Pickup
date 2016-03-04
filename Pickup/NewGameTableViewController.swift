@@ -15,8 +15,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 
     let GAME_TYPE_PICKER = 0
     let NUMBER_OF_PLAYERS_PICKER = 1
-    let MAX_PLAYERS = 20
-    let MIN_PLAYERS = 5
+    let MAX_PLAYERS = 30
+    let MIN_PLAYERS = 1
     let ANNOTATION_ID = "Pin"
     let SEGUE_NEW_GAME_MAP = "showNewGameMap"
     
@@ -36,13 +36,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     var gameStatus = GameStatus.CREATE
     let editButtonTitle: [GameStatus: String] = [.CREATE: "Create", .EDIT: "Save"]
     
-    //For saving to parse
+    //If editing a game, this will be passed through the segue
+    //else it will be initialized in this view controller
+    var game: Game!
+    var gameObject: PFObject!
+    
     var selectedGameType: GameType!
-    var playersNeeded: Int?
-    var gameVenueName: String?
-    var gameDate: NSDate?
-    var gameLocation: CLLocationCoordinate2D?
-    var gameNotes: String? = ""
     
     var gameTypes: [GameType]!
     var address: String? {
@@ -64,23 +63,17 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     @IBAction func createNewGame(sender: UIBarButtonItem) {
         
-        //validate user input
-        //create game object
-        let currentUser = PFUser.currentUser()
-        
         if enteredDataIsValid() == true {
-            let newGame: Game = Game.init(id: "_newGame", gameType: selectedGameType, totalSlots: playersNeeded!, availableSlots: playersNeeded!, eventDate: gameDate!, locationName: gameVenueName!, ownerId: (currentUser?.objectId)!, gameNotes: gameNotes!)
-            saveParseGameObject(newGame)
+            saveParseGameObject(self.game)
         } else {
             markInvalidFields()
         }
-        
     }
     
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
         lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
         
-        self.gameDate = sender.date
+        self.game.eventDate = sender.date
         
     }
     
@@ -93,54 +86,97 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         txtLocationName.enabled = false
         txtLocationName.hidden = true
         txtLocationName.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-        lblPlayers.text = ""
         
+        
+        if gameStatus == .EDIT && self.game != nil {
+            getGameObjectFromParse()
+            setStoredValues()
+        } else if gameStatus == .CREATE {
+            createDefaultGame()
+            setDefaultInitialValues()
+        }
+        
+        btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
+        btnCreate.tintColor = Theme.ACCENT_COLOR
+        btnMap.tintColor = Theme.ACCENT_COLOR
+        removeTopWhiteSpace()
+
+        self.datePicker.minimumDate = NSDate()
+        self.datePicker.maximumDate = NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60)
+        self.numberOfPlayersPicker.selectRow(9, inComponent: 0, animated: false)
+        
+        
+        //Attempting to get rid of extra cell on bottom, not sure if this is working
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
+        
+    }
+    
+    private func getGameObjectFromParse() {
+        
+        let gameQuery = PFQuery(className:"GameScore")
+        gameQuery.getObjectInBackgroundWithId("xWMyZEGZ") {
+            (gameObject: PFObject?, error: NSError?) -> Void in
+            if error == nil && gameObject != nil {
+                self.gameObject = gameObject
+            } else {
+                self.gameObject = nil
+            }
+        }
+    }
+    
+    private func setStoredValues() {
+        
+        lblSport.text = self.game.gameType.displayName
+        sportPicker.selectRow(self.game.gameType.sortOrder, inComponent: 0, animated: false)
+        
+        lblPlayers.text = "\(self.game.totalSlots - 1)"
+        numberOfPlayersPicker.selectRow(self.game.totalSlots - 1, inComponent: 0, animated: false)
+        
+        datePicker.date = self.game.eventDate
+        lblDate.text = DateUtilities.dateString(self.datePicker.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+        
+        txtLocationName.text = self.game.locationName
         
         if address != nil {
             lblAddress.text = address
         }
-
-        btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
-        btnCreate.tintColor = Theme.ACCENT_COLOR
         
-        //Set the initial values
-        self.gameDate = NSDate()
+        txtGameNotes.text = self.game.gameNotes
+    }
+    
+    private func createDefaultGame() {
+        
+        let defaultGameType: GameType
         if self.selectedGameType == nil {
-            self.selectedGameType = self.gameTypes[0]
-        }
-        
-        //Get rid of extra space up top
-        let dummyViewHeight: CGFloat = 40
-        let dummyView:UIView = UIView.init(frame: CGRectMake(0, 0, self.tableView.bounds.size.width, dummyViewHeight))
-        self.tableView.tableHeaderView = dummyView
-        self.tableView.contentInset = UIEdgeInsetsMake(-dummyViewHeight, 0, 0, 0)
-        
-        //Attempting to get rid of extra cell on bottom, not sure if this is working
-        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
-        btnMap.tintColor = Theme.ACCENT_COLOR
-        
-        self.datePicker.minimumDate = NSDate()
-        self.datePicker.maximumDate = NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60)
-        
-        
-        
-        if selectedGameType != nil {
-            lblSport.text = selectedGameType.displayName
-            //TODO: Get selected game type from picker
+            defaultGameType = self.gameTypes[0]
         } else {
-            lblSport.text = "Basketball"
-            sportPicker.selectRow(0, inComponent: 0, animated: false)
+            defaultGameType = self.selectedGameType
         }
         
+        let currentUser = PFUser.currentUser()
+        self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: NSDate(), locationName: "", ownerId: (currentUser?.objectId)!, gameNotes: "")
+    }
+    
+    private func setDefaultInitialValues() {
         
-//        lblPlayers.text = "\(10)"
-//        numberOfPlayersPicker.selectRow(10 - MIN_PLAYERS, inComponent: 0, animated: false)
+        lblPlayers.text = ""
         
+        lblSport.text = self.game.gameType.displayName
+        sportPicker.selectRow(self.game.gameType.sortOrder - 1, inComponent: 0, animated: false)
         
         //Round to second nearest five minute increment
         self.datePicker.date = earliestSuggestedGameTime()
         lblDate.text = DateUtilities.dateString(self.datePicker.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
-        
+    }
+    
+
+    
+    
+    func removeTopWhiteSpace() {
+        let dummyViewHeight: CGFloat = 40
+        let dummyView:UIView = UIView.init(frame: CGRectMake(0, 0, self.tableView.bounds.size.width, dummyViewHeight))
+        self.tableView.tableHeaderView = dummyView
+        self.tableView.contentInset = UIEdgeInsetsMake(-dummyViewHeight, 0, 0, 0)
     }
     
     
@@ -191,11 +227,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         switch(pickerView.tag) {
             case GAME_TYPE_PICKER:
-                selectedGameType = gameTypes[row]
+                self.game.gameType = gameTypes[row]
                 lblSport.text = gameTypes[row].displayName
                 break
             case NUMBER_OF_PLAYERS_PICKER:
-                playersNeeded = row + MIN_PLAYERS
+                self.game.totalSlots = row + MIN_PLAYERS
                 lblPlayers.text = "\(row + MIN_PLAYERS)"
                 break
             default:
@@ -216,6 +252,10 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             animateReloadTableView()
         } else if indexPath.section == 0 && indexPath.row == 2 {
             playerRowSelected = !playerRowSelected
+            if lblPlayers.text == "" || lblPlayers.text == nil {
+                lblPlayers.text = "\(numberOfPlayersPicker.selectedRowInComponent(0) + 1)"
+                self.game.totalSlots = numberOfPlayersPicker.selectedRowInComponent(0) + 1
+            }
             sportRowSelected = false
             dateRowSelected = false
         } else if indexPath.section == 1 && indexPath.row == 0 {
@@ -320,20 +360,27 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     func textFieldDidChange(textField: UITextField) {
-        self.gameVenueName = textField.text
+        self.game.locationName = textField.text!
+        if self.game.locationName != "" {
+            let indexPath = NSIndexPath(forRow: 2, inSection: 1)
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            cell?.backgroundColor = UIColor.whiteColor()
+        } else {
+            let indexPath = NSIndexPath(forRow: 2, inSection: 1)
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            cell?.backgroundColor = Theme.ERROR_COLOR
+        }
     }
-    
-
     
     
     //MARK: - Text View Delegate
     
     func textViewDidEndEditing(textView: UITextView) {
-        self.gameNotes = textView.text
+        self.game.gameNotes = textView.text
     }
     
     func textViewDidChange(textView: UITextView) {
-        self.gameNotes = textView.text
+        self.game.gameNotes = textView.text
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
@@ -352,7 +399,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     //MARK: - New Game Table View Delegate
 
     func setGameLocationCoordinate(coordinate: CLLocationCoordinate2D) {
-        self.gameLocation = coordinate
+        self.game.latitude = coordinate.latitude
+        self.game.longitude = coordinate.longitude
     }
     
     func setGameLocationName(locationName: String) {
@@ -360,13 +408,13 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         txtLocationName.hidden = false
         txtLocationName.enabled = true
         txtLocationName.text = ""
-        self.gameVenueName = locationName
+        self.game.locationName = locationName
         txtLocationName.text = locationName
         txtLocationName.becomeFirstResponder()
     }
     
     func setLocationTitle() {
-        txtLocationName.text = self.gameVenueName
+        txtLocationName.text = self.game.locationName
     }
     
     func setGameAddress(address: String) {
@@ -379,23 +427,15 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         var isValid = true
         
-        if self.selectedGameType == nil {
+        if self.game.totalSlots == 0 {
             isValid = false
         }
         
-        if self.playersNeeded == nil {
+        if self.game.locationName == "" {
             isValid = false
         }
         
-        if self.gameVenueName == nil {
-            isValid = false
-        }
-        
-        if self.gameDate == nil {
-            isValid = false
-        }
-        
-        if self.gameLocation == nil {
+        if self.game.latitude == 0.0 {
             isValid = false
         }
         
@@ -404,20 +444,14 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     private func markInvalidFields() {
         
-        if self.selectedGameType == nil {
-            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell?.backgroundColor = Theme.ERROR_COLOR
-        }
-        
-        if self.playersNeeded == nil {
+        if self.game.totalSlots == 0 {
             let indexPath = NSIndexPath(forRow: 2, inSection: 0)
             if let cell = tableView.cellForRowAtIndexPath(indexPath) {
                 animateCellValidation(cell)
             }
         }
         
-        if self.gameLocation == nil {
+        if self.game.latitude == 0.0 {
             let indexPath = NSIndexPath(forRow: 2, inSection: 1)
             if let cell = tableView.cellForRowAtIndexPath(indexPath) {
                 animateCellValidation(cell)
@@ -425,14 +459,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 
         }
         
-        if self.gameVenueName == "" {
-            if txtLocationName.hidden == false {
-                let indexPath = NSIndexPath(forRow: 2, inSection: 1)
-                if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-                    animateCellValidation(cell)
-                }
-                txtLocationName.becomeFirstResponder()
+        if self.game.locationName == "" {
+            let indexPath = NSIndexPath(forRow: 2, inSection: 1)
+            if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+                animateCellValidation(cell)
             }
+            txtLocationName.becomeFirstResponder()
         }
         
     }
@@ -442,20 +474,37 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     private func saveParseGameObject(game: Game) {
         
-        let gameObject = PFObject(className: "Game")
+        var gameObject: PFObject
         
-        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id)
-        gameObject["date"] = self.gameDate
-        let point = PFGeoPoint(latitude:self.gameLocation!.latitude, longitude: self.gameLocation!.longitude)
+        if gameStatus == .CREATE {
+            gameObject = PFObject(className: "Game")
+        } else { //gameStatus == .EDIT
+            gameObject = self.gameObject
+        }
+        
+        setGameObjectFields(gameObject)
+        saveGameObjectInBackground(gameObject)
+
+    }
+    
+    
+    private func setGameObjectFields(gameObject: PFObject) {
+        
+        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
+        gameObject["date"] = self.game.eventDate
+        let point = PFGeoPoint(latitude:self.game.latitude, longitude: self.game.longitude)
         gameObject["location"] = point
-        gameObject["locationName"] = self.gameVenueName
-        gameObject["gameNotes"] = self.gameNotes
+        gameObject["locationName"] = self.game.locationName
+        gameObject["gameNotes"] = self.game.gameNotes
         gameObject["owner"] = PFUser.currentUser()
         gameObject.relationForKey("players").addObject(PFUser.currentUser()!)
-        gameObject["totalSlots"] = self.playersNeeded! + 1
-        gameObject["slotsAvailable"] = self.playersNeeded!
+        gameObject["totalSlots"] = self.game.totalSlots + 1
+        gameObject["slotsAvailable"] = self.game.totalSlots
         gameObject["isCancelled"] = false
         
+    }
+    
+    private func saveGameObjectInBackground (gameObject: PFObject) {
         gameObject.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in
             if (success) {
@@ -467,6 +516,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             }
         }
     }
+    
+    
     
     //MARK: - User Defaults
     
@@ -513,9 +564,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             
             newGameMapViewController?.newGameTableViewDelegate = self
             
-            if self.gameVenueName != nil && self.gameLocation != nil {
-                newGameMapViewController?.locationName = self.gameVenueName!
-                newGameMapViewController?.gameLocation = self.gameLocation!
+            if self.game.locationName != "" && self.game.latitude != 0.0 {
+                newGameMapViewController?.locationName = self.game.locationName
+                newGameMapViewController?.gameLocation = CLLocationCoordinate2DMake(self.game.latitude, self.game.longitude)
             }
             
         }

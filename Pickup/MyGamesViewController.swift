@@ -40,10 +40,8 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         let gameTypePullTimeStamp: NSDate = getLastGameTypePull()
         
         if gameTypePullTimeStamp.compare(NSDate().dateByAddingTimeInterval(-24*60*60)) == NSComparisonResult.OrderedAscending {
-            print("Loading Games From Parse")
             loadGameTypesFromParse()
         } else {
-            print("Loading Games From User Defaults")
             loadGameTypesFromUserDefaults()
         }
         
@@ -410,6 +408,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
                 let game = sortedGames[indexPath.section][indexPath.row]
                 
                 gameDetailsViewController.game = game
+                gameDetailsViewController.gameTypes = self.gameTypes
                 gameDetailsViewController.myGamesTableViewDelegate = self
                 
                 if game.userIsOwner == true {

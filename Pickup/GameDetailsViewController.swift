@@ -12,7 +12,7 @@ import MapKit
 
 class GameDetailsViewController: UIViewController, MKMapViewDelegate {
 
-    
+    let SEGUE_SHOW_EDIT_GAME = "ShowEditGame"
 
     @IBOutlet weak var lblLocationName: UILabel!
     @IBOutlet weak var lblOpenings: UILabel!
@@ -28,6 +28,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     let alertTitle: [UserStatus: String] = [.USER_NOT_JOINED: "Join", .USER_JOINED: "Leave", .USER_OWNED: "Yes"]
     let alertCancelTitle: [UserStatus: String] = [.USER_NOT_JOINED: "Cancel", .USER_JOINED: "Cancel", .USER_OWNED: "No"]
     
+    var gameTypes: [GameType]!
     var game: Game!
     var userStatus: UserStatus = .USER_NOT_JOINED
     
@@ -62,7 +63,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         if userStatus == .USER_OWNED {
             
-            //Edit the game
+            performSegueWithIdentifier(SEGUE_SHOW_EDIT_GAME, sender: self)
             
         } else {
             let message = "Are you sure you want to \(self.alertAction[userStatus]!) this game?"
@@ -122,12 +123,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     private func deleteGame() {
         //TODO: Mark game as cancelled
         //Segue back to my games
-    }
-    
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let embeddedViewController = segue.destinationViewController as? GameDetailsTableViewController
-        embeddedViewController?.game = self.game
     }
 
     
@@ -203,6 +198,24 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
             NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
         }
         
+    }
+    
+    //MARK: - Navigation
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let embeddedViewController = segue.destinationViewController as? GameDetailsTableViewController
+        embeddedViewController?.game = self.game
+        
+        if segue.identifier == SEGUE_SHOW_EDIT_GAME {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
+            
+            newGameTableViewController.gameTypes = self.gameTypes
+            newGameTableViewController.game = self.game
+            newGameTableViewController.gameStatus = .EDIT
+            newGameTableViewController.address = embeddedViewController?.address
+        }
     }
     
 }

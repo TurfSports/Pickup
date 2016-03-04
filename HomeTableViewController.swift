@@ -51,7 +51,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
 
     override func viewDidAppear(animated: Bool) {
-
+        if currentLocation != nil {
+            loadGameCounts()
+        }
     }
     
     
@@ -142,6 +144,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
     private func loadGameTypesFromParse() {
         
         let gameTypeQuery = PFQuery(className: "GameType")
+        gameTypeQuery.orderByAscending("sortOrder")
         gameTypeQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameTypeObjects = objects {
     
@@ -174,7 +177,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
 
             gameQuery.countObjectsInBackgroundWithBlock({ (count: Int32, error: NSError?) -> Void in
                     let gameCount = Int(count)
-                    gameType.increaseGameCount(gameCount)
+                    gameType.setGameCount(gameCount)
                 self.gameCountLoaded = true
             })
             

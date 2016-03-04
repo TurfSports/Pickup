@@ -279,6 +279,11 @@
 					02BE27791C4DD58F0062C890 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 688R963LPG;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

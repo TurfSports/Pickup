@@ -43,7 +43,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         self.title = selectedGameType.displayName
         
-        btnViewMap.tintColor = Theme.PRIMARY_DARK_COLOR
+        btnViewMap.tintColor = Theme.ACCENT_COLOR
         btnAddNewGame.tintColor = Theme.ACCENT_COLOR
         
     }
@@ -322,6 +322,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                 let game = sortedGames[indexPath.section][indexPath.row]
                 
                 gameDetailsViewController.game = game
+                gameDetailsViewController.gameTypes = self.gameTypes
                 
                 if game.userJoined == true {
                     gameDetailsViewController.userStatus = .USER_JOINED

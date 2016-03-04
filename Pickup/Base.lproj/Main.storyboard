@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Games-->
@@ -552,7 +553,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rmI-eK-ckz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1735.5" y="1744"/>
+            <point key="canvasLocation" x="1740.5" y="1702"/>
         </scene>
         <!--New Game Map View Controller-->
         <scene sceneID="AOb-tH-ab8">
@@ -643,7 +644,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="2228.5" y="1743.5"/>
+            <point key="canvasLocation" x="2228.5" y="1701.5"/>
         </scene>
         <!--Today's Games-->
         <scene sceneID="h30-3u-LKp">
@@ -683,7 +684,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H32-h5-FfA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2259.5" y="575.5"/>
+            <point key="canvasLocation" x="2259.5" y="561.5"/>
+        </scene>
+        <!--NewGameNavigationController-->
+        <scene sceneID="1lF-5Z-lfm">
+            <objects>
+                <viewControllerPlaceholder referencedIdentifier="NewGameNavigationController" id="bTf-NV-1hE" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O9E-8V-8V2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3163.5" y="-1128"/>
         </scene>
         <!--Game List View Controller-->
         <scene sceneID="XwK-KG-R5D">
@@ -700,19 +709,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="82" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="7yx-aF-a8u">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <toolbar key="tableFooterView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="HSV-qM-GFh">
-                                    <rect key="frame" x="0.0" y="226" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <items>
-                                        <barButtonItem style="plain" systemItem="flexibleSpace" id="VpN-1l-OLi"/>
-                                        <barButtonItem title="Map" style="done" id="UGi-8P-3cW">
-                                            <connections>
-                                                <segue destination="JgN-wE-xAG" kind="show" identifier="showGamesMapView" id="EvI-mF-yOc"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Dbf-bc-D2k"/>
-                                    </items>
-                                </toolbar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="94" id="gp4-Rg-32C" customClass="GameTableViewCell" customModule="Pickup" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="114" width="375" height="94"/>
@@ -833,18 +829,24 @@
                     </view>
                     <navigationItem key="navigationItem" id="riU-H5-Pc7">
                         <barButtonItem key="backBarButtonItem" title="Games" id="zH5-r7-Jk6"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="age-NC-m5h">
-                            <connections>
-                                <segue destination="d1I-4M-Fr0" kind="presentation" identifier="showNewGameTableViewController" id="J4I-yY-pBk"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="age-NC-m5h">
+                                <connections>
+                                    <segue destination="d1I-4M-Fr0" kind="presentation" identifier="showNewGameTableViewController" id="J4I-yY-pBk"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Map" id="Lz1-vq-o3M">
+                                <connections>
+                                    <segue destination="JgN-wE-xAG" kind="show" identifier="showGamesMapView" id="2Go-qB-yUy"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="btnAddNewGame" destination="age-NC-m5h" id="EJ6-d9-koN"/>
-                        <outlet property="btnViewMap" destination="UGi-8P-3cW" id="IoL-v2-hub"/>
+                        <outlet property="btnViewMap" destination="Lz1-vq-o3M" id="c1t-W6-1qj"/>
                         <outlet property="tableGameList" destination="7yx-aF-a8u" id="ER7-GE-5Dr"/>
-                        <outlet property="toolBar" destination="HSV-qM-GFh" id="sjj-k9-ae8"/>
                         <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="gsA-UD-Nep"/>
                     </connections>
                 </viewController>
@@ -942,6 +944,7 @@
                         <outlet property="imgGameType" destination="bOJ-O1-QRr" id="Zvs-Gq-zOZ"/>
                         <outlet property="lblLocationName" destination="add-SG-jCv" id="6ok-Ya-DRL"/>
                         <outlet property="lblOpenings" destination="53e-qg-OcY" id="HGn-zV-gwX"/>
+                        <segue destination="bTf-NV-1hE" kind="presentation" identifier="ShowEditGame" id="OEk-ge-wuA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4sV-WC-uDn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1230,7 +1233,7 @@
         <!--Navigation Controller-->
         <scene sceneID="gJc-vI-Zih">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="d1I-4M-Fr0" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NewGameNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="d1I-4M-Fr0" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="i6K-HU-WSu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1243,7 +1246,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EiV-Lp-Eg0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1735.5" y="644.5"/>
+            <point key="canvasLocation" x="1740.5" y="582.5"/>
         </scene>
         <!--My Games-->
         <scene sceneID="BqS-fg-xy2">
@@ -1358,7 +1361,7 @@
                     <navigationItem key="navigationItem" title="My Games" id="ooi-Nj-pH7">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="u3G-iz-ddl">
                             <connections>
-                                <segue destination="d1I-4M-Fr0" kind="presentation" identifier="showNewGameTableViewController" id="KuR-hl-TXF"/>
+                                <segue destination="bTf-NV-1hE" kind="presentation" identifier="showNewGameTableViewController" id="VLK-qk-4Vj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1420,7 +1423,8 @@
         <image name="settingsIcon" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KuR-hl-TXF"/>
-        <segue reference="hon-da-Emo"/>
+        <segue reference="OEk-ge-wuA"/>
+        <segue reference="gsA-UD-Nep"/>
+        <segue reference="J4I-yY-pBk"/>
     </inferredMetricsTieBreakers>
 </document>
