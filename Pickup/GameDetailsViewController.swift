@@ -18,8 +18,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var lblOpenings: UILabel!
     @IBOutlet weak var imgGameType: UIImageView!
     @IBOutlet weak var btnJoinGame: UIBarButtonItem!
-    @IBOutlet weak var toolBar: UIToolbar!
-    @IBOutlet weak var btnCancelGame: UIBarButtonItem!
     
     
     var myGamesTableViewDelegate: MyGamesTableViewDelegate?
@@ -38,17 +36,17 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
         
         btnJoinGame.tintColor = Theme.ACCENT_COLOR
+        self.navigationController?.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
         
-        if userStatus != .USER_NOT_JOINED {
-            if let gameDetailsTableViewController = self.childViewControllers.first as? GameDetailsTableViewController {
+        if let gameDetailsTableViewController = self.childViewControllers.first as? GameDetailsTableViewController {
+        
+            if userStatus != .USER_NOT_JOINED {
                 gameDetailsTableViewController.btnAddToCalendar.hidden = false
             }
-        }
-        
-        if userStatus == .USER_OWNED {
-            toolBar.hidden = false
-        } else {
-            toolBar.hidden = true
+            
+            if userStatus == .USER_OWNED {
+                gameDetailsTableViewController.isOwner = true
+            }
         }
         
         lblLocationName.text = game.locationName

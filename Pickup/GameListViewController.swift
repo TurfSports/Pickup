@@ -49,6 +49,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     override func viewDidAppear(animated: Bool) {
+        loadGamesFromParse()
         self.tableGameList.reloadData()
     }
     

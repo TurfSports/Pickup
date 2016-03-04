@@ -23,6 +23,7 @@ class Game {
     var gameNotes:String
     lazy var userJoined = false
     lazy var userIsOwner = false
+    lazy var isCancelled = false
     lazy var latitude:Double = 0.0
     lazy var longitude:Double = 0.0
     

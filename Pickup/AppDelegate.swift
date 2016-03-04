@@ -25,11 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //Set up user defaults
-        if let timeStamp = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
-            print(timeStamp)
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
             //Pass
         } else {
-            print("Setting last pull user default")
             let lastPull = NSDate().dateByAddingTimeInterval(-25 * 60 * 60) //Default to a day ago
             NSUserDefaults.standardUserDefaults().setObject(lastPull, forKey: "gameTypePullTimeStamp")
         }

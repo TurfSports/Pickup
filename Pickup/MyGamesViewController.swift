@@ -14,9 +14,10 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
 
     let METERS_IN_MILE = 1609.34
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
+    let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
     
     var sectionTitles:[String] = []
-    var gameTypes:[GameType]!
+    var gameTypes:[GameType] = []
     var games:[Game] = []
     var sortedGames:[[Game]] = [[]]
     
@@ -24,17 +25,36 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     var currentLocation:CLLocation? {
         didSet {
             loadGamesFromParse()
+            self.tableGameList.reloadData()
         }
     }
     
+    @IBOutlet weak var btnAddGame: UIBarButtonItem!
     @IBOutlet weak var tableGameList: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.btnAddGame.tintColor = Theme.ACCENT_COLOR
+        
+        let gameTypePullTimeStamp: NSDate = getLastGameTypePull()
+        
+        if gameTypePullTimeStamp.compare(NSDate().dateByAddingTimeInterval(-24*60*60)) == NSComparisonResult.OrderedAscending {
+            print("Loading Games From Parse")
+            loadGameTypesFromParse()
+        } else {
+            print("Loading Games From User Defaults")
+            loadGameTypesFromUserDefaults()
+        }
+        
         self.setUsersCurrentLocation()
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
 
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        loadGamesFromParse()
+        self.tableGameList.reloadData()
     }
     
     //MARK: - Table View Delegate
@@ -111,6 +131,51 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         self.tableGameList.reloadData()
     }
     
+    //MARK: - User Defaults
+    
+    private func getLastGameTypePull() -> NSDate {
+        
+        var lastPull: NSDate
+        
+        if let lastGameTypePull = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
+            lastPull = lastGameTypePull
+        } else {
+            lastPull = NSDate().dateByAddingTimeInterval(-25 * 60 * 60)
+            NSUserDefaults.standardUserDefaults().setObject(lastPull, forKey: "gameTypePullTimeStamp")
+        }
+        
+        return lastPull
+    }
+    
+    
+    private func loadGameTypesFromUserDefaults() {
+        
+        var gameTypeArray: NSMutableArray = []
+        
+        if let gameTypeArrayFromDefaults = NSUserDefaults.standardUserDefaults().objectForKey("gameTypes") as? NSArray {
+            gameTypeArray = gameTypeArrayFromDefaults.mutableCopy() as! NSMutableArray
+            
+            for gameType in gameTypeArray {
+                self.gameTypes.append(GameType.deserializeGameType(gameType as! [String : String]))
+            }
+        }
+        
+    }
+    
+    private func saveGameTypesToUserDefaults() {
+        
+        let gameTypeArray: NSMutableArray = []
+        
+        for gameType in self.gameTypes {
+            let serializedGameType = GameType.serializeGameType(gameType)
+            gameTypeArray.addObject(serializedGameType)
+        }
+        
+        NSUserDefaults.standardUserDefaults().setObject(gameTypeArray, forKey: "gameTypes")
+        NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: "gameTypePullTimeStamp")
+    }
+    
+    
     //MARK: - Parse
     
     private func loadGamesFromParse() {
@@ -119,7 +184,6 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
         gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
         gameQuery.whereKey("objectId", containedIn: getJoinedGamesFromUserDefaults())
-        
         
         gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameObjects = objects {
@@ -146,6 +210,26 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             self.tableGameList.reloadData()
         }
     }
+    
+    private func loadGameTypesFromParse() {
+        
+        let gameTypeQuery = PFQuery(className: "GameType")
+        gameTypeQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if let gameTypeObjects = objects {
+                
+                self.gameTypes.removeAll(keepCapacity: true)
+                
+                for gameTypeObject in gameTypeObjects {
+                    let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
+                    self.gameTypes.append(gameType)
+                }
+            }
+            
+            self.saveGameTypesToUserDefaults()
+        }
+    }
+    
+    //MARK: - Sorting functions
     
     private func getGameTypeById (gameId: String) -> GameType {
         
@@ -303,7 +387,6 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         
         if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
             let gameIdArray = joinedGames.mutableCopy()
-            
             joinedGamesIds = gameIdArray as! [String]
             
         } else {
@@ -337,6 +420,12 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             }
             
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
+        } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
+            
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
+            newGameTableViewController.gameTypes = self.gameTypes
+            
         }
 
     }

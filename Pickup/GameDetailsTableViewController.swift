@@ -19,8 +19,11 @@ class GameDetailsTableViewController: UITableViewController {
     
     @IBOutlet weak var btnOpenMaps: UIButton!
     @IBOutlet weak var btnAddToCalendar: UIButton!
+
+
     
     var game: Game!
+    var isOwner: Bool = false
     
     var address: String! {
         didSet {
@@ -96,11 +99,25 @@ class GameDetailsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+
+        var height = UITableViewAutomaticDimension
+        
+        if indexPath.section == 3 && indexPath.row == 0 {
+            if isOwner == false {
+                height = 0.0
+            } else {
+                height = 44.0
+            }
+        }
+        
+
+        return height
     }
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
         return UITableViewAutomaticDimension
+
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -110,6 +127,28 @@ class GameDetailsTableViewController: UITableViewController {
         }
         
         return height
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 3 && indexPath.row == 0 {
+            //Cancel that game, son
+        }
+    }
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        
+        cell?.userInteractionEnabled = false
+        cell?.selectionStyle = .None
+        
+        if indexPath.section == 3 && indexPath.row == 0 {
+            cell?.userInteractionEnabled = true
+            cell?.selectionStyle = .Gray
+        }
+        
+        return indexPath
+        
     }
     
     func insertGameIntoCalendar () -> String {

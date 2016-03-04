@@ -37,10 +37,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
         let gameTypePullTimeStamp: NSDate = getLastGameTypePull()
         
         if gameTypePullTimeStamp.compare(NSDate().dateByAddingTimeInterval(-24*60*60)) == NSComparisonResult.OrderedAscending {
-            print("Loading Games From Parse")
             loadGameTypesFromParse()
         } else {
-            print("Loading Games From User Defaults")
             loadGameTypesFromUserDefaults()
         }
         
@@ -56,19 +54,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
 
     }
     
-    private func getLastGameTypePull() -> NSDate {
-        
-        var lastPull: NSDate
-        
-        if let lastGameTypePull = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
-            lastPull = lastGameTypePull
-        } else {
-            lastPull = NSDate().dateByAddingTimeInterval(-25 * 60 * 60)
-            NSUserDefaults.standardUserDefaults().setObject(lastPull, forKey: "gameTypePullTimeStamp")
-        }
-        
-        return lastPull
-    }
     
     // MARK: - Table view data source
 
@@ -109,6 +94,20 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
 
     
     //MARK: - User Defaults
+    
+    private func getLastGameTypePull() -> NSDate {
+        
+        var lastPull: NSDate
+        
+        if let lastGameTypePull = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
+            lastPull = lastGameTypePull
+        } else {
+            lastPull = NSDate().dateByAddingTimeInterval(-25 * 60 * 60)
+            NSUserDefaults.standardUserDefaults().setObject(lastPull, forKey: "gameTypePullTimeStamp")
+        }
+        
+        return lastPull
+    }
     
     private func loadGameTypesFromUserDefaults() {
         
