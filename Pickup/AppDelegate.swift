@@ -23,6 +23,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("vXTZeIEcllE2fqSPJab5OdZkCbB9TmfW9DIutXJn",
             clientKey: "xUjfmNs7umcLNLUdINYj6jfe5Y4dQx6CT8JMEpqJ")
         
+        
+        //Set up user defaults
+        if let timeStamp = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
+            print(timeStamp)
+            //Pass
+        } else {
+            print("Setting last pull user default")
+            let lastPull = NSDate().dateByAddingTimeInterval(-25 * 60 * 60) //Default to a day ago
+            NSUserDefaults.standardUserDefaults().setObject(lastPull, forKey: "gameTypePullTimeStamp")
+        }
+        
+        
+        //Set up current user
         let currentUser = PFUser.currentUser()
         
         if currentUser == nil {

@@ -32,4 +32,29 @@ class GameType {
     }
 
     
+    static func serializeGameType(game: GameType) -> [String: String] {
+        var serializedGameType: [String: String] = [:]
+        
+        serializedGameType["id"] = game.id
+        serializedGameType["name"] = game.name
+        serializedGameType["displayName"] = game.displayName
+        serializedGameType["sortOrder"] = "\(game.sortOrder)"
+        serializedGameType["imageName"] = game.imageName
+        
+        return serializedGameType
+    }
+    
+    static func deserializeGameType(serializedGameType: [String: String]) -> GameType  {
+        
+        let id = serializedGameType["id"]
+        let name = serializedGameType["name"]
+        let displayName = serializedGameType["displayName"]
+        let sortOrder = Int(serializedGameType["sortOrder"]!)
+        let imageName = serializedGameType["imageName"]
+        
+        let gameType = GameType.init(id: id!, name: name!, displayName: displayName!, sortOrder: sortOrder!, imageName: imageName!)
+        
+        return gameType
+    }
+    
 }
