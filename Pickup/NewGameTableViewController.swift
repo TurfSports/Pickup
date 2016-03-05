@@ -16,7 +16,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     let GAME_TYPE_PICKER = 0
     let NUMBER_OF_PLAYERS_PICKER = 1
     let MAX_PLAYERS = 30
-    let MIN_PLAYERS = 1
+    var MIN_PLAYERS = 1
     let ANNOTATION_ID = "Pin"
     let SEGUE_NEW_GAME_MAP = "showNewGameMap"
 
@@ -35,6 +35,10 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var txtLocationName: UITextField!
     
+    @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var sportTableViewCell: UITableViewCell!
+
+    
     var gameStatus = GameStatus.CREATE
     let editButtonTitle: [GameStatus: String] = [.CREATE: "Create", .EDIT: "Save"]
     let navBarTitle: [GameStatus: String] = [.CREATE: "New Game", .EDIT: "Edit Game"]
@@ -52,6 +56,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             tableView.reloadData()
         }
     }
+    
+    //This is an ugly hack
+    var gameNotesTableViewHeight: CGFloat!
 
     var sportRowSelected:Bool = false
     var dateRowSelected:Bool = false
@@ -82,15 +89,25 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setHeightForGameNotesTableCell()
+        
         txtGameNotes.delegate = self
         txtLocationName.delegate = self
         txtLocationName.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        
+        
+        self.MIN_PLAYERS = 1
         
         btnCreate.title = editButtonTitle[self.gameStatus]!
         self.navigationItem.title = navBarTitle[self.gameStatus]!
         
         if gameStatus == .EDIT && self.game != nil {
             getGameObjectFromParse()
+            
+            sportTableViewCell.userInteractionEnabled = false
+            sportTableViewCell.selectionStyle = .None
+            sportTableViewCell.backgroundColor = Theme.UNEDITABLE_CELL_COLOR
+            
             txtLocationName.enabled = true
             txtLocationName.hidden = false
             setStoredValues()
@@ -101,6 +118,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             setDefaultInitialValues()
         }
         
+
+        self.MIN_PLAYERS = self.game.totalSlots - self.game.availableSlots - 1
+        if self.MIN_PLAYERS < 1 {
+            self.MIN_PLAYERS = 1
+        }
+        
         btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
         btnCreate.tintColor = Theme.ACCENT_COLOR
         btnMap.tintColor = Theme.ACCENT_COLOR
@@ -108,12 +131,22 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 
         self.datePicker.minimumDate = NSDate()
         self.datePicker.maximumDate = NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60)
-        self.numberOfPlayersPicker.selectRow(9, inComponent: 0, animated: false)
         
         
         //Attempting to get rid of extra cell on bottom, not sure if this is working
-        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
+//        self.footerView.backgroundColor = Theme.PRIMARY_LIGHT_COLOR
+        self.tableView.tableFooterView = self.footerView
         
+    }
+    
+    func setHeightForGameNotesTableCell() {
+        
+        let heightAboveGameNotes: CGFloat = 322.0
+        
+        self.gameNotesTableViewHeight = self.tableView.bounds.height - heightAboveGameNotes
+//        if self.tableView.bounds.height == 667.0 {
+//            self.gameNotesTableViewHeight = 345.0
+//        }
     }
     
     private func getGameObjectFromParse() {
@@ -135,7 +168,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         sportPicker.selectRow(self.game.gameType.sortOrder, inComponent: 0, animated: false)
         
         lblPlayers.text = "\(self.game.totalSlots - 1)"
-        numberOfPlayersPicker.selectRow(self.game.totalSlots - 1, inComponent: 0, animated: false)
+        numberOfPlayersPicker.selectRow(self.game.availableSlots, inComponent: 0, animated: false)
         
         datePicker.date = self.game.eventDate
         lblDate.text = DateUtilities.dateString(self.datePicker.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
@@ -158,6 +191,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             defaultGameType = self.selectedGameType
         }
         
+        self.numberOfPlayersPicker.selectRow(9, inComponent: 0, animated: false)
+        
         let currentUser = PFUser.currentUser()
         self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: NSDate(), locationName: "", ownerId: (currentUser?.objectId)!, gameNotes: "")
     }
@@ -173,9 +208,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.datePicker.date = earliestSuggestedGameTime()
         lblDate.text = DateUtilities.dateString(self.datePicker.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
     }
-    
-
-    
     
     func removeTopWhiteSpace() {
         let dummyViewHeight: CGFloat = 40
@@ -322,10 +354,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
         
         if indexPath.section == 2 && indexPath.row == 0 {
-            rowHeight = 170.0
+            rowHeight = self.gameNotesTableViewHeight
         }
-        
-
         
         return rowHeight
     }
@@ -526,7 +556,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             if (success) {
                 let gameId = gameObject.objectId! as String
                 self.addGameToUserDefaults(gameId)
-                self.gameDetailsDelegate.setGame(self.game)
+                if self.gameStatus == .EDIT {
+                    self.gameDetailsDelegate.setGame(self.game)
+                }
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 //TODO: Add some sort of alert to say that the game could not be saved

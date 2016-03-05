@@ -31,11 +31,8 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     let alertCancelTitle: [UserStatus: String] = [.USER_NOT_JOINED: "Cancel", .USER_JOINED: "Cancel", .USER_OWNED: "No"]
     
     var gameTypes: [GameType]!
-    var game: Game! {
-        didSet {
-
-        }
-    }
+    var game: Game!
+    
     var userStatus: UserStatus = .USER_NOT_JOINED
     var address: String!
     
@@ -57,7 +54,12 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         }
         
         lblLocationName.text = game.locationName
+        
         lblOpenings.text = ("\(game.availableSlots) openings")
+        
+        if userStatus == .USER_OWNED {
+            lblOpenings.text = ("\(game.availableSlots) openings (\(game.totalSlots - game.availableSlots - 1) joined)")
+        }
         
         btnJoinGame.title = navBarButtonTitleOptions[userStatus]
         imgGameType.image = UIImage(named: game.gameType.imageName)
@@ -68,38 +70,40 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     @IBAction func btnJoinGame(sender: AnyObject) {
         
         if userStatus == .USER_OWNED {
-            
             performSegueWithIdentifier(SEGUE_SHOW_EDIT_GAME, sender: self)
-            
         } else {
-            let message = "Are you sure you want to \(self.alertAction[userStatus]!) this game?"
-            let alertTitle = "\(self.alertTitle[userStatus]!)"
-            let alertCancelTitle = "\(self.alertCancelTitle[userStatus]!)"
-            
-            let alertController = UIAlertController(title: title, message:
-                message, preferredStyle: UIAlertControllerStyle.Alert)
-            
-            alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.Default,handler: nil))
-            alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.Default, handler: { action in
-                
-                switch(self.userStatus) {
-                    
-                case .USER_NOT_JOINED:
-                    self.joinGame()
-                    break
-                case .USER_JOINED:
-                    self.leaveGame()
-                    break
-                default:
-                    break
-                }
-                
-            }))
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
-            
+            showAlert()
         }
         
+    }
+    
+    private func showAlert() {
+        let message = "Are you sure you want to \(self.alertAction[userStatus]!) this game?"
+        let alertTitle = "\(self.alertTitle[userStatus]!)"
+        let alertCancelTitle = "\(self.alertCancelTitle[userStatus]!)"
+        
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.Default,handler: nil))
+        alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.Default, handler: { action in
+            
+            switch(self.userStatus) {
+                
+            case .USER_NOT_JOINED:
+                self.joinGame()
+                break
+            case .USER_JOINED:
+                self.leaveGame()
+                break
+            case .USER_OWNED:
+                self.cancelGameOnParse()
+                break
+            }
+            
+        }))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     private func joinGame() {
@@ -125,12 +129,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         
         self.viewDidLoad()
     }
-    
-    private func deleteGame() {
-        //TODO: Mark game as cancelled
-        //Segue back to my games
-    }
-
     
     //MARK: - Parse
     private func joinPFUserToPFGame() {
@@ -180,6 +178,24 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         
     }
     
+    private func cancelGameOnParse() {
+        let gameQuery = PFQuery(className: "Game")
+        gameQuery.whereKey("objectId", equalTo: self.game.id)
+        
+        gameQuery.getFirstObjectInBackgroundWithBlock {
+            (object: PFObject?, error: NSError?) -> Void in
+            if error != nil || object == nil {
+                print("The getFirstObject on Game request failed.")
+            } else {
+                object?["isCancelled"] = true
+                object?.saveInBackground()
+                
+                self.removeGameFromUserDefaults()
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+        }
+    }
+    
     //MARK: - User Defaults
     
     private func addGameToUserDefaults() {
@@ -224,6 +240,11 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.embeddedView.game = self.game
         self.embeddedView.tableView.reloadData()
     }
+    
+    func cancelGame(game: Game) {
+        showAlert()
+    }
+    
     
     //MARK: - Navigation
     

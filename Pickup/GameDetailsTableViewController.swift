@@ -132,7 +132,7 @@ class GameDetailsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 3 && indexPath.row == 0 {
-            //Cancel that game, son
+            parentDelegate.cancelGame(self.game)
         }
     }
     
@@ -201,7 +201,7 @@ class GameDetailsTableViewController: UITableViewController {
                 } catch let error as NSError {
                     print("ERROR: \(error)")
                 } catch {
-                    print("Not working")
+                    print("Calendar add not working")
                 }
                 
                 break

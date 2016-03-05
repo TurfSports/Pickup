@@ -14,7 +14,8 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     
     @IBOutlet weak var gameMap: MKMapView!
-    
+    @IBOutlet weak var blur: UIVisualEffectView!
+    @IBOutlet weak var lblNoGamesToday: UILabel!
     
     let ANNOTATION_ID = "Pin"
     let MAX_LATLON = 180.0
@@ -28,7 +29,9 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         
         self.navigationController?.title = "Today's Games"
+        
         computeViewSettings()
+        var todayGameCount = 0
         
         for game in games {
             
@@ -42,7 +45,13 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
                     dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue) - \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
                 annotation.game = game
                 gameMap.addAnnotation(annotation)
+                todayGameCount += 1
             }
+        }
+        
+        if todayGameCount == 0 {
+            blur.hidden = false
+            lblNoGamesToday.hidden = false
         }
         
     }

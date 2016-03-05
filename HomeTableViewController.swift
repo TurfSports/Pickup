@@ -170,6 +170,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
             gameQuery.whereKey("gameType", equalTo: gameTypeObject)
             gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
             gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
+            gameQuery.whereKey("isCancelled", equalTo: false)
             
             let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
             

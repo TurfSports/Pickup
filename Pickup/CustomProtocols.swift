@@ -22,4 +22,5 @@ protocol MyGamesTableViewDelegate {
 protocol GameDetailsViewDelegate {
     func setGameAddress(address: String)
     func setGame(game: Game)
+    func cancelGame(game: Game)
 }

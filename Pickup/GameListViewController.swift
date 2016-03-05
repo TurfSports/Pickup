@@ -34,11 +34,17 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     @IBOutlet weak var tableGameList: UITableView!
     @IBOutlet weak var btnViewMap: UIBarButtonItem!
     @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var noGamesBlur: UIVisualEffectView!
     
     //MARK: - View Lifecycle Management
     override func viewDidLoad() {
         super.viewDidLoad()
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
+        
+        if selectedGameType.gameCount == 0 {
+            noGamesBlur.hidden = false
+        }
+    
         setUsersCurrentLocation()
         
         self.title = selectedGameType.displayName
@@ -136,6 +142,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:15.0)
         gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
         gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
+        gameQuery.whereKey("isCancelled", equalTo: false)
         
         gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameObjects = objects {
