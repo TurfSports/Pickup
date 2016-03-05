@@ -21,12 +21,13 @@ class GameDetailsTableViewController: UITableViewController {
     @IBOutlet weak var btnAddToCalendar: UIButton!
 
 
-    
+    var parentDelegate: GameDetailsViewDelegate!
     var game: Game!
     var isOwner: Bool = false
     
     var address: String! {
         didSet {
+            parentDelegate.setGameAddress(address)
             lblAddress.text = address
         }
     }

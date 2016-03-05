@@ -10,9 +10,10 @@ import UIKit
 import Parse
 import MapKit
 
-class GameDetailsViewController: UIViewController, MKMapViewDelegate {
+class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetailsViewDelegate {
 
     let SEGUE_SHOW_EDIT_GAME = "ShowEditGame"
+    let SEGUE_SHOW_EMBEDDED_DETAILS = "showGameDetailsTableViewController"
 
     @IBOutlet weak var lblLocationName: UILabel!
     @IBOutlet weak var lblOpenings: UILabel!
@@ -21,6 +22,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     
     
     var myGamesTableViewDelegate: MyGamesTableViewDelegate?
+    var embeddedView: GameDetailsTableViewController!
     
     let navBarButtonTitleOptions: [UserStatus: String] = [.USER_NOT_JOINED: "Join Game", .USER_JOINED: "Leave Game", .USER_OWNED: "Edit Game"]
     let bottomBarVisible: [UserStatus: Bool] = [.USER_NOT_JOINED: false, .USER_JOINED: false, .USER_OWNED: true]
@@ -29,12 +31,16 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
     let alertCancelTitle: [UserStatus: String] = [.USER_NOT_JOINED: "Cancel", .USER_JOINED: "Cancel", .USER_OWNED: "No"]
     
     var gameTypes: [GameType]!
-    var game: Game!
+    var game: Game! {
+        didSet {
+
+        }
+    }
     var userStatus: UserStatus = .USER_NOT_JOINED
+    var address: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         btnJoinGame.tintColor = Theme.ACCENT_COLOR
         self.navigationController?.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
@@ -200,21 +206,44 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate {
         
     }
     
+    //MARK: - Game Details View Delegate
+    
+    func setGameAddress(address: String) {
+        self.address = address
+        self.embeddedView.lblAddress.text = self.address
+    }
+    
+    func setGame(game: Game) {
+        self.game = game
+        lblLocationName.text = game.locationName
+        //TODO: Fix this to only be able to only decrease
+        lblOpenings.text = ("\(game.totalSlots) openings")
+        self.embeddedView.lblDay.text = DateUtilities.dateString(self.game.eventDate, dateFormatString: DateFormatter.MONTH_DAY_YEAR.rawValue)
+        self.embeddedView.lblTime.text = DateUtilities.dateString(self.game.eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
+        self.embeddedView.lblGameNotes.text = game.gameNotes
+        self.embeddedView.game = self.game
+        self.embeddedView.tableView.reloadData()
+    }
+    
     //MARK: - Navigation
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let embeddedViewController = segue.destinationViewController as? GameDetailsTableViewController
-        embeddedViewController?.game = self.game
         
-        if segue.identifier == SEGUE_SHOW_EDIT_GAME {
+        if segue.identifier == SEGUE_SHOW_EMBEDDED_DETAILS {
+            let embeddedViewController = segue.destinationViewController as? GameDetailsTableViewController
+            self.embeddedView = embeddedViewController
+            embeddedViewController?.game = self.game
+            embeddedViewController?.parentDelegate = self
+        } else if segue.identifier == SEGUE_SHOW_EDIT_GAME {
             let navigationController = segue.destinationViewController as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             
+            newGameTableViewController.gameStatus = .EDIT
+            newGameTableViewController.gameDetailsDelegate = self
             newGameTableViewController.gameTypes = self.gameTypes
             newGameTableViewController.game = self.game
-            newGameTableViewController.gameStatus = .EDIT
-            newGameTableViewController.address = embeddedViewController?.address
+            newGameTableViewController.address = self.address
         }
     }
     

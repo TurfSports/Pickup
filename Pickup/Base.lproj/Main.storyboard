@@ -126,7 +126,7 @@
             </objects>
             <point key="canvasLocation" x="1713.5" y="-276.5"/>
         </scene>
-        <!--New Game-->
+        <!--New Game Table View Controller-->
         <scene sceneID="mka-fd-UBa">
             <objects>
                 <tableViewController id="318-L6-dtC" customClass="NewGameTableViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
@@ -522,7 +522,7 @@
                             <outlet property="delegate" destination="318-L6-dtC" id="Kiz-zN-tPR"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="New Game" id="rjZ-6b-oxu">
+                    <navigationItem key="navigationItem" id="rjZ-6b-oxu">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="9XM-sA-gML">
                             <connections>
                                 <action selector="cancelNewGame:" destination="318-L6-dtC" id="i1v-Z6-y2C"/>
@@ -898,7 +898,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dAm-03-Ep8">
                                 <rect key="frame" x="-4" y="187" width="379" height="431"/>
                                 <connections>
-                                    <segue destination="sbU-Uj-Qez" kind="embed" id="Ibg-T6-dBK"/>
+                                    <segue destination="sbU-Uj-Qez" kind="embed" identifier="showGameDetailsTableViewController" id="Ibg-T6-dBK"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -1009,7 +1009,7 @@
                                                     <rect key="frame" x="245" y="3" width="111" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <state key="normal" title="Add to Calendar">
-                                                        <color key="titleColor" red="0.7725490196" green="0.85098039219999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleColor" red="0.30588235289999999" green="0.36862745099999999" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="addToCalendar:" destination="sbU-Uj-Qez" eventType="touchUpInside" id="jS8-vj-toD"/>
@@ -1097,7 +1097,7 @@
                                                     <rect key="frame" x="261" y="12" width="95" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <state key="normal" title="Open in Maps">
-                                                        <color key="titleColor" red="0.7725490196" green="0.85098039219999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleColor" red="0.30588235289999999" green="0.36862745099999999" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="openInMaps:" destination="sbU-Uj-Qez" eventType="touchUpInside" id="A8L-LP-Nei"/>

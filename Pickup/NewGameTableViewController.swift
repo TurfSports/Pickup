@@ -19,6 +19,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     let MIN_PLAYERS = 1
     let ANNOTATION_ID = "Pin"
     let SEGUE_NEW_GAME_MAP = "showNewGameMap"
+
+    var gameDetailsDelegate: GameDetailsViewDelegate!
     
     @IBOutlet weak var btnCancel: UIBarButtonItem!
     @IBOutlet weak var btnCreate: UIBarButtonItem!
@@ -35,6 +37,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     var gameStatus = GameStatus.CREATE
     let editButtonTitle: [GameStatus: String] = [.CREATE: "Create", .EDIT: "Save"]
+    let navBarTitle: [GameStatus: String] = [.CREATE: "New Game", .EDIT: "Edit Game"]
     
     //If editing a game, this will be passed through the segue
     //else it will be initialized in this view controller
@@ -72,9 +75,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
         lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
-        
         self.game.eventDate = sender.date
-        
     }
     
     
@@ -83,16 +84,20 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         txtGameNotes.delegate = self
         txtLocationName.delegate = self
-        txtLocationName.enabled = false
-        txtLocationName.hidden = true
         txtLocationName.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
         
+        btnCreate.title = editButtonTitle[self.gameStatus]!
+        self.navigationItem.title = navBarTitle[self.gameStatus]!
         
         if gameStatus == .EDIT && self.game != nil {
             getGameObjectFromParse()
+            txtLocationName.enabled = true
+            txtLocationName.hidden = false
             setStoredValues()
         } else if gameStatus == .CREATE {
             createDefaultGame()
+            txtLocationName.enabled = false
+            txtLocationName.hidden = true
             setDefaultInitialValues()
         }
         
@@ -113,8 +118,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     private func getGameObjectFromParse() {
         
-        let gameQuery = PFQuery(className:"GameScore")
-        gameQuery.getObjectInBackgroundWithId("xWMyZEGZ") {
+        let gameQuery = PFQuery(className:"Game")
+        gameQuery.getObjectInBackgroundWithId(self.game.id) {
             (gameObject: PFObject?, error: NSError?) -> Void in
             if error == nil && gameObject != nil {
                 self.gameObject = gameObject
@@ -245,7 +250,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         cell?.backgroundColor = UIColor.whiteColor()
         
-        if indexPath.section == 0 && indexPath.row == 0 {
+        if indexPath.section == 0 && indexPath.row == 0 && gameStatus == .CREATE {
             sportRowSelected = !sportRowSelected
             dateRowSelected = false
             playerRowSelected = false
@@ -323,6 +328,18 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 
         
         return rowHeight
+    }
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        
+        if indexPath.section == 0 && indexPath.row == 0 && self.gameStatus == .EDIT {
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            cell?.userInteractionEnabled = false
+            cell?.selectionStyle = .None
+            lblSport.tintColor = UIColor.blackColor()
+        }
+        
+        return indexPath
     }
     
     
@@ -407,7 +424,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         txtLocationName.hidden = false
         txtLocationName.enabled = true
-        txtLocationName.text = ""
         self.game.locationName = locationName
         txtLocationName.text = locationName
         txtLocationName.becomeFirstResponder()
@@ -510,6 +526,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             if (success) {
                 let gameId = gameObject.objectId! as String
                 self.addGameToUserDefaults(gameId)
+                self.gameDetailsDelegate.setGame(self.game)
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 //TODO: Add some sort of alert to say that the game could not be saved

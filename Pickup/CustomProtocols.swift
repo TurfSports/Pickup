@@ -18,3 +18,8 @@ protocol NewGameTableViewDelegate {
 protocol MyGamesTableViewDelegate {
     func removeGame(game: Game)
 }
+
+protocol GameDetailsViewDelegate {
+    func setGameAddress(address: String)
+    func setGame(game: Game)
+}
