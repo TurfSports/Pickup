@@ -26,6 +26,11 @@ protocol GameDetailsViewDelegate {
     func cancelGame(game: Game)
 }
 
+protocol MainSettingsDelegate {
+    func updateDistance(distance: Int)
+    func updateDistanceUnit(unitType: DistanceUnit)
+}
+
 //https://sectionfive.net/blog/2015/10/23/a-swift-solution-to-view-dismissal/
 
 protocol DismissalDelegate {
@@ -37,17 +42,4 @@ protocol Dismissable {
     var dismissalDelegate : DismissalDelegate? { get set }
 }
 
-//extension DismissalDelegate where Self: UIViewController
-//{
-//    
-//    func finishedShowing(viewController: UIViewController) {
-//        
-//            self.dismissViewControllerAnimated(true, completion: nil)
-//            performSegueWithIdentifier("showGameDetailsViewController", sender: self)
-//        
-//            return
-////        }
-//        
-////        self.navigationController?.popViewControllerAnimated(true)
-//    }
-//}
+
