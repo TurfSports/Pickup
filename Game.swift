@@ -13,7 +13,7 @@ import CoreLocation
 
 class Game {
     
-    let id:String
+    var id:String
     var gameType:GameType
     var totalSlots:Int
     var availableSlots:Int

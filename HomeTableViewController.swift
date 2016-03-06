@@ -10,12 +10,14 @@ import UIKit
 import Parse
 import CoreLocation
 
-class HomeTableViewController: UITableViewController, CLLocationManagerDelegate {
+class HomeTableViewController: UITableViewController, CLLocationManagerDelegate, DismissalDelegate {
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
-    let  SEGUE_SHOW_MY_GAMES = "showMyGamesViewController"
+    let SEGUE_SHOW_MY_GAMES = "showMyGamesViewController"
+    let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     
+    var newGame: Game!
     var gameTypes:[GameType] = []
     var gameCountLoaded:Bool = false {
         didSet {
@@ -28,6 +30,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
             loadGameCounts()
         }
     }
+    
     
     @IBOutlet weak var addNewGameButton: UIBarButtonItem!
     @IBOutlet weak var settingsButton: UIBarButtonItem!
@@ -74,7 +77,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
         
         cell?.lblSport.text = gameType.displayName
         cell?.imgSport.image = UIImage(named: gameType.imageName)
-//        cell?.lblAvailableGames.text = "Testing"
         
         if self.gameCountLoaded {
             if gameType.gameCount > 0 {
@@ -171,6 +173,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
             gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
             gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
             gameQuery.whereKey("isCancelled", equalTo: false)
+            gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
             
             let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
             
@@ -181,8 +184,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
                     gameType.setGameCount(gameCount)
                 self.gameCountLoaded = true
             })
-            
-            
         }
     }
     
@@ -210,10 +211,23 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
         }
     }
     
+    // MARK: - Dismissal Delegate
+    
+    func finishedShowing(viewController: UIViewController) {
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
+        
+        return
+    }
+    
+    func setNewGame(game: Game) {
+        self.newGame = game
+    }
+    
 
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SHOW_GAMES {
             let gamesViewController = segue.destinationViewController as! GameListViewController
@@ -225,10 +239,14 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate 
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
             let navigationController = segue.destinationViewController as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
+            newGameTableViewController.dismissalDelegate = self
             newGameTableViewController.gameTypes = self.gameTypes
         } else if segue.identifier == SEGUE_SHOW_MY_GAMES {
             let myGamesViewController = segue.destinationViewController as! MyGamesViewController
             myGamesViewController.gameTypes = self.gameTypes
+        } else if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
+            let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
+            gameDetailsViewController.game = self.newGame
         }
     }
     

@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "checkbox-marked-circle1x.png",
+      "filename" : "crown1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "checkbox-marked-circle2x.png",
+      "filename" : "crown2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "checkbox-marked-circle3x.png",
+      "filename" : "crown3x.png",
       "scale" : "3x"
     }
   ],
