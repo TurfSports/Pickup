@@ -10,12 +10,14 @@ import UIKit
 import CoreLocation
 import Parse
 
-class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, MyGamesTableViewDelegate {
+class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, MyGamesTableViewDelegate, DismissalDelegate {
 
     let METERS_IN_MILE = 1609.34
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
     
+    
+    var newGame: Game!
     var sectionTitles:[String] = []
     var gameTypes:[GameType] = []
     var games:[Game] = []
@@ -24,13 +26,14 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation? {
         didSet {
-            loadGamesFromParse()
+//            loadGamesFromParse()
             self.tableGameList.reloadData()
         }
     }
     
     @IBOutlet weak var btnAddGame: UIBarButtonItem!
     @IBOutlet weak var tableGameList: UITableView!
+    @IBOutlet weak var blurNoGames: UIVisualEffectView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,11 +50,11 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         
         self.setUsersCurrentLocation()
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
-
     }
     
     override func viewDidAppear(animated: Bool) {
         loadGamesFromParse()
+        
         self.tableGameList.reloadData()
     }
     
@@ -187,6 +190,8 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             if let gameObjects = objects {
                 self.games.removeAll(keepCapacity: true)
                 
+                var gameObjectCount = 0
+                
                 for gameObject in gameObjects {
                     
                     let gameId = gameObject["gameType"].objectId as String!
@@ -199,10 +204,19 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
                     
                     game.userJoined = true
                     self.games.append(game)
+                    gameObjectCount += 1
                 }
+                
+                if gameObjectCount == 0 {
+                    self.blurNoGames.hidden = false
+                }
+                
             } else {
                 print(error)
             }
+            
+
+            
       
             self.sortedGames = self.sortGamesByOwner(self.games)
             self.tableGameList.reloadData()
@@ -319,7 +333,20 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         return round(number * divisor) / divisor
     }
     
-    //TODO: Make the returned result an enum. Abstract out to Date Utilities
+    //MARK: - Dismissal Delegate
+    func finishedShowing(viewController: UIViewController) {
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
+        
+        return
+    }
+    
+    func setNewGame(game: Game) {
+        self.newGame = game
+    }
+    
+    
     func dateCompare(eventDate: NSDate) -> String {
         
         let dateToday: NSDate = NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60)
@@ -404,18 +431,24 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
-            if let indexPath = tableGameList.indexPathForSelectedRow {
-                let game = sortedGames[indexPath.section][indexPath.row]
-                
-                gameDetailsViewController.game = game
-                gameDetailsViewController.gameTypes = self.gameTypes
-                gameDetailsViewController.myGamesTableViewDelegate = self
-                
-                if game.userIsOwner == true {
-                    gameDetailsViewController.userStatus = .USER_OWNED
-                } else {
-                    gameDetailsViewController.userStatus = .USER_JOINED
-                }
+            var game: Game
+            
+            if newGame != nil {
+                game = self.newGame!
+            } else {
+                let indexPath = tableGameList.indexPathForSelectedRow
+                game = sortedGames[indexPath!.section][indexPath!.row]
+            }
+            
+            gameDetailsViewController.game = game
+            gameDetailsViewController.gameTypes = self.gameTypes
+            
+            if game.userIsOwner == true {
+                gameDetailsViewController.userStatus = .USER_OWNED
+            } else if game.userJoined == true {
+                gameDetailsViewController.userStatus = .USER_JOINED
+            } else {
+                gameDetailsViewController.userStatus = .USER_NOT_JOINED
             }
             
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
@@ -423,6 +456,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             
             let navigationController = segue.destinationViewController as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
+            newGameTableViewController.dismissalDelegate = self
             newGameTableViewController.gameTypes = self.gameTypes
             
         }

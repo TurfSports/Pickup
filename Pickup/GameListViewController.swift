@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import Parse
 
-class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate {
+class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, DismissalDelegate {
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let SEGUE_SHOW_GAMES_MAP = "showGamesMapView"
@@ -23,6 +23,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     var gameTypes:[GameType]!
     var games:[Game] = []
     var sortedGames:[[Game]] = [[]]
+    var newGame: Game?
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation? {
         didSet {
@@ -33,7 +34,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     @IBOutlet weak var btnAddNewGame: UIBarButtonItem!
     @IBOutlet weak var tableGameList: UITableView!
     @IBOutlet weak var btnViewMap: UIBarButtonItem!
-    @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var noGamesBlur: UIVisualEffectView!
     
     //MARK: - View Lifecycle Management
@@ -112,6 +112,13 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             cell?.lblDistance.text = ""
             
             if game.userJoined == true {
+                if game.userIsOwner == true {
+                    cell?.imgCheckCircle.image = UIImage(named: "ownerIcon")
+                    cell?.lblJoined.text = "Creator"
+                } else {
+                    cell?.imgCheckCircle.image = UIImage(named: "checkIcon")
+                    cell?.lblJoined.text = "Joined"
+                }
                 cell?.lblJoined.hidden = false
                 cell?.imgCheckCircle.hidden = false
             } else {
@@ -143,12 +150,18 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
         gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
         gameQuery.whereKey("isCancelled", equalTo: false)
+        gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
         
         gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameObjects = objects {
                 self.games.removeAll(keepCapacity: true)
                 for gameObject in gameObjects {
                     let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
+                    
+                    
+                    if gameObject["owner"].objectId == PFUser.currentUser()?.objectId {
+                        game.userIsOwner = true
+                    }
                     
                     if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
                         if joinedGames.containsObject(game.id) {
@@ -199,6 +212,21 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         let divisor = pow(10.0, Double(places))
         return round(number * divisor) / divisor
     }
+    
+    //MARK: - Dismissal Delegate
+
+    func finishedShowing(viewController: UIViewController) {
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
+        
+        return
+    }
+    
+    func setNewGame(game: Game) {
+        self.newGame = game
+    }
+    
     
     //MARK: - Sort Dates
     //TODO: Abstract date functions into separate class
@@ -265,7 +293,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
     }
     
-    //TODO: Make the returned result an enum. Abstract out to Date Utilities
     func dateCompare(eventDate: NSDate) -> String {
         
         let dateToday: NSDate = NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60)
@@ -325,17 +352,24 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
-            if let indexPath = tableGameList.indexPathForSelectedRow {
-                let game = sortedGames[indexPath.section][indexPath.row]
-                
-                gameDetailsViewController.game = game
-                gameDetailsViewController.gameTypes = self.gameTypes
-                
-                if game.userJoined == true {
-                    gameDetailsViewController.userStatus = .USER_JOINED
-                } else {
-                    gameDetailsViewController.userStatus = .USER_NOT_JOINED
-                }
+            var game: Game
+            
+            if newGame != nil {
+                game = self.newGame!
+            } else {
+                let indexPath = tableGameList.indexPathForSelectedRow
+                game = sortedGames[indexPath!.section][indexPath!.row]
+            }
+            
+            gameDetailsViewController.game = game
+            gameDetailsViewController.gameTypes = self.gameTypes
+            
+            if game.userIsOwner == true {
+                gameDetailsViewController.userStatus = .USER_OWNED
+            } else if game.userJoined == true {
+                gameDetailsViewController.userStatus = .USER_JOINED
+            } else {
+                gameDetailsViewController.userStatus = .USER_NOT_JOINED
             }
             
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
@@ -350,6 +384,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             
             let navigationController = segue.destinationViewController as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
+            newGameTableViewController.dismissalDelegate = self
             newGameTableViewController.gameTypes = self.gameTypes
             newGameTableViewController.selectedGameType = self.selectedGameType
         }

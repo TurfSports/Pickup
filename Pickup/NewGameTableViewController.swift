@@ -11,7 +11,7 @@ import CoreLocation
 import Parse
 
 
-class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate, NewGameTableViewDelegate {
+class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate, NewGameTableViewDelegate, Dismissable {
 
     let GAME_TYPE_PICKER = 0
     let NUMBER_OF_PLAYERS_PICKER = 1
@@ -21,6 +21,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     let SEGUE_NEW_GAME_MAP = "showNewGameMap"
 
     var gameDetailsDelegate: GameDetailsViewDelegate!
+    var dismissalDelegate: DismissalDelegate?
     
     @IBOutlet weak var btnCancel: UIBarButtonItem!
     @IBOutlet weak var btnCreate: UIBarButtonItem!
@@ -66,15 +67,16 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     var addressLoaded = false
     
     @IBAction func cancelNewGame(sender: UIBarButtonItem) {
-        
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
     
     @IBAction func createNewGame(sender: UIBarButtonItem) {
         
+        
         if enteredDataIsValid() == true {
+            
             saveParseGameObject(self.game)
+            
         } else {
             markInvalidFields()
         }
@@ -144,9 +146,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         let heightAboveGameNotes: CGFloat = 322.0
         
         self.gameNotesTableViewHeight = self.tableView.bounds.height - heightAboveGameNotes
-//        if self.tableView.bounds.height == 667.0 {
-//            self.gameNotesTableViewHeight = 345.0
-//        }
     }
     
     private func getGameObjectFromParse() {
@@ -195,6 +194,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         let currentUser = PFUser.currentUser()
         self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: NSDate(), locationName: "", ownerId: (currentUser?.objectId)!, gameNotes: "")
+        
+        self.game.userIsOwner = true
+        self.game.userJoined = true
+        self.game.ownerId = (currentUser?.objectId)!
+        
     }
     
     private func setDefaultInitialValues() {
@@ -268,7 +272,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 lblSport.text = gameTypes[row].displayName
                 break
             case NUMBER_OF_PLAYERS_PICKER:
-                self.game.totalSlots = row + MIN_PLAYERS
+                self.game.totalSlots = row + MIN_PLAYERS + 1
+                self.game.availableSlots = row + MIN_PLAYERS
                 lblPlayers.text = "\(row + MIN_PLAYERS)"
                 break
             default:
@@ -555,11 +560,16 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             (success: Bool, error: NSError?) -> Void in
             if (success) {
                 let gameId = gameObject.objectId! as String
+                self.game.id = gameId
                 self.addGameToUserDefaults(gameId)
                 if self.gameStatus == .EDIT {
                     self.gameDetailsDelegate.setGame(self.game)
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                } else if self.gameStatus == .CREATE {
+                    self.dismissalDelegate?.setNewGame(self.game)
+                    self.dismissalDelegate?.finishedShowing(self)
                 }
-                self.dismissViewControllerAnimated(true, completion: nil)
+                
             } else {
                 //TODO: Add some sort of alert to say that the game could not be saved
             }
@@ -617,10 +627,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 newGameMapViewController?.locationName = self.game.locationName
                 newGameMapViewController?.gameLocation = CLLocationCoordinate2DMake(self.game.latitude, self.game.longitude)
             }
-            
         }
+        
     }
-    
-
-
 }

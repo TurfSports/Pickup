@@ -120,6 +120,7 @@
                         <outlet property="addNewGameButton" destination="z7y-KW-e6G" id="JTW-kE-ilv"/>
                         <outlet property="settingsButton" destination="8zz-2e-Ilk" id="TYa-pl-wvA"/>
                         <segue destination="Q6f-CY-rt6" kind="show" identifier="showGamesTableViewController" id="PR9-um-aFv"/>
+                        <segue destination="2Oq-YX-z2v" kind="show" identifier="showGameDetailsViewController" id="9Z0-r9-d2O"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9A5-t6-d05" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -401,16 +402,12 @@
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Venue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X5n-V5-Y7K">
                                                     <rect key="frame" x="27" y="11" width="48" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="GWJ-6M-Dgm"/>
-                                                        <constraint firstAttribute="width" constant="48" id="v6k-z5-o0g"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gz8-3n-8E3">
-                                                    <rect key="frame" x="288" y="48" width="63" height="21"/>
+                                                    <rect key="frame" x="75" y="48" width="276" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="274" id="5u3-cJ-aRj"/>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="265" id="usZ-ed-BhX"/>
@@ -431,6 +428,7 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="qCt-Xy-iB0" secondAttribute="trailing" constant="16" id="6KV-G8-NXQ"/>
                                                 <constraint firstItem="uiC-fZ-uvo" firstAttribute="centerY" secondItem="gz8-3n-8E3" secondAttribute="centerY" constant="-12" id="7Wy-ok-1rf"/>
                                                 <constraint firstItem="uiC-fZ-uvo" firstAttribute="leading" secondItem="gz8-3n-8E3" secondAttribute="trailing" constant="30" id="8iv-5H-P2t"/>
+                                                <constraint firstItem="gz8-3n-8E3" firstAttribute="leading" secondItem="uiC-fZ-uvo" secondAttribute="trailing" constant="14" id="HWV-hc-Qdy"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="gz8-3n-8E3" secondAttribute="trailing" constant="16" id="JFn-s5-s2k"/>
                                                 <constraint firstItem="uiC-fZ-uvo" firstAttribute="leading" secondItem="Hfl-wB-8Pw" secondAttribute="leadingMargin" constant="19" id="JHl-Bi-MzU"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="qCt-Xy-iB0" secondAttribute="bottom" id="MyL-vt-4r3"/>
@@ -785,8 +783,8 @@
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkcircleIcon" translatesAutoresizingMaskIntoConstraints="NO" id="YDl-Uc-fea">
-                                                    <rect key="frame" x="343" y="35" width="24" height="24"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkIcon" translatesAutoresizingMaskIntoConstraints="NO" id="YDl-Uc-fea">
+                                                    <rect key="frame" x="336" y="33" width="24" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="gjr-OG-3jt"/>
                                                         <constraint firstAttribute="height" constant="24" id="xE9-aX-GQB"/>
@@ -807,7 +805,7 @@
                                                 <constraint firstItem="p40-ZK-dFh" firstAttribute="top" secondItem="ThM-R7-UiJ" secondAttribute="bottom" constant="2" id="G5k-W3-RcU"/>
                                                 <constraint firstItem="ThM-R7-UiJ" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" id="Hue-Bs-fVq"/>
                                                 <constraint firstItem="p40-ZK-dFh" firstAttribute="top" secondItem="ThM-R7-UiJ" secondAttribute="bottom" constant="3" id="IxC-3Y-fcj"/>
-                                                <constraint firstItem="YDl-Uc-fea" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" id="Mwh-6R-q1P"/>
+                                                <constraint firstItem="YDl-Uc-fea" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" constant="-1.5" id="Mwh-6R-q1P"/>
                                                 <constraint firstItem="p40-ZK-dFh" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" id="OQH-mn-VdV"/>
                                                 <constraint firstItem="YDl-Uc-fea" firstAttribute="leading" secondItem="5Oo-95-INf" secondAttribute="trailing" constant="5" id="Q4p-c9-bwI"/>
                                                 <constraint firstItem="ThM-R7-UiJ" firstAttribute="top" secondItem="swf-Tv-esR" secondAttribute="bottom" constant="2" id="S9V-a3-uqj"/>
@@ -815,13 +813,13 @@
                                                 <constraint firstItem="YDl-Uc-fea" firstAttribute="centerY" secondItem="ThM-R7-UiJ" secondAttribute="centerY" id="ZI3-FR-1ir"/>
                                                 <constraint firstItem="ThM-R7-UiJ" firstAttribute="top" secondItem="swf-Tv-esR" secondAttribute="bottom" constant="1" id="Za4-sM-87k"/>
                                                 <constraint firstItem="5Oo-95-INf" firstAttribute="baseline" secondItem="ThM-R7-UiJ" secondAttribute="baseline" id="dII-Fx-WTw"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="YDl-Uc-fea" secondAttribute="trailing" id="hfT-ZE-Ivj"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="YDl-Uc-fea" secondAttribute="trailing" constant="7" id="hfT-ZE-Ivj"/>
                                                 <constraint firstItem="ThM-R7-UiJ" firstAttribute="top" secondItem="swf-Tv-esR" secondAttribute="bottom" constant="2" id="ivJ-o8-VDg"/>
                                                 <constraint firstItem="ThM-R7-UiJ" firstAttribute="leading" secondItem="swf-Tv-esR" secondAttribute="leading" id="jkj-AQ-e1p"/>
                                                 <constraint firstItem="swf-Tv-esR" firstAttribute="centerY" secondItem="Str-Se-foR" secondAttribute="centerY" id="oIR-me-nUS"/>
-                                                <constraint firstItem="YDl-Uc-fea" firstAttribute="leading" secondItem="5Oo-95-INf" secondAttribute="trailing" constant="8" id="sYC-Sf-pfg"/>
+                                                <constraint firstItem="YDl-Uc-fea" firstAttribute="leading" secondItem="5Oo-95-INf" secondAttribute="trailing" constant="1" id="sYC-Sf-pfg"/>
                                                 <constraint firstItem="p40-ZK-dFh" firstAttribute="trailing" secondItem="YDl-Uc-fea" secondAttribute="trailing" id="u1F-j0-tJE"/>
-                                                <constraint firstItem="5Oo-95-INf" firstAttribute="centerY" secondItem="YDl-Uc-fea" secondAttribute="centerY" id="wJ9-HU-xqd"/>
+                                                <constraint firstItem="5Oo-95-INf" firstAttribute="centerY" secondItem="YDl-Uc-fea" secondAttribute="centerY" constant="2" id="wJ9-HU-xqd"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -932,7 +930,7 @@
         <!--Game Details View Controller-->
         <scene sceneID="Bit-TI-JNy">
             <objects>
-                <viewController id="hUl-GN-0zr" customClass="GameDetailsViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameDetailsViewController" id="hUl-GN-0zr" customClass="GameDetailsViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rRe-2I-YSx"/>
                         <viewControllerLayoutGuide type="bottom" id="xWp-CR-tgg"/>
@@ -1305,6 +1303,14 @@
             </objects>
             <point key="canvasLocation" x="3241.5" y="-276.5"/>
         </scene>
+        <!--GameDetailsViewController-->
+        <scene sceneID="udl-mv-NAd">
+            <objects>
+                <viewControllerPlaceholder referencedIdentifier="GameDetailsViewController" id="2Oq-YX-z2v" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xUQ-7T-JfB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1371.5" y="242"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="gJc-vI-Zih">
             <objects>
@@ -1424,13 +1430,37 @@
                                     <outlet property="delegate" destination="OHq-Kb-oUj" id="Yf7-K8-l7P"/>
                                 </connections>
                             </tableView>
+                            <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Csm-Ne-niE">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="center" id="ieM-WJ-6m9">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven't created or joined any games" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XaT-Nm-Dz1">
+                                            <rect key="frame" x="33" y="266" width="309" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="XaT-Nm-Dz1" firstAttribute="centerY" secondItem="ieM-WJ-6m9" secondAttribute="centerY" id="O5D-ny-UDk"/>
+                                        <constraint firstItem="XaT-Nm-Dz1" firstAttribute="centerX" secondItem="ieM-WJ-6m9" secondAttribute="centerX" id="U2y-uw-N3P"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Vih-eq-jUx" firstAttribute="top" secondItem="mhQ-Sl-8Sn" secondAttribute="top" id="EqE-52-b6U"/>
+                            <constraint firstItem="Csm-Ne-niE" firstAttribute="top" secondItem="2hS-9D-ceq" secondAttribute="bottom" id="NdC-XP-fyJ"/>
                             <constraint firstItem="Vih-eq-jUx" firstAttribute="leading" secondItem="mhQ-Sl-8Sn" secondAttribute="leading" id="QyG-uJ-6Hj"/>
+                            <constraint firstItem="Csm-Ne-niE" firstAttribute="trailing" secondItem="Vih-eq-jUx" secondAttribute="trailing" id="Rbn-gF-ogG"/>
                             <constraint firstAttribute="trailing" secondItem="Vih-eq-jUx" secondAttribute="trailing" id="ZIA-Ug-a9l"/>
                             <constraint firstItem="Vih-eq-jUx" firstAttribute="bottom" secondItem="ieh-DN-dcT" secondAttribute="top" id="e1j-Bm-ObU"/>
+                            <constraint firstItem="Csm-Ne-niE" firstAttribute="bottom" secondItem="ieh-DN-dcT" secondAttribute="top" id="gh6-gy-uFE"/>
+                            <constraint firstItem="Csm-Ne-niE" firstAttribute="leading" secondItem="Vih-eq-jUx" secondAttribute="leading" id="kcP-2m-ZMQ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="My Games" id="ooi-Nj-pH7">
@@ -1442,6 +1472,7 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="blurNoGames" destination="Csm-Ne-niE" id="pE6-l7-hY3"/>
                         <outlet property="btnAddGame" destination="u3G-iz-ddl" id="n8f-ni-hE4"/>
                         <outlet property="tableGameList" destination="Vih-eq-jUx" id="0CA-mv-jPJ"/>
                         <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="hon-da-Emo"/>
@@ -1492,7 +1523,7 @@
     </scenes>
     <resources>
         <image name="basketballIcon" width="100" height="100"/>
-        <image name="checkcircleIcon" width="48" height="48"/>
+        <image name="checkIcon" width="48" height="48"/>
         <image name="gamesIcon" width="25" height="25"/>
         <image name="mapIcon" width="22" height="22"/>
         <image name="myGamesIcon" width="25" height="25"/>
@@ -1500,7 +1531,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="OEk-ge-wuA"/>
-        <segue reference="gsA-UD-Nep"/>
-        <segue reference="J4I-yY-pBk"/>
+        <segue reference="hon-da-Emo"/>
+        <segue reference="g09-s2-G55"/>
     </inferredMetricsTieBreakers>
 </document>
