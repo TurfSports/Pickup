@@ -136,11 +136,11 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     //MARK: - Gesture recognizer
     func setGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "action:")
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dropPinOnLocation:")
         newGameMap.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    func action(gestureRecognizer: UIGestureRecognizer) {
+    func dropPinOnLocation(gestureRecognizer: UIGestureRecognizer) {
         
         let touchPoint = gestureRecognizer.locationInView(self.newGameMap)
         let coordinate: CLLocationCoordinate2D = newGameMap.convertPoint(touchPoint, toCoordinateFromView: self.newGameMap)

@@ -27,8 +27,7 @@ protocol GameDetailsViewDelegate {
 }
 
 protocol MainSettingsDelegate {
-    func updateDistance(distance: Int)
-    func updateDistanceUnit(unitType: DistanceUnit)
+    func updateTempSettings(tempSettings: Settings)
 }
 
 //https://sectionfive.net/blog/2015/10/23/a-swift-solution-to-view-dismissal/

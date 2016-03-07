@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum DistanceUnit: String {
+enum DistanceUnit: String {
     case MILES = "miles"
     case KILOMETERS = "kilometers"
 }

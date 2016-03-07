@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //Set up user defaults
+        
+        //Intialize first pull of game types. Only pull these once a day
         if let _ = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
             //Pass
         } else {
@@ -32,6 +34,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSUserDefaults.standardUserDefaults().setObject(lastPull, forKey: "gameTypePullTimeStamp")
         }
         
+        //Initialize settings
+        if let settingsFromUserDefaults = NSUserDefaults.standardUserDefaults().objectForKey("settings") as? [String: String] {
+            
+            let storedSettings = Settings.deserializeSettings(settingsFromUserDefaults)
+            Settings.sharedSettings.gameDistance = storedSettings.gameDistance
+            Settings.sharedSettings.distanceUnit = storedSettings.distanceUnit
+            Settings.sharedSettings.gameReminder = storedSettings.gameReminder
+            Settings.sharedSettings.defaultLocation = storedSettings.defaultLocation
+            Settings.sharedSettings.showCreatedGames = storedSettings.showCreatedGames
+            
+        } else {
+            let settings = Settings.sharedSettings
+            let serializedSettings = Settings.serializeSettings(settings)
+            NSUserDefaults.standardUserDefaults().setObject(serializedSettings, forKey: "settings")
+        }
         
         //Set up current user
         let currentUser = PFUser.currentUser()
@@ -48,10 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-        
-//        if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
-//            print(joinedGames)
-//        }
+
         
         
         return true

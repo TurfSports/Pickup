@@ -17,14 +17,13 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     let MILES = 0
     
     var settingsDelegate: MainSettingsDelegate!
-    var distance: Int!
-    var distanceUnit: DistanceUnit!
+    var tempSettings: Settings!
     
     @IBAction func distanceUnitsChanged(sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == MILES {
-            self.distanceUnit = .MILES
+            self.tempSettings.distanceUnit = "miles"
         } else {
-            self.distanceUnit = .KILOMETERS
+            self.tempSettings.distanceUnit = "kilometers"
         }
     }
     
@@ -32,23 +31,36 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         self.navigationController?.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
+        setGestureRecognizer()
         addTextFieldTargets()
         
-        //This needs to change to get user defaults
-        self.distanceUnit = .MILES
-        //Set controls to user defaults
+        txtGameDistance.text = "\(tempSettings.gameDistance)"
+        if tempSettings.defaultLocation != "none" {
+            txtDefaultLocation.text = tempSettings.defaultLocation
+        }
         
-
+        if tempSettings.distanceUnit == "miles" {
+            segCtrlDistanceUnits.selectedSegmentIndex = 0
+        } else {
+            segCtrlDistanceUnits.selectedSegmentIndex = 1
+        }
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
-        
-        if txtGameDistance.text != "" {
-            settingsDelegate.updateDistance(self.distance)
-        }
-        
-        settingsDelegate.updateDistanceUnit(self.distanceUnit)
+        settingsDelegate.updateTempSettings(self.tempSettings)
+    }
+    
+    func setGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "resignKeyboard")
+        self.tableView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    func resignKeyboard() {
+        txtDefaultLocation.resignFirstResponder()
+        txtGameDistance.resignFirstResponder()
     }
     
     
@@ -58,6 +70,16 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     }
 
     //MARK: - Text Field Delegate
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        textField.text = ""
+    }
+    
     func textFieldGameDistanceDidChange(textField: UITextField) {
         
         if let userInputDistance = Int(txtGameDistance.text!) {
@@ -71,11 +93,8 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
                 txtGameDistance.text = "\(distance)"
             }
             
-            self.distance = distance
+            self.tempSettings.gameDistance = distance
         }
-        
-        
-        //Update user settings
     }
     
     func textFieldDefaultLocationDidChange(textField: UITextField) {
