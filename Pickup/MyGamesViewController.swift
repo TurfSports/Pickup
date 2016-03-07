@@ -53,8 +53,8 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     }
     
     override func viewDidAppear(animated: Bool) {
+        blurNoGames.hidden = true
         loadGamesFromParse()
-        
         self.tableGameList.reloadData()
     }
     
@@ -433,11 +433,10 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
             var game: Game
             
-            if newGame != nil {
-                game = self.newGame!
+            if let indexPath = tableGameList.indexPathForSelectedRow {
+                game = sortedGames[indexPath.section][indexPath.row]
             } else {
-                let indexPath = tableGameList.indexPathForSelectedRow
-                game = sortedGames[indexPath!.section][indexPath!.row]
+                game = self.newGame!
             }
             
             gameDetailsViewController.game = game

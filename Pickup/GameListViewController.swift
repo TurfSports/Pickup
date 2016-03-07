@@ -42,7 +42,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
         
         if selectedGameType.gameCount == 0 {
-            noGamesBlur.hidden = false
+            blurScreen()
         }
     
         setUsersCurrentLocation()
@@ -59,6 +59,9 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         self.tableGameList.reloadData()
     }
     
+    private func blurScreen() {
+        noGamesBlur.hidden = false
+    }
     
     // MARK: - Table view data source
     
@@ -173,8 +176,13 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                 }
             }
             
-            self.sortedGames = self.sortGamesByDate(self.games)
-            self.tableGameList.reloadData()
+            if self.games.count == 0 {
+                self.blurScreen()
+            } else {
+                self.sortedGames = self.sortGamesByDate(self.games)
+                self.tableGameList.reloadData()
+            }
+
         }
     }
 
@@ -354,11 +362,10 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
             var game: Game
             
-            if newGame != nil {
-                game = self.newGame!
+            if let indexPath = tableGameList.indexPathForSelectedRow {
+                game = sortedGames[indexPath.section][indexPath.row]
             } else {
-                let indexPath = tableGameList.indexPathForSelectedRow
-                game = sortedGames[indexPath!.section][indexPath!.row]
+                game = self.newGame!
             }
             
             gameDetailsViewController.game = game

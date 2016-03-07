@@ -744,7 +744,7 @@
                 <viewControllerPlaceholder referencedIdentifier="NewGameNavigationController" id="bTf-NV-1hE" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O9E-8V-8V2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3231.5" y="-1128"/>
+            <point key="canvasLocation" x="3231.5" y="-1098"/>
         </scene>
         <!--Game List View Controller-->
         <scene sceneID="XwK-KG-R5D">
@@ -1824,6 +1824,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="My Games" id="ooi-Nj-pH7">
+                        <barButtonItem key="leftBarButtonItem" image="settingsIcon" id="fwA-Yp-xST">
+                            <connections>
+                                <segue destination="0J0-Ln-i8Z" kind="presentation" id="eGa-K8-DDp"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="u3G-iz-ddl">
                             <connections>
                                 <segue destination="bTf-NV-1hE" kind="presentation" identifier="showNewGameTableViewController" id="VLK-qk-4Vj"/>
@@ -1841,6 +1846,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1rb-Gx-Qtj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1756.5" y="-1150.5"/>
+        </scene>
+        <!--SettingsNavigationController-->
+        <scene sceneID="nzs-kd-qHh">
+            <objects>
+                <viewControllerPlaceholder referencedIdentifier="SettingsNavigationController" id="0J0-Ln-i8Z" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Uq-HD-E9g" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2238.5" y="-1176"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="zix-ak-tv9">
@@ -1883,7 +1896,7 @@
         <!--Navigation Controller-->
         <scene sceneID="2nt-Ol-HZ2">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ged-03-Qq8" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SettingsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Ged-03-Qq8" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="saZ-TH-CXe">
@@ -1909,8 +1922,8 @@
         <image name="settingsIcon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="OEk-ge-wuA"/>
-        <segue reference="b1X-ua-1wf"/>
+        <segue reference="hon-da-Emo"/>
         <segue reference="g09-s2-G55"/>
+        <segue reference="VLK-qk-4Vj"/>
     </inferredMetricsTieBreakers>
 </document>

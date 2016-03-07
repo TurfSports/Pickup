@@ -16,7 +16,7 @@ class GameType {
     var sortOrder:Int
     let imageName:String
     
-    var gameCount:Int
+    var gameCount:Int = -1
     
     init (id: String, name: String, displayName: String, sortOrder: Int, imageName: String) {
         self.id = id
