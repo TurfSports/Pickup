@@ -20,6 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Theme.applyTheme()
         
         // Initialize Parse.
+        // Parse Licensing Agreement
+        // https://parse.com/policies
+        
         Parse.setApplicationId("vXTZeIEcllE2fqSPJab5OdZkCbB9TmfW9DIutXJn",
             clientKey: "xUjfmNs7umcLNLUdINYj6jfe5Y4dQx6CT8JMEpqJ")
         
@@ -79,13 +82,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-    
-//    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
-//        
-//        "handleLocalNotification"
-//        NSNotificationCenter.defaultCenter().postNotificationName("TestingLocalNotifications", object: self)
-//        completionHandler()
-//    }
     
     func applicationDidBecomeActive(application: UIApplication) {
 

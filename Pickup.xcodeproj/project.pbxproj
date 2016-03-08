@@ -290,7 +290,6 @@
 			children = (
 				02BE27811C4DD58F0062C890 /* Main.storyboard */,
 				02BE27861C4DD58F0062C890 /* LaunchScreen.storyboard */,
-				025330F61C56FAA600B6ABDD /* Theme.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -305,6 +304,7 @@
 				024DDF0A1C8BF298000E34D7 /* GameDetails */,
 				024DDF0B1C8BF2A6000E34D7 /* NewGame */,
 				02BE277D1C4DD58F0062C890 /* AppDelegate.swift */,
+				025330F61C56FAA600B6ABDD /* Theme.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";

@@ -26,7 +26,6 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation? {
         didSet {
-//            loadGamesFromParse()
             self.tableGameList.reloadData()
         }
     }

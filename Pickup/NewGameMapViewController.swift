@@ -127,6 +127,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: ANNOTATION_ID)
             pinView!.canShowCallout = true
             pinView!.animatesDrop = true
+            pinView!.image = UIImage(named: "annotationIcon")
         }
         
         //TODO: - Consider adding a custom color
