@@ -31,6 +31,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         }
     }
     
+    @IBOutlet weak var btnSettings: UIBarButtonItem!
     @IBOutlet weak var btnAddGame: UIBarButtonItem!
     @IBOutlet weak var tableGameList: UITableView!
     @IBOutlet weak var blurNoGames: UIVisualEffectView!
@@ -39,6 +40,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         super.viewDidLoad()
         
         self.btnAddGame.tintColor = Theme.ACCENT_COLOR
+        self.btnSettings.tintColor = Theme.PRIMARY_LIGHT_COLOR
         
         let gameTypePullTimeStamp: NSDate = getLastGameTypePull()
         

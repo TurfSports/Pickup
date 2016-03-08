@@ -126,12 +126,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         if self.MIN_PLAYERS < 1 {
             self.MIN_PLAYERS = 1
         }
-        
-        print("viewDidLoad \n(")
-        print("totalSlots \(self.game.totalSlots)")
-        print("availableSlots \(self.game.availableSlots)")
-        print(")")
-        
+
         btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
         btnCreate.tintColor = Theme.ACCENT_COLOR
         btnMap.tintColor = Theme.ACCENT_COLOR
@@ -185,11 +180,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
         
         txtGameNotes.text = self.game.gameNotes
-        
-        print("setStoredValues \n(")
-        print("totalSlots \(self.game.totalSlots)")
-        print("availableSlots \(self.game.availableSlots)")
-        print(")")
     }
     
     private func createDefaultGame() {
@@ -209,12 +199,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.game.userIsOwner = true
         self.game.userJoined = true
         self.game.ownerId = (currentUser?.objectId)!
-        
-        print("createDefaultGame \n(")
-        print("totalSlots \(self.game.totalSlots)")
-        print("availableSlots \(self.game.availableSlots)")
-        print(")")
-        
     }
     
     private func setDefaultInitialValues() {
@@ -290,12 +274,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             case NUMBER_OF_PLAYERS_PICKER:
                 self.game.totalSlots = row + MIN_PLAYERS + 1
                 self.game.availableSlots = row + MIN_PLAYERS
-                
-                print("didSelectPickerRow \n(")
-                print("totalSlots \(self.game.totalSlots)")
-                print("availableSlots \(self.game.availableSlots)")
-                print(")")
-                
                 lblPlayers.text = "\(row + MIN_PLAYERS)"
                 break
             default:
@@ -320,11 +298,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 lblPlayers.text = "\(numberOfPlayersPicker.selectedRowInComponent(0) + 1)"
                 self.game.totalSlots = numberOfPlayersPicker.selectedRowInComponent(0) + 1
                 self.game.availableSlots = numberOfPlayersPicker.selectedRowInComponent(0)
-                print("didSelectTableRow \n(")
-                print("totalSlots \(self.game.totalSlots)")
-                print("availableSlots \(self.game.availableSlots)")
-                print(")")
-                
             }
             sportRowSelected = false
             dateRowSelected = false
@@ -548,6 +521,52 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
     }
     
+    //MARK: - Notifications
+    func scheduleGameNotification() {
+        let settings = UIApplication.sharedApplication().currentUserNotificationSettings()
+        
+        if settings!.types != .None && Settings.sharedSettings.gameReminder != 0 {
+            let notification = UILocalNotification()
+            notification.fireDate = self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60)
+            print(self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60))
+            //            notification.fireDate = NSDate(timeIntervalSinceNow: 10)
+            
+            let timeUntilGame = getTimeUntilGameFromSettings()
+            
+            notification.alertBody = "Your \(self.game.gameType.name) game at \(self.game.locationName) starts within \(timeUntilGame)."
+            
+            notification.soundName = UILocalNotificationDefaultSoundName
+            
+            notification.userInfo = ["selectedGameId": self.game.id, "selectedGameTypeId": self.game.gameType.id]
+            UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        }
+    }
+    
+    func getTimeUntilGameFromSettings() -> String {
+        
+        var timeUntilGame: String
+        
+        switch (Settings.sharedSettings.gameReminder) {
+        case 30:
+            timeUntilGame = "30 minutes"
+            break
+        case 60:
+            timeUntilGame = "1 hour"
+            break
+        case 120:
+            timeUntilGame = "2 hours"
+            break
+        case 1440:
+            timeUntilGame = "24 hours"
+            break
+        default:
+            timeUntilGame = "just a few minutes"
+            break
+        }
+        
+        return timeUntilGame
+    }
+    
     
     //MARK: - Parse
     
@@ -580,18 +599,13 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         gameObject["totalSlots"] = self.game.totalSlots
         gameObject["slotsAvailable"] = self.game.availableSlots
         gameObject["isCancelled"] = false
-        
-        print("setGameForObjectFields \n(")
-        print("totalSlots \(self.game.totalSlots)")
-        print("availableSlots \(self.game.availableSlots)")
-        print(")")
-        
     }
     
     private func saveGameObjectInBackground (gameObject: PFObject) {
         gameObject.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in
             if (success) {
+                self.scheduleGameNotification()
                 let gameId = gameObject.objectId! as String
                 self.game.id = gameId
                 self.addGameToUserDefaults(gameId)

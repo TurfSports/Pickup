@@ -1851,6 +1851,7 @@
                     <connections>
                         <outlet property="blurNoGames" destination="Csm-Ne-niE" id="pE6-l7-hY3"/>
                         <outlet property="btnAddGame" destination="u3G-iz-ddl" id="n8f-ni-hE4"/>
+                        <outlet property="btnSettings" destination="fwA-Yp-xST" id="Ykb-6O-1eu"/>
                         <outlet property="tableGameList" destination="Vih-eq-jUx" id="0CA-mv-jPJ"/>
                         <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="hon-da-Emo"/>
                     </connections>

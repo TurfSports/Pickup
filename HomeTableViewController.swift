@@ -39,7 +39,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParse:", name: "com.pickup.loadGameFromNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
         
         _ = GameTypeList.sharedGameTypes
         
@@ -211,14 +212,17 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         }
     }
     
+    func loadGameFromParseWithSegue(notification: NSNotification) {
+        loadGameFromParse(false, notification: notification)
+    }
     
-    func loadGameFromParse(notification: NSNotification) {
-        
-        print("HomeTableViewController: \(self.isBeingPresented())")
+    func loadGameFromParseWithAlert(notification: NSNotification) {
+        loadGameFromParse(true, notification: notification)
+    }
+    
+    func loadGameFromParse(showAlert: Bool, notification: NSNotification) {
         
         let gameId = notification.userInfo!["selectedGameId"]
-        print(gameId)
-        
         let gameQuery = PFQuery(className: "Game")
         gameQuery.whereKey("objectId", equalTo: gameId!)
         
@@ -239,11 +243,37 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
 
                 self.newGame.userJoined = true
                 
-                self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
+                if showAlert == true {
+                    self.showAlert(notification)
+                } else {
+                    self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
+                }
                 
             }
         }
         
+    }
+    
+    //MARK: - Notification Alert
+    private func showAlert(notification: NSNotification) {
+        let notificationMessage = notification.userInfo!["alertBody"]
+        let message: String = notificationMessage as! String
+        
+        let alertConfirmationTitle = "View Game"
+        let alertCancelTitle = "Ignore"
+        
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.Default,handler: nil))
+        alertController.addAction(UIAlertAction(title: alertConfirmationTitle, style: UIAlertActionStyle.Default, handler: { action in
+                
+        self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
+            
+            
+        }))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     //MARK: - Location Manager Delegate

@@ -114,7 +114,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.game.userJoined = !self.game.userJoined
         self.userStatus = .USER_JOINED
         self.scheduleGameNotification()
-        self.viewDidLoad()
     }
     
     private func leaveGame() {
@@ -123,33 +122,33 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.game.userJoined = !self.game.userJoined
         self.game.availableSlots += 1
         self.userStatus = .USER_NOT_JOINED
+        self.cancelGameNotification()
         
         if myGamesTableViewDelegate != nil {
             myGamesTableViewDelegate?.removeGame(self.game)
             navigationController?.popViewControllerAnimated(true)
         }
-        
-        self.viewDidLoad()
     }
     
     
+    //MARK: - Notifications
     //https://www.hackingwithswift.com/example-code/system/how-to-set-local-alerts-using-uilocalnotification
     func scheduleGameNotification() {
         let settings = UIApplication.sharedApplication().currentUserNotificationSettings()
         
         if settings!.types != .None && Settings.sharedSettings.gameReminder != 0 {
             let notification = UILocalNotification()
-            notification.fireDate = self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60)
-            print(self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60))
-//            notification.fireDate = NSDate(timeIntervalSinceNow: 10)
+//            notification.fireDate = self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60)
+            notification.fireDate = NSDate(timeIntervalSinceNow: 10)
             
             let timeUntilGame = getTimeUntilGameFromSettings()
             
-            notification.alertBody = "Your \(self.game.gameType.name) game at \(self.game.locationName) starts within \(timeUntilGame)."
+            let alertBody = "Your \(self.game.gameType.name) game at \(self.game.locationName) starts in \(timeUntilGame)."
+            notification.alertBody = alertBody
             
             notification.soundName = UILocalNotificationDefaultSoundName
             
-            notification.userInfo = ["selectedGameId": self.game.id, "selectedGameTypeId": self.game.gameType.id]
+            notification.userInfo = ["selectedGameId": self.game.id, "alertBody": alertBody]
             UIApplication.sharedApplication().scheduleLocalNotification(notification)
         }
     }
@@ -179,6 +178,14 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         return timeUntilGame
     }
     
+    func cancelGameNotification() {
+        for notification in UIApplication.sharedApplication().scheduledLocalNotifications! {// as! [UILocalNotification] {
+            if notification.userInfo!["selectedGameId"] as! String == self.game.id {
+                UIApplication.sharedApplication().cancelLocalNotification(notification)
+            }
+        }
+    }
+    
     
     //MARK: - Parse
     private func joinPFUserToPFGame() {
@@ -203,7 +210,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 self.navigationController?.popViewControllerAnimated(true)
             }
         }
-    
     }
     
     
@@ -243,6 +249,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 object?["isCancelled"] = true
                 object?.saveInBackground()
                 
+                self.cancelGameNotification()
                 self.removeGameFromUserDefaults()
                 self.navigationController?.popViewControllerAnimated(true)
             }

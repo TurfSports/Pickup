@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if let userInfo = notification.userInfo {
                     
                     print(userInfo["selectedGameId"])
-                    NSNotificationCenter.defaultCenter().postNotificationName("TestingLocalNotifications", object: self)
+                    NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotification", object: self)
                 }
             }
         }
@@ -103,7 +103,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         
-        NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotification", object: nil, userInfo: notification.userInfo)
+        if (application.applicationState == .Background || application.applicationState == .Inactive) {
+            NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotificationWithSegue", object: nil, userInfo: notification.userInfo)
+        } else {
+            NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotificationWithAlert", object: nil, userInfo: notification.userInfo)
+        }
+        
+        
         
     }
     
