@@ -874,7 +874,7 @@
                                     <outlet property="delegate" destination="Q6f-CY-rt6" id="Led-6U-QCa"/>
                                 </connections>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="6Uu-R9-Krv">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="6Uu-R9-Krv">
                                 <rect key="frame" x="177" y="324" width="20" height="20"/>
                                 <color key="color" red="0.30588235294117649" green="0.36862745098039218" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
@@ -913,10 +913,12 @@
                             <constraint firstItem="UMW-9J-MKV" firstAttribute="top" secondItem="nIv-Pr-xgS" secondAttribute="bottom" id="E6t-JF-Hm6"/>
                             <constraint firstItem="UMW-9J-MKV" firstAttribute="bottom" secondItem="tke-hi-y00" secondAttribute="top" id="ZA6-Ht-IlT"/>
                             <constraint firstItem="7yx-aF-a8u" firstAttribute="leading" secondItem="mui-xj-CsD" secondAttribute="leading" id="Zfm-Rk-B1u"/>
+                            <constraint firstItem="6Uu-R9-Krv" firstAttribute="centerX" secondItem="UMW-9J-MKV" secondAttribute="centerX" id="da8-mH-emH"/>
                             <constraint firstItem="7yx-aF-a8u" firstAttribute="top" secondItem="mui-xj-CsD" secondAttribute="top" id="iWP-qy-yCI"/>
                             <constraint firstAttribute="trailing" secondItem="7yx-aF-a8u" secondAttribute="trailing" id="jgO-wA-rN8"/>
                             <constraint firstItem="UMW-9J-MKV" firstAttribute="leading" secondItem="7yx-aF-a8u" secondAttribute="leading" id="lhS-hR-Q8c"/>
                             <constraint firstItem="UMW-9J-MKV" firstAttribute="trailing" secondItem="7yx-aF-a8u" secondAttribute="trailing" id="rCm-Qa-vQ0"/>
+                            <constraint firstItem="6Uu-R9-Krv" firstAttribute="centerY" secondItem="mui-xj-CsD" secondAttribute="centerY" id="vLt-X6-bRp"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="riU-H5-Pc7">
@@ -1560,7 +1562,7 @@
                         <sections>
                             <tableViewSection footerTitle="The app will only display games within a certain radius of your location." id="onT-Md-IDC">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="l90-mO-qBY">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" id="l90-mO-qBY">
                                         <rect key="frame" x="0.0" y="99" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l90-mO-qBY" id="YTD-pS-Wqa">
@@ -1608,7 +1610,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 miles" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8y9-ZO-vtu">
                                                     <rect key="frame" x="295" y="11" width="63" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -1724,6 +1726,8 @@
                     <navigationItem key="navigationItem" title="Distance" id="yc2-dB-Oug"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="lblDistance" destination="8y9-ZO-vtu" id="1i5-Pf-bOR"/>
+                        <outlet property="pickerViewDistance" destination="BYZ-Oq-ew4" id="r5b-lt-EBo"/>
                         <outlet property="segCtrlDistanceUnits" destination="Tqu-0L-gzC" id="HQU-vW-VxX"/>
                         <outlet property="txtDefaultLocation" destination="9jL-89-NQd" id="miy-WR-Ntv"/>
                     </connections>

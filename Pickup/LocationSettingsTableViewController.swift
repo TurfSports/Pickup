@@ -8,16 +8,18 @@
 
 import UIKit
 
-class LocationSettingsTableViewController: UITableViewController, UITextFieldDelegate {
+class LocationSettingsTableViewController: UITableViewController, UITextFieldDelegate, UIPickerViewDelegate {
 
     @IBOutlet weak var segCtrlDistanceUnits: UISegmentedControl!
-    @IBOutlet weak var txtGameDistance: UITextField!
     @IBOutlet weak var txtDefaultLocation: UITextField!
+    @IBOutlet weak var lblDistance: UILabel!
+    @IBOutlet weak var pickerViewDistance: UIPickerView!
     
     let MILES = 0
     
     var settingsDelegate: MainSettingsDelegate!
     var tempSettings: Settings!
+    var distanceRowSelected: Bool = false
     
     @IBAction func distanceUnitsChanged(sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == MILES {
@@ -25,18 +27,22 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         } else {
             self.tempSettings.distanceUnit = "kilometers"
         }
+        
+        lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
     }
     
     //MARK: - View Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
         self.navigationController?.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
-        setGestureRecognizer()
-        addTextFieldTargets()
         
-        txtGameDistance.text = "\(tempSettings.gameDistance)"
+        lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
+        
+        pickerViewDistance.selectRow(tempSettings.gameDistance - 1, inComponent: 0, animated: false)
+        
         if tempSettings.defaultLocation != "none" {
             txtDefaultLocation.text = tempSettings.defaultLocation
         }
@@ -50,89 +56,79 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     }
     
     override func viewWillDisappear(animated: Bool) {
-        if txtGameDistance.text?.characters.count > 0 {
-            var gameDistance = Int(txtGameDistance.text!)!
-            if gameDistance > 60 {
-                gameDistance = 60
-            } else if gameDistance < 1 {
-                gameDistance = 1
-            }
-            
-            tempSettings.gameDistance = gameDistance
-        }
         
         settingsDelegate.updateTempSettings(self.tempSettings)
     }
     
-    func setGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "resignKeyboard")
-        self.tableView.addGestureRecognizer(tapGestureRecognizer)
+    
+
+    //MARK: - Picker View Delegate
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
     }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 50
+    }
+    
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return "\(row + 1)"
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        tempSettings.gameDistance = row + 1
+        lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
+    }
+    
+    
+    //MARK: - Table View Delegate
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("didSelectRow")
+        
+        if indexPath.section == 0 && indexPath.row == 1 {
+            print("Hello")
+            distanceRowSelected = !distanceRowSelected
+            animateReloadTableView()
+
+        }
+        
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        var rowHeight:CGFloat = 44.0
+        print("\(indexPath.section) section:  \(indexPath.row) row")
+        
+        if indexPath.section == 0 && indexPath.row == 2 {
+            if distanceRowSelected == false {
+                rowHeight = 0.0
+            } else {
+                rowHeight = 130.0
+            }
+        }
+        
+        return rowHeight
+        
+    }
+    
+    private func animateReloadTableView() -> Void {
+        UIView.transitionWithView(tableView,
+            duration:0.35,
+            options: [.AllowAnimatedContent, .TransitionCrossDissolve],
+            animations:
+            { () -> Void in
+                self.tableView.reloadData()
+            },
+            completion: nil);
+    }
+    
     
     func resignKeyboard() {
         txtDefaultLocation.resignFirstResponder()
-        txtGameDistance.resignFirstResponder()
-    }
-    
-    
-    private func addTextFieldTargets() {
-//        txtGameDistance.addTarget(self, action: "textFieldGameDistanceDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-//        txtDefaultLocation.addTarget(self, action: "textFieldDefaultLocationDidChange:", forControlEvents: UIControlEvents.EditingChanged)
     }
 
-    //MARK: - Text Field Delegate
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldDidBeginEditing(textField: UITextField) {
-        textField.text = ""
-    }
-    
-    //http://stackoverflow.com/a/1773257/3866299
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        
-        let currentCharacterCount = textField.text?.characters.count ?? 0
-        if (range.length + range.location > currentCharacterCount){
-            return false
-        }
-        
-        let newLength = currentCharacterCount + string.characters.count - range.length
-        return newLength <= 2
-        
-
-        
-    }
-    
-    func textFieldGameDistanceDidChange(textField: UITextField) {
-        
-        if let userInputDistance = Int(txtGameDistance.text!) {
-            var distance = userInputDistance
-            
-            if distance > 60 {
-                distance = 60
-                txtGameDistance.text = "\(distance)"
-            } else if distance < 1 {
-                distance = 1
-                txtGameDistance.text = "\(distance)"
-            }
-            
-            self.tempSettings.gameDistance = distance
-        }
-    }
-    
-    func textFieldDefaultLocationDidChange(textField: UITextField) {
- 
-        
-    }
-    
-//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-//        guard let text = textField.text else { return true }
-//        let newLength = text.characters.count + string.characters.count - range.length
-//        return newLength <= limitLength
-//    }
 
 
 }

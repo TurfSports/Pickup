@@ -138,9 +138,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     func setHeightForGameNotesTableCell() {
-        
         let heightAboveGameNotes: CGFloat = 322.0
-        
         self.gameNotesTableViewHeight = self.tableView.bounds.height - heightAboveGameNotes
     }
     
@@ -320,7 +318,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
 
-        var rowHeight:CGFloat = 44
+        var rowHeight:CGFloat = 44.0
         
         if indexPath.section == 0 && indexPath.row == 1 {
             if sportRowSelected == false {
