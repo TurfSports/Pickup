@@ -39,18 +39,31 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     @IBOutlet weak var noGamesBlur: UIVisualEffectView!
     @IBOutlet weak var lblNoGames: UILabel!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    
+    //https://www.andrewcbancroft.com/2015/03/17/basics-of-pull-to-refresh-for-swift-developers/
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "loadGamesFromParse", forControlEvents: UIControlEvents.ValueChanged)
+        
+        return refreshControl
+    }()
+    
     //MARK: - View Lifecycle Management
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
+        self.tableGameList.addSubview(self.refreshControl)
         
         lblNoGames.text = "No \(selectedGameType.name) games within \(Settings.sharedSettings.gameDistance) \(Settings.sharedSettings.distanceUnit)"
         noGamesBlur.hidden = true
         
-        if selectedGameType.gameCount == 0 {
-            blurScreen()
-        }
-    
+        
+        activityIndicator.startAnimating()
+        self.activityIndicator.hidden = false
+        
         setUsersCurrentLocation()
         
         self.title = selectedGameType.displayName
@@ -61,7 +74,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.noGamesBlur.hidden = true
         loadGamesFromParse()
         self.tableGameList.reloadData()
     }
@@ -148,6 +160,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                     cell?.lblDistance.text = "\(distance) \(suffix)"
                 }
             }
+        } else {
+            blurScreen()
         }
         
         return cell!
@@ -155,7 +169,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     //MARK: - Parse
     
-    private func loadGamesFromParse() {
+    func loadGamesFromParse() {
         let gameQuery = PFQuery(className: "Game")
         let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
         
@@ -194,15 +208,19 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                             game.userJoined = true
                         }
                     }
-                    
                     self.games.append(game)
                 }
             }
+            
+            
             
             if self.games.count == 0 {
                 self.blurScreen()
             } else {
                 self.sortedGames = self.sortGamesByDate(self.games)
+                self.refreshControl.endRefreshing()
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.hidden = true
                 self.tableGameList.reloadData()
             }
 

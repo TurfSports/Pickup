@@ -30,8 +30,11 @@ class GameType {
     func setGameCount(count: Int) {
         gameCount = count
     }
-
     
+    func increaseGameCount(count: Int) {
+        gameCount += count
+    }
+
     static func serializeGameType(game: GameType) -> [String: String] {
         var serializedGameType: [String: String] = [:]
         

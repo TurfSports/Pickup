@@ -31,9 +31,16 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         }
     }
     
-    
+    @IBOutlet weak var refresher: UIRefreshControl!
     @IBOutlet weak var addNewGameButton: UIBarButtonItem!
     @IBOutlet weak var settingsButton: UIBarButtonItem!
+    
+    lazy var activityIndicator: UIActivityIndicatorView! = {
+        let activityIndicator = UIActivityIndicatorView()
+
+        activityIndicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+        return activityIndicator
+    }()
     
     override func viewDidLoad() {
         
@@ -41,6 +48,12 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
+
+        refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(refresher)
+        
+        self.tableView.addSubview(activityIndicator)
+
         
         _ = GameTypeList.sharedGameTypes
         
@@ -52,14 +65,23 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             loadGameTypesFromUserDefaults()
         }
         
+        
         addNewGameButton.tintColor = Theme.ACCENT_COLOR
         settingsButton.tintColor = Theme.PRIMARY_LIGHT_COLOR
         self.navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
         
-        
-        
-        
         setUsersCurrentLocation()
+    }
+    
+ 
+    func setActivityIndicatorProperties() {
+        
+        activityIndicator.center = self.view.center
+        activityIndicator.activityIndicatorViewStyle = .Gray
+        activityIndicator.tintColor = Theme.PRIMARY_DARK_COLOR
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+        
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -93,7 +115,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 cell?.lblAvailableGames.text = "No games"
             }
         } else {
-            cell?.lblAvailableGames.text = "Retrieving games"
+            cell?.lblAvailableGames.text = ""
         }
         
         
@@ -138,7 +160,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         }
         
         GameTypeList.sharedGameTypes.setGameTypeList(self.gameTypes)
-
+        activityIndicator.stopAnimating()
     }
     
     private func saveGameTypesToUserDefaults() {
@@ -174,12 +196,13 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             
             self.saveGameTypesToUserDefaults()
             GameTypeList.sharedGameTypes.setGameTypeList(self.gameTypes)
+            self.activityIndicator.stopAnimating()
             self.tableView.reloadData()
         }
     }
     
     
-    private func loadGameCounts() {
+    func loadGameCounts() {
         
         for gameType in self.gameTypes {
             let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
@@ -207,8 +230,10 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             gameQuery.countObjectsInBackgroundWithBlock({ (count: Int32, error: NSError?) -> Void in
                     let gameCount = Int(count)
                     gameType.setGameCount(gameCount)
-                self.gameCountLoaded = true
+                    self.gameCountLoaded = true
             })
+            
+            refresher.endRefreshing()
         }
     }
     
@@ -248,9 +273,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 } else {
                     self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
                 }
-                
             }
         }
+        
         
     }
     
@@ -286,6 +311,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         if currentLocation != nil {
             locationManager.stopUpdatingLocation()
         }
+        
         
         self.tableView.reloadData()
     }

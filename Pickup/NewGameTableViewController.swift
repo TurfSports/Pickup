@@ -72,11 +72,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     @IBAction func createNewGame(sender: UIBarButtonItem) {
         
-        
         if enteredDataIsValid() == true {
-            
             saveParseGameObject(self.game)
-            
         } else {
             markInvalidFields()
         }
@@ -106,11 +103,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         if gameStatus == .EDIT && self.game != nil {
             getGameObjectFromParse()
-            
             sportTableViewCell.userInteractionEnabled = false
             sportTableViewCell.selectionStyle = .None
             sportTableViewCell.backgroundColor = Theme.UNEDITABLE_CELL_COLOR
-            
             txtLocationName.enabled = true
             txtLocationName.hidden = false
             setStoredValues()
@@ -194,7 +189,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.numberOfPlayersPicker.selectRow(9, inComponent: 0, animated: false)
         
         let currentUser = PFUser.currentUser()
-        self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: NSDate(), locationName: "", ownerId: (currentUser?.objectId)!, gameNotes: "")
+        self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: earliestSuggestedGameTime(), locationName: "", ownerId: (currentUser?.objectId)!, gameNotes: "")
         
         self.game.userIsOwner = true
         self.game.userJoined = true
@@ -606,6 +601,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             (success: Bool, error: NSError?) -> Void in
             if (success) {
                 self.scheduleGameNotification()
+                self.game.gameType.increaseGameCount(1)
                 let gameId = gameObject.objectId! as String
                 self.game.id = gameId
                 self.addGameToUserDefaults(gameId)
