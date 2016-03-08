@@ -292,11 +292,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.Default,handler: nil))
         alertController.addAction(UIAlertAction(title: alertConfirmationTitle, style: UIAlertActionStyle.Default, handler: { action in
-                
-        self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
-            
-            
+            self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
         }))
+        
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }

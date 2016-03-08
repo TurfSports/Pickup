@@ -31,14 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(launchOptions)
         
         if let options = launchOptions {
-            print("options")
             if let notification = options[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
-                print("notification")
-                if let userInfo = notification.userInfo {
-                    
-                    print(userInfo["selectedGameId"])
-                    NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotification", object: self)
-                }
+                NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotificationWithSegue", object: nil, userInfo: notification.userInfo)
             }
         }
         

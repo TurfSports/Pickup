@@ -62,6 +62,8 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         setUsersCurrentLocation()
         setUpMapScreen()
+        
+        newGameMap.showsUserLocation = true
     }
     
     private func setUpMapScreen() {
@@ -121,7 +123,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(ANNOTATION_ID) as? MKPinAnnotationView
         
-        if pinView == nil {
+        if pinView == nil && !annotation.isKindOfClass(MKUserLocation) {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: ANNOTATION_ID)
             pinView!.canShowCallout = true
             pinView!.animatesDrop = true

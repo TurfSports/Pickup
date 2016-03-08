@@ -11,6 +11,8 @@ import UIKit
 class GeneralSettingsTableViewController: UITableViewController, MainSettingsDelegate {
 
     let SEGUE_DISTANCE_SETTINGS = "showDistanceSettings"
+    let SEGUE_ABOUT = "showAboutViewController"
+    
     let selectedCellGameReminder: [Int] = [0, 30, 60, 2 * 60, 24 * 60]
     
     @IBOutlet weak var btnSave: UIBarButtonItem!
@@ -130,6 +132,9 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
             tempSettings.gameReminder = self.selectedCellGameReminder[indexPath.row]
             
             break
+        case 2:
+            performSegueWithIdentifier(SEGUE_ABOUT, sender: self)
+            break
         default:
             break
         }
@@ -183,8 +188,9 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
                 locationSettingsTableViewController.settingsDelegate = self
                 locationSettingsTableViewController.tempSettings = self.tempSettings
         }
-        
     }
+    
+    
     
     
 

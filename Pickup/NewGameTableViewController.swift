@@ -39,7 +39,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var sportTableViewCell: UITableViewCell!
 
-    
+    var editingNotes = false
     var gameStatus = GameStatus.CREATE
     let editButtonTitle: [GameStatus: String] = [.CREATE: "Create", .EDIT: "Save"]
     let navBarTitle: [GameStatus: String] = [.CREATE: "New Game", .EDIT: "Edit Game"]
@@ -58,7 +58,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
     }
     
-    //This is an ugly hack
+    //This is somewhat of a hack
     var gameNotesTableViewHeight: CGFloat!
 
     var sportRowSelected:Bool = false
@@ -67,16 +67,28 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     var addressLoaded = false
     
     @IBAction func cancelNewGame(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        
+        if editingNotes == false {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            txtGameNotes.resignFirstResponder()
+        }
     }
     
     @IBAction func createNewGame(sender: UIBarButtonItem) {
         
-        if enteredDataIsValid() == true {
-            saveParseGameObject(self.game)
+        if editingNotes == false  {
+            if enteredDataIsValid() == true {
+                saveParseGameObject(self.game)
+            } else {
+                markInvalidFields()
+            }
         } else {
-            markInvalidFields()
+            self.game.gameNotes = txtGameNotes.text
+            self.txtGameNotes.resignFirstResponder()
+            btnCreate.title = "Create"
         }
+        
     }
     
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
@@ -90,11 +102,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         setHeightForGameNotesTableCell()
         
-        
         txtGameNotes.delegate = self
         txtLocationName.delegate = self
         txtLocationName.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-        
         
         self.MIN_PLAYERS = 1
         
@@ -132,7 +142,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         
         //Attempting to get rid of extra cell on bottom, not sure if this is working
-//        self.footerView.backgroundColor = Theme.PRIMARY_LIGHT_COLOR
         self.tableView.tableFooterView = self.footerView
         
     }
@@ -254,7 +263,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
         
         return rowContents
-
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -423,24 +431,19 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     func textViewDidEndEditing(textView: UITextView) {
         self.game.gameNotes = textView.text
-    }
-    
-    func textViewDidChange(textView: UITextView) {
-        self.game.gameNotes = textView.text
+        self.btnCreate.title = "Create"
+        self.editingNotes = false
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
         if textView.text == "Add notes..." {
             textView.text = ""
         }
+        
+        self.editingNotes = true
+        self.btnCreate.title = "Done"
     }
     
-    func textViewShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-
     
     //MARK: - New Game Table View Delegate
 
@@ -616,8 +619,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             }
         }
     }
-    
-    
     
     //MARK: - User Defaults
     

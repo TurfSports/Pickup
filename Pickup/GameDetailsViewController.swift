@@ -103,6 +103,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
             
         }))
         
+        
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
@@ -138,8 +139,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         
         if settings!.types != .None && Settings.sharedSettings.gameReminder != 0 {
             let notification = UILocalNotification()
-//            notification.fireDate = self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60)
-            notification.fireDate = NSDate(timeIntervalSinceNow: 10)
+            notification.fireDate = self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60)
             
             let timeUntilGame = getTimeUntilGameFromSettings()
             
@@ -293,8 +293,8 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     func setGame(game: Game) {
         self.game = game
         lblLocationName.text = game.locationName
-        //TODO: Fix this to only be able to only decrease
-        lblOpenings.text = ("\(game.totalSlots) openings")
+        lblOpenings.text = ("\(game.availableSlots) openings (\(game.totalSlots - game.availableSlots - 1) joined)")
+        
         self.embeddedView.lblDay.text = DateUtilities.dateString(self.game.eventDate, dateFormatString: DateFormatter.MONTH_DAY_YEAR.rawValue)
         self.embeddedView.lblTime.text = DateUtilities.dateString(self.game.eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
         self.embeddedView.lblGameNotes.text = game.gameNotes

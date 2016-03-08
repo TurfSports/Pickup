@@ -85,10 +85,8 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     
     //MARK: - Table View Delegate
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("didSelectRow")
         
         if indexPath.section == 0 && indexPath.row == 1 {
-            print("Hello")
             distanceRowSelected = !distanceRowSelected
             animateReloadTableView()
 
@@ -99,7 +97,6 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         var rowHeight:CGFloat = 44.0
-        print("\(indexPath.section) section:  \(indexPath.row) row")
         
         if indexPath.section == 0 && indexPath.row == 2 {
             if distanceRowSelected == false {
@@ -123,12 +120,5 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
             },
             completion: nil);
     }
-    
-    
-    func resignKeyboard() {
-        txtDefaultLocation.resignFirstResponder()
-    }
-
-
 
 }

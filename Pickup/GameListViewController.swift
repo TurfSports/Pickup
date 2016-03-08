@@ -74,6 +74,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     override func viewDidAppear(animated: Bool) {
+        noGamesBlur.hidden = true
         loadGamesFromParse()
         self.tableGameList.reloadData()
     }

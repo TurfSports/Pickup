@@ -35,6 +35,8 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
         
         for game in games {
             
+            gameMap.showsUserLocation = true
+            
             if NSCalendar.currentCalendar().compareDate(game.eventDate, toDate: NSDate(), toUnitGranularity: .Day) == NSComparisonResult.OrderedSame {
                 let location = setLocationOnMap(game.latitude, longitude: game.longitude)
                 
@@ -42,7 +44,7 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
                 annotation.coordinate = location
                 annotation.title = game.locationName
                 annotation.subtitle = DateUtilities.dateString(game.eventDate,
-                    dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue) - \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+                    dateFormatString: "\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
                 annotation.game = game
                 gameMap.addAnnotation(annotation)
                 todayGameCount += 1
@@ -59,6 +61,11 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Map view delegate
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        
+        if annotation.isMemberOfClass(MKUserLocation) {
+            return nil
+        }
         
         var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(ANNOTATION_ID) as? MKPinAnnotationView
         
