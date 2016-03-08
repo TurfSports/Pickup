@@ -93,6 +93,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         setHeightForGameNotesTableCell()
         
+        
         txtGameNotes.delegate = self
         txtLocationName.delegate = self
         txtLocationName.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
@@ -120,11 +121,16 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             setDefaultInitialValues()
         }
         
-
+        
         self.MIN_PLAYERS = self.game.totalSlots - self.game.availableSlots - 1
         if self.MIN_PLAYERS < 1 {
             self.MIN_PLAYERS = 1
         }
+        
+        print("viewDidLoad \n(")
+        print("totalSlots \(self.game.totalSlots)")
+        print("availableSlots \(self.game.availableSlots)")
+        print(")")
         
         btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
         btnCreate.tintColor = Theme.ACCENT_COLOR
@@ -179,6 +185,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
         
         txtGameNotes.text = self.game.gameNotes
+        
+        print("setStoredValues \n(")
+        print("totalSlots \(self.game.totalSlots)")
+        print("availableSlots \(self.game.availableSlots)")
+        print(")")
     }
     
     private func createDefaultGame() {
@@ -198,6 +209,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.game.userIsOwner = true
         self.game.userJoined = true
         self.game.ownerId = (currentUser?.objectId)!
+        
+        print("createDefaultGame \n(")
+        print("totalSlots \(self.game.totalSlots)")
+        print("availableSlots \(self.game.availableSlots)")
+        print(")")
         
     }
     
@@ -274,6 +290,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             case NUMBER_OF_PLAYERS_PICKER:
                 self.game.totalSlots = row + MIN_PLAYERS + 1
                 self.game.availableSlots = row + MIN_PLAYERS
+                
+                print("didSelectPickerRow \n(")
+                print("totalSlots \(self.game.totalSlots)")
+                print("availableSlots \(self.game.availableSlots)")
+                print(")")
+                
                 lblPlayers.text = "\(row + MIN_PLAYERS)"
                 break
             default:
@@ -297,6 +319,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             if lblPlayers.text == "" || lblPlayers.text == nil {
                 lblPlayers.text = "\(numberOfPlayersPicker.selectedRowInComponent(0) + 1)"
                 self.game.totalSlots = numberOfPlayersPicker.selectedRowInComponent(0) + 1
+                self.game.availableSlots = numberOfPlayersPicker.selectedRowInComponent(0)
+                print("didSelectTableRow \n(")
+                print("totalSlots \(self.game.totalSlots)")
+                print("availableSlots \(self.game.availableSlots)")
+                print(")")
+                
             }
             sportRowSelected = false
             dateRowSelected = false
@@ -549,9 +577,14 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         gameObject["gameNotes"] = self.game.gameNotes
         gameObject["owner"] = PFUser.currentUser()
         gameObject.relationForKey("players").addObject(PFUser.currentUser()!)
-        gameObject["totalSlots"] = self.game.totalSlots + 1
-        gameObject["slotsAvailable"] = self.game.totalSlots
+        gameObject["totalSlots"] = self.game.totalSlots
+        gameObject["slotsAvailable"] = self.game.availableSlots
         gameObject["isCancelled"] = false
+        
+        print("setGameForObjectFields \n(")
+        print("totalSlots \(self.game.totalSlots)")
+        print("availableSlots \(self.game.availableSlots)")
+        print(")")
         
     }
     

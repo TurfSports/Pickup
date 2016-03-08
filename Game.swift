@@ -45,4 +45,5 @@ class Game {
         self.longitude = longitude
     }
     
+    
 }

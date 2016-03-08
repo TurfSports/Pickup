@@ -106,12 +106,14 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
+    
     private func joinGame() {
         self.joinPFUserToPFGame()
         self.addGameToUserDefaults()
         self.game.availableSlots += -1
         self.game.userJoined = !self.game.userJoined
         self.userStatus = .USER_JOINED
+        self.scheduleGameNotification()
         self.viewDidLoad()
     }
     
@@ -129,6 +131,54 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         
         self.viewDidLoad()
     }
+    
+    
+    //https://www.hackingwithswift.com/example-code/system/how-to-set-local-alerts-using-uilocalnotification
+    func scheduleGameNotification() {
+        let settings = UIApplication.sharedApplication().currentUserNotificationSettings()
+        
+        if settings!.types != .None && Settings.sharedSettings.gameReminder != 0 {
+            let notification = UILocalNotification()
+            notification.fireDate = self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60)
+            print(self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60))
+//            notification.fireDate = NSDate(timeIntervalSinceNow: 10)
+            
+            let timeUntilGame = getTimeUntilGameFromSettings()
+            
+            notification.alertBody = "Your \(self.game.gameType.name) game at \(self.game.locationName) starts within \(timeUntilGame)."
+            
+            notification.soundName = UILocalNotificationDefaultSoundName
+            
+            notification.userInfo = ["selectedGameId": self.game.id, "selectedGameTypeId": self.game.gameType.id]
+            UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        }
+    }
+    
+    func getTimeUntilGameFromSettings() -> String {
+        
+        var timeUntilGame: String
+        
+        switch (Settings.sharedSettings.gameReminder) {
+        case 30:
+            timeUntilGame = "30 minutes"
+            break
+        case 60:
+            timeUntilGame = "1 hour"
+            break
+        case 120:
+            timeUntilGame = "2 hours"
+            break
+        case 1440:
+            timeUntilGame = "24 hours"
+            break
+        default:
+            timeUntilGame = "just a few minutes"
+            break
+        }
+        
+        return timeUntilGame
+    }
+    
     
     //MARK: - Parse
     private func joinPFUserToPFGame() {
@@ -150,10 +200,12 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 object?["slotsAvailable"] = slotsAvailable
                 
                 object?.saveInBackground()
+                self.navigationController?.popViewControllerAnimated(true)
             }
         }
     
     }
+    
     
     private func removePFUserFromPFGame() {
         let gameQuery = PFQuery(className: "Game")
@@ -173,6 +225,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 var slotsAvailable = object?["slotsAvailable"] as! Int
                 slotsAvailable += 1
                 object?["slotsAvailable"] = slotsAvailable
+                self.navigationController?.popViewControllerAnimated(true)
             }
         }
         
@@ -195,6 +248,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
             }
         }
     }
+
     
     //MARK: - User Defaults
     
@@ -245,6 +299,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         showAlert()
     }
     
+
     
     //MARK: - Navigation
     
@@ -267,5 +322,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
             newGameTableViewController.address = self.address
         }
     }
+    
+
     
 }

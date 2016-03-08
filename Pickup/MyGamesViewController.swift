@@ -419,7 +419,6 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         }
         
         return joinedGamesIds
-        
     }
     
 

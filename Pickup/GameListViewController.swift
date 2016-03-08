@@ -19,6 +19,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     var sectionTitles:[String] = []
     
     let METERS_IN_MILE = 1609.34
+    let METERS_IN_KILOMETER = 1000.0
+    
     var selectedGameType:GameType!
     var gameTypes:[GameType]!
     var games:[Game] = []
@@ -35,11 +37,15 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     @IBOutlet weak var tableGameList: UITableView!
     @IBOutlet weak var btnViewMap: UIBarButtonItem!
     @IBOutlet weak var noGamesBlur: UIVisualEffectView!
+    @IBOutlet weak var lblNoGames: UILabel!
     
     //MARK: - View Lifecycle Management
     override func viewDidLoad() {
         super.viewDidLoad()
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
+        
+        lblNoGames.text = "No \(selectedGameType.name) games within \(Settings.sharedSettings.gameDistance) \(Settings.sharedSettings.distanceUnit)"
+        noGamesBlur.hidden = true
         
         if selectedGameType.gameCount == 0 {
             blurScreen()
@@ -55,6 +61,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     override func viewDidAppear(animated: Bool) {
+        self.noGamesBlur.hidden = true
         loadGamesFromParse()
         self.tableGameList.reloadData()
     }
@@ -134,7 +141,11 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
             if self.currentLocation != nil {
                 if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!) {
-                    cell?.lblDistance.text = "\(distance) mi"
+                    var suffix = "mi"
+                    if Settings.sharedSettings.distanceUnit == "kilometers" {
+                        suffix = "km"
+                    }
+                    cell?.lblDistance.text = "\(distance) \(suffix)"
                 }
             }
         }
@@ -149,18 +160,30 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
         
         gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
-        gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:15.0)
+        
+        if Settings.sharedSettings.distanceUnit == "miles" {
+            let gameDistance = Double(Settings.sharedSettings.gameDistance)
+            gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:gameDistance)
+        } else {
+            let gameDistance = Double(Settings.sharedSettings.gameDistance)
+            gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinKilometers:gameDistance)
+        }
+        
         gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
         gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
         gameQuery.whereKey("isCancelled", equalTo: false)
         gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
+        
+        if Settings.sharedSettings.showCreatedGames == false {
+            gameQuery.whereKey("owner", notEqualTo: PFUser.currentUser()!)
+        }
+
         
         gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameObjects = objects {
                 self.games.removeAll(keepCapacity: true)
                 for gameObject in gameObjects {
                     let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
-                    
                     
                     if gameObject["owner"].objectId == PFUser.currentUser()?.objectId {
                         game.userIsOwner = true
@@ -212,7 +235,16 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     func getDistanceBetweenLocations(location1: CLLocation, location2: CLLocation) -> Double {
-        let distance:Double = roundToDecimalPlaces(location1.distanceFromLocation(location2) / METERS_IN_MILE, places: 1)
+        
+        var distanceUnitMeasurement: Double
+        
+        if Settings.sharedSettings.distanceUnit == "miles" {
+            distanceUnitMeasurement = METERS_IN_MILE
+        } else {
+            distanceUnitMeasurement = METERS_IN_KILOMETER
+        }
+        
+        let distance:Double = roundToDecimalPlaces(location1.distanceFromLocation(location2) / distanceUnitMeasurement, places: 1)
         return distance
     }
     

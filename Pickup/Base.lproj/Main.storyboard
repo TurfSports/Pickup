@@ -878,9 +878,17 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No games are scheduled within 15 miles" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gqI-bU-QuT">
                                             <rect key="frame" x="34" y="266" width="307" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="307" id="1q4-oI-m3T"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="1q4-oI-m3T"/>
+                                                </mask>
+                                            </variation>
                                         </label>
                                     </subviews>
                                     <constraints>
@@ -922,6 +930,7 @@
                     <connections>
                         <outlet property="btnAddNewGame" destination="age-NC-m5h" id="EJ6-d9-koN"/>
                         <outlet property="btnViewMap" destination="Lz1-vq-o3M" id="c1t-W6-1qj"/>
+                        <outlet property="lblNoGames" destination="gqI-bU-QuT" id="shS-vv-pAi"/>
                         <outlet property="noGamesBlur" destination="UMW-9J-MKV" id="Fs7-hy-u9T"/>
                         <outlet property="tableGameList" destination="7yx-aF-a8u" id="ER7-GE-5Dr"/>
                         <segue destination="hUl-GN-0zr" kind="show" identifier="showGameDetailsViewController" id="gsA-UD-Nep"/>

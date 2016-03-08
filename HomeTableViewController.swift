@@ -37,6 +37,12 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     override func viewDidLoad() {
         
+        super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParse:", name: "com.pickup.loadGameFromNotification", object: nil)
+        
+        _ = GameTypeList.sharedGameTypes
+        
         let gameTypePullTimeStamp: NSDate = getLastGameTypePull()
         
         if gameTypePullTimeStamp.compare(NSDate().dateByAddingTimeInterval(-24*60*60)) == NSComparisonResult.OrderedAscending {
@@ -45,10 +51,12 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             loadGameTypesFromUserDefaults()
         }
         
-        super.viewDidLoad()
         addNewGameButton.tintColor = Theme.ACCENT_COLOR
         settingsButton.tintColor = Theme.PRIMARY_LIGHT_COLOR
         self.navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
+        
+        
+        
         
         setUsersCurrentLocation()
     }
@@ -58,7 +66,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             loadGameCounts()
         }
     }
-    
     
     // MARK: - Table view data source
 
@@ -95,6 +102,10 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return Theme.GAME_TYPE_CELL_HEIGHT
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        performSegueWithIdentifier(SEGUE_SHOW_GAMES, sender: self)
+    }
 
     
     //MARK: - User Defaults
@@ -124,6 +135,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 self.gameTypes.append(GameType.deserializeGameType(gameType as! [String : String]))
             }
         }
+        
+        GameTypeList.sharedGameTypes.setGameTypeList(self.gameTypes)
 
     }
     
@@ -159,6 +172,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             }
             
             self.saveGameTypesToUserDefaults()
+            GameTypeList.sharedGameTypes.setGameTypeList(self.gameTypes)
             self.tableView.reloadData()
         }
     }
@@ -175,9 +189,19 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             gameQuery.whereKey("isCancelled", equalTo: false)
             gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
             
+            if Settings.sharedSettings.showCreatedGames == false {
+                gameQuery.whereKey("owner", notEqualTo: PFUser.currentUser()!)
+            }
+            
             let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
             
-            gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:15.0)
+            if Settings.sharedSettings.distanceUnit == "miles" {
+                let gameDistance = Double(Settings.sharedSettings.gameDistance)
+                gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:gameDistance)
+            } else {
+                let gameDistance = Double(Settings.sharedSettings.gameDistance)
+                gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinKilometers:gameDistance)
+            }
 
             gameQuery.countObjectsInBackgroundWithBlock({ (count: Int32, error: NSError?) -> Void in
                     let gameCount = Int(count)
@@ -185,6 +209,41 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 self.gameCountLoaded = true
             })
         }
+    }
+    
+    
+    func loadGameFromParse(notification: NSNotification) {
+        
+        print("HomeTableViewController: \(self.isBeingPresented())")
+        
+        let gameId = notification.userInfo!["selectedGameId"]
+        print(gameId)
+        
+        let gameQuery = PFQuery(className: "Game")
+        gameQuery.whereKey("objectId", equalTo: gameId!)
+        
+        gameQuery.getFirstObjectInBackgroundWithBlock {
+            (game: PFObject?, error: NSError?) -> Void in
+            if error != nil || game == nil {
+                print("The getFirstObject on Game request failed.")
+            } else {
+                
+                self.gameTypes = GameTypeList.sharedGameTypes.gameTypeList
+                let gameTypeId = game?["gameType"].objectId!
+                
+                self.newGame = GameConverter.convertParseObject(game!, selectedGameType: GameTypeList.sharedGameTypes.getGameTypeById(gameTypeId!)!)
+                
+                if game?["owner"].objectId! == PFUser.currentUser()?.objectId! {
+                    self.newGame.userIsOwner = true
+                }
+
+                self.newGame.userJoined = true
+                
+                self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
+                
+            }
+        }
+        
     }
     
     //MARK: - Location Manager Delegate
@@ -250,9 +309,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier(SEGUE_SHOW_GAMES, sender: self)
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-    
+
 
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		02071DEA1C8E1AA600A00991 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02071DE91C8E1AA600A00991 /* Settings.swift */; };
+		02071DEC1C8EB6DD00A00991 /* GameTypeListSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02071DEB1C8EB6DD00A00991 /* GameTypeListSingleton.swift */; };
 		020988711C7D28D700FB7F92 /* GameDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020988701C7D28D700FB7F92 /* GameDetailsTableViewController.swift */; };
 		021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */; };
 		0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */; };
@@ -60,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		02071DE91C8E1AA600A00991 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		02071DEB1C8EB6DD00A00991 /* GameTypeListSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeListSingleton.swift; sourceTree = "<group>"; };
 		020988701C7D28D700FB7F92 /* GameDetailsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsTableViewController.swift; sourceTree = "<group>"; };
 		021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
 		0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 		02ED11E91C518FEC001923EB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				02071DEB1C8EB6DD00A00991 /* GameTypeListSingleton.swift */,
 				02071DE91C8E1AA600A00991 /* Settings.swift */,
 				024DDF111C8C03F7000E34D7 /* Enum */,
 				02F08F371C529FEE00A76EFB /* Game.swift */,
@@ -393,6 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02F269591C87A37300D46519 /* MyGamesViewController.swift in Sources */,
+				02071DEC1C8EB6DD00A00991 /* GameTypeListSingleton.swift in Sources */,
 				024DDF101C8C03EF000E34D7 /* DistanceEnum.swift in Sources */,
 				025330F71C56FAA600B6ABDD /* Theme.swift in Sources */,
 				028C1EE81C88E151000634AA /* GameStatusEnum.swift in Sources */,

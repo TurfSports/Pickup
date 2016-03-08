@@ -50,6 +50,17 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     }
     
     override func viewWillDisappear(animated: Bool) {
+        if txtGameDistance.text?.characters.count > 0 {
+            var gameDistance = Int(txtGameDistance.text!)!
+            if gameDistance > 60 {
+                gameDistance = 60
+            } else if gameDistance < 1 {
+                gameDistance = 1
+            }
+            
+            tempSettings.gameDistance = gameDistance
+        }
+        
         settingsDelegate.updateTempSettings(self.tempSettings)
     }
     
@@ -65,8 +76,8 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     
     
     private func addTextFieldTargets() {
-        txtGameDistance.addTarget(self, action: "textFieldGameDistanceDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-        txtDefaultLocation.addTarget(self, action: "textFieldDefaultLocationDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+//        txtGameDistance.addTarget(self, action: "textFieldGameDistanceDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+//        txtDefaultLocation.addTarget(self, action: "textFieldDefaultLocationDidChange:", forControlEvents: UIControlEvents.EditingChanged)
     }
 
     //MARK: - Text Field Delegate
@@ -78,6 +89,21 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     
     func textFieldDidBeginEditing(textField: UITextField) {
         textField.text = ""
+    }
+    
+    //http://stackoverflow.com/a/1773257/3866299
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        
+        let currentCharacterCount = textField.text?.characters.count ?? 0
+        if (range.length + range.location > currentCharacterCount){
+            return false
+        }
+        
+        let newLength = currentCharacterCount + string.characters.count - range.length
+        return newLength <= 2
+        
+
+        
     }
     
     func textFieldGameDistanceDidChange(textField: UITextField) {

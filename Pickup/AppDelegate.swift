@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-
+        
         Theme.applyTheme()
         
         // Initialize Parse.
@@ -24,8 +24,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             clientKey: "xUjfmNs7umcLNLUdINYj6jfe5Y4dQx6CT8JMEpqJ")
         
         
-        //Set up user defaults
+        //Set up notifications
+        let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
         
+        print(launchOptions)
+        
+        if let options = launchOptions {
+            print("options")
+            if let notification = options[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
+                print("notification")
+                if let userInfo = notification.userInfo {
+                    
+                    print(userInfo["selectedGameId"])
+                    NSNotificationCenter.defaultCenter().postNotificationName("TestingLocalNotifications", object: self)
+                }
+            }
+        }
+        
+        
+        //Set up user defaults
         //Intialize first pull of game types. Only pull these once a day
         if let _ = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
             //Pass
@@ -65,10 +83,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-
-        
-        
         return true
+    }
+    
+//    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+//        
+//        "handleLocalNotification"
+//        NSNotificationCenter.defaultCenter().postNotificationName("TestingLocalNotifications", object: self)
+//        completionHandler()
+//    }
+    
+    func applicationDidBecomeActive(application: UIApplication) {
+
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [NSObject : AnyObject], withResponseInfo responseInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
+        print("remoteApplicationCalled")
+    }
+    
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotification", object: nil, userInfo: notification.userInfo)
+        
     }
     
     func applicationWillResignActive(application: UIApplication) {
@@ -83,10 +119,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
     func applicationWillTerminate(application: UIApplication) {
