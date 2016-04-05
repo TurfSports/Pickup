@@ -51,10 +51,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
 
         refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refresher)
-        
         self.tableView.addSubview(activityIndicator)
 
-        
         _ = GameTypeList.sharedGameTypes
         
         let gameTypePullTimeStamp: NSDate = getLastGameTypePull()
@@ -65,7 +63,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             loadGameTypesFromUserDefaults()
         }
         
-        
         addNewGameButton.tintColor = Theme.ACCENT_COLOR
         settingsButton.tintColor = Theme.PRIMARY_LIGHT_COLOR
         self.navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
@@ -75,13 +72,11 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
  
     func setActivityIndicatorProperties() {
-        
         activityIndicator.center = self.view.center
         activityIndicator.activityIndicatorViewStyle = .Gray
         activityIndicator.tintColor = Theme.PRIMARY_DARK_COLOR
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
-        
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -205,7 +200,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     func loadGameCounts() {
         
         for gameType in self.gameTypes {
-            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
+            let gameTypeObject = PFObject(outDataWithClassName: "GameType", objectId: gameType.id)
             let gameQuery = PFQuery(className: "Game")
             gameQuery.whereKey("gameType", equalTo: gameTypeObject)
             gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
@@ -254,6 +249,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         gameQuery.getFirstObjectInBackgroundWithBlock {
             (game: PFObject?, error: NSError?) -> Void in
             if error != nil || game == nil {
+                print("Home table view controller")
                 print("The getFirstObject on Game request failed.")
             } else {
                 
@@ -275,8 +271,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 }
             }
         }
-        
-        
     }
     
     //MARK: - Notification Alert
@@ -294,7 +288,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         alertController.addAction(UIAlertAction(title: alertConfirmationTitle, style: UIAlertActionStyle.Default, handler: { action in
             self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
         }))
-        
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }
@@ -360,6 +353,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         } else if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
             gameDetailsViewController.game = self.newGame
+            gameDetailsViewController.userStatus = .USER_JOINED
         }
     }
     

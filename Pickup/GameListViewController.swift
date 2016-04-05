@@ -174,7 +174,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         let gameQuery = PFQuery(className: "Game")
         let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
         
-        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+        gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
         
         if Settings.sharedSettings.distanceUnit == "miles" {
             let gameDistance = Double(Settings.sharedSettings.gameDistance)
@@ -192,7 +192,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         if Settings.sharedSettings.showCreatedGames == false {
             gameQuery.whereKey("owner", notEqualTo: PFUser.currentUser()!)
         }
-
         
         gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameObjects = objects {
@@ -212,8 +211,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                     self.games.append(game)
                 }
             }
-            
-            
             
             if self.games.count == 0 {
                 self.blurScreen()
@@ -406,7 +403,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     //MARK: - Navigation
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             
@@ -449,5 +445,4 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
     }
     
-
 }

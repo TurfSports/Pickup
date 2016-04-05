@@ -31,15 +31,16 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         
         //Save the settings in user defaults
         Settings.sharedSettings.gameDistance = tempSettings.gameDistance
-        Settings.sharedSettings.gameReminder = tempSettings.gameReminder
         Settings.sharedSettings.distanceUnit = tempSettings.distanceUnit
         Settings.sharedSettings.defaultLocation = tempSettings.defaultLocation
         Settings.sharedSettings.showCreatedGames = tempSettings.showCreatedGames
+        if Settings.sharedSettings.gameReminder != tempSettings.gameReminder {
+            updateLocalGameNotifications(tempSettings.gameReminder)
+            Settings.sharedSettings.gameReminder = tempSettings.gameReminder
+        }
         
         let serializedSettings = Settings.serializeSettings(Settings.sharedSettings)
         NSUserDefaults.standardUserDefaults().setObject(serializedSettings, forKey: "settings")
-        
-        print(NSUserDefaults.standardUserDefaults().objectForKey("settings"))
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -125,7 +126,7 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         case 1:
             let uncheckCell = tableView.cellForRowAtIndexPath(getSelectedGameReminderCellIndexPath())
             let cell = tableView.cellForRowAtIndexPath(indexPath)
-            
+            	
             uncheckCell?.accessoryType = .None
             cell?.accessoryType = .Checkmark
             
@@ -190,9 +191,55 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         }
     }
     
-    
-    
-    
+    //MARK: - Update Local Notifications
+    func updateLocalGameNotifications(gameReminder: Int) {
+        if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
+            for gameId in joinedGames {
+                for notification in UIApplication.sharedApplication().scheduledLocalNotifications! {// as! [UILocalNotification] {
+                    if notification.userInfo!["selectedGameId"] as! String == gameId as! String {
+                        
+                        
+                        let originalFireDate = notification.fireDate
+                        let gameDate = originalFireDate?.dateByAddingTimeInterval(Double((Settings.sharedSettings.gameReminder) * 60))
+                        
+                        let timeUntilGame = NSCalendar.currentCalendar().components(.Minute, fromDate: NSDate(), toDate: gameDate!, options: []).minute
+                        
+                        let newFireDate = originalFireDate?.dateByAddingTimeInterval(Double((tempSettings.gameReminder - Settings.sharedSettings.gameReminder) * -60))
+                        
+                        //Get attributes from user data and then create game in order to schedule local notification
+                        let gameId = notification.userInfo!["selectedGameId"] as! String
+                        let locationName = notification.userInfo!["locationName"] as! String
+                        let gameType = notification.userInfo!["gameType"] as! String
+                        
+                        let alertBody = "Your \(gameType) game at \(locationName) starts \(LocalNotifications.getTimeUntilGameFromSettings(timeUntilGame, gameReminder: tempSettings.gameReminder))."
+                        
+                        let newNotification = UILocalNotification()
+                        
+                        newNotification.fireDate = newFireDate
+                        newNotification.alertBody = alertBody
+                        newNotification.soundName = UILocalNotificationDefaultSoundName
+                        newNotification.userInfo = ["selectedGameId": gameId,
+                                                    "locationName": locationName,
+                                                    "gameType": gameType,
+                                                    "alertBody": alertBody,
+                                                    "showAlert": "true"]
+                        
+                        UIApplication.sharedApplication().cancelLocalNotification(notification)
+                        UIApplication.sharedApplication().scheduleLocalNotification(newNotification)
+                        
+//                        print("originalFireDate: \(originalFireDate)")
+//                        print("newFireDate: \(newFireDate)")
+//                        print("gameDate: \(gameDate)")
+//                        print("timeUntilGame: \(timeUntilGame)")
+//                        
+//                        print("previousAlertBody: \(notification.alertBody)")
+//                        print("newAlertBody: \(alertBody)")
 
+                    }
+                }
+            }
+        }
+        
+    }
 
 }

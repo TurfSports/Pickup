@@ -9,6 +9,7 @@
 import Foundation
 import CoreLocation
 import UIKit
+import MapKit
 
 protocol NewGameTableViewDelegate {
     func setGameLocationCoordinate(coordinate: CLLocationCoordinate2D)
@@ -30,6 +31,12 @@ protocol MainSettingsDelegate {
     func updateTempSettings(tempSettings: Settings)
 }
 
+
+//http://www.thorntech.com/2016/01/how-to-search-for-location-using-apples-mapkit/
+protocol HandleMapSearch {
+    func dropPinZoomIn(placemark:MKPlacemark)
+}
+
 //https://sectionfive.net/blog/2015/10/23/a-swift-solution-to-view-dismissal/
 
 protocol DismissalDelegate {
@@ -40,5 +47,7 @@ protocol DismissalDelegate {
 protocol Dismissable {
     var dismissalDelegate : DismissalDelegate? { get set }
 }
+
+
 
 

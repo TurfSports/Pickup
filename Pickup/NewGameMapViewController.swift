@@ -10,12 +10,15 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UIBarPositioningDelegate {
+class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UIBarPositioningDelegate, UISearchBarDelegate, UITableViewDelegate {
 
     let ANNOTATION_ID = "Pin"
     let SEGUE_NEW_GAME = "showNewGameTableViewController"
     
     var newGameTableViewDelegate: NewGameTableViewDelegate?
+    
+    var selectedPin:MKPlacemark? = nil
+    var matchingItems:[MKMapItem] = []
     
     var address = ""
     var locationName = ""
@@ -28,14 +31,12 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     @IBOutlet weak var btnSaveLocation: UIBarButtonItem!
     @IBOutlet weak var btnCancel: UIBarButtonItem!
     @IBOutlet weak var lblTapTip: UILabel!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableViewSearchResults: UITableView!
     
     
     let locationManager = CLLocationManager()
-    var currentLocation:CLLocation? {
-        didSet {
-            computeViewSettings()
-        }
-    }
+    var currentLocation:CLLocation?
 
     @IBAction func cancelModal(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -57,19 +58,22 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableViewSearchResults.hidden = true
+        tableViewSearchResults.tableFooterView = UIView(frame: CGRect.zero)
+        
         btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
         btnSaveLocation.tintColor = Theme.ACCENT_COLOR
         
         setUsersCurrentLocation()
         setUpMapScreen()
         
-        newGameMap.showsUserLocation = true
     }
     
     private func setUpMapScreen() {
         
         btnSaveLocation.title = rightNavBarButtonTitle[locationStatus]!
         if locationStatus == .LOCATION_SET {
+            //TODO: Drop Current Game Location and change button to change location
             //dropGameAnnotation
         } else {
             setGestureRecognizer()
@@ -78,19 +82,24 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
 
     //MARK: - Location Manager Delegate
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse {
+            locationManager.requestLocation()
+        }
+    }
+    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        let location:CLLocationCoordinate2D = manager.location!.coordinate
-        currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        
-        if currentLocation != nil {
-            locationManager.stopUpdatingLocation()
+        if let location = locations.first {
+            let span = MKCoordinateSpanMake(0.05, 0.05)
+            let region = MKCoordinateRegion(center: location.coordinate, span: span)
+            newGameMap.setRegion(region, animated: true)
         }
         
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-//        print("error:: \(error)")
+        print("error:: \(error)")
     }
     
     func setUsersCurrentLocation() {
@@ -99,7 +108,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
+            locationManager.requestLocation()
         }
     }
     
@@ -116,6 +125,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         newGameMap.setRegion(region, animated: false)
         
     }
+    
     
     //MARK: - Map View Delegate
     
@@ -136,6 +146,81 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         return pinView
         
     }
+    
+    //MARK: - Search Bar Delegate
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        tableViewSearchResults.hidden = false
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        tableViewSearchResults.hidden = true
+        searchBar.showsCancelButton = false
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        tableViewSearchResults.hidden = true
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.endEditing(true)
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        let request = MKLocalSearchRequest()
+        request.naturalLanguageQuery = searchText
+        request.region = newGameMap.region
+        let search = MKLocalSearch(request: request)
+        search.startWithCompletionHandler { response, _ in
+            guard let response = response else {
+                return
+            }
+            self.matchingItems = response.mapItems
+            self.tableViewSearchResults.reloadData()
+        }
+    }
+    
+    //MARK: - Table View Delegate
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return matchingItems.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell")!
+        let selectedItem = matchingItems[indexPath.row].placemark
+        cell.textLabel?.text = selectedItem.name
+        cell.detailTextLabel?.text = parseAddress(selectedItem)
+        return cell
+    }
+    
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let selectedItem = matchingItems[indexPath.row].placemark
+        
+        lblTapTip.hidden = true
+        removePreviousAnnotation()
+        setAnnotation(selectedItem.coordinate)
+        
+        self.gameLocation = selectedItem.coordinate
+        buildAddressString(selectedItem.coordinate)
+        
+        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let region = MKCoordinateRegionMake(selectedItem.coordinate, span)
+        newGameMap.setRegion(region, animated: true)
+        
+        tableViewSearchResults.hidden = true
+        searchBar.showsCancelButton = false
+        searchBar.endEditing(true)
+    }
+
     
     //MARK: - Gesture recognizer
     func setGestureRecognizer() {
@@ -168,6 +253,30 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     func removePreviousAnnotation() {
         let annotations = self.newGameMap.annotations
         self.newGameMap.removeAnnotations(annotations)
+    }
+    
+    func parseAddress(selectedItem:MKPlacemark) -> String {
+        // put a space between "4" and "Melrose Place"
+        let firstSpace = (selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil) ? " " : ""
+        // put a comma between street and city/state
+        let comma = (selectedItem.subThoroughfare != nil || selectedItem.thoroughfare != nil) && (selectedItem.subAdministrativeArea != nil || selectedItem.administrativeArea != nil) ? ", " : ""
+        // put a space between "Washington" and "DC"
+        let secondSpace = (selectedItem.subAdministrativeArea != nil && selectedItem.administrativeArea != nil) ? " " : ""
+        let addressLine = String(
+            format:"%@%@%@%@%@%@%@",
+            // street number
+            selectedItem.subThoroughfare ?? "",
+            firstSpace,
+            // street name
+            selectedItem.thoroughfare ?? "",
+            comma,
+            // city
+            selectedItem.locality ?? "",
+            secondSpace,
+            // state
+            selectedItem.administrativeArea ?? ""
+        )
+        return addressLine
     }
     
     func buildAddressString(coordinate: CLLocationCoordinate2D) {
@@ -210,13 +319,5 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         return .TopAttached
     }
     
-    
-    
-    
-    
-    
-
-    
-
 
 }

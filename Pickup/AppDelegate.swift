@@ -26,12 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("vXTZeIEcllE2fqSPJab5OdZkCbB9TmfW9DIutXJn",
             clientKey: "xUjfmNs7umcLNLUdINYj6jfe5Y4dQx6CT8JMEpqJ")
         
-        
         //Set up notifications
         let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
-        
-        print(launchOptions)
         
         if let options = launchOptions {
             if let notification = options[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
@@ -96,11 +93,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (application.applicationState == .Background || application.applicationState == .Inactive) {
             NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotificationWithSegue", object: nil, userInfo: notification.userInfo)
         } else {
-            NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotificationWithAlert", object: nil, userInfo: notification.userInfo)
+            if notification.userInfo!["showAlert"] as? String == "true" {
+                NSNotificationCenter.defaultCenter().postNotificationName("com.pickup.loadGameFromNotificationWithAlert", object: nil, userInfo: notification.userInfo)
+            }
         }
-        
-        
-        
     }
     
     func applicationWillResignActive(application: UIApplication) {

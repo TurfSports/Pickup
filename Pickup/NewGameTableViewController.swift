@@ -431,7 +431,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     func textViewDidEndEditing(textView: UITextView) {
         self.game.gameNotes = textView.text
-        self.btnCreate.title = "Create"
+        if self.gameStatus == GameStatus.CREATE {
+            self.btnCreate.title = "Create"
+        } else {
+            self.btnCreate.title = "Save"
+        }
+        
         self.editingNotes = false
     }
     
@@ -517,53 +522,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
     }
     
-    //MARK: - Notifications
-    func scheduleGameNotification() {
-        let settings = UIApplication.sharedApplication().currentUserNotificationSettings()
-        
-        if settings!.types != .None && Settings.sharedSettings.gameReminder != 0 {
-            let notification = UILocalNotification()
-            notification.fireDate = self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60)
-            print(self.game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60))
-            //            notification.fireDate = NSDate(timeIntervalSinceNow: 10)
-            
-            let timeUntilGame = getTimeUntilGameFromSettings()
-            
-            notification.alertBody = "Your \(self.game.gameType.name) game at \(self.game.locationName) starts within \(timeUntilGame)."
-            
-            notification.soundName = UILocalNotificationDefaultSoundName
-            
-            notification.userInfo = ["selectedGameId": self.game.id, "selectedGameTypeId": self.game.gameType.id]
-            UIApplication.sharedApplication().scheduleLocalNotification(notification)
-        }
-    }
-    
-    func getTimeUntilGameFromSettings() -> String {
-        
-        var timeUntilGame: String
-        
-        switch (Settings.sharedSettings.gameReminder) {
-        case 30:
-            timeUntilGame = "30 minutes"
-            break
-        case 60:
-            timeUntilGame = "1 hour"
-            break
-        case 120:
-            timeUntilGame = "2 hours"
-            break
-        case 1440:
-            timeUntilGame = "24 hours"
-            break
-        default:
-            timeUntilGame = "just a few minutes"
-            break
-        }
-        
-        return timeUntilGame
-    }
-    
-    
     //MARK: - Parse
     
     private func saveParseGameObject(game: Game) {
@@ -581,10 +539,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 
     }
     
-    
     private func setGameObjectFields(gameObject: PFObject) {
         
-        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
+        gameObject["gameType"] = PFObject(outDataWithClassName: "GameType", objectId: self.game.gameType.id)
         gameObject["date"] = self.game.eventDate
         let point = PFGeoPoint(latitude:self.game.latitude, longitude: self.game.longitude)
         gameObject["location"] = point
@@ -601,7 +558,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         gameObject.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in
             if (success) {
-                self.scheduleGameNotification()
+                
+                if self.gameStatus == GameStatus.CREATE {
+                    LocalNotifications.scheduleGameNotification(self.game)
+                }
+                
                 self.game.gameType.increaseGameCount(1)
                 let gameId = gameObject.objectId! as String
                 self.game.id = gameId
