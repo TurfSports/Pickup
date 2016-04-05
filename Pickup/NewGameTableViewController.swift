@@ -86,9 +86,14 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         } else {
             self.game.gameNotes = txtGameNotes.text
             self.txtGameNotes.resignFirstResponder()
-            btnCreate.title = "Create"
+            
+            if gameStatus == .CREATE {
+                btnCreate.title = "Create"
+            } else {
+                btnCreate.title = "Save"
+            }
+            
         }
-        
     }
     
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
@@ -104,7 +109,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         txtGameNotes.delegate = self
         txtLocationName.delegate = self
-        txtLocationName.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        txtLocationName.addTarget(self, action: #selector(NewGameTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
         
         self.MIN_PLAYERS = 1
         

@@ -46,10 +46,10 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithSegue(_:)), name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
 
-        refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
+        refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refresher)
         self.tableView.addSubview(activityIndicator)
 
@@ -352,8 +352,15 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             myGamesViewController.gameTypes = self.gameTypes
         } else if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
+            
+            if self.newGame.userIsOwner == true {
+                gameDetailsViewController.userStatus = .USER_OWNED
+            } else {
+                gameDetailsViewController.userStatus = .USER_JOINED
+            }
+            
             gameDetailsViewController.game = self.newGame
-            gameDetailsViewController.userStatus = .USER_JOINED
+        
         }
     }
     
