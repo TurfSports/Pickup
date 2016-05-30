@@ -46,10 +46,16 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithSegue(_:)), name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
+//      iOS 9.2
+      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
+      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
+        
+//      iOS 9.3
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithSegue(_:)), name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
 
-        refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), forControlEvents: UIControlEvents.ValueChanged)
+        refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
+//        refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refresher)
         self.tableView.addSubview(activityIndicator)
 
@@ -200,7 +206,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     func loadGameCounts() {
         
         for gameType in self.gameTypes {
-            let gameTypeObject = PFObject(outDataWithClassName: "GameType", objectId: gameType.id)
+            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
+//          let gameTypeObject = PFObject(outDataWithClassName: "GameType", objectId: gameType.id)
             let gameQuery = PFQuery(className: "Game")
             gameQuery.whereKey("gameType", equalTo: gameTypeObject)
             gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))

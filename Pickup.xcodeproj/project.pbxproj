@@ -13,6 +13,7 @@
 		020988711C7D28D700FB7F92 /* GameDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020988701C7D28D700FB7F92 /* GameDetailsTableViewController.swift */; };
 		021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */; };
 		0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */; };
+		023127881CFCAF0C00863EFF /* home.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 023127871CFCAF0C00863EFF /* home.gpx */; };
 		024026EA1C5FDF61002F1B39 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026E71C5FDF61002F1B39 /* ParseUI.framework */; };
 		024026EB1C5FDF61002F1B39 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026E81C5FDF61002F1B39 /* Bolts.framework */; };
 		024026EC1C5FDF61002F1B39 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026E91C5FDF61002F1B39 /* Parse.framework */; };
@@ -39,7 +40,6 @@
 		02A8F25B1C77F6F300A04DE6 /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */; };
 		02AB4F961C754FA800DAEF0E /* GamePointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB4F951C754FA800DAEF0E /* GamePointAnnotation.swift */; };
 		02B2F87B1C602E99009863AB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02B2F87A1C602E99009863AB /* MapKit.framework */; };
-		02B2F87E1C606018009863AB /* TNRB-Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 02B2F87D1C606018009863AB /* TNRB-Location.gpx */; };
 		02B2F8801C60666C009863AB /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */; };
 		02B82DFF1C88EC010028CD47 /* LocationStatusEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B82DFE1C88EC010028CD47 /* LocationStatusEnum.swift */; };
 		02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE277D1C4DD58F0062C890 /* AppDelegate.swift */; };
@@ -69,6 +69,7 @@
 		020988701C7D28D700FB7F92 /* GameDetailsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsTableViewController.swift; sourceTree = "<group>"; };
 		021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
 		0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
+		023127871CFCAF0C00863EFF /* home.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = home.gpx; path = ../home.gpx; sourceTree = "<group>"; };
 		024026E71C5FDF61002F1B39 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		024026E81C5FDF61002F1B39 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		024026E91C5FDF61002F1B39 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
@@ -95,7 +96,6 @@
 		02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateUtilities.swift; path = ../DateUtilities.swift; sourceTree = "<group>"; };
 		02AB4F951C754FA800DAEF0E /* GamePointAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamePointAnnotation.swift; path = ../GamePointAnnotation.swift; sourceTree = "<group>"; };
 		02B2F87A1C602E99009863AB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		02B2F87D1C606018009863AB /* TNRB-Location.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "TNRB-Location.gpx"; path = "../TNRB-Location.gpx"; sourceTree = "<group>"; };
 		02B2F87F1C60666C009863AB /* HomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		02B82DFE1C88EC010028CD47 /* LocationStatusEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationStatusEnum.swift; path = ../LocationStatusEnum.swift; sourceTree = "<group>"; };
 		02BE277A1C4DD58F0062C890 /* Pickup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pickup.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -272,7 +272,7 @@
 				02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */,
 				02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */,
 				02BE27891C4DD58F0062C890 /* Info.plist */,
-				02B2F87D1C606018009863AB /* TNRB-Location.gpx */,
+				023127871CFCAF0C00863EFF /* home.gpx */,
 			);
 			name = SupportFiles;
 			sourceTree = "<group>";
@@ -391,7 +391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */,
-				02B2F87E1C606018009863AB /* TNRB-Location.gpx in Resources */,
+				023127881CFCAF0C00863EFF /* home.gpx in Resources */,
 				02DB6FEF1C740FEB00FF5C20 /* Assets.xcassets in Resources */,
 				02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */,
 			);
@@ -559,6 +559,7 @@
 					"$(PROJECT_DIR)/Pickup",
 				);
 				INFOPLIST_FILE = Pickup/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -585,6 +586,7 @@
 					"$(PROJECT_DIR)/Pickup",
 				);
 				INFOPLIST_FILE = Pickup/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

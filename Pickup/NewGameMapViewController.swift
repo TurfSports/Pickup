@@ -224,7 +224,8 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     //MARK: - Gesture recognizer
     func setGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(NewGameMapViewController.dropPinOnLocation(_:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dropPinOnLocation:")
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(NewGameMapViewController.dropPinOnLocation(_:)))
         newGameMap.addGestureRecognizer(tapGestureRecognizer)
     }
     

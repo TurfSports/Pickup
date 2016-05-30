@@ -45,7 +45,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     //https://www.andrewcbancroft.com/2015/03/17/basics-of-pull-to-refresh-for-swift-developers/
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: "loadGamesFromParse", forControlEvents: UIControlEvents.ValueChanged)
+//        refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), forControlEvents: UIControlEvents.ValueChanged)
         
         return refreshControl
     }()
@@ -174,7 +175,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         let gameQuery = PFQuery(className: "Game")
         let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
         
-        gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
+        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+//      gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
         
         if Settings.sharedSettings.distanceUnit == "miles" {
             let gameDistance = Double(Settings.sharedSettings.gameDistance)
