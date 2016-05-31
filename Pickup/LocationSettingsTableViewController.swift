@@ -160,23 +160,27 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     //MARK: - GeoCode
     
     func validateZipCode(zipcode: String) {
-//
+
         let geocoder = CLGeocoder()
         self.zipLabel.hidden = false
-//
+
         geocoder.geocodeAddressString(zipcode, completionHandler: {(placemarks, error) -> Void in
             if((error) != nil){
                 print("Error", error)
                 self.zipLabel.text = "Invalid"
             }
-//
+
             if let placemark = placemarks?.first {
                 let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
                 
                 if let city = placemark.addressDictionary!["City"] as? NSString {
                     if let state = placemark.addressDictionary!["State"] as? NSString {
                         if let country = placemark.addressDictionary!["Country"] as? NSString {
+                            if country != "United States" {
                             self.zipLabel.text = "\(city), \(state), \(country)"
+                            } else {
+                                self.zipLabel.text = "\(city), \(state)"
+                            }
                         } else {
                             self.zipLabel.text = "\(city), \(state)"
                         }
