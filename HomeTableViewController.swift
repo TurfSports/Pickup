@@ -206,8 +206,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     func loadGameCounts() {
         
         for gameType in self.gameTypes {
-            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
-//          let gameTypeObject = PFObject(outDataWithClassName: "GameType", objectId: gameType.id)
+//            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
+          let gameTypeObject = PFObject(outDataWithClassName: "GameType", objectId: gameType.id)
             let gameQuery = PFQuery(className: "Game")
             gameQuery.whereKey("gameType", equalTo: gameTypeObject)
             gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))

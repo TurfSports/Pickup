@@ -175,8 +175,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         let gameQuery = PFQuery(className: "Game")
         let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
         
-        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
-//      gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
+//        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+      gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
         
         if Settings.sharedSettings.distanceUnit == "miles" {
             let gameDistance = Double(Settings.sharedSettings.gameDistance)
