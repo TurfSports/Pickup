@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 class LocationSettingsTableViewController: UITableViewController, UITextFieldDelegate, UIPickerViewDelegate {
 
@@ -14,12 +15,17 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     @IBOutlet weak var txtDefaultLocation: UITextField!
     @IBOutlet weak var lblDistance: UILabel!
     @IBOutlet weak var pickerViewDistance: UIPickerView!
+    @IBOutlet weak var switchLocation: UISwitch!
+    @IBOutlet weak var zipLabel: UILabel!
+    
     
     let MILES = 0
     
     var settingsDelegate: MainSettingsDelegate!
     var tempSettings: Settings!
     var distanceRowSelected: Bool = false
+    var invalidZipCode: Bool = false
+
     
     @IBAction func distanceUnitsChanged(sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == MILES {
@@ -31,15 +37,33 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
     }
     
+    @IBAction func showDefaultLocation(sender: UISwitch) {
+        
+        tempSettings.defaultLocation = sender.on ? "84606" : "none"
+        animateReloadTableView()
+        txtDefaultLocation.becomeFirstResponder()
+    }
+    
+
+    @IBAction func textFieldEditingChanged(sender: AnyObject) {
+        zipLabel.hidden = true
+        if txtDefaultLocation.text!.characters.count == 5 {
+            validateZipCode(txtDefaultLocation.text!)
+            txtDefaultLocation.resignFirstResponder()
+        }
+    }
+    
     //MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         self.navigationController?.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
+        switchLocation.onTintColor = Theme.ACCENT_COLOR
         
-        lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
+//        lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
+        
+        zipLabel.hidden = true
         
         pickerViewDistance.selectRow(tempSettings.gameDistance - 1, inComponent: 0, animated: false)
         
@@ -47,16 +71,14 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
             txtDefaultLocation.text = tempSettings.defaultLocation
         }
         
-        if tempSettings.distanceUnit == "miles" {
-            segCtrlDistanceUnits.selectedSegmentIndex = 0
-        } else {
-            segCtrlDistanceUnits.selectedSegmentIndex = 1
-        }
+        segCtrlDistanceUnits.selectedSegmentIndex = tempSettings.distanceUnit == "miles" ? 0 : 1
+        
+        switchLocation.on = tempSettings.defaultLocation != "none" ? true : false
+
         
     }
     
     override func viewWillDisappear(animated: Bool) {
-        
         settingsDelegate.updateTempSettings(self.tempSettings)
     }
     
@@ -89,7 +111,6 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         if indexPath.section == 0 && indexPath.row == 1 {
             distanceRowSelected = !distanceRowSelected
             animateReloadTableView()
-
         }
         
     }
@@ -106,9 +127,24 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
             }
         }
         
-        return rowHeight
+        if indexPath.section == 1 && indexPath.row == 1 {
+            if tempSettings.defaultLocation == "none" {
+                rowHeight = 0.0
+            }
+        }
         
+        return rowHeight
     }
+    
+    //MARK: - Text Field Delegate
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        print("textFieldDidBeginEditing")
+        textField.selectAll(self)
+    }
+    
+    
+    //MARK: - Animation
     
     private func animateReloadTableView() -> Void {
         UIView.transitionWithView(tableView,
@@ -119,6 +155,38 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
                 self.tableView.reloadData()
             },
             completion: nil);
+    }
+    
+    //MARK: - GeoCode
+    
+    func validateZipCode(zipcode: String) {
+        
+        let geocoder = CLGeocoder()
+        
+        geocoder.geocodeAddressString(zipcode, completionHandler: {(placemarks, error) -> Void in
+            if((error) != nil){
+                print("Error", error)
+                self.zipLabel.text = "Invalid"
+            }
+            
+            if let placemark = placemarks?.first {
+                let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
+                
+                if let city = placemark.addressDictionary!["City"] as? NSString {
+                    if let state = placemark.addressDictionary!["State"] as? NSString {
+                        if let country = placemark.addressDictionary!["Country"] as? NSString {
+                            self.zipLabel.text = "\(city), \(state), \(country)"
+                        } else {
+                            self.zipLabel.text = "\(city), \(state)"
+                        }
+                    } else if let country = placemark.addressDictionary!["Country"] as? NSString {
+                        self.zipLabel.text = "\(city), \(country)"
+                    }
+                }
+                
+                print("\(coordinates.latitude), \(coordinates.longitude)")
+            }
+        })
     }
 
 }

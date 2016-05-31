@@ -37,12 +37,8 @@ class Settings {
         serializedSettings["DistanceUnit"] = settings.distanceUnit
         serializedSettings["GameReminder"] = "\(settings.gameReminder)"
         serializedSettings["DefaultLocation"] = settings.defaultLocation
-        
-        if settings.showCreatedGames == true {
-            serializedSettings["ShowCreatedGames"] = "1"
-        } else {
-            serializedSettings["ShowCreatedGames"] = "0"
-        }
+        serializedSettings["ShowCreatedGames"] = (settings.showCreatedGames ? "1" : "0")
+
         
         return serializedSettings
     }
@@ -58,11 +54,7 @@ class Settings {
         
         let showCreatedGames = Int(serializedSettings["ShowCreatedGames"]!)!
 
-        if showCreatedGames == 1 {
-            settings.showCreatedGames = true
-        } else {
-            settings.showCreatedGames = false
-        }
+        settings.showCreatedGames = (showCreatedGames == 1 ? true : false)
         
         return settings
     }

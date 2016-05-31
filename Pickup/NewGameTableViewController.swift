@@ -109,8 +109,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         txtGameNotes.delegate = self
         txtLocationName.delegate = self
-        txtLocationName.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-//        txtLocationName.addTarget(self, action: #selector(NewGameTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+//        txtLocationName.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        txtLocationName.addTarget(self, action: #selector(NewGameTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
         
         self.MIN_PLAYERS = 1
         
@@ -386,6 +386,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     
+    //MARK: - Animation
+    
     private func animateReloadTableView() -> Void {
         UIView.transitionWithView(tableView,
             duration:0.35,
@@ -547,8 +549,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     private func setGameObjectFields(gameObject: PFObject) {
         
-        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
-//        gameObject["gameType"] = PFObject(outDataWithClassName: "GameType", objectId: self.game.gameType.id)
+//        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
+        gameObject["gameType"] = PFObject(outDataWithClassName: "GameType", objectId: self.game.gameType.id)
         gameObject["date"] = self.game.eventDate
         let point = PFGeoPoint(latitude:self.game.latitude, longitude: self.game.longitude)
         gameObject["location"] = point
