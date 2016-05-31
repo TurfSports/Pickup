@@ -54,6 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Settings.sharedSettings.distanceUnit = storedSettings.distanceUnit
             Settings.sharedSettings.gameReminder = storedSettings.gameReminder
             Settings.sharedSettings.defaultLocation = storedSettings.defaultLocation
+            Settings.sharedSettings.defaultLatitude = storedSettings.defaultLatitude
+            Settings.sharedSettings.defaultLongitude = storedSettings.defaultLongitude
             Settings.sharedSettings.showCreatedGames = storedSettings.showCreatedGames
             
         } else {

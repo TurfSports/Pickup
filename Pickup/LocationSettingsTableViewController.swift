@@ -41,7 +41,15 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         
         tempSettings.defaultLocation = sender.on ? "84606" : "none"
         animateReloadTableView()
-        txtDefaultLocation.becomeFirstResponder()
+        
+        if sender.on {
+            txtDefaultLocation.becomeFirstResponder()
+            if txtDefaultLocation.text != "" {
+                tempSettings.defaultLocation = txtDefaultLocation.text!
+            }
+        } else {
+            tempSettings.defaultLocation = "none"
+        }
     }
     
 
@@ -63,7 +71,13 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         
         lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
         
-        zipLabel.hidden = true
+        if tempSettings.defaultLocation == "none" {
+            zipLabel.hidden = true
+        } else {
+            txtDefaultLocation.text = tempSettings.defaultLocation
+            validateZipCode(tempSettings.defaultLocation)
+            zipLabel.hidden = false
+        }
         
         pickerViewDistance.selectRow(tempSettings.gameDistance - 1, inComponent: 0, animated: false)
         
@@ -167,29 +181,26 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         geocoder.geocodeAddressString(zipcode, completionHandler: {(placemarks, error) -> Void in
             if((error) != nil){
                 print("Error", error)
-                self.zipLabel.text = "Invalid"
-            }
-
-            if let placemark = placemarks?.first {
-                let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
+                self.zipLabel.text = "Invalid Zip"
+            } else if let placemark = placemarks?.first {
                 
+                let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
                 if let city = placemark.addressDictionary!["City"] as? NSString {
-                    if let state = placemark.addressDictionary!["State"] as? NSString {
-                        if let country = placemark.addressDictionary!["Country"] as? NSString {
-                            if country != "United States" {
-                            self.zipLabel.text = "\(city), \(state), \(country)"
-                            } else {
+                    if let country = placemark.addressDictionary!["Country"] as? NSString {
+                        if country == "United States" || country == "Canada" {
+                            if let state = placemark.addressDictionary!["State"] as? NSString {
                                 self.zipLabel.text = "\(city), \(state)"
                             }
                         } else {
-                            self.zipLabel.text = "\(city), \(state)"
+                            self.zipLabel.text = "\(city), \(country)"
                         }
-                    } else if let country = placemark.addressDictionary!["Country"] as? NSString {
-                        self.zipLabel.text = "\(city), \(country)"
+                        
                     }
                 }
                 
-                print("\(coordinates.latitude), \(coordinates.longitude)")
+                self.tempSettings.defaultLocation = self.txtDefaultLocation.text!
+                self.tempSettings.defaultLatitude = coordinates.latitude
+                self.tempSettings.defaultLongitude = coordinates.longitude
             }
         })
     }

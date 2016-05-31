@@ -33,6 +33,8 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         Settings.sharedSettings.gameDistance = tempSettings.gameDistance
         Settings.sharedSettings.distanceUnit = tempSettings.distanceUnit
         Settings.sharedSettings.defaultLocation = tempSettings.defaultLocation
+        Settings.sharedSettings.defaultLatitude = tempSettings.defaultLatitude
+        Settings.sharedSettings.defaultLongitude = tempSettings.defaultLongitude
         Settings.sharedSettings.showCreatedGames = tempSettings.showCreatedGames
         if Settings.sharedSettings.gameReminder != tempSettings.gameReminder {
             updateLocalGameNotifications(tempSettings.gameReminder)
@@ -65,6 +67,8 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         tempSettings.gameReminder = Settings.sharedSettings.gameReminder
         tempSettings.distanceUnit = Settings.sharedSettings.distanceUnit
         tempSettings.defaultLocation = Settings.sharedSettings.defaultLocation
+        tempSettings.defaultLatitude = Settings.sharedSettings.defaultLatitude
+        tempSettings.defaultLongitude = Settings.sharedSettings.defaultLongitude
         tempSettings.showCreatedGames = Settings.sharedSettings.showCreatedGames
         
         self.lblGameDistanceSubtext.text = "Show games within \(tempSettings.gameDistance) \(tempSettings.distanceUnit)"

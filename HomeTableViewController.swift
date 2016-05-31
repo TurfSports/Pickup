@@ -37,7 +37,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     lazy var activityIndicator: UIActivityIndicatorView! = {
         let activityIndicator = UIActivityIndicatorView()
-
+        
         activityIndicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
         return activityIndicator
     }()
@@ -46,19 +46,19 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         super.viewDidLoad()
         
-//      iOS 9.2
-//      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
-//      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
+        //      iOS 9.2
+        //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
+        //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
         
-//      iOS 9.3
+        //      iOS 9.3
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithSegue(_:)), name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
-
-//        refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
+        
+        //        refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
         refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refresher)
         self.tableView.addSubview(activityIndicator)
-
+        
         _ = GameTypeList.sharedGameTypes
         
         let gameTypePullTimeStamp: NSDate = getLastGameTypePull()
@@ -76,7 +76,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         setUsersCurrentLocation()
     }
     
- 
+    
     func setActivityIndicatorProperties() {
         activityIndicator.center = self.view.center
         activityIndicator.activityIndicatorViewStyle = .Gray
@@ -84,7 +84,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
     }
-
+    
     override func viewDidAppear(animated: Bool) {
         if currentLocation != nil {
             loadGameCounts()
@@ -92,18 +92,18 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     }
     
     // MARK: - Table view data source
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gameTypes.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> HomeTableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? HomeTableViewCell
-
+        
         let gameType = gameTypes[indexPath.row]
         
         cell?.lblSport.text = gameType.displayName
@@ -130,7 +130,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         performSegueWithIdentifier(SEGUE_SHOW_GAMES, sender: self)
     }
-
+    
     
     //MARK: - User Defaults
     
@@ -186,7 +186,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         gameTypeQuery.orderByAscending("sortOrder")
         gameTypeQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameTypeObjects = objects {
-    
+                
                 self.gameTypes.removeAll(keepCapacity: true)
                 
                 for gameTypeObject in gameTypeObjects {
@@ -206,7 +206,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     func loadGameCounts() {
         
         for gameType in self.gameTypes {
-//            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
+            //            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
             let gameTypeObject = PFObject(outDataWithClassName: "GameType", objectId: gameType.id)
             let gameQuery = PFQuery(className: "Game")
             gameQuery.whereKey("gameType", equalTo: gameTypeObject)
@@ -219,7 +219,12 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 gameQuery.whereKey("owner", notEqualTo: PFUser.currentUser()!)
             }
             
-            let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
+            var userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
+            
+            if Settings.sharedSettings.defaultLocation != "none" {
+                userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
+            }
+            
             
             if Settings.sharedSettings.distanceUnit == "miles" {
                 let gameDistance = Double(Settings.sharedSettings.gameDistance)
@@ -228,11 +233,11 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 let gameDistance = Double(Settings.sharedSettings.gameDistance)
                 gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinKilometers:gameDistance)
             }
-
+            
             gameQuery.countObjectsInBackgroundWithBlock({ (count: Int32, error: NSError?) -> Void in
-                    let gameCount = Int(count)
-                    gameType.setGameCount(gameCount)
-                    self.gameCountLoaded = true
+                let gameCount = Int(count)
+                gameType.setGameCount(gameCount)
+                self.gameCountLoaded = true
             })
             
             refresher.endRefreshing()
@@ -268,7 +273,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 if game?["owner"].objectId! == PFUser.currentUser()?.objectId! {
                     self.newGame.userIsOwner = true
                 }
-
+                
                 self.newGame.userJoined = true
                 
                 if showAlert == true {
@@ -300,10 +305,11 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     }
     
     //MARK: - Location Manager Delegate
-
+    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let location:CLLocationCoordinate2D = manager.location!.coordinate
+        print(location)
         currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
         
         if currentLocation != nil {
@@ -338,9 +344,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         self.newGame = game
     }
     
-
+    
     // MARK: - Navigation
-
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SHOW_GAMES {
             let gamesViewController = segue.destinationViewController as! GameListViewController
@@ -367,13 +373,13 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             }
             
             gameDetailsViewController.game = self.newGame
-        
+            
         }
     }
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-
-
+    
+    
 }

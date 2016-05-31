@@ -24,6 +24,8 @@ class Settings {
     var distanceUnit = "miles"
     var gameReminder = 0
     var defaultLocation = "none"
+    var defaultLatitude = 180.0
+    var defaultLongitude = 180.0
     var showCreatedGames = true
     
     init () {}
@@ -37,6 +39,8 @@ class Settings {
         serializedSettings["DistanceUnit"] = settings.distanceUnit
         serializedSettings["GameReminder"] = "\(settings.gameReminder)"
         serializedSettings["DefaultLocation"] = settings.defaultLocation
+        serializedSettings["DefaultLatitude"] = "\(settings.defaultLatitude)"
+        serializedSettings["DefaultLongitude"] = "\(settings.defaultLongitude)"
         serializedSettings["ShowCreatedGames"] = (settings.showCreatedGames ? "1" : "0")
 
         
@@ -51,9 +55,10 @@ class Settings {
         settings.distanceUnit = serializedSettings["DistanceUnit"]!
         settings.gameReminder = Int(serializedSettings["GameReminder"]!)!
         settings.defaultLocation = serializedSettings["DefaultLocation"]!
+        settings.defaultLatitude = Double(serializedSettings["DefaultLatitude"]!)!
+        settings.defaultLongitude = Double(serializedSettings["DefaultLongitude"]!)!
         
         let showCreatedGames = Int(serializedSettings["ShowCreatedGames"]!)!
-
         settings.showCreatedGames = (showCreatedGames == 1 ? true : false)
         
         return settings
