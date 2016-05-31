@@ -61,7 +61,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         self.navigationController?.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
         switchLocation.onTintColor = Theme.ACCENT_COLOR
         
-//        lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
+        lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
         
         zipLabel.hidden = true
         
@@ -160,15 +160,16 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     //MARK: - GeoCode
     
     func validateZipCode(zipcode: String) {
-        
+//
         let geocoder = CLGeocoder()
-        
+        self.zipLabel.hidden = false
+//
         geocoder.geocodeAddressString(zipcode, completionHandler: {(placemarks, error) -> Void in
             if((error) != nil){
                 print("Error", error)
                 self.zipLabel.text = "Invalid"
             }
-            
+//
             if let placemark = placemarks?.first {
                 let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
                 
