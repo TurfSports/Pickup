@@ -386,6 +386,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     
+    //MARK: - Animation
+    
     private func animateReloadTableView() -> Void {
         UIView.transitionWithView(tableView,
             duration:0.35,

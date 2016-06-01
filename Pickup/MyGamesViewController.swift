@@ -215,9 +215,6 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             } else {
                 print(error)
             }
-            
-
-            
       
             self.sortedGames = self.sortGamesByOwner(self.games)
             self.tableGameList.reloadData()

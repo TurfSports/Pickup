@@ -173,7 +173,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     func loadGamesFromParse() {
         let gameQuery = PFQuery(className: "Game")
-        let userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
         
 //        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
       gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
