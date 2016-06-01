@@ -153,8 +153,16 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let latitude:CLLocationDegrees = game.latitude
             let longitude:CLLocationDegrees = game.longitude
             let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-            if self.currentLocation != nil {
+            if self.currentLocation != nil && Settings.sharedSettings.defaultLocation == "none" {
                 if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!) {
+                    var suffix = "mi"
+                    if Settings.sharedSettings.distanceUnit == "kilometers" {
+                        suffix = "km"
+                    }
+                    cell?.lblDistance.text = "\(distance) \(suffix)"
+                }
+            } else {
+                if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: CLLocation(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)) {
                     var suffix = "mi"
                     if Settings.sharedSettings.distanceUnit == "kilometers" {
                         suffix = "km"
@@ -173,6 +181,15 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     func loadGamesFromParse() {
         let gameQuery = PFQuery(className: "Game")
+        
+//        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+      gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
+        
+        var userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
+        
+        if Settings.sharedSettings.defaultLocation != "none" {
+            userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude , longitude: Settings.sharedSettings.defaultLongitude)
+        }
         
 //        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
       gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))

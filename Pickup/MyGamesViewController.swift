@@ -13,6 +13,7 @@ import Parse
 class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, MyGamesTableViewDelegate, DismissalDelegate {
 
     let METERS_IN_MILE = 1609.34
+    let METERS_IN_KILOMETER = 1000.0
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
     
@@ -107,9 +108,22 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             let latitude:CLLocationDegrees = game.latitude
             let longitude:CLLocationDegrees = game.longitude
             let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-            if self.currentLocation != nil {
+            if self.currentLocation != nil && Settings.sharedSettings.defaultLocation == "none" {
                 if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!) {
-                    cell?.lblDistance.text = "\(distance) mi"
+                    var suffix = "mi"
+                    if Settings.sharedSettings.distanceUnit == "kilometers" {
+                        suffix = "km"
+                    }
+                    cell?.lblDistance.text = "\(distance) \(suffix)"
+
+                }
+            } else {
+                if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: CLLocation(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)) {
+                    var suffix = "mi"
+                    if Settings.sharedSettings.distanceUnit == "kilometers" {
+                        suffix = "km"
+                    }
+                    cell?.lblDistance.text = "\(distance) \(suffix)"
                 }
             }
         }
@@ -322,7 +336,16 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     }
     
     func getDistanceBetweenLocations(location1: CLLocation, location2: CLLocation) -> Double {
-        let distance:Double = roundToDecimalPlaces(location1.distanceFromLocation(location2) / METERS_IN_MILE, places: 1)
+        
+        var distanceUnitMeasurement: Double
+        
+        if Settings.sharedSettings.distanceUnit == "miles" {
+            distanceUnitMeasurement = METERS_IN_MILE
+        } else {
+            distanceUnitMeasurement = METERS_IN_KILOMETER
+        }
+        
+        let distance:Double = roundToDecimalPlaces(location1.distanceFromLocation(location2) / distanceUnitMeasurement, places: 1)
         return distance
     }
     

@@ -316,8 +316,30 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             locationManager.stopUpdatingLocation()
         }
         
-        
         self.tableView.reloadData()
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print(error.code)
+        
+        //http://stackoverflow.com/questions/26567413/get-input-value-from-textfield-in-ios-alert-in-swift
+        //1. Create the alert controller.
+        let alert = UIAlertController(title: "Static Location", message: "You have disabled location services for this app. Please enter a zip code to see local games.", preferredStyle: .Alert)
+        
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+            textField.keyboardType = UIKeyboardType.NumberPad
+        })
+        
+        //3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            let textField = alert.textFields![0] as UITextField
+            print("Text field: \(textField.text)")
+        }))
+        
+        // 4. Present the alert.
+        self.presentViewController(alert, animated: true, completion: nil)
+        
     }
     
     func setUsersCurrentLocation() {
