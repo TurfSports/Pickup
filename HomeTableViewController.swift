@@ -9,6 +9,7 @@
 import UIKit
 import Parse
 import CoreLocation
+import MapKit
 
 class HomeTableViewController: UITableViewController, CLLocationManagerDelegate, DismissalDelegate {
     
@@ -119,7 +120,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             cell?.lblAvailableGames.text = ""
         }
         
-        
         return cell!
     }
     
@@ -219,12 +219,11 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 gameQuery.whereKey("owner", notEqualTo: PFUser.currentUser()!)
             }
             
-            var userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
+            var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
             
-            if Settings.sharedSettings.defaultLocation != "none" {
-                userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
+            if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.locationServicesEnabled() {
+                userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
             }
-            
             
             if Settings.sharedSettings.distanceUnit == "miles" {
                 let gameDistance = Double(Settings.sharedSettings.gameDistance)
@@ -286,6 +285,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     }
     
     //MARK: - Notification Alert
+    
     private func showAlert(notification: NSNotification) {
         let notificationMessage = notification.userInfo!["alertBody"]
         let message: String = notificationMessage as! String
@@ -320,7 +320,14 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print(error.code)
+        
+        if !CLLocationManager.locationServicesEnabled() && Settings.sharedSettings.defaultLocation == "none" {
+            getZipCodeFromUserWithAlert()
+        }
+        
+    }
+    
+    func getZipCodeFromUserWithAlert() {
         
         //http://stackoverflow.com/questions/26567413/get-input-value-from-textfield-in-ios-alert-in-swift
         //1. Create the alert controller.
@@ -329,6 +336,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         //2. Add the text field. You can configure it however you need.
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
             textField.keyboardType = UIKeyboardType.NumberPad
+            textField.addTarget(self, action: #selector(HomeTableViewController.textChanged(_:)), forControlEvents: .EditingChanged)
         })
         
         //3. Grab the value from the text field, and print it when the user clicks OK.
@@ -337,8 +345,56 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             print("Text field: \(textField.text)")
         }))
         
+        (alert.actions[0] as UIAlertAction).enabled = false
+        
         // 4. Present the alert.
         self.presentViewController(alert, animated: true, completion: nil)
+        
+    }
+    
+    func textChanged(sender:AnyObject) {
+        let textField = sender as! UITextField
+        var responder: UIResponder = textField
+        while !(responder is UIAlertController) { responder = responder.nextResponder()! }
+        let alert = responder as! UIAlertController
+        
+        if textField.text?.characters.count == 5 {
+            validateZipCode(textField.text!, alert: alert)
+        }
+        
+    }
+    
+    func validateZipCode(zipcode: String, alert: UIAlertController) {
+        
+        let geocoder = CLGeocoder()
+        
+        geocoder.geocodeAddressString(zipcode, completionHandler: {(placemarks, error) -> Void in
+            if((error) != nil){
+                print("Error", error)
+            } else if let placemark = placemarks?.first {
+                
+                let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
+                if let city = placemark.addressDictionary!["City"] as? NSString {
+                    if let country = placemark.addressDictionary!["Country"] as? NSString {
+                        if country == "United States" || country == "Canada" {
+                            if let state = placemark.addressDictionary!["State"] as? NSString {
+                                alert.message = "\(city), \(state)"
+                            }
+                        } else {
+                            alert.message = "\(city), \(country)"
+                        }
+                        
+                    }
+                }
+                
+                (alert.actions[0] as UIAlertAction).enabled = true
+                
+                Settings.sharedSettings.defaultLocation = zipcode
+                Settings.sharedSettings.defaultLatitude = coordinates.latitude
+                Settings.sharedSettings.defaultLongitude = coordinates.longitude
+            }
+        })
+
         
     }
     

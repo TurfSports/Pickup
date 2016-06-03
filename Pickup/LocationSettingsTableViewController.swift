@@ -89,7 +89,12 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         
         switchLocation.on = tempSettings.defaultLocation != "none" ? true : false
 
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        if !CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
+            switchLocation.enabled = false
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -125,6 +130,10 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         if indexPath.section == 0 && indexPath.row == 1 {
             distanceRowSelected = !distanceRowSelected
             animateReloadTableView()
+        } else if indexPath.section == 1 && indexPath.row == 0 {
+            if !CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
+                showLocationAlert()
+            }
         }
         
     }
@@ -203,6 +212,22 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
                 self.tempSettings.defaultLongitude = coordinates.longitude
             }
         })
+    }
+    
+    //MARK: - Location Alert
+    func showLocationAlert() {
+        
+        let alert = UIAlertController(title: "Static Location", message: "To use your current location instead of a default zipcode, you must enable location services for this app.", preferredStyle: .Alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
+
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Settings", style: .Default, handler: { (action) -> Void in
+            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        }))
+        
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 
 }

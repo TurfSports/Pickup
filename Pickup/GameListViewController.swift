@@ -185,10 +185,10 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
 //        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
       gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
         
-        var userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
+        var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
         
-        if Settings.sharedSettings.defaultLocation != "none" {
-            userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude , longitude: Settings.sharedSettings.defaultLongitude)
+        if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.locationServicesEnabled() {
+            userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
         }
         
 //        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))

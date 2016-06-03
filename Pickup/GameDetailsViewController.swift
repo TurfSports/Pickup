@@ -77,6 +77,8 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         
     }
     
+    //MARK: - Alert
+    
     private func showAlert() {
         let message = "Are you sure you want to \(self.alertAction[userStatus]!) this game?"
         let alertTitle = "\(self.alertTitle[userStatus]!)"
@@ -85,7 +87,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         let alertController = UIAlertController(title: title, message:
             message, preferredStyle: UIAlertControllerStyle.Alert)
         
-        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.Default,handler: nil))
+        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.Default, handler: nil))
         alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.Default, handler: { action in
             
             switch(self.userStatus) {
@@ -107,6 +109,8 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
+    
+    //MARK: - Joining/Leaving game
     
     private func joinGame() {
         self.joinPFUserToPFGame()
