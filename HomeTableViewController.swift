@@ -221,7 +221,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             
             var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
             
-            if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.locationServicesEnabled() {
+            if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
                 userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
             }
             
@@ -321,7 +321,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         
-        if !CLLocationManager.locationServicesEnabled() && Settings.sharedSettings.defaultLocation == "none" {
+        if (!CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse) && Settings.sharedSettings.defaultLocation == "none" {
             getZipCodeFromUserWithAlert()
         }
         

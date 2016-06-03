@@ -187,7 +187,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
         
-        if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.locationServicesEnabled() {
+        if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
             userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
         }
         

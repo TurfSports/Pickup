@@ -18,6 +18,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     @IBOutlet weak var switchLocation: UISwitch!
     @IBOutlet weak var zipLabel: UILabel!
     
+    private var foregroundNotification: NSObjectProtocol!
     
     let MILES = 0
     
@@ -85,24 +86,32 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
             txtDefaultLocation.text = tempSettings.defaultLocation
         }
         
+        handleSwitch()
+        
         segCtrlDistanceUnits.selectedSegmentIndex = tempSettings.distanceUnit == "miles" ? 0 : 1
         
         switchLocation.on = tempSettings.defaultLocation != "none" ? true : false
-
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        if !CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
-            switchLocation.enabled = false
+        
+        foregroundNotification = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillEnterForegroundNotification, object: nil, queue: NSOperationQueue.mainQueue()) {
+            [unowned self] notification in
+            self.handleSwitch()
         }
+
     }
     
     override func viewWillDisappear(animated: Bool) {
         settingsDelegate.updateTempSettings(self.tempSettings)
     }
     
+    func handleSwitch() {
+        if !CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
+            self.switchLocation.enabled = false
+        } else {
+            self.switchLocation.enabled = true
+        }
+    }
     
-
+    
     //MARK: - Picker View Delegate
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -228,6 +237,10 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         }))
         
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(foregroundNotification)
     }
 
 }
