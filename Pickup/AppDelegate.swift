@@ -26,9 +26,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("vXTZeIEcllE2fqSPJab5OdZkCbB9TmfW9DIutXJn",
             clientKey: "xUjfmNs7umcLNLUdINYj6jfe5Y4dQx6CT8JMEpqJ")
         
+        //Set up current user
+        let currentUser = PFUser.currentUser()
+        
+        if currentUser == nil {
+            PFAnonymousUtils.logInWithBlock {
+                (user: PFUser?, error: NSError?) -> Void in
+                if error != nil || user == nil {
+                    print("Anonymous login failed.")
+                } else {
+                    user!["deviceType"] = UIDevice.currentDevice().name
+                    user?.saveInBackground()
+                }
+            }
+        }
+        
+        
         //Set up notifications
-        let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+//        let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+//        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+        
+        let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
+        
+        let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+        application.registerUserNotificationSettings(settings)
+        application.registerForRemoteNotifications()
         
         if let options = launchOptions {
             if let notification = options[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
@@ -64,20 +86,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSUserDefaults.standardUserDefaults().setObject(serializedSettings, forKey: "settings")
         }
         
-        //Set up current user
-        let currentUser = PFUser.currentUser()
-        
-        if currentUser == nil {
-            PFAnonymousUtils.logInWithBlock {
-                (user: PFUser?, error: NSError?) -> Void in
-                if error != nil || user == nil {
-                    print("Anonymous login failed.")
-                } else {
-                    user!["deviceType"] = UIDevice.currentDevice().name
-                    user?.saveInBackground()
-                }
-            }
-        }
         
         return true
     }
@@ -86,9 +94,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [NSObject : AnyObject], withResponseInfo responseInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
-        print("remoteApplicationCalled")
+
+    //MARK: - Remote notifications
+
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let installation = PFInstallation.currentInstallation()
+        installation["user"] = PFUser.currentUser()
+        installation.setDeviceTokenFromData(deviceToken)
+        installation.saveInBackground()
+        
+//        PFPush.subscribeToChannelInBackgr ound("") { (succeeded: Bool, error: NSError?) in
+//            if succeeded {
+//                print("ParseStarterProject successfully subscribed to push notifications on the broadcast channel.");
+//            } else {
+//                print("ParseStarterProject failed to subscribe to push notifications on the broadcast channel with error = %@.", error)
+//            }
+//        }
     }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        if error.code == 3010 {
+            print("Push notifications are not supported in the iOS Simulator.")
+        } else {
+            print("application:didFailToRegisterForRemoteNotificationsWithError: %@", error)
+        }
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        print("Hello")
+        PFPush.handlePush(userInfo)
+    }
+    
+    
+    //MARK: - Local notifications
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         
@@ -100,6 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

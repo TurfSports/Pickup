@@ -24,8 +24,8 @@ class Settings {
     var distanceUnit = "miles"
     var gameReminder = 0
     var defaultLocation = "none"
-    var defaultLatitude = 180.0
-    var defaultLongitude = 180.0
+    var defaultLatitude = 40.247015
+    var defaultLongitude = -111.640160
     var showCreatedGames = true
     
     init () {}
