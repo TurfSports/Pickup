@@ -41,16 +41,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-        
-        //Set up notifications
-//        let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-//        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
-        
-        let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
-        
-        let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
-        application.registerUserNotificationSettings(settings)
-        application.registerForRemoteNotifications()
+        if NotificationsManager.notificationsInitiated() {
+            NotificationsManager.registerNotifications()
+        }
         
         if let options = launchOptions {
             if let notification = options[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
@@ -121,7 +114,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        print("Hello")
         PFPush.handlePush(userInfo)
     }
     

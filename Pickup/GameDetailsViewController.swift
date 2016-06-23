@@ -118,7 +118,12 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.game.availableSlots += -1
         self.game.userJoined = !self.game.userJoined
         self.userStatus = .USER_JOINED
+        
         LocalNotifications.scheduleGameNotification(self.game)
+        
+        if !NotificationsManager.notificationsInitiated() {
+            NotificationsManager.registerNotifications()
+        }
     }
     
     private func leaveGame() {

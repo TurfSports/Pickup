@@ -200,6 +200,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
         gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
         gameQuery.whereKey("objectId", containedIn: getJoinedGamesFromUserDefaults())
+        gameQuery.whereKey("isCancelled", equalTo: false)
         
         gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let gameObjects = objects {

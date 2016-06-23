@@ -80,6 +80,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         if editingNotes == false  {
             if enteredDataIsValid() == true {
                 saveParseGameObject(self.game)
+                
+                if !NotificationsManager.notificationsInitiated() {
+                    NotificationsManager.registerNotifications()
+                }
+                
             } else {
                 markInvalidFields()
             }

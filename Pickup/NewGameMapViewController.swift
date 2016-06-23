@@ -94,7 +94,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
             if let location = locations.first {
                 let span = MKCoordinateSpanMake(0.05, 0.05)
                 let region = MKCoordinateRegion(center: location.coordinate, span: span)
-                newGameMap.setRegion(region, animated: true)
+                newGameMap.setRegion(region, animated: false)
             }
         } else {
             computeViewSettings(Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
@@ -119,8 +119,13 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     func computeViewSettings(latitude: Double, longitude: Double) {
         
-        let latDelta:CLLocationDegrees = 0.01
-        let longDelta:CLLocationDegrees = 0.01
+        var latDelta:CLLocationDegrees = 0.02
+        var longDelta:CLLocationDegrees = 0.02
+        
+        if Settings.sharedSettings.defaultLocation != "none" {
+            latDelta = 0.2
+            longDelta = 0.2
+        }
         
         let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
         let location = CLLocationCoordinate2DMake(latitude, longitude)
@@ -218,7 +223,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         let span = MKCoordinateSpanMake(0.05, 0.05)
         let region = MKCoordinateRegionMake(selectedItem.coordinate, span)
-        newGameMap.setRegion(region, animated: true)
+        newGameMap.setRegion(region, animated: false)
         
         tableViewSearchResults.hidden = true
         searchBar.showsCancelButton = false

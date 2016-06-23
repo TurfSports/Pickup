@@ -33,6 +33,7 @@
 		024DDF101C8C03EF000E34D7 /* DistanceEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024DDF0F1C8C03EF000E34D7 /* DistanceEnum.swift */; };
 		025330F71C56FAA600B6ABDD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025330F61C56FAA600B6ABDD /* Theme.swift */; };
 		02599E8B1C75896500ECE1A9 /* NewGameTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02599E8A1C75896500ECE1A9 /* NewGameTableViewController.swift */; };
+		0275B8171D1B82D700611621 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0275B8161D1B82D700611621 /* NotificationsManager.swift */; };
 		028C1EE81C88E151000634AA /* GameStatusEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028C1EE71C88E151000634AA /* GameStatusEnum.swift */; };
 		028C63AF1CB2DD740086D42E /* LocalNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028C63AE1CB2DD740086D42E /* LocalNotifications.swift */; };
 		02947B4E1C6FAB9200283778 /* PlayerTypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */; };
@@ -89,6 +90,7 @@
 		024DDF0F1C8C03EF000E34D7 /* DistanceEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceEnum.swift; sourceTree = "<group>"; };
 		025330F61C56FAA600B6ABDD /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		02599E8A1C75896500ECE1A9 /* NewGameTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameTableViewController.swift; sourceTree = "<group>"; };
+		0275B8161D1B82D700611621 /* NotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		028C1EE71C88E151000634AA /* GameStatusEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStatusEnum.swift; sourceTree = "<group>"; };
 		028C63AE1CB2DD740086D42E /* LocalNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotifications.swift; sourceTree = "<group>"; };
 		02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTypeConverter.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 				02BE277D1C4DD58F0062C890 /* AppDelegate.swift */,
 				025330F61C56FAA600B6ABDD /* Theme.swift */,
 				028C63AE1CB2DD740086D42E /* LocalNotifications.swift */,
+				0275B8161D1B82D700611621 /* NotificationsManager.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				02EFBF561C6BEB9B001774A2 /* GameTableViewCell.swift in Sources */,
 				0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */,
 				02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */,
+				0275B8171D1B82D700611621 /* NotificationsManager.swift in Sources */,
 				02DB6FF11C74153F00FF5C20 /* GameMapViewController.swift in Sources */,
 				02599E8B1C75896500ECE1A9 /* NewGameTableViewController.swift in Sources */,
 				02A8F2591C77F41900A04DE6 /* DateFormatterEnum.swift in Sources */,
