@@ -162,18 +162,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.gameNotesTableViewHeight = self.tableView.bounds.height - heightAboveGameNotes
     }
     
-    private func getGameObjectFromParse() {
-        
-        let gameQuery = PFQuery(className:"Game")
-        gameQuery.getObjectInBackgroundWithId(self.game.id) {
-            (gameObject: PFObject?, error: NSError?) -> Void in
-            if error == nil && gameObject != nil {
-                self.gameObject = gameObject
-            } else {
-                self.gameObject = nil
-            }
-        }
-    }
+
     
     private func setStoredValues() {
         
@@ -537,17 +526,33 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     //MARK: - Parse
     
+    private func getGameObjectFromParse() {
+        
+        print("Getting game object from Parse")
+        let gameQuery = PFQuery(className:"Game")
+        gameQuery.getObjectInBackgroundWithId(self.game.id) {
+            (gameObject: PFObject?, error: NSError?) -> Void in
+            if error == nil && gameObject != nil {
+                self.gameObject = gameObject
+                print("Game object set successfully")
+            } else {
+                self.gameObject = nil
+            }
+        }
+    }
+    
     private func saveParseGameObject(game: Game) {
         
         var gameObject: PFObject
+        //TODO: - Figure out how to save the PFObject back - or at least why it's not being saved
         
         if gameStatus == .CREATE {
             gameObject = PFObject(className: "Game")
+            setGameObjectFields(gameObject)
         } else { //gameStatus == .EDIT
             gameObject = self.gameObject
         }
         
-        setGameObjectFields(gameObject)
         saveGameObjectInBackground(gameObject)
 
     }
@@ -569,24 +574,25 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     private func saveGameObjectInBackground (gameObject: PFObject) {
+        print("Saving object in background with block")
         gameObject.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in
             if (success) {
                 
-                if self.gameStatus == GameStatus.CREATE {
-                    LocalNotifications.scheduleGameNotification(self.game)
-                }
-                
-                self.game.gameType.increaseGameCount(1)
                 let gameId = gameObject.objectId! as String
                 self.game.id = gameId
-                self.addGameToUserDefaults(gameId)
-                if self.gameStatus == .EDIT {
-                    self.gameDetailsDelegate.setGame(self.game)
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                } else if self.gameStatus == .CREATE {
+                
+                if self.gameStatus == GameStatus.CREATE {
+                    print("Game is new")
+                    LocalNotifications.scheduleGameNotification(self.game)
+                    self.game.gameType.increaseGameCount(1)
+                    self.addGameToUserDefaults(gameId)
                     self.dismissalDelegate?.setNewGame(self.game)
                     self.dismissalDelegate?.finishedShowing(self)
+                } else {
+                    print("Game is edited")
+                    self.gameDetailsDelegate.setGame(self.game)
+                    self.dismissViewControllerAnimated(true, completion: nil)
                 }
                 
             } else {

@@ -47,10 +47,10 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         super.viewDidLoad()
         
-//      iOS 9.2
+////      iOS 9.2
 //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
 //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
-//        
+//
 //      iOS 9.3
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithSegue(_:)), name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
@@ -336,6 +336,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         //2. Add the text field. You can configure it however you need.
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
             textField.keyboardType = UIKeyboardType.NumberPad
+            
+//            textField.addTarget(self, action: "textChanged:", forControlEvents: UIControlEvents.EditingChanged)
             textField.addTarget(self, action: #selector(HomeTableViewController.textChanged(_:)), forControlEvents: .EditingChanged)
         })
         

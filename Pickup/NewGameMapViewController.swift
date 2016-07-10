@@ -84,7 +84,11 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     //MARK: - Location Manager Delegate
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
-            locationManager.requestLocation()
+            if #available(iOS 9.0, *) {
+                locationManager.requestLocation()
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     
@@ -112,7 +116,12 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.requestLocation()
+            if #available(iOS 9.0, *) {
+                locationManager.requestLocation()
+            } else {
+                //TODO: - What about iOS 8? I don't know if the below line is the correct syntax
+                locationManager.startUpdatingLocation()
+            }
         }
     }
     
