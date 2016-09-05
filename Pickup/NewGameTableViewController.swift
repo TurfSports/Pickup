@@ -79,7 +79,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         if editingNotes == false  {
             if enteredDataIsValid() == true {
-                saveParseGameObject(self.game)
+                saveParseGameObject()
                 
                 if !NotificationsManager.notificationsInitiated() {
                     NotificationsManager.registerNotifications()
@@ -103,6 +103,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
         lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+        self.gameObject["eventDate"] = sender.date
         self.game.eventDate = sender.date
     }
     
@@ -273,8 +274,13 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 lblSport.text = gameTypes[row].displayName
                 break
             case NUMBER_OF_PLAYERS_PICKER:
+                
+                self.gameObject["totalSlots"] = row + MIN_PLAYERS + 1
+                self.gameObject["availableSlots"] = row + MIN_PLAYERS
+                
                 self.game.totalSlots = row + MIN_PLAYERS + 1
                 self.game.availableSlots = row + MIN_PLAYERS
+                
                 lblPlayers.text = "\(row + MIN_PLAYERS)"
                 break
             default:
@@ -541,18 +547,19 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
     }
     
-    private func saveParseGameObject(game: Game) {
+    private func saveParseGameObject() {
         
         var gameObject: PFObject
         //TODO: - Figure out how to save the PFObject back - or at least why it's not being saved
         
         if gameStatus == .CREATE {
             gameObject = PFObject(className: "Game")
-            setGameObjectFields(gameObject)
+            
         } else { //gameStatus == .EDIT
             gameObject = self.gameObject
         }
         
+        setGameObjectFields(gameObject)
         saveGameObjectInBackground(gameObject)
 
     }
@@ -561,16 +568,20 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
 //        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
         gameObject["gameType"] = PFObject(outDataWithClassName: "GameType", objectId: self.game.gameType.id)
+        
         gameObject["date"] = self.game.eventDate
         let point = PFGeoPoint(latitude:self.game.latitude, longitude: self.game.longitude)
         gameObject["location"] = point
         gameObject["locationName"] = self.game.locationName
         gameObject["gameNotes"] = self.game.gameNotes
-        gameObject["owner"] = PFUser.currentUser()
-        gameObject.relationForKey("players").addObject(PFUser.currentUser()!)
         gameObject["totalSlots"] = self.game.totalSlots
         gameObject["slotsAvailable"] = self.game.availableSlots
-        gameObject["isCancelled"] = false
+        
+        if gameStatus == .CREATE {
+            gameObject["owner"] = PFUser.currentUser()
+            gameObject["isCancelled"] = false
+            gameObject.relationForKey("players").addObject(PFUser.currentUser()!)
+        }
     }
     
     private func saveGameObjectInBackground (gameObject: PFObject) {
