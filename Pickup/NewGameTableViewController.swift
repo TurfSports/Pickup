@@ -103,7 +103,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     @IBAction func datePickerValueChanged(sender: UIDatePicker) {
         lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
-        self.gameObject["eventDate"] = sender.date
+        
+        if self.gameObject != nil {
+            self.gameObject["eventDate"] = sender.date
+        }
+        
         self.game.eventDate = sender.date
     }
     
@@ -275,8 +279,10 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 break
             case NUMBER_OF_PLAYERS_PICKER:
                 
-                self.gameObject["totalSlots"] = row + MIN_PLAYERS + 1
-                self.gameObject["availableSlots"] = row + MIN_PLAYERS
+                if self.gameObject != nil {
+                    self.gameObject["totalSlots"] = row + MIN_PLAYERS + 1
+                    self.gameObject["availableSlots"] = row + MIN_PLAYERS
+                }
                 
                 self.game.totalSlots = row + MIN_PLAYERS + 1
                 self.game.availableSlots = row + MIN_PLAYERS

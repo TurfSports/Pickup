@@ -2227,8 +2227,8 @@
         <image name="settingsIcon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="g09-s2-G55"/>
         <segue reference="gsA-UD-Nep"/>
-        <segue reference="J4I-yY-pBk"/>
         <segue reference="OEk-ge-wuA"/>
     </inferredMetricsTieBreakers>
 </document>
