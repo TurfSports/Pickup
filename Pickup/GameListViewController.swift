@@ -46,7 +46,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         
-    refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), forControlEvents: UIControlEvents.ValueChanged)
+    refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), for: UIControlEvents.valueChanged)
 //    refreshControl.addTarget(self, action: "loadGamesFromParse", forControlEvents: UIControlEvents.ValueChanged)
         return refreshControl
     }()
@@ -59,11 +59,11 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         self.tableGameList.addSubview(self.refreshControl)
         
         lblNoGames.text = "No \(selectedGameType.name) games within \(Settings.sharedSettings.gameDistance) \(Settings.sharedSettings.distanceUnit)"
-        noGamesBlur.hidden = true
+        noGamesBlur.isHidden = true
         
         
         activityIndicator.startAnimating()
-        self.activityIndicator.hidden = false
+        self.activityIndicator.isHidden = false
         
         setUsersCurrentLocation()
         
@@ -74,24 +74,24 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
     }
     
-    override func viewDidAppear(animated: Bool) {
-        noGamesBlur.hidden = true
+    override func viewDidAppear(_ animated: Bool) {
+        noGamesBlur.isHidden = true
         loadGamesFromParse()
         self.tableGameList.reloadData()
     }
     
-    private func blurScreen() {
-        noGamesBlur.hidden = false
+    fileprivate func blurScreen() {
+        noGamesBlur.isHidden = false
     }
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return sortedGames.count
     }
     
     
-    func tableView(tableView : UITableView,  titleForHeaderInSection section: Int)->String {
+    private func tableView(_ tableView : UITableView,  titleForHeaderInSection section: Int)->String {
         var sectionTitle = ""
         
         if !sectionTitles.isEmpty {
@@ -101,38 +101,38 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         return sectionTitle
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sortedGames[section].count
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Theme.GAME_LIST_ROW_HEIGHT
     }
     
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
-        header.textLabel?.textAlignment = .Center
+        header.textLabel?.textAlignment = .center
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: self)
     }
     
 
     //MARK: - Table View Data Source
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> GameTableViewCell {
+    private func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> GameTableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? GameTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GameTableViewCell
         
         if !sortedGames.isEmpty {
 
-            let game = sortedGames[indexPath.section][indexPath.row]
+            let game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
             
             cell?.lblLocationName.text = game.locationName
-            cell?.lblGameDate.text = relevantDateInfo(game.eventDate)
+            cell?.lblGameDate.text = relevantDateInfo(game.eventDate as Date)
             cell?.lblDistance.text = ""
             
             if game.userJoined == true {
@@ -143,11 +143,11 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                     cell?.imgCheckCircle.image = UIImage(named: "checkIcon")
                     cell?.lblJoined.text = "Joined"
                 }
-                cell?.lblJoined.hidden = false
-                cell?.imgCheckCircle.hidden = false
+                cell?.lblJoined.isHidden = false
+                cell?.imgCheckCircle.isHidden = false
             } else {
-                cell?.lblJoined.hidden = true
-                cell?.imgCheckCircle.hidden = true
+                cell?.lblJoined.isHidden = true
+                cell?.imgCheckCircle.isHidden = true
             }
             
             let latitude:CLLocationDegrees = game.latitude
@@ -187,7 +187,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
         
-        if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+        if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
         }
         
@@ -202,27 +202,27 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinKilometers:gameDistance)
         }
         
-        gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
-        gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
+        gameQuery.whereKey("date", greaterThanOrEqualTo: Date().addingTimeInterval(-1.5 * 60 * 60))
+        gameQuery.whereKey("date", lessThanOrEqualTo: Date().addingTimeInterval(2 * 7 * 24 * 60 * 60))
         gameQuery.whereKey("isCancelled", equalTo: false)
         gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
         
         if Settings.sharedSettings.showCreatedGames == false {
-            gameQuery.whereKey("owner", notEqualTo: PFUser.currentUser()!)
+            gameQuery.whereKey("owner", notEqualTo: PFUser.current()!)
         }
         
-        gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        gameQuery.findObjectsInBackground { (objects, error) -> Void in
             if let gameObjects = objects {
-                self.games.removeAll(keepCapacity: true)
+                self.games.removeAll(keepingCapacity: true)
                 for gameObject in gameObjects {
                     let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
                     
-                    if gameObject["owner"].objectId == PFUser.currentUser()?.objectId {
+                    if (gameObject["owner"] as AnyObject).objectId == PFUser.current()?.objectId {
                         game.userIsOwner = true
                     }
                     
-                    if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
-                        if joinedGames.containsObject(game.id) {
+                    if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
+                        if joinedGames.contains(game.id) {
                             game.userJoined = true
                         }
                     }
@@ -236,7 +236,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                 self.sortedGames = self.sortGamesByDate(self.games)
                 self.refreshControl.endRefreshing()
                 self.activityIndicator.stopAnimating()
-                self.activityIndicator.hidden = true
+                self.activityIndicator.isHidden = true
                 self.tableGameList.reloadData()
             }
 
@@ -246,7 +246,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     //MARK: - Location Manager Delegate
     //TODO: Abstract location methods into their own class
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let location:CLLocationCoordinate2D = manager.location!.coordinate
         currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
@@ -268,7 +268,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         }
     }
     
-    func getDistanceBetweenLocations(location1: CLLocation, location2: CLLocation) -> Double {
+    func getDistanceBetweenLocations(_ location1: CLLocation, location2: CLLocation) -> Double {
         
         var distanceUnitMeasurement: Double
         
@@ -278,33 +278,33 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             distanceUnitMeasurement = METERS_IN_KILOMETER
         }
         
-        let distance:Double = roundToDecimalPlaces(location1.distanceFromLocation(location2) / distanceUnitMeasurement, places: 1)
+        let distance:Double = roundToDecimalPlaces(location1.distance(from: location2) / distanceUnitMeasurement, places: 1)
         return distance
     }
     
-    func roundToDecimalPlaces(number: Double, places: Int) -> Double {
+    func roundToDecimalPlaces(_ number: Double, places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return round(number * divisor) / divisor
     }
     
     //MARK: - Dismissal Delegate
 
-    func finishedShowing(viewController: UIViewController) {
+    func finishedShowing(_ viewController: UIViewController) {
         
-        self.dismissViewControllerAnimated(true, completion: nil)
-        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
+        self.dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: self)
         
         return
     }
     
-    func setNewGame(game: Game) {
+    func setNewGame(_ game: Game) {
         self.newGame = game
     }
     
     
     //MARK: - Sort Dates
     //TODO: Abstract date functions into separate class
-    func sortGamesByDate(games: [Game]) -> [[Game]] {
+    func sortGamesByDate(_ games: [Game]) -> [[Game]] {
 
         var todayGames:[Game] = []
         var tomorrowGames:[Game] = []
@@ -314,15 +314,15 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         //Sort the games with earliest game first
         //TODO: This won't work on a new year
-        let sortedGameArray = games.sort { (gameOne, gameTwo) -> Bool in
-            let firstElementDay = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: gameOne.eventDate)
-            let secondElementDay = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: gameTwo.eventDate)
+        let sortedGameArray = games.sorted { (gameOne, gameTwo) -> Bool in
+            let firstElementDay = (Calendar.current as NSCalendar).ordinality(of: .day, in: .year, for: gameOne.eventDate as Date)
+            let secondElementDay = (Calendar.current as NSCalendar).ordinality(of: .day, in: .year, for: gameTwo.eventDate as Date)
             
             return firstElementDay < secondElementDay
         }
         
         for game in sortedGameArray {
-            switch(dateCompare(game.eventDate)) {
+            switch(dateCompare(game.eventDate as Date)) {
                 case "TODAY":
                     todayGames.append(game)
                     break
@@ -367,26 +367,26 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
     }
     
-    func dateCompare(eventDate: NSDate) -> String {
+    func dateCompare(_ eventDate: Date) -> String {
         
-        let dateToday: NSDate = NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60)
+        let dateToday: Date = Date().addingTimeInterval(-1.5 * 60 * 60)
         
-        let dateComparisonResult:NSComparisonResult = dateToday.compare(eventDate)
+        let dateComparisonResult:ComparisonResult = dateToday.compare(eventDate)
         var resultString:String = ""
         
-        if dateComparisonResult == NSComparisonResult.OrderedAscending || dateComparisonResult == NSComparisonResult.OrderedSame
+        if dateComparisonResult == ComparisonResult.orderedAscending || dateComparisonResult == ComparisonResult.orderedSame
         {
-            let todayWeekday = NSCalendar.currentCalendar().components([.Weekday], fromDate: NSDate()).weekday
-            let eventWeekday = NSCalendar.currentCalendar().components([.Weekday], fromDate: eventDate).weekday
+            let todayWeekday = (Calendar.current as NSCalendar).components([.weekday], from: Date()).weekday
+            let eventWeekday = (Calendar.current as NSCalendar).components([.weekday], from: eventDate).weekday
             
-            let today = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: NSDate())
-            let eventDay = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: eventDate)
+            let today = (Calendar.current as NSCalendar).ordinality(of: .day, in: .year, for: Date())
+            let eventDay = (Calendar.current as NSCalendar).ordinality(of: .day, in: .year, for: eventDate)
             
             if todayWeekday == eventWeekday && today == eventDay {
                 resultString = "TODAY"
-            } else if todayWeekday + 1 == eventWeekday && today + 1 == eventDay  {
+            } else if todayWeekday! + 1 == eventWeekday! && today + 1 == eventDay  {
                 resultString = "TOMORROW"
-            } else if eventWeekday > todayWeekday && today + 7 >= eventDay {
+            } else if eventWeekday! > todayWeekday! && today + 7 >= eventDay {
                 resultString = "THIS WEEK"
             } else {
                 resultString = "NEXT WEEK"
@@ -396,7 +396,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         return resultString
     }
     
-    func relevantDateInfo(eventDate: NSDate) -> String {
+    func relevantDateInfo(_ eventDate: Date) -> String {
         
         var relevantDateString = ""
         
@@ -421,14 +421,14 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     //MARK: - Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             
-            let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
+            let gameDetailsViewController = segue.destination as! GameDetailsViewController
             var game: Game
             
             if let indexPath = tableGameList.indexPathForSelectedRow {
-                game = sortedGames[indexPath.section][indexPath.row]
+                game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
             } else {
                 game = self.newGame!
             }
@@ -437,24 +437,24 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             gameDetailsViewController.gameTypes = self.gameTypes
             
             if game.userIsOwner == true {
-                gameDetailsViewController.userStatus = .USER_OWNED
+                gameDetailsViewController.userStatus = .user_OWNED
             } else if game.userJoined == true {
-                gameDetailsViewController.userStatus = .USER_JOINED
+                gameDetailsViewController.userStatus = .user_JOINED
             } else {
-                gameDetailsViewController.userStatus = .USER_NOT_JOINED
+                gameDetailsViewController.userStatus = .user_NOT_JOINED
             }
             
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
             
         } else if segue.identifier == SEGUE_SHOW_GAMES_MAP {
             
-            let gameMapViewController = segue.destinationViewController as! GameMapViewController
+            let gameMapViewController = segue.destination as! GameMapViewController
             gameMapViewController.games = self.games
             gameMapViewController.selectedGameType = self.selectedGameType
             
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
             
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             newGameTableViewController.dismissalDelegate = self
             newGameTableViewController.gameTypes = self.gameTypes

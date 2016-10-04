@@ -37,7 +37,7 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
             
             gameMap.showsUserLocation = true
             
-            if NSCalendar.currentCalendar().compareDate(game.eventDate, toDate: NSDate(), toUnitGranularity: .Day) == NSComparisonResult.OrderedSame {
+            if (Calendar.current as NSCalendar).compare(game.eventDate as Date, to: Date(), toUnitGranularity: .day) == ComparisonResult.orderedSame {
                 let location = setLocationOnMap(game.latitude, longitude: game.longitude)
                 
                 let annotation = GamePointAnnotation()
@@ -52,22 +52,22 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
         }
         
         if todayGameCount == 0 {
-            blur.hidden = false
-            lblNoGamesToday.hidden = false
+            blur.isHidden = false
+            lblNoGamesToday.isHidden = false
         }
         
     }
 
     // MARK: - Map view delegate
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         
-        if annotation.isMemberOfClass(MKUserLocation) {
+        if annotation.isMember(of: MKUserLocation.self) {
             return nil
         }
         
-        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(ANNOTATION_ID) as? MKPinAnnotationView
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: ANNOTATION_ID) as? MKPinAnnotationView
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: ANNOTATION_ID)
@@ -76,7 +76,7 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
         }
         
         
-        let button = UIButton(type: UIButtonType.DetailDisclosure) as UIButton // button with info sign in it
+        let button = UIButton(type: UIButtonType.detailDisclosure) as UIButton // button with info sign in it
         pinView?.rightCalloutAccessoryView = button
         
         //TODO: - Consider adding a custom color 
@@ -86,19 +86,19 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
 
         if let annotation = view.annotation as? GamePointAnnotation {
             self.selectedGame = annotation.game
             if control == view.rightCalloutAccessoryView {
-                performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: view)
+                performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: view)
             }
         }
     }
     
     // MARK: - Private functions
     
-    private func setLocationOnMap(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> CLLocationCoordinate2D {
+    fileprivate func setLocationOnMap(_ latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> CLLocationCoordinate2D {
         let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
         return location
     }
@@ -146,17 +146,17 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
     
     
     //MARK: - Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             
-            let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
+            let gameDetailsViewController = segue.destination as! GameDetailsViewController
             gameDetailsViewController.game = self.selectedGame
             
             if self.selectedGame.userJoined == true {
-                gameDetailsViewController.userStatus = .USER_JOINED
+                gameDetailsViewController.userStatus = .user_JOINED
             } else {
-                gameDetailsViewController.userStatus = .USER_NOT_JOINED
+                gameDetailsViewController.userStatus = .user_NOT_JOINED
             }
             
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true

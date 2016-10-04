@@ -12,7 +12,7 @@ import Parse
 class GameTypeConverter {
     
 
-    static func convertParseObject (gameTypeObject: PFObject) -> GameType {
+    static func convertParseObject (_ gameTypeObject: PFObject) -> GameType {
         
         let id = gameTypeObject.objectId!
         let name = gameTypeObject["name"] as! String

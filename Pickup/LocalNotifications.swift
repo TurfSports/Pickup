@@ -13,22 +13,22 @@ struct LocalNotifications {
     
     //MARK: - Notifications
     //https://www.hackingwithswift.com/example-code/system/how-to-set-local-alerts-using-uilocalnotification
-    static func scheduleGameNotification(game: Game) {
+    static func scheduleGameNotification(_ game: Game) {
         
-        let settings = UIApplication.sharedApplication().currentUserNotificationSettings()
+        let settings = UIApplication.shared.currentUserNotificationSettings
         
-        if settings!.types != .None && Settings.sharedSettings.gameReminder != 0 {
+        if settings!.types != UIUserNotificationType() && Settings.sharedSettings.gameReminder != 0 {
             let notification = UILocalNotification()
             
             
-            let timeUntilGame = NSCalendar.currentCalendar().components(.Minute, fromDate: NSDate(), toDate: game.eventDate, options: []).minute
-            let timeUntilGameString = getTimeUntilGameFromSettings(timeUntilGame, gameReminder: Settings.sharedSettings.gameReminder)
+            let timeUntilGame = (Calendar.current as NSCalendar).components(.minute, from: Date(), to: game.eventDate as Date, options: []).minute
+            let timeUntilGameString = getTimeUntilGameFromSettings(timeUntilGame!, gameReminder: Settings.sharedSettings.gameReminder)
             
-            notification.fireDate = game.eventDate.dateByAddingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60)
+            notification.fireDate = game.eventDate.addingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60) as Date
             
             var showAlert = "true"
             
-            if timeUntilGame < Settings.sharedSettings.gameReminder {
+            if timeUntilGame! < Settings.sharedSettings.gameReminder {
                 showAlert = "false"
             }
             
@@ -43,11 +43,11 @@ struct LocalNotifications {
                                      "alertBody": alertBody,
                                      "showAlert": showAlert]
             
-            UIApplication.sharedApplication().scheduleLocalNotification(notification)
+            UIApplication.shared.scheduleLocalNotification(notification)
         }
     }
     
-    static func getTimeUntilGameFromSettings(timeUntilGame: Int, gameReminder: Int) -> String {
+    static func getTimeUntilGameFromSettings(_ timeUntilGame: Int, gameReminder: Int) -> String {
         
         var gameNotification: String
         print("TimeUntilGame: \(timeUntilGame)")
@@ -90,10 +90,10 @@ struct LocalNotifications {
         return gameNotification
     }
     
-    static func cancelGameNotification(game: Game) {
-        for notification in UIApplication.sharedApplication().scheduledLocalNotifications! {// as! [UILocalNotification] {
+    static func cancelGameNotification(_ game: Game) {
+        for notification in UIApplication.shared.scheduledLocalNotifications! {// as! [UILocalNotification] {
             if notification.userInfo!["selectedGameId"] as! String == game.id {
-                UIApplication.sharedApplication().cancelLocalNotification(notification)
+                UIApplication.shared.cancelLocalNotification(notification)
             }
         }
     }

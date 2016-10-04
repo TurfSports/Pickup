@@ -23,15 +23,15 @@ struct Theme {
     static let GAME_LIST_ROW_HEIGHT = CGFloat(96.00)
  
     static func applyTheme() {
-        let sharedApplication = UIApplication.sharedApplication()
+        let sharedApplication = UIApplication.shared
         sharedApplication.delegate?.window??.tintColor = PRIMARY_DARK_COLOR
         UINavigationBar.appearance().barTintColor = PRIMARY_DARK_NAV_COLOR
-        UINavigationBar.appearance().translucent = true
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        UINavigationBar.appearance().isTranslucent = true
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
     }
 
-    static func applyThemeToCell(cell: HomeTableViewCell) {
-        cell.backgroundColor = UIColor.whiteColor()
+    static func applyThemeToCell(_ cell: HomeTableViewCell) {
+        cell.backgroundColor = UIColor.white
         let bgColorView = UIView()
         bgColorView.backgroundColor = PRIMARY_LIGHT_COLOR
         cell.selectedBackgroundView = bgColorView

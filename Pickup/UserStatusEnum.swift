@@ -9,7 +9,7 @@
 import Foundation
 
 enum UserStatus {
-    case USER_NOT_JOINED
-    case USER_JOINED
-    case USER_OWNED
+    case user_NOT_JOINED
+    case user_JOINED
+    case user_OWNED
 }

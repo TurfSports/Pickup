@@ -42,9 +42,9 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         self.btnAddGame.tintColor = Theme.ACCENT_COLOR
         self.btnSettings.tintColor = Theme.PRIMARY_LIGHT_COLOR
         
-        let gameTypePullTimeStamp: NSDate = getLastGameTypePull()
+        let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
-        if gameTypePullTimeStamp.compare(NSDate().dateByAddingTimeInterval(-24*60*60)) == NSComparisonResult.OrderedAscending {
+        if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
             loadGameTypesFromParse()
         } else {
             loadGameTypesFromUserDefaults()
@@ -54,54 +54,54 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        blurNoGames.hidden = true
+    override func viewDidAppear(_ animated: Bool) {
+        blurNoGames.isHidden = true
         loadGamesFromParse()
         self.tableGameList.reloadData()
     }
     
     //MARK: - Table View Delegate
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return sectionTitles.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sortedGames[section].count
     }
     
-    func tableView(tableView : UITableView,  titleForHeaderInSection section: Int)->String {
+    private func tableView(_ tableView : UITableView,  titleForHeaderInSection section: Int)->String {
         return sectionTitles[section]
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Theme.GAME_LIST_ROW_HEIGHT
     }
     
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
-        header.textLabel?.textAlignment = .Center
+        header.textLabel?.textAlignment = .center
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: self)
     }
     
     
     //MARK: - Table View Data Source
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> MyGamesTableViewCell {
+    private func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> MyGamesTableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? MyGamesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? MyGamesTableViewCell
         
         if !sortedGames.isEmpty {
             
-            let game = sortedGames[indexPath.section][indexPath.row]
+            let game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
             
             cell?.lblLocationName.text = game.locationName
-            cell?.lblGameDate.text = relevantDateInfo(game.eventDate)
+            cell?.lblGameDate.text = relevantDateInfo(game.eventDate as Date)
             cell?.lblDistance.text = ""
             cell?.imgGameType.image = UIImage(named: game.gameType.imageName)
             
@@ -134,11 +134,11 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     //MARK: - My Games Table View Delegate
     
-    func removeGame(game: Game) {
+    func removeGame(_ game: Game) {
         
         for index in 0 ... games.count - 1 {
             if game.id == games[index].id {
-                games.removeAtIndex(index)
+                games.remove(at: index)
                 break
             }
         }
@@ -149,26 +149,26 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     //MARK: - User Defaults
     
-    private func getLastGameTypePull() -> NSDate {
+    fileprivate func getLastGameTypePull() -> Date {
         
-        var lastPull: NSDate
+        var lastPull: Date
         
-        if let lastGameTypePull = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
+        if let lastGameTypePull = UserDefaults.standard.object(forKey: "gameTypePullTimeStamp") as? Date {
             lastPull = lastGameTypePull
         } else {
-            lastPull = NSDate().dateByAddingTimeInterval(-25 * 60 * 60)
-            NSUserDefaults.standardUserDefaults().setObject(lastPull, forKey: "gameTypePullTimeStamp")
+            lastPull = Date().addingTimeInterval(-25 * 60 * 60)
+            UserDefaults.standard.set(lastPull, forKey: "gameTypePullTimeStamp")
         }
         
         return lastPull
     }
     
     
-    private func loadGameTypesFromUserDefaults() {
+    fileprivate func loadGameTypesFromUserDefaults() {
         
         var gameTypeArray: NSMutableArray = []
         
-        if let gameTypeArrayFromDefaults = NSUserDefaults.standardUserDefaults().objectForKey("gameTypes") as? NSArray {
+        if let gameTypeArrayFromDefaults = UserDefaults.standard.object(forKey: "gameTypes") as? NSArray {
             gameTypeArray = gameTypeArrayFromDefaults.mutableCopy() as! NSMutableArray
             
             for gameType in gameTypeArray {
@@ -178,43 +178,43 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         
     }
     
-    private func saveGameTypesToUserDefaults() {
+    fileprivate func saveGameTypesToUserDefaults() {
         
         let gameTypeArray: NSMutableArray = []
         
         for gameType in self.gameTypes {
             let serializedGameType = GameType.serializeGameType(gameType)
-            gameTypeArray.addObject(serializedGameType)
+            gameTypeArray.add(serializedGameType)
         }
         
-        NSUserDefaults.standardUserDefaults().setObject(gameTypeArray, forKey: "gameTypes")
-        NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: "gameTypePullTimeStamp")
+        UserDefaults.standard.set(gameTypeArray, forKey: "gameTypes")
+        UserDefaults.standard.set(Date(), forKey: "gameTypePullTimeStamp")
     }
     
     
     //MARK: - Parse
     
-    private func loadGamesFromParse() {
+    fileprivate func loadGamesFromParse() {
         let gameQuery = PFQuery(className: "Game")
         
-        gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
-        gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
+        gameQuery.whereKey("date", greaterThanOrEqualTo: Date().addingTimeInterval(-1.5 * 60 * 60))
+        gameQuery.whereKey("date", lessThanOrEqualTo: Date().addingTimeInterval(2 * 7 * 24 * 60 * 60))
         gameQuery.whereKey("objectId", containedIn: getJoinedGamesFromUserDefaults())
         gameQuery.whereKey("isCancelled", equalTo: false)
         
-        gameQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        gameQuery.findObjectsInBackground { (objects, error) -> Void in
             if let gameObjects = objects {
-                self.games.removeAll(keepCapacity: true)
+                self.games.removeAll(keepingCapacity: true)
                 
                 var gameObjectCount = 0
                 
                 for gameObject in gameObjects {
                     
-                    let gameId = gameObject["gameType"].objectId as String!
+                    let gameId = (gameObject["gameType"] as AnyObject).objectId as String!
 
-                    let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.getGameTypeById(gameId))
+                    let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.getGameTypeById(gameId!))
                     
-                    if gameObject["owner"].objectId == PFUser.currentUser()?.objectId {
+                    if (gameObject["owner"] as AnyObject).objectId == PFUser.current()?.objectId {
                         game.userIsOwner = true
                     }
                     
@@ -224,7 +224,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
                 }
                 
                 if gameObjectCount == 0 {
-                    self.blurNoGames.hidden = false
+                    self.blurNoGames.isHidden = false
                 }
                 
             } else {
@@ -236,13 +236,13 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         }
     }
     
-    private func loadGameTypesFromParse() {
+    fileprivate func loadGameTypesFromParse() {
         
         let gameTypeQuery = PFQuery(className: "GameType")
-        gameTypeQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        gameTypeQuery.findObjectsInBackground { (objects, error) -> Void in
             if let gameTypeObjects = objects {
                 
-                self.gameTypes.removeAll(keepCapacity: true)
+                self.gameTypes.removeAll(keepingCapacity: true)
                 
                 for gameTypeObject in gameTypeObjects {
                     let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
@@ -256,7 +256,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     //MARK: - Sorting functions
     
-    private func getGameTypeById (gameId: String) -> GameType {
+    fileprivate func getGameTypeById (_ gameId: String) -> GameType {
         
         var returnedGameType = self.gameTypes[0]
         
@@ -270,16 +270,16 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         return returnedGameType
     }
     
-    private func sortGamesByOwner(games: [Game]) -> [[Game]] {
+    fileprivate func sortGamesByOwner(_ games: [Game]) -> [[Game]] {
         
         var createdGames:[Game] = []
         var joinedGames:[Game] = []
         var combinedGamesArray:[[Game]] = [[]]
         
         //TODO: This won't work on a new year
-        let sortedGameArray = games.sort { (gameOne, gameTwo) -> Bool in
-            let firstElementDay = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: gameOne.eventDate)
-            let secondElementDay = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: gameTwo.eventDate)
+        let sortedGameArray = games.sorted { (gameOne, gameTwo) -> Bool in
+            let firstElementDay = (Calendar.current as NSCalendar).ordinality(of: .day, in: .year, for: gameOne.eventDate as Date)
+            let secondElementDay = (Calendar.current as NSCalendar).ordinality(of: .day, in: .year, for: gameTwo.eventDate as Date)
             
             return firstElementDay < secondElementDay
         }
@@ -314,7 +314,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     //MARK: - Location Manager Delegate
     //TODO: Abstract location methods into their own class
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let location:CLLocationCoordinate2D = manager.location!.coordinate
         currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
@@ -336,7 +336,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         }
     }
     
-    func getDistanceBetweenLocations(location1: CLLocation, location2: CLLocation) -> Double {
+    func getDistanceBetweenLocations(_ location1: CLLocation, location2: CLLocation) -> Double {
         
         var distanceUnitMeasurement: Double
         
@@ -346,49 +346,49 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             distanceUnitMeasurement = METERS_IN_KILOMETER
         }
         
-        let distance:Double = roundToDecimalPlaces(location1.distanceFromLocation(location2) / distanceUnitMeasurement, places: 1)
+        let distance:Double = roundToDecimalPlaces(location1.distance(from: location2) / distanceUnitMeasurement, places: 1)
         return distance
     }
     
-    func roundToDecimalPlaces(number: Double, places: Int) -> Double {
+    func roundToDecimalPlaces(_ number: Double, places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return round(number * divisor) / divisor
     }
     
     //MARK: - Dismissal Delegate
-    func finishedShowing(viewController: UIViewController) {
+    func finishedShowing(_ viewController: UIViewController) {
         
-        self.dismissViewControllerAnimated(true, completion: nil)
-        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
+        self.dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: self)
         
         return
     }
     
-    func setNewGame(game: Game) {
+    func setNewGame(_ game: Game) {
         self.newGame = game
     }
     
     
-    func dateCompare(eventDate: NSDate) -> String {
+    func dateCompare(_ eventDate: Date) -> String {
         
-        let dateToday: NSDate = NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60)
+        let dateToday: Date = Date().addingTimeInterval(-1.5 * 60 * 60)
         
-        let dateComparisonResult:NSComparisonResult = dateToday.compare(eventDate)
+        let dateComparisonResult:ComparisonResult = dateToday.compare(eventDate)
         var resultString:String = ""
         
-        if dateComparisonResult == NSComparisonResult.OrderedAscending || dateComparisonResult == NSComparisonResult.OrderedSame
+        if dateComparisonResult == ComparisonResult.orderedAscending || dateComparisonResult == ComparisonResult.orderedSame
         {
-            let todayWeekday = NSCalendar.currentCalendar().components([.Weekday], fromDate: NSDate()).weekday
-            let eventWeekday = NSCalendar.currentCalendar().components([.Weekday], fromDate: eventDate).weekday
+            let todayWeekday = (Calendar.current as NSCalendar).components([.weekday], from: Date()).weekday
+            let eventWeekday = (Calendar.current as NSCalendar).components([.weekday], from: eventDate).weekday
             
-            let today = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: NSDate())
-            let eventDay = NSCalendar.currentCalendar().ordinalityOfUnit(.Day, inUnit: .Year, forDate: eventDate)
+            let today = (Calendar.current as NSCalendar).ordinality(of: .day, in: .year, for: Date())
+            let eventDay = (Calendar.current as NSCalendar).ordinality(of: .day, in: .year, for: eventDate)
             
             if todayWeekday == eventWeekday && today == eventDay {
                 resultString = "TODAY"
-            } else if todayWeekday + 1 == eventWeekday && today + 1 == eventDay  {
+            } else if todayWeekday! + 1 == eventWeekday! && today + 1 == eventDay  {
                 resultString = "TOMORROW"
-            } else if eventWeekday > todayWeekday && today + 7 >= eventDay {
+            } else if eventWeekday! > todayWeekday! && today + 7 >= eventDay {
                 resultString = "THIS WEEK"
             } else {
                 resultString = "NEXT WEEK"
@@ -401,7 +401,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     //MARK: - Date Formatting
     
-    func relevantDateInfo(eventDate: NSDate) -> String {
+    func relevantDateInfo(_ eventDate: Date) -> String {
         
         var relevantDateString = ""
         
@@ -428,11 +428,11 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     //MARK: - User Defaults
     
-    private func getJoinedGamesFromUserDefaults() -> [String] {
+    fileprivate func getJoinedGamesFromUserDefaults() -> [String] {
         
         var joinedGamesIds: [String] = []
         
-        if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
+        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
             let gameIdArray = joinedGames.mutableCopy()
             joinedGamesIds = gameIdArray as! [String]
             
@@ -447,15 +447,15 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
      //MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             
-            let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
+            let gameDetailsViewController = segue.destination as! GameDetailsViewController
             var game: Game
             
             if let indexPath = tableGameList.indexPathForSelectedRow {
-                game = sortedGames[indexPath.section][indexPath.row]
+                game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
             } else {
                 game = self.newGame!
             }
@@ -464,17 +464,17 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             gameDetailsViewController.gameTypes = self.gameTypes
             
             if game.userIsOwner == true {
-                gameDetailsViewController.userStatus = .USER_OWNED
+                gameDetailsViewController.userStatus = .user_OWNED
             } else if game.userJoined == true {
-                gameDetailsViewController.userStatus = .USER_JOINED
+                gameDetailsViewController.userStatus = .user_JOINED
             } else {
-                gameDetailsViewController.userStatus = .USER_NOT_JOINED
+                gameDetailsViewController.userStatus = .user_NOT_JOINED
             }
             
             gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
             
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             newGameTableViewController.dismissalDelegate = self
             newGameTableViewController.gameTypes = self.gameTypes

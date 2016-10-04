@@ -10,12 +10,12 @@ import Foundation
 
 struct DateUtilities {
     
-    static func dateString(date: NSDate, dateFormatString: String) -> String {
+    static func dateString(_ date: Date, dateFormatString: String) -> String {
         
-        let dayTimePeriodFormatter = NSDateFormatter()
+        let dayTimePeriodFormatter = Foundation.DateFormatter()
         dayTimePeriodFormatter.dateFormat = dateFormatString
         
-        return dayTimePeriodFormatter.stringFromDate(date)
+        return dayTimePeriodFormatter.string(from: date)
     }
     
 }

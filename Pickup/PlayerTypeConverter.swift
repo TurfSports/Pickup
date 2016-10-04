@@ -11,7 +11,7 @@ import Parse
 
 class PlayerTypeConverter {
     
-    static func convertParseObject (playerObject: PFUser) -> Player {
+    static func convertParseObject (_ playerObject: PFUser) -> Player {
         
         let id = playerObject.objectId!
         let username = playerObject.username!

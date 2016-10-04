@@ -24,16 +24,16 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     var myGamesTableViewDelegate: MyGamesTableViewDelegate?
     var embeddedView: GameDetailsTableViewController!
     
-    let navBarButtonTitleOptions: [UserStatus: String] = [.USER_NOT_JOINED: "Join Game", .USER_JOINED: "Leave Game", .USER_OWNED: "Edit Game"]
-    let bottomBarVisible: [UserStatus: Bool] = [.USER_NOT_JOINED: false, .USER_JOINED: false, .USER_OWNED: true]
-    let alertAction: [UserStatus: String] = [.USER_NOT_JOINED: "join", .USER_JOINED: "leave", .USER_OWNED: "cancel"]
-    let alertTitle: [UserStatus: String] = [.USER_NOT_JOINED: "Join", .USER_JOINED: "Leave", .USER_OWNED: "Yes"]
-    let alertCancelTitle: [UserStatus: String] = [.USER_NOT_JOINED: "Cancel", .USER_JOINED: "Cancel", .USER_OWNED: "No"]
+    let navBarButtonTitleOptions: [UserStatus: String] = [.user_NOT_JOINED: "Join Game", .user_JOINED: "Leave Game", .user_OWNED: "Edit Game"]
+    let bottomBarVisible: [UserStatus: Bool] = [.user_NOT_JOINED: false, .user_JOINED: false, .user_OWNED: true]
+    let alertAction: [UserStatus: String] = [.user_NOT_JOINED: "join", .user_JOINED: "leave", .user_OWNED: "cancel"]
+    let alertTitle: [UserStatus: String] = [.user_NOT_JOINED: "Join", .user_JOINED: "Leave", .user_OWNED: "Yes"]
+    let alertCancelTitle: [UserStatus: String] = [.user_NOT_JOINED: "Cancel", .user_JOINED: "Cancel", .user_OWNED: "No"]
     
     var gameTypes: [GameType]!
     var game: Game!
     
-    var userStatus: UserStatus = .USER_NOT_JOINED
+    var userStatus: UserStatus = .user_NOT_JOINED
     var address: String!
     
     override func viewDidLoad() {
@@ -44,11 +44,11 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         
         if let gameDetailsTableViewController = self.childViewControllers.first as? GameDetailsTableViewController {
         
-            if userStatus != .USER_NOT_JOINED {
-                gameDetailsTableViewController.btnAddToCalendar.hidden = false
+            if userStatus != .user_NOT_JOINED {
+                gameDetailsTableViewController.btnAddToCalendar.isHidden = false
             }
             
-            if userStatus == .USER_OWNED {
+            if userStatus == .user_OWNED {
                 gameDetailsTableViewController.isOwner = true
             }
         }
@@ -57,7 +57,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         
         lblOpenings.text = ("\(game.availableSlots) openings")
         
-        if userStatus == .USER_OWNED {
+        if userStatus == .user_OWNED {
             lblOpenings.text = ("\(game.availableSlots) openings (\(game.totalSlots - game.availableSlots - 1) joined)")
         }
         
@@ -67,10 +67,10 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     }
     
     
-    @IBAction func btnJoinGame(sender: AnyObject) {
+    @IBAction func btnJoinGame(_ sender: AnyObject) {
         
-        if userStatus == .USER_OWNED {
-            performSegueWithIdentifier(SEGUE_SHOW_EDIT_GAME, sender: self)
+        if userStatus == .user_OWNED {
+            performSegue(withIdentifier: SEGUE_SHOW_EDIT_GAME, sender: self)
         } else {
             showAlert()
         }
@@ -79,26 +79,26 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     
     //MARK: - Alert
     
-    private func showAlert() {
+    fileprivate func showAlert() {
         let message = "Are you sure you want to \(self.alertAction[userStatus]!) this game?"
         let alertTitle = "\(self.alertTitle[userStatus]!)"
         let alertCancelTitle = "\(self.alertCancelTitle[userStatus]!)"
         
         let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: UIAlertControllerStyle.Alert)
+            message, preferredStyle: UIAlertControllerStyle.alert)
         
-        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.Default, handler: nil))
-        alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.Default, handler: { action in
+        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.default, handler: nil))
+        alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.default, handler: { action in
             
             switch(self.userStatus) {
                 
-            case .USER_NOT_JOINED:
+            case .user_NOT_JOINED:
                 self.joinGame()
                 break
-            case .USER_JOINED:
+            case .user_JOINED:
                 self.leaveGame()
                 break
-            case .USER_OWNED:
+            case .user_OWNED:
                 self.cancelGameOnParse()
                 break
             }
@@ -106,18 +106,18 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         }))
         
         
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     
     //MARK: - Joining/Leaving game
     
-    private func joinGame() {
+    fileprivate func joinGame() {
         self.joinPFUserToPFGame()
         self.addGameToUserDefaults()
         self.game.availableSlots += -1
         self.game.userJoined = !self.game.userJoined
-        self.userStatus = .USER_JOINED
+        self.userStatus = .user_JOINED
         
         LocalNotifications.scheduleGameNotification(self.game)
         
@@ -126,37 +126,37 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         }
     }
     
-    private func leaveGame() {
+    fileprivate func leaveGame() {
         self.removePFUserFromPFGame()
         self.removeGameFromUserDefaults()
         self.game.userJoined = !self.game.userJoined
         self.game.availableSlots += 1
-        self.userStatus = .USER_NOT_JOINED
+        self.userStatus = .user_NOT_JOINED
         LocalNotifications.cancelGameNotification(self.game)
 
         
         if myGamesTableViewDelegate != nil {
             myGamesTableViewDelegate?.removeGame(self.game)
-            navigationController?.popViewControllerAnimated(true)
+            _ = navigationController?.popViewController(animated: true)
         }
     }
     
     
     
     //MARK: - Parse
-    private func joinPFUserToPFGame() {
+    fileprivate func joinPFUserToPFGame() {
         let gameQuery = PFQuery(className: "Game")
         gameQuery.whereKey("objectId", equalTo: self.game.id)
         
-        gameQuery.getFirstObjectInBackgroundWithBlock {
-            (object: PFObject?, error: NSError?) -> Void in
+        gameQuery.getFirstObjectInBackground {
+            (object: PFObject?, error: Error?) -> Void in
             if error != nil || object == nil {
                 print("User is creator")
                 print("The getFirstObject on Game request failed.")
             } else {
-                let currentUser = PFUser.currentUser()
-                let gameRelations = object?.relationForKey("players")
-                gameRelations?.addObject(currentUser!)
+                let currentUser = PFUser.current()
+                let gameRelations = object?.relation(forKey: "players")
+                gameRelations?.add(currentUser!)
                 
                 //Decrement slots available
                 var slotsAvailable = object?["slotsAvailable"] as! Int
@@ -164,42 +164,42 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 object?["slotsAvailable"] = slotsAvailable
                 
                 object?.saveInBackground()
-                self.navigationController?.popViewControllerAnimated(true)
+                _ = self.navigationController?.popViewController(animated: true)
             }
         }
     }
     
     
-    private func removePFUserFromPFGame() {
+    fileprivate func removePFUserFromPFGame() {
         let gameQuery = PFQuery(className: "Game")
         gameQuery.whereKey("objectId", equalTo: self.game.id)
         
-        gameQuery.getFirstObjectInBackgroundWithBlock {
-            (object: PFObject?, error: NSError?) -> Void in
+        gameQuery.getFirstObjectInBackground {
+            (object: PFObject?, error: Error?) -> Void in
             if error != nil || object == nil {
                 print("The getFirstObject on Game request failed.")
             } else {
-                let currentUser = PFUser.currentUser()
-                let gameRelations = object?.relationForKey("players")
-                gameRelations?.removeObject(currentUser!)
+                let currentUser = PFUser.current()
+                let gameRelations = object?.relation(forKey: "players")
+                gameRelations?.remove(currentUser!)
                 object?.saveInBackground()
                 
                 //Increment slots available
                 var slotsAvailable = object?["slotsAvailable"] as! Int
                 slotsAvailable += 1
                 object?["slotsAvailable"] = slotsAvailable
-                self.navigationController?.popViewControllerAnimated(true)
+                _ = self.navigationController?.popViewController(animated: true)
             }
         }
         
     }
     
-    private func cancelGameOnParse() {
+    fileprivate func cancelGameOnParse() {
         let gameQuery = PFQuery(className: "Game")
         gameQuery.whereKey("objectId", equalTo: self.game.id)
         
-        gameQuery.getFirstObjectInBackgroundWithBlock {
-            (object: PFObject?, error: NSError?) -> Void in
+        gameQuery.getFirstObjectInBackground {
+            (object: PFObject?, error: Error?) -> Void in
             if error != nil || object == nil {
                 print("The getFirstObject on Game request failed.")
             } else {
@@ -209,7 +209,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 LocalNotifications.cancelGameNotification(self.game)
                 
                 self.removeGameFromUserDefaults()
-                self.navigationController?.popViewControllerAnimated(true)
+                _ = self.navigationController?.popViewController(animated: true)
             }
         }
     }
@@ -217,38 +217,38 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     
     //MARK: - User Defaults
     
-    private func addGameToUserDefaults() {
+    fileprivate func addGameToUserDefaults() {
         
-        if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
+        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
             let gameIdArray = joinedGames.mutableCopy()
-            gameIdArray.addObject(game.id)
-            NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
+            (gameIdArray as AnyObject).add(game.id)
+            UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
         } else {
             var gameIdArray: [String] = []
             gameIdArray.append(game.id)
-            NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
+            UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
         }
         
     }
     
-    private func removeGameFromUserDefaults() {
+    fileprivate func removeGameFromUserDefaults() {
         
-        if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
+        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
             let gameIdArray = joinedGames.mutableCopy()
-            gameIdArray.removeObject(game.id)
-            NSUserDefaults.standardUserDefaults().setObject(gameIdArray, forKey: "userJoinedGamesById")
+            (gameIdArray as AnyObject).remove(game.id)
+            UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
         }
         
     }
     
     //MARK: - Game Details View Delegate
     
-    func setGameAddress(address: String) {
+    func setGameAddress(_ address: String) {
         self.address = address
         self.embeddedView.lblAddress.text = self.address
     }
     
-    func setGame(game: Game) {
+    func setGame(_ game: Game) {
         self.game = game
         lblLocationName.text = game.locationName
         lblOpenings.text = ("\(game.availableSlots) openings (\(game.totalSlots - game.availableSlots - 1) joined)")
@@ -260,7 +260,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.embeddedView.tableView.reloadData()
     }
     
-    func cancelGame(game: Game) {
+    func cancelGame(_ game: Game) {
         showAlert()
     }
     
@@ -269,18 +269,18 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     //MARK: - Navigation
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == SEGUE_SHOW_EMBEDDED_DETAILS {
-            let embeddedViewController = segue.destinationViewController as? GameDetailsTableViewController
+            let embeddedViewController = segue.destination as? GameDetailsTableViewController
             self.embeddedView = embeddedViewController
             embeddedViewController?.game = self.game
             embeddedViewController?.parentDelegate = self
         } else if segue.identifier == SEGUE_SHOW_EDIT_GAME {
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             
-            newGameTableViewController.gameStatus = .EDIT
+            newGameTableViewController.gameStatus = .edit
             newGameTableViewController.gameDetailsDelegate = self
             newGameTableViewController.gameTypes = self.gameTypes
             newGameTableViewController.game = self.game

@@ -12,23 +12,23 @@ import UIKit
 class NotificationsManager {
     
     static func setNotificationsAsInitiated() {
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "notificationsRegistered")
+        UserDefaults.standard.set(true, forKey: "notificationsRegistered")
     }
     
     static func notificationsInitiated() -> Bool {
-        if let notifactionsRegistered: Bool? = NSUserDefaults.standardUserDefaults().boolForKey("notifactionsRegistered") {
+        if let notifactionsRegistered: Bool? = UserDefaults.standard.bool(forKey: "notifactionsRegistered") {
             return notifactionsRegistered!
         }
     }
     
     static func registerNotifications() {
         
-        if let notifactionsRegistered: Bool? = NSUserDefaults.standardUserDefaults().boolForKey("notifactionsRegistered") {
+        if let notifactionsRegistered: Bool? = UserDefaults.standard.bool(forKey: "notifactionsRegistered") {
             if notifactionsRegistered! == false {
-                let application: UIApplication = UIApplication.sharedApplication()
+                let application: UIApplication = UIApplication.shared
                 
-                let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
-                let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+                let userNotificationTypes: UIUserNotificationType = [.alert, .badge, .sound]
+                let settings = UIUserNotificationSettings(types: userNotificationTypes, categories: nil)
                 application.registerUserNotificationSettings(settings)
                 application.registerForRemoteNotifications()
             }

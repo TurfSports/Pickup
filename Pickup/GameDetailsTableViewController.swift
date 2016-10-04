@@ -32,27 +32,27 @@ class GameDetailsTableViewController: UITableViewController {
         }
     }
     
-    @IBAction func addToCalendar(sender: UIButton) {
+    @IBAction func addToCalendar(_ sender: UIButton) {
         insertGameIntoCalendar()
-        UIApplication.sharedApplication().openURL(NSURL(string: "calshow:\(game.eventDate.timeIntervalSinceReferenceDate)")!)
+        UIApplication.shared.openURL(URL(string: "calshow:\(game.eventDate.timeIntervalSinceReferenceDate)")!)
     }
     
-    @IBAction func openInMaps(sender: UIButton) {
+    @IBAction func openInMaps(_ sender: UIButton) {
         openMapsForPlace()
     }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        btnAddToCalendar.hidden = true
+        btnAddToCalendar.isHidden = true
 
         btnOpenMaps.tintColor = Theme.ACCENT_COLOR
         btnAddToCalendar.tintColor = Theme.ACCENT_COLOR
         
-        self.tableView.tableFooterView = UIView.init(frame: CGRectZero)
+        self.tableView.tableFooterView = UIView.init(frame: CGRect.zero)
         
         if game.userJoined == true {
-            btnAddToCalendar.hidden = false
+            btnAddToCalendar.isHidden = false
         }
         
         lblGameNotes.text = game.gameNotes
@@ -99,11 +99,11 @@ class GameDetailsTableViewController: UITableViewController {
         
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
         var height = UITableViewAutomaticDimension
         
-        if indexPath.section == 3 && indexPath.row == 0 {
+        if (indexPath as NSIndexPath).section == 3 && (indexPath as NSIndexPath).row == 0 {
             if isOwner == false {
                 height = 0.0
             } else {
@@ -115,13 +115,13 @@ class GameDetailsTableViewController: UITableViewController {
         return height
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return UITableViewAutomaticDimension
 
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         var height:CGFloat = 5.0
         if section == 0 {
             height = 0
@@ -130,22 +130,22 @@ class GameDetailsTableViewController: UITableViewController {
         return height
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 3 && indexPath.row == 0 {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (indexPath as NSIndexPath).section == 3 && (indexPath as NSIndexPath).row == 0 {
             parentDelegate.cancelGame(self.game)
         }
     }
     
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        let cell = tableView.cellForRow(at: indexPath)
         
-        cell?.userInteractionEnabled = false
-        cell?.selectionStyle = .None
+        cell?.isUserInteractionEnabled = false
+        cell?.selectionStyle = .none
         
-        if indexPath.section == 3 && indexPath.row == 0 {
-            cell?.userInteractionEnabled = true
-            cell?.selectionStyle = .Gray
+        if (indexPath as NSIndexPath).section == 3 && (indexPath as NSIndexPath).row == 0 {
+            cell?.isUserInteractionEnabled = true
+            cell?.selectionStyle = .gray
         }
         
         return indexPath
@@ -157,21 +157,21 @@ class GameDetailsTableViewController: UITableViewController {
         var resultString = ""
         let eventStore = EKEventStore()
         
-        switch EKEventStore.authorizationStatusForEntityType(.Event) {
-        case .Authorized:
+        switch EKEventStore.authorizationStatus(for: .event) {
+        case .authorized:
             insertEvent(eventStore)
             resultString = "Access granted to event store"
-        case .Denied:
+        case .denied:
             resultString = "Access denied to event store"
-        case .NotDetermined:
-            eventStore.requestAccessToEntityType(.Event, completion:
+        case .notDetermined:
+            eventStore.requestAccess(to: .event, completion:
                 {[weak self] (granted: Bool, error: NSError?) -> Void in
                     if granted {
                         self!.insertEvent(eventStore)
                     } else {
                         resultString = "Access denied to event store"
                     }
-                })
+                } as! EKEventStoreRequestAccessCompletionHandler)
         default:
             resultString = "Default"
         }
@@ -182,9 +182,9 @@ class GameDetailsTableViewController: UITableViewController {
     }
     
     
-    func insertEvent(store: EKEventStore) {
+    func insertEvent(_ store: EKEventStore) {
 
-        let calendars = store.calendarsForEntityType(.Event)
+        let calendars = store.calendars(for: .event)
 
         let event = EKEvent(eventStore: store)
         
@@ -193,11 +193,11 @@ class GameDetailsTableViewController: UITableViewController {
                 print(calendar.title)
                 event.calendar = calendar
                 event.title = "\(game.gameType.displayName) at \(game.locationName)"
-                event.startDate = game.eventDate
-                event.endDate = game.eventDate.dateByAddingTimeInterval(1.5 * 60 * 60)
+                event.startDate = game.eventDate as Date
+                event.endDate = game.eventDate.addingTimeInterval(1.5 * 60 * 60) as Date
                 
                 do {
-                    try store.saveEvent(event, span: .ThisEvent)
+                    try store.save(event, span: .thisEvent)
                 } catch let error as NSError {
                     print("ERROR: \(error)")
                 } catch {
@@ -219,13 +219,13 @@ class GameDetailsTableViewController: UITableViewController {
         let coordinates = CLLocationCoordinate2DMake(latitute, longitute)
         let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
         let options = [
-            MKLaunchOptionsMapCenterKey: NSValue(MKCoordinate: regionSpan.center),
-            MKLaunchOptionsMapSpanKey: NSValue(MKCoordinateSpan: regionSpan.span)
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
         ]
         let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
         let mapItem = MKMapItem(placemark: placemark)
         mapItem.name = "\(game.locationName)"
-        mapItem.openInMapsWithLaunchOptions(options)
+        mapItem.openInMaps(launchOptions: options)
         
     }
 

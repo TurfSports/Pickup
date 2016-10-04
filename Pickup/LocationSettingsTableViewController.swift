@@ -18,7 +18,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     @IBOutlet weak var switchLocation: UISwitch!
     @IBOutlet weak var zipLabel: UILabel!
     
-    private var foregroundNotification: NSObjectProtocol!
+    fileprivate var foregroundNotification: NSObjectProtocol!
     
     let MILES = 0
     
@@ -28,7 +28,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     var invalidZipCode: Bool = false
 
     
-    @IBAction func distanceUnitsChanged(sender: UISegmentedControl) {
+    @IBAction func distanceUnitsChanged(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == MILES {
             self.tempSettings.distanceUnit = "miles"
         } else {
@@ -38,12 +38,12 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
     }
     
-    @IBAction func showDefaultLocation(sender: UISwitch) {
+    @IBAction func showDefaultLocation(_ sender: UISwitch) {
         
-        tempSettings.defaultLocation = sender.on ? "84606" : "none"
+        tempSettings.defaultLocation = sender.isOn ? "84606" : "none"
         animateReloadTableView()
         
-        if sender.on {
+        if sender.isOn {
             txtDefaultLocation.becomeFirstResponder()
             if txtDefaultLocation.text != "" {
                 tempSettings.defaultLocation = txtDefaultLocation.text!
@@ -54,8 +54,8 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     }
     
 
-    @IBAction func textFieldEditingChanged(sender: AnyObject) {
-        zipLabel.hidden = true
+    @IBAction func textFieldEditingChanged(_ sender: AnyObject) {
+        zipLabel.isHidden = true
         if txtDefaultLocation.text!.characters.count == 5 {
             validateZipCode(txtDefaultLocation.text!)
             txtDefaultLocation.resignFirstResponder()
@@ -73,11 +73,11 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
         
         if tempSettings.defaultLocation == "none" {
-            zipLabel.hidden = true
+            zipLabel.isHidden = true
         } else {
             txtDefaultLocation.text = tempSettings.defaultLocation
             validateZipCode(tempSettings.defaultLocation)
-            zipLabel.hidden = false
+            zipLabel.isHidden = false
         }
         
         pickerViewDistance.selectRow(tempSettings.gameDistance - 1, inComponent: 0, animated: false)
@@ -90,68 +90,68 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
         
         segCtrlDistanceUnits.selectedSegmentIndex = tempSettings.distanceUnit == "miles" ? 0 : 1
         
-        switchLocation.on = tempSettings.defaultLocation != "none" ? true : false
+        switchLocation.isOn = tempSettings.defaultLocation != "none" ? true : false
         
-        foregroundNotification = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillEnterForegroundNotification, object: nil, queue: NSOperationQueue.mainQueue()) {
+        foregroundNotification = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: nil, queue: OperationQueue.main) {
             [unowned self] notification in
             self.handleSwitch()
         }
 
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         settingsDelegate.updateTempSettings(self.tempSettings)
     }
     
     func handleSwitch() {
-        if !CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
-            self.switchLocation.enabled = false
+        if !CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
+            self.switchLocation.isEnabled = false
         } else {
-            self.switchLocation.enabled = true
+            self.switchLocation.isEnabled = true
         }
     }
     
     
     //MARK: - Picker View Delegate
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return 50
     }
     
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return "\(row + 1)"
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         tempSettings.gameDistance = row + 1
         lblDistance.text = "\(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
     }
     
     
     //MARK: - Table View Delegate
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.section == 0 && indexPath.row == 1 {
+        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 1 {
             distanceRowSelected = !distanceRowSelected
             animateReloadTableView()
-        } else if indexPath.section == 1 && indexPath.row == 0 {
-            if !CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
+        } else if (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 0 {
+            if !CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
                 showLocationAlert()
             }
         }
         
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         var rowHeight:CGFloat = 44.0
         
-        if indexPath.section == 0 && indexPath.row == 2 {
+        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 2 {
             if distanceRowSelected == false {
                 rowHeight = 0.0
             } else {
@@ -159,7 +159,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
             }
         }
         
-        if indexPath.section == 1 && indexPath.row == 1 {
+        if (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 1 {
             if tempSettings.defaultLocation == "none" {
                 rowHeight = 0.0
             }
@@ -170,7 +170,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     
     //MARK: - Text Field Delegate
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         print("textFieldDidBeginEditing")
         textField.selectAll(self)
     }
@@ -178,10 +178,10 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     
     //MARK: - Animation
     
-    private func animateReloadTableView() -> Void {
-        UIView.transitionWithView(tableView,
+    fileprivate func animateReloadTableView() -> Void {
+        UIView.transition(with: tableView,
             duration:0.35,
-            options: [.AllowAnimatedContent, .TransitionCrossDissolve],
+            options: [.allowAnimatedContent, .transitionCrossDissolve],
             animations:
             { () -> Void in
                 self.tableView.reloadData()
@@ -191,10 +191,10 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     
     //MARK: - GeoCode
     
-    func validateZipCode(zipcode: String) {
+    func validateZipCode(_ zipcode: String) {
 
         let geocoder = CLGeocoder()
-        self.zipLabel.hidden = false
+        self.zipLabel.isHidden = false
 
         geocoder.geocodeAddressString(zipcode, completionHandler: {(placemarks, error) -> Void in
             if((error) != nil){
@@ -226,21 +226,21 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     //MARK: - Location Alert
     func showLocationAlert() {
         
-        let alert = UIAlertController(title: "Static Location", message: "To use your current location instead of a default zipcode, you must enable location services for this app.", preferredStyle: .Alert)
+        let alert = UIAlertController(title: "Static Location", message: "To use your current location instead of a default zipcode, you must enable location services for this app.", preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) -> Void in
 
         }))
         
-        alert.addAction(UIAlertAction(title: "Settings", style: .Default, handler: { (action) -> Void in
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (action) -> Void in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         }))
         
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(foregroundNotification)
+        NotificationCenter.default.removeObserver(foregroundNotification)
     }
 
 }

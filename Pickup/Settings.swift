@@ -32,7 +32,7 @@ class Settings {
     
     
     
-    static func serializeSettings(settings: Settings) -> [String: String] {
+    static func serializeSettings(_ settings: Settings) -> [String: String] {
         var serializedSettings: [String: String] = [:]
         
         serializedSettings["GameDistance"] = "\(settings.gameDistance)"
@@ -47,7 +47,7 @@ class Settings {
         return serializedSettings
     }
     
-    static func deserializeSettings(serializedSettings: [String: String]) -> Settings  {
+    static func deserializeSettings(_ serializedSettings: [String: String]) -> Settings  {
         
         let settings = Settings.init()
         

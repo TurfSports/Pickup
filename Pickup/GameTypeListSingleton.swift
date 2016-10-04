@@ -24,11 +24,11 @@ class GameTypeList {
     init() {}
     
     
-    func setGameTypeList(gameTypeList: [GameType]) {
+    func setGameTypeList(_ gameTypeList: [GameType]) {
         self.gameTypeList = gameTypeList
     }
     
-    func getGameTypeById(id: String) -> GameType? {
+    func getGameTypeById(_ id: String) -> GameType? {
         
         for gameType in self.gameTypeList {
             if gameType.id == id {

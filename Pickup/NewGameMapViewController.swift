@@ -24,8 +24,8 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     var locationName = ""
     var gameLocation: CLLocationCoordinate2D?
     
-    var locationStatus: LocationStatus = .LOCATION_NOT_SET
-    let rightNavBarButtonTitle: [LocationStatus: String] = [.LOCATION_NOT_SET: "Set Location", .LOCATION_SET: "Change Location"]
+    var locationStatus: LocationStatus = .location_NOT_SET
+    let rightNavBarButtonTitle: [LocationStatus: String] = [.location_NOT_SET: "Set Location", .location_SET: "Change Location"]
     
     @IBOutlet weak var newGameMap: MKMapView!
     @IBOutlet weak var btnSaveLocation: UIBarButtonItem!
@@ -38,11 +38,11 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation?
 
-    @IBAction func cancelModal(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelModal(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func saveLocation(sender: UIBarButtonItem) {
+    @IBAction func saveLocation(_ sender: UIBarButtonItem) {
         
         if address == "" {
             //TODO: Make an alert that no location was selected
@@ -50,7 +50,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
             newGameTableViewDelegate?.setGameLocationCoordinate(self.gameLocation!)
             newGameTableViewDelegate?.setGameAddress(self.address)
             newGameTableViewDelegate?.setGameLocationName(self.locationName)
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
         
     }
@@ -58,7 +58,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableViewSearchResults.hidden = true
+        tableViewSearchResults.isHidden = true
         tableViewSearchResults.tableFooterView = UIView(frame: CGRect.zero)
         
         btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
@@ -69,10 +69,10 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
     }
     
-    private func setUpMapScreen() {
+    fileprivate func setUpMapScreen() {
         
         btnSaveLocation.title = rightNavBarButtonTitle[locationStatus]!
-        if locationStatus == .LOCATION_SET {
+        if locationStatus == .location_SET {
             //TODO: Drop Current Game Location and change button to change location
             //dropGameAnnotation
         } else {
@@ -82,8 +82,8 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
 
     //MARK: - Location Manager Delegate
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .AuthorizedWhenInUse {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
             if #available(iOS 9.0, *) {
                 locationManager.requestLocation()
             } else {
@@ -92,7 +92,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         }
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         if Settings.sharedSettings.defaultLocation == "none" {
             if let location = locations.first {
@@ -106,7 +106,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
     }
     
@@ -126,7 +126,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     
-    func computeViewSettings(latitude: Double, longitude: Double) {
+    func computeViewSettings(_ latitude: Double, longitude: Double) {
         
         var latDelta:CLLocationDegrees = 0.02
         var longDelta:CLLocationDegrees = 0.02
@@ -147,11 +147,11 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     //MARK: - Map View Delegate
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
-        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(ANNOTATION_ID) as? MKPinAnnotationView
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: ANNOTATION_ID) as? MKPinAnnotationView
         
-        if pinView == nil && !annotation.isKindOfClass(MKUserLocation) {
+        if pinView == nil && !annotation.isKind(of: MKUserLocation.self) {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: ANNOTATION_ID)
             pinView!.canShowCallout = true
             pinView!.animatesDrop = true
@@ -166,34 +166,34 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     //MARK: - Search Bar Delegate
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        tableViewSearchResults.hidden = false
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        tableViewSearchResults.isHidden = false
         searchBar.showsCancelButton = true
     }
     
-    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
-        tableViewSearchResults.hidden = true
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        tableViewSearchResults.isHidden = true
         searchBar.showsCancelButton = false
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        tableViewSearchResults.hidden = true
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        tableViewSearchResults.isHidden = true
         searchBar.showsCancelButton = false
         searchBar.text = ""
         searchBar.endEditing(true)
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         let request = MKLocalSearchRequest()
         request.naturalLanguageQuery = searchText
         request.region = newGameMap.region
         let search = MKLocalSearch(request: request)
-        search.startWithCompletionHandler { response, _ in
+        search.start { response, _ in
             guard let response = response else {
                 return
             }
@@ -203,27 +203,27 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     //MARK: - Table View Delegate
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return matchingItems.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell")!
-        let selectedItem = matchingItems[indexPath.row].placemark
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        let selectedItem = matchingItems[(indexPath as NSIndexPath).row].placemark
         cell.textLabel?.text = selectedItem.name
         cell.detailTextLabel?.text = parseAddress(selectedItem)
         return cell
     }
     
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectedItem = matchingItems[indexPath.row].placemark
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedItem = matchingItems[(indexPath as NSIndexPath).row].placemark
         
-        lblTapTip.hidden = true
+        lblTapTip.isHidden = true
         removePreviousAnnotation()
         setAnnotation(selectedItem.coordinate)
         
@@ -234,7 +234,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         let region = MKCoordinateRegionMake(selectedItem.coordinate, span)
         newGameMap.setRegion(region, animated: false)
         
-        tableViewSearchResults.hidden = true
+        tableViewSearchResults.isHidden = true
         searchBar.showsCancelButton = false
         searchBar.endEditing(true)
     }
@@ -247,12 +247,12 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         newGameMap.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    func dropPinOnLocation(gestureRecognizer: UIGestureRecognizer) {
+    func dropPinOnLocation(_ gestureRecognizer: UIGestureRecognizer) {
         
-        let touchPoint = gestureRecognizer.locationInView(self.newGameMap)
-        let coordinate: CLLocationCoordinate2D = newGameMap.convertPoint(touchPoint, toCoordinateFromView: self.newGameMap)
+        let touchPoint = gestureRecognizer.location(in: self.newGameMap)
+        let coordinate: CLLocationCoordinate2D = newGameMap.convert(touchPoint, toCoordinateFrom: self.newGameMap)
         
-        lblTapTip.hidden = true
+        lblTapTip.isHidden = true
         removePreviousAnnotation()
         setAnnotation(coordinate)
         
@@ -260,7 +260,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         buildAddressString(coordinate)
     }
     
-    func setAnnotation(coordinate: CLLocationCoordinate2D) {
+    func setAnnotation(_ coordinate: CLLocationCoordinate2D) {
         
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
@@ -274,7 +274,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         self.newGameMap.removeAnnotations(annotations)
     }
     
-    func parseAddress(selectedItem:MKPlacemark) -> String {
+    func parseAddress(_ selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
         let firstSpace = (selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil) ? " " : ""
         // put a comma between street and city/state
@@ -298,7 +298,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         return addressLine
     }
     
-    func buildAddressString(coordinate: CLLocationCoordinate2D) {
+    func buildAddressString(_ coordinate: CLLocationCoordinate2D) {
         
         let geoCoder = CLGeocoder()
         let gameLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
@@ -334,8 +334,8 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     //MARK: - Bar Positioning Delegate
     
-    func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
-        return .TopAttached
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
     
 

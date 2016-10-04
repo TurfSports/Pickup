@@ -27,15 +27,15 @@ class GameType {
         self.gameCount = 0
     }
     
-    func setGameCount(count: Int) {
+    func setGameCount(_ count: Int) {
         gameCount = count
     }
     
-    func increaseGameCount(count: Int) {
+    func increaseGameCount(_ count: Int) {
         gameCount += count
     }
 
-    static func serializeGameType(game: GameType) -> [String: String] {
+    static func serializeGameType(_ game: GameType) -> [String: String] {
         var serializedGameType: [String: String] = [:]
         
         serializedGameType["id"] = game.id
@@ -47,7 +47,7 @@ class GameType {
         return serializedGameType
     }
     
-    static func deserializeGameType(serializedGameType: [String: String]) -> GameType  {
+    static func deserializeGameType(_ serializedGameType: [String: String]) -> GameType  {
         
         let id = serializedGameType["id"]
         let name = serializedGameType["name"]

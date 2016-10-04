@@ -9,6 +9,6 @@
 import Foundation
 
 enum LocationStatus {
-    case LOCATION_SET
-    case LOCATION_NOT_SET
+    case location_SET
+    case location_NOT_SET
 }

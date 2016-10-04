@@ -39,7 +39,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     lazy var activityIndicator: UIActivityIndicatorView! = {
         let activityIndicator = UIActivityIndicatorView()
         
-        activityIndicator.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+        activityIndicator.frame = CGRect(x: 0.0, y: 0.0, width: 40.0, height: 40.0);
         return activityIndicator
     }()
     
@@ -52,19 +52,19 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
 //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
 //
 //      iOS 9.3
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithSegue(_:)), name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithSegue(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithSegue"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithAlert"), object: nil)
 
 //        refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
-        refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), forControlEvents: UIControlEvents.ValueChanged)
+        refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)
         self.tableView.addSubview(activityIndicator)
         
         _ = GameTypeList.sharedGameTypes
         
-        let gameTypePullTimeStamp: NSDate = getLastGameTypePull()
+        let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
-        if gameTypePullTimeStamp.compare(NSDate().dateByAddingTimeInterval(-24*60*60)) == NSComparisonResult.OrderedAscending {
+        if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
             loadGameTypesFromParse()
         } else {
             loadGameTypesFromUserDefaults()
@@ -80,13 +80,13 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     func setActivityIndicatorProperties() {
         activityIndicator.center = self.view.center
-        activityIndicator.activityIndicatorViewStyle = .Gray
+        activityIndicator.activityIndicatorViewStyle = .gray
         activityIndicator.tintColor = Theme.PRIMARY_DARK_COLOR
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         if currentLocation != nil {
             loadGameCounts()
         }
@@ -94,18 +94,18 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gameTypes.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> HomeTableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? HomeTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> HomeTableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? HomeTableViewCell
         
-        let gameType = gameTypes[indexPath.row]
+        let gameType = gameTypes[(indexPath as NSIndexPath).row]
         
         cell?.lblSport.text = gameType.displayName
         cell?.imgSport.image = UIImage(named: gameType.imageName)
@@ -123,36 +123,36 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         return cell!
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Theme.GAME_TYPE_CELL_HEIGHT
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier(SEGUE_SHOW_GAMES, sender: self)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: SEGUE_SHOW_GAMES, sender: self)
     }
     
     
     //MARK: - User Defaults
     
-    private func getLastGameTypePull() -> NSDate {
+    fileprivate func getLastGameTypePull() -> Date {
         
-        var lastPull: NSDate
+        var lastPull: Date
         
-        if let lastGameTypePull = NSUserDefaults.standardUserDefaults().objectForKey("gameTypePullTimeStamp") as? NSDate {
+        if let lastGameTypePull = UserDefaults.standard.object(forKey: "gameTypePullTimeStamp") as? Date {
             lastPull = lastGameTypePull
         } else {
-            lastPull = NSDate().dateByAddingTimeInterval(-25 * 60 * 60)
-            NSUserDefaults.standardUserDefaults().setObject(lastPull, forKey: "gameTypePullTimeStamp")
+            lastPull = Date().addingTimeInterval(-25 * 60 * 60)
+            UserDefaults.standard.set(lastPull, forKey: "gameTypePullTimeStamp")
         }
         
         return lastPull
     }
     
-    private func loadGameTypesFromUserDefaults() {
+    fileprivate func loadGameTypesFromUserDefaults() {
         
         var gameTypeArray: NSMutableArray = []
         
-        if let gameTypeArrayFromDefaults = NSUserDefaults.standardUserDefaults().objectForKey("gameTypes") as? NSArray {
+        if let gameTypeArrayFromDefaults = UserDefaults.standard.object(forKey: "gameTypes") as? NSArray {
             gameTypeArray = gameTypeArrayFromDefaults.mutableCopy() as! NSMutableArray
             
             for gameType in gameTypeArray {
@@ -164,30 +164,30 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         activityIndicator.stopAnimating()
     }
     
-    private func saveGameTypesToUserDefaults() {
+    fileprivate func saveGameTypesToUserDefaults() {
         
         let gameTypeArray: NSMutableArray = []
         
         for gameType in self.gameTypes {
             let serializedGameType = GameType.serializeGameType(gameType)
-            gameTypeArray.addObject(serializedGameType)
+            gameTypeArray.add(serializedGameType)
         }
         
-        NSUserDefaults.standardUserDefaults().setObject(gameTypeArray, forKey: "gameTypes")
-        NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: "gameTypePullTimeStamp")
+        UserDefaults.standard.set(gameTypeArray, forKey: "gameTypes")
+        UserDefaults.standard.set(Date(), forKey: "gameTypePullTimeStamp")
     }
     
     
     //MARK: - Parse
     
-    private func loadGameTypesFromParse() {
+    fileprivate func loadGameTypesFromParse() {
         
         let gameTypeQuery = PFQuery(className: "GameType")
-        gameTypeQuery.orderByAscending("sortOrder")
-        gameTypeQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        gameTypeQuery.order(byAscending: "sortOrder")
+        gameTypeQuery.findObjectsInBackground { (objects, error) -> Void in
             if let gameTypeObjects = objects {
                 
-                self.gameTypes.removeAll(keepCapacity: true)
+                self.gameTypes.removeAll(keepingCapacity: true)
                 
                 for gameTypeObject in gameTypeObjects {
                     let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
@@ -210,18 +210,18 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
           let gameTypeObject = PFObject(outDataWithClassName: "GameType", objectId: gameType.id)
             let gameQuery = PFQuery(className: "Game")
             gameQuery.whereKey("gameType", equalTo: gameTypeObject)
-            gameQuery.whereKey("date", greaterThanOrEqualTo: NSDate().dateByAddingTimeInterval(-1.5 * 60 * 60))
-            gameQuery.whereKey("date", lessThanOrEqualTo: NSDate().dateByAddingTimeInterval(2 * 7 * 24 * 60 * 60))
+            gameQuery.whereKey("date", greaterThanOrEqualTo: Date().addingTimeInterval(-1.5 * 60 * 60))
+            gameQuery.whereKey("date", lessThanOrEqualTo: Date().addingTimeInterval(2 * 7 * 24 * 60 * 60))
             gameQuery.whereKey("isCancelled", equalTo: false)
             gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
             
             if Settings.sharedSettings.showCreatedGames == false {
-                gameQuery.whereKey("owner", notEqualTo: PFUser.currentUser()!)
+                gameQuery.whereKey("owner", notEqualTo: PFUser.current()!)
             }
             
             var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
             
-            if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+            if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
                 userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
             }
             
@@ -233,7 +233,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinKilometers:gameDistance)
             }
             
-            gameQuery.countObjectsInBackgroundWithBlock({ (count: Int32, error: NSError?) -> Void in
+            gameQuery.countObjectsInBackground(block: { (count: Int32, error: Error?) -> Void in
                 let gameCount = Int(count)
                 gameType.setGameCount(gameCount)
                 self.gameCountLoaded = true
@@ -243,33 +243,33 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         }
     }
     
-    func loadGameFromParseWithSegue(notification: NSNotification) {
+    func loadGameFromParseWithSegue(_ notification: Notification) {
         loadGameFromParse(false, notification: notification)
     }
     
-    func loadGameFromParseWithAlert(notification: NSNotification) {
+    func loadGameFromParseWithAlert(_ notification: Notification) {
         loadGameFromParse(true, notification: notification)
     }
     
-    func loadGameFromParse(showAlert: Bool, notification: NSNotification) {
+    func loadGameFromParse(_ showAlert: Bool, notification: Notification) {
         
-        let gameId = notification.userInfo!["selectedGameId"]
+        let gameId = (notification as NSNotification).userInfo!["selectedGameId"]
         let gameQuery = PFQuery(className: "Game")
         gameQuery.whereKey("objectId", equalTo: gameId!)
         
-        gameQuery.getFirstObjectInBackgroundWithBlock {
-            (game: PFObject?, error: NSError?) -> Void in
+        gameQuery.getFirstObjectInBackground {
+            (game: PFObject?, error: Error?) -> Void in
             if error != nil || game == nil {
                 print("Home table view controller")
                 print("The getFirstObject on Game request failed.")
             } else {
                 
                 self.gameTypes = GameTypeList.sharedGameTypes.gameTypeList
-                let gameTypeId = game?["gameType"].objectId!
+                let gameTypeId = (game?["gameType"] as AnyObject).objectId!
                 
                 self.newGame = GameConverter.convertParseObject(game!, selectedGameType: GameTypeList.sharedGameTypes.getGameTypeById(gameTypeId!)!)
                 
-                if game?["owner"].objectId! == PFUser.currentUser()?.objectId! {
+                if (game?["owner"] as AnyObject).objectId! == PFUser.current()?.objectId! {
                     self.newGame.userIsOwner = true
                 }
                 
@@ -278,7 +278,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 if showAlert == true {
                     self.showAlert(notification)
                 } else {
-                    self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
+                    self.performSegue(withIdentifier: self.SEGUE_SHOW_GAME_DETAILS, sender: self)
                 }
             }
         }
@@ -286,27 +286,27 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     //MARK: - Notification Alert
     
-    private func showAlert(notification: NSNotification) {
-        let notificationMessage = notification.userInfo!["alertBody"]
+    fileprivate func showAlert(_ notification: Notification) {
+        let notificationMessage = (notification as NSNotification).userInfo!["alertBody"]
         let message: String = notificationMessage as! String
         
         let alertConfirmationTitle = "View Game"
         let alertCancelTitle = "Ignore"
         
         let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: UIAlertControllerStyle.Alert)
+            message, preferredStyle: UIAlertControllerStyle.alert)
         
-        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.Default,handler: nil))
-        alertController.addAction(UIAlertAction(title: alertConfirmationTitle, style: UIAlertActionStyle.Default, handler: { action in
-            self.performSegueWithIdentifier(self.SEGUE_SHOW_GAME_DETAILS, sender: self)
+        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.default,handler: nil))
+        alertController.addAction(UIAlertAction(title: alertConfirmationTitle, style: UIAlertActionStyle.default, handler: { action in
+            self.performSegue(withIdentifier: self.SEGUE_SHOW_GAME_DETAILS, sender: self)
         }))
         
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     //MARK: - Location Manager Delegate
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let location:CLLocationCoordinate2D = manager.location!.coordinate
         print(location)
@@ -319,9 +319,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         self.tableView.reloadData()
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         
-        if (!CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse) && Settings.sharedSettings.defaultLocation == "none" {
+        if (!CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .authorizedWhenInUse) && Settings.sharedSettings.defaultLocation == "none" {
             getZipCodeFromUserWithAlert()
         }
         
@@ -331,33 +331,33 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         //http://stackoverflow.com/questions/26567413/get-input-value-from-textfield-in-ios-alert-in-swift
         //1. Create the alert controller.
-        let alert = UIAlertController(title: "Static Location", message: "You have disabled location services for this app. Please enter a zip code to see local games.", preferredStyle: .Alert)
+        let alert = UIAlertController(title: "Static Location", message: "You have disabled location services for this app. Please enter a zip code to see local games.", preferredStyle: .alert)
         
         //2. Add the text field. You can configure it however you need.
-        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
-            textField.keyboardType = UIKeyboardType.NumberPad
+        alert.addTextField(configurationHandler: { (textField) -> Void in
+            textField.keyboardType = UIKeyboardType.numberPad
             
 //            textField.addTarget(self, action: "textChanged:", forControlEvents: UIControlEvents.EditingChanged)
-            textField.addTarget(self, action: #selector(HomeTableViewController.textChanged(_:)), forControlEvents: .EditingChanged)
+            textField.addTarget(self, action: #selector(HomeTableViewController.textChanged(_:)), for: .editingChanged)
         })
         
         //3. Grab the value from the text field, and print it when the user clicks OK.
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as UITextField
             print("Text field: \(textField.text)")
         }))
         
-        (alert.actions[0] as UIAlertAction).enabled = false
+        (alert.actions[0] as UIAlertAction).isEnabled = false
         
         // 4. Present the alert.
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
         
     }
     
-    func textChanged(sender:AnyObject) {
+    func textChanged(_ sender:AnyObject) {
         let textField = sender as! UITextField
         var responder: UIResponder = textField
-        while !(responder is UIAlertController) { responder = responder.nextResponder()! }
+        while !(responder is UIAlertController) { responder = responder.next! }
         let alert = responder as! UIAlertController
         
         if textField.text?.characters.count == 5 {
@@ -366,7 +366,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
     }
     
-    func validateZipCode(zipcode: String, alert: UIAlertController) {
+    func validateZipCode(_ zipcode: String, alert: UIAlertController) {
         
         let geocoder = CLGeocoder()
         
@@ -389,7 +389,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                     }
                 }
                 
-                (alert.actions[0] as UIAlertAction).enabled = true
+                (alert.actions[0] as UIAlertAction).isEnabled = true
                 
                 Settings.sharedSettings.defaultLocation = zipcode
                 Settings.sharedSettings.defaultLatitude = coordinates.latitude
@@ -412,44 +412,44 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     // MARK: - Dismissal Delegate
     
-    func finishedShowing(viewController: UIViewController) {
+    func finishedShowing(_ viewController: UIViewController) {
         
-        self.dismissViewControllerAnimated(true, completion: nil)
-        performSegueWithIdentifier(SEGUE_SHOW_GAME_DETAILS, sender: self)
+        self.dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: self)
         
         return
     }
     
-    func setNewGame(game: Game) {
+    func setNewGame(_ game: Game) {
         self.newGame = game
     }
     
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SEGUE_SHOW_GAMES {
-            let gamesViewController = segue.destinationViewController as! GameListViewController
+            let gamesViewController = segue.destination as! GameListViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                gamesViewController.selectedGameType = gameTypes[indexPath.row]
+                gamesViewController.selectedGameType = gameTypes[(indexPath as NSIndexPath).row]
                 gamesViewController.gameTypes = self.gameTypes
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             newGameTableViewController.dismissalDelegate = self
             newGameTableViewController.gameTypes = self.gameTypes
         } else if segue.identifier == SEGUE_SHOW_MY_GAMES {
-            let myGamesViewController = segue.destinationViewController as! MyGamesViewController
+            let myGamesViewController = segue.destination as! MyGamesViewController
             myGamesViewController.gameTypes = self.gameTypes
         } else if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
-            let gameDetailsViewController = segue.destinationViewController as! GameDetailsViewController
+            let gameDetailsViewController = segue.destination as! GameDetailsViewController
             
             if self.newGame.userIsOwner == true {
-                gameDetailsViewController.userStatus = .USER_OWNED
+                gameDetailsViewController.userStatus = .user_OWNED
             } else {
-                gameDetailsViewController.userStatus = .USER_JOINED
+                gameDetailsViewController.userStatus = .user_JOINED
             }
             
             gameDetailsViewController.game = self.newGame
@@ -458,7 +458,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     

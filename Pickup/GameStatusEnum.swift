@@ -9,6 +9,6 @@
 import Foundation
 
 enum GameStatus {
-    case EDIT
-    case CREATE
+    case edit
+    case create
 }

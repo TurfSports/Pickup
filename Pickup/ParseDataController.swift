@@ -45,15 +45,15 @@ class ParseDataController {
     
     //Perhaps this class can control retrieval of all data from Parse
     
-    private func loadGameTypesFromParse() {
+    fileprivate func loadGameTypesFromParse() {
         var gameTypes:[GameType] = []
         let gameTypeQuery = PFQuery(className: "GameType")
         
-        gameTypeQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        gameTypeQuery.findObjectsInBackground { (objects, error) -> Void in
             
             if let gameTypeObjects = objects {
                 
-                gameTypes.removeAll(keepCapacity: true)
+                gameTypes.removeAll(keepingCapacity: true)
                 
                 for gameTypeObject in gameTypeObjects {
                     let gameType = GameTypeConverter.convertParseObject(gameTypeObject)

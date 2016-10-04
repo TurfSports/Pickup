@@ -362,6 +362,7 @@
 					02BE27791C4DD58F0062C890 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = V42V9L2APE;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -576,6 +577,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "66c5e44b-148f-4e89-89a2-8ddaba2c63e9";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -602,6 +604,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pickup.PickupSports;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "66c5e44b-148f-4e89-89a2-8ddaba2c63e9";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

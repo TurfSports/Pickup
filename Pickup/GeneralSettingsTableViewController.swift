@@ -22,12 +22,12 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
     
     var tempSettings: Settings!
     
-    @IBAction func cancelSettings(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelSettings(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
     }
     
 
-    @IBAction func saveSettings(sender: UIBarButtonItem) {
+    @IBAction func saveSettings(_ sender: UIBarButtonItem) {
         
         //Save the settings in user defaults
         Settings.sharedSettings.gameDistance = tempSettings.gameDistance
@@ -42,14 +42,14 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         }
         
         let serializedSettings = Settings.serializeSettings(Settings.sharedSettings)
-        NSUserDefaults.standardUserDefaults().setObject(serializedSettings, forKey: "settings")
+        UserDefaults.standard.set(serializedSettings, forKey: "settings")
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func switchShowCreatedGamesChanged(sender: UISwitch) {
+    @IBAction func switchShowCreatedGamesChanged(_ sender: UISwitch) {
         
-        if sender.on {
+        if sender.isOn {
             tempSettings.showCreatedGames = true
         } else {
             tempSettings.showCreatedGames = false
@@ -74,44 +74,44 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         self.lblGameDistanceSubtext.text = "Show games within \(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
         
         if tempSettings.showCreatedGames == true {
-            self.switchShowCreatedGames.on = true
+            self.switchShowCreatedGames.isOn = true
         } else {
-            self.switchShowCreatedGames.on = false
+            self.switchShowCreatedGames.isOn = false
         }
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.lblGameDistanceSubtext.text = "Show games within \(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
         
         //Set game reminder
         checkGameReminderCell()
     }
     
-    private func checkGameReminderCell() {
+    fileprivate func checkGameReminderCell() {
         switch(tempSettings.gameReminder) {
         case 0:
-            let indexPath = NSIndexPath(forRow: 0, inSection: 1)
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell?.accessoryType = .Checkmark
+            let indexPath = IndexPath(row: 0, section: 1)
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.accessoryType = .checkmark
             break
         case 30:
-            let indexPath = NSIndexPath(forRow: 1, inSection: 1)
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell?.accessoryType = .Checkmark
+            let indexPath = IndexPath(row: 1, section: 1)
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.accessoryType = .checkmark
             break
         case 60:
-            let indexPath = NSIndexPath(forRow: 2, inSection: 1)
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell?.accessoryType = .Checkmark
+            let indexPath = IndexPath(row: 2, section: 1)
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.accessoryType = .checkmark
         case 2 * 60:
-            let indexPath = NSIndexPath(forRow: 3, inSection: 1)
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell?.accessoryType = .Checkmark
+            let indexPath = IndexPath(row: 3, section: 1)
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.accessoryType = .checkmark
         case 24 * 60:
-            let indexPath = NSIndexPath(forRow: 4, inSection: 1)
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell?.accessoryType = .Checkmark
+            let indexPath = IndexPath(row: 4, section: 1)
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.accessoryType = .checkmark
         default:
             break
         }
@@ -119,51 +119,51 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
 
     //MARK: - Table View Controller
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        switch(indexPath.section) {
+        switch((indexPath as NSIndexPath).section) {
         case 0:
-            if indexPath.row == 0 {
-                performSegueWithIdentifier(SEGUE_DISTANCE_SETTINGS, sender: self)
+            if (indexPath as NSIndexPath).row == 0 {
+                performSegue(withIdentifier: SEGUE_DISTANCE_SETTINGS, sender: self)
             }
             break
         case 1:
-            let uncheckCell = tableView.cellForRowAtIndexPath(getSelectedGameReminderCellIndexPath())
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            let uncheckCell = tableView.cellForRow(at: getSelectedGameReminderCellIndexPath())
+            let cell = tableView.cellForRow(at: indexPath)
             	
-            uncheckCell?.accessoryType = .None
-            cell?.accessoryType = .Checkmark
+            uncheckCell?.accessoryType = .none
+            cell?.accessoryType = .checkmark
             
-            tempSettings.gameReminder = self.selectedCellGameReminder[indexPath.row]
+            tempSettings.gameReminder = self.selectedCellGameReminder[(indexPath as NSIndexPath).row]
             
             break
         case 2:
-            performSegueWithIdentifier(SEGUE_ABOUT, sender: self)
+            performSegue(withIdentifier: SEGUE_ABOUT, sender: self)
             break
         default:
             break
         }
     }
     
-    private func getSelectedGameReminderCellIndexPath() -> NSIndexPath {
+    fileprivate func getSelectedGameReminderCellIndexPath() -> IndexPath {
         
-        var indexPath: NSIndexPath
+        var indexPath: IndexPath
         
         switch(tempSettings.gameReminder) {
         case 30:
-            indexPath = NSIndexPath(forRow: 1, inSection: 1)
+            indexPath = IndexPath(row: 1, section: 1)
             break
         case 60:
-            indexPath = NSIndexPath(forRow: 2, inSection: 1)
+            indexPath = IndexPath(row: 2, section: 1)
             break
         case 2 * 60:
-            indexPath = NSIndexPath(forRow: 3, inSection: 1)
+            indexPath = IndexPath(row: 3, section: 1)
             break
         case 24 * 60:
-            indexPath = NSIndexPath(forRow: 4, inSection: 1)
+            indexPath = IndexPath(row: 4, section: 1)
             break
         default:
-            indexPath = NSIndexPath(forRow: 0, inSection: 1)
+            indexPath = IndexPath(row: 0, section: 1)
             break
         }
         
@@ -172,7 +172,7 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
 
 
     //MARK: - Main Settings Delegate
-    func updateTempSettings(tempSettings: Settings) {
+    func updateTempSettings(_ tempSettings: Settings) {
         self.tempSettings = tempSettings
     }
     
@@ -180,42 +180,42 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
     //MARK: - Styles
     func applyStyles() {
         btnSave.tintColor = Theme.ACCENT_COLOR
-        btnSave.style = .Done
+        btnSave.style = .done
         switchShowCreatedGames.onTintColor = Theme.ACCENT_COLOR
         btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
     }
     
     //MARK: - Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == SEGUE_DISTANCE_SETTINGS {
-            let locationSettingsTableViewController = segue.destinationViewController as! LocationSettingsTableViewController
+            let locationSettingsTableViewController = segue.destination as! LocationSettingsTableViewController
                 locationSettingsTableViewController.settingsDelegate = self
                 locationSettingsTableViewController.tempSettings = self.tempSettings
         }
     }
     
     //MARK: - Update Local Notifications
-    func updateLocalGameNotifications(gameReminder: Int) {
-        if let joinedGames = NSUserDefaults.standardUserDefaults().objectForKey("userJoinedGamesById") as? NSArray {
+    func updateLocalGameNotifications(_ gameReminder: Int) {
+        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
             for gameId in joinedGames {
-                for notification in UIApplication.sharedApplication().scheduledLocalNotifications! {// as! [UILocalNotification] {
+                for notification in UIApplication.shared.scheduledLocalNotifications! {// as! [UILocalNotification] {
                     if notification.userInfo!["selectedGameId"] as! String == gameId as! String {
                         
                         
                         let originalFireDate = notification.fireDate
-                        let gameDate = originalFireDate?.dateByAddingTimeInterval(Double((Settings.sharedSettings.gameReminder) * 60))
+                        let gameDate = originalFireDate?.addingTimeInterval(Double((Settings.sharedSettings.gameReminder) * 60))
                         
-                        let timeUntilGame = NSCalendar.currentCalendar().components(.Minute, fromDate: NSDate(), toDate: gameDate!, options: []).minute
+                        let timeUntilGame = (Calendar.current as NSCalendar).components(.minute, from: Date(), to: gameDate!, options: []).minute
                         
-                        let newFireDate = originalFireDate?.dateByAddingTimeInterval(Double((tempSettings.gameReminder - Settings.sharedSettings.gameReminder) * -60))
+                        let newFireDate = originalFireDate?.addingTimeInterval(Double((tempSettings.gameReminder - Settings.sharedSettings.gameReminder) * -60))
                         
                         //Get attributes from user data and then create game in order to schedule local notification
                         let gameId = notification.userInfo!["selectedGameId"] as! String
                         let locationName = notification.userInfo!["locationName"] as! String
                         let gameType = notification.userInfo!["gameType"] as! String
                         
-                        let alertBody = "Your \(gameType) game at \(locationName) starts \(LocalNotifications.getTimeUntilGameFromSettings(timeUntilGame, gameReminder: tempSettings.gameReminder))."
+                        let alertBody = "Your \(gameType) game at \(locationName) starts \(LocalNotifications.getTimeUntilGameFromSettings(timeUntilGame!, gameReminder: tempSettings.gameReminder))."
                         
                         let newNotification = UILocalNotification()
                         
@@ -228,8 +228,8 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
                                                     "alertBody": alertBody,
                                                     "showAlert": "true"]
                         
-                        UIApplication.sharedApplication().cancelLocalNotification(notification)
-                        UIApplication.sharedApplication().scheduleLocalNotification(newNotification)
+                        UIApplication.shared.cancelLocalNotification(notification)
+                        UIApplication.shared.scheduleLocalNotification(newNotification)
                         
 //                        print("originalFireDate: \(originalFireDate)")
 //                        print("newFireDate: \(newFireDate)")
