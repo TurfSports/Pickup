@@ -790,7 +790,7 @@
                                     <outlet property="delegate" destination="JgN-wE-xAG" id="Zh2-kg-f38"/>
                                 </connections>
                             </mapView>
-                            <visualEffectView hidden="YES" opaque="NO" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ny7-2q-hPr">
+                            <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ny7-2q-hPr">
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="iDC-Ox-e9Z">
                                     <frame key="frameInset"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2132,6 +2132,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="J4I-yY-pBk"/>
         <segue reference="VLK-qk-4Vj"/>
-        <segue reference="gsA-UD-Nep"/>
+        <segue reference="b1X-ua-1wf"/>
     </inferredMetricsTieBreakers>
 </document>

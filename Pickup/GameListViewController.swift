@@ -154,21 +154,21 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let longitude:CLLocationDegrees = game.longitude
             let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
             if self.currentLocation != nil && Settings.sharedSettings.defaultLocation == "none" {
-                if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!) {
+                let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!)
                     var suffix = "mi"
                     if Settings.sharedSettings.distanceUnit == "kilometers" {
                         suffix = "km"
                     }
                     cell?.lblDistance.text = "\(distance) \(suffix)"
-                }
+                
             } else {
-                if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: CLLocation(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)) {
+                let distance:Double = getDistanceBetweenLocations(gameLocation, location2: CLLocation(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude))
                     var suffix = "mi"
                     if Settings.sharedSettings.distanceUnit == "kilometers" {
                         suffix = "km"
                     }
                     cell?.lblDistance.text = "\(distance) \(suffix)"
-                }
+                
             }
         } else {
             blurScreen()
