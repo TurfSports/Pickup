@@ -83,10 +83,10 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
+                                            <exclude reference="zaU-lS-0eR"/>
                                             <exclude reference="b4c-Od-cVK"/>
                                             <exclude reference="hEG-uM-OG9"/>
                                             <exclude reference="weW-Fe-AdB"/>
-                                            <exclude reference="zaU-lS-0eR"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -117,6 +117,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="bbM-dt-n3H">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
                     <connections>
@@ -218,10 +219,10 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="wF5-u0-fcp"/>
                                 <exclude reference="JRL-HQ-WYF"/>
                                 <exclude reference="G90-RR-7pl"/>
                                 <exclude reference="OBq-KE-AT2"/>
-                                <exclude reference="wF5-u0-fcp"/>
                             </mask>
                         </variation>
                     </view>
@@ -413,8 +414,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="vaU-Z1-6cl"/>
                                                     <exclude reference="U8X-wf-lIS"/>
+                                                    <exclude reference="vaU-Z1-6cl"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -538,10 +539,6 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="5On-nW-RMk"/>
-                                                    <exclude reference="7Wy-ok-1rf"/>
-                                                    <exclude reference="8iv-5H-P2t"/>
-                                                    <exclude reference="ul5-LR-Yd4"/>
                                                     <exclude reference="TSV-h3-fGj"/>
                                                     <exclude reference="bqL-HT-9WF"/>
                                                     <exclude reference="ebA-Qg-n8J"/>
@@ -550,6 +547,10 @@
                                                     <exclude reference="6KV-G8-NXQ"/>
                                                     <exclude reference="MyL-vt-4r3"/>
                                                     <exclude reference="n6M-nw-ySO"/>
+                                                    <exclude reference="5On-nW-RMk"/>
+                                                    <exclude reference="7Wy-ok-1rf"/>
+                                                    <exclude reference="8iv-5H-P2t"/>
+                                                    <exclude reference="ul5-LR-Yd4"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -562,10 +563,10 @@
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="IRR-CZ-mE3"/>
                                                 <exclude reference="7i4-YJ-eTi"/>
                                                 <exclude reference="D0F-l9-pML"/>
                                                 <exclude reference="XH8-lL-czj"/>
+                                                <exclude reference="IRR-CZ-mE3"/>
                                             </mask>
                                         </variation>
                                     </tableViewCell>
@@ -755,8 +756,8 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="Nw1-GX-QU5"/>
                                 <exclude reference="WKB-n7-o5k"/>
+                                <exclude reference="Nw1-GX-QU5"/>
                             </mask>
                         </variation>
                     </view>
@@ -918,20 +919,20 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="oIR-me-nUS"/>
+                                                    <exclude reference="dII-Fx-WTw"/>
                                                     <exclude reference="4MT-eY-mIH"/>
                                                     <exclude reference="Hue-Bs-fVq"/>
                                                     <exclude reference="S9V-a3-uqj"/>
                                                     <exclude reference="Za4-sM-87k"/>
+                                                    <exclude reference="6eu-Ja-iXa"/>
+                                                    <exclude reference="Q4p-c9-bwI"/>
+                                                    <exclude reference="ZI3-FR-1ir"/>
                                                     <exclude reference="6jC-ls-jPa"/>
                                                     <exclude reference="IxC-3Y-fcj"/>
                                                     <exclude reference="OQH-mn-VdV"/>
                                                     <exclude reference="ZCM-na-Ins"/>
                                                     <exclude reference="u1F-j0-tJE"/>
-                                                    <exclude reference="dII-Fx-WTw"/>
-                                                    <exclude reference="6eu-Ja-iXa"/>
-                                                    <exclude reference="Q4p-c9-bwI"/>
-                                                    <exclude reference="ZI3-FR-1ir"/>
+                                                    <exclude reference="oIR-me-nUS"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -943,8 +944,8 @@
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="h5C-YR-03U"/>
                                                 <exclude reference="Xg3-jg-UY0"/>
+                                                <exclude reference="h5C-YR-03U"/>
                                             </mask>
                                         </variation>
                                         <connections>
@@ -1808,8 +1809,8 @@
                                                     <exclude reference="UOf-tw-bMq"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="Ilh-oy-Qx0"/>
                                                     <exclude reference="zVf-mu-9Ix"/>
+                                                    <exclude reference="Ilh-oy-Qx0"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1878,7 +1879,7 @@
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="94" id="Ogi-7R-18s" customClass="MyGamesTableViewCell" customModule="Pickup" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="120" width="375" height="94"/>
+                                        <rect key="frame" x="0.0" y="120" width="1000" height="94"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ogi-7R-18s" id="0at-0i-LCD">
                                             <frame key="frameInset" width="375" height="93"/>
@@ -1924,14 +1925,14 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="c3z-v1-KqS"/>
+                                                    <exclude reference="h6w-1A-bTc"/>
+                                                    <exclude reference="tNe-KB-Qjd"/>
                                                     <exclude reference="YsK-fe-Fou"/>
                                                     <exclude reference="3C3-ux-GT2"/>
                                                     <exclude reference="Ks6-SU-peO"/>
                                                     <exclude reference="iaG-9l-tOh"/>
                                                     <exclude reference="n1f-iF-Xd5"/>
-                                                    <exclude reference="c3z-v1-KqS"/>
-                                                    <exclude reference="h6w-1A-bTc"/>
-                                                    <exclude reference="tNe-KB-Qjd"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -2027,6 +2028,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="77s-jv-yDE" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="2aM-N9-r6b">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
@@ -2130,8 +2132,8 @@
         <image name="settingsIcon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="J4I-yY-pBk"/>
         <segue reference="VLK-qk-4Vj"/>
-        <segue reference="b1X-ua-1wf"/>
+        <segue reference="gsA-UD-Nep"/>
+        <segue reference="J4I-yY-pBk"/>
     </inferredMetricsTieBreakers>
 </document>

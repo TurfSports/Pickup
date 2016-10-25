@@ -228,6 +228,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                     }
                     self.games.append(game)
                 }
+            } else {
+                print(error)
             }
             
             if self.games.count == 0 {
