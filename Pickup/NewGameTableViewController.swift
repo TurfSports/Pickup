@@ -228,6 +228,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     
+    //MARK: - Picker view delegate
+    
     func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int {
         return 1
     }

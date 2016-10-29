@@ -86,7 +86,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return sortedGames.count
     }
     

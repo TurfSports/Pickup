@@ -565,7 +565,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nathan Dudley (V42V9L2APE)";
 				DEVELOPMENT_TEAM = V42V9L2APE;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

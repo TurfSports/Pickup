@@ -16,15 +16,15 @@ class NotificationsManager {
     }
     
     static func notificationsInitiated() -> Bool {
-        if let notifactionsRegistered: Bool? = UserDefaults.standard.bool(forKey: "notifactionsRegistered") {
-            return notifactionsRegistered!
+        if let notifactionsRegistered: Bool = UserDefaults.standard.bool(forKey: "notifactionsRegistered") {
+            return notifactionsRegistered
         }
     }
     
     static func registerNotifications() {
         
-        if let notifactionsRegistered: Bool? = UserDefaults.standard.bool(forKey: "notifactionsRegistered") {
-            if notifactionsRegistered! == false {
+        if let notifactionsRegistered: Bool = UserDefaults.standard.bool(forKey: "notifactionsRegistered") {
+            if notifactionsRegistered == false {
                 let application: UIApplication = UIApplication.shared
                 
                 let userNotificationTypes: UIUserNotificationType = [.alert, .badge, .sound]
