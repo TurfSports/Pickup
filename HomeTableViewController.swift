@@ -428,14 +428,15 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SEGUE_SHOW_GAMES {
-            let gamesViewController = segue.destination as! GameListTableViewController
-            if let indexPath = self.tableView.indexPathForSelectedRow {
-                gamesViewController.selectedGameType = gameTypes[(indexPath as NSIndexPath).row]
-                gamesViewController.gameTypes = self.gameTypes
-            }
-            gamesViewController.navigationItem.leftItemsSupplementBackButton = true
-        } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
+//        if segue.identifier == SEGUE_SHOW_GAMES {
+//            let gamesViewController = segue.destination as! GameListTableViewController
+//            if let indexPath = self.tableView.indexPathForSelectedRow {
+//                gamesViewController.selectedGameType = gameTypes[(indexPath as NSIndexPath).row]
+//                gamesViewController.gameTypes = self.gameTypes
+//            }
+//            gamesViewController.navigationItem.leftItemsSupplementBackButton = true
+        //} else 
+        if segue.identifier == SEGUE_SHOW_NEW_GAME {
             let navigationController = segue.destination as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             newGameTableViewController.dismissalDelegate = self
@@ -454,6 +455,14 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             
             gameDetailsViewController.game = self.newGame
             
+        } else if segue.identifier == "showTestTableViewController" {
+            let testTableViewController = segue.destination as! TestTableViewController
+            
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                testTableViewController.selectedGameType = gameTypes[(indexPath as NSIndexPath).row]
+                testTableViewController.gameTypes = self.gameTypes
+            }
+            testTableViewController.navigationItem.leftItemsSupplementBackButton = true
         }
     }
     

@@ -61,6 +61,7 @@
 		02F269591C87A37300D46519 /* MyGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F269581C87A37300D46519 /* MyGamesViewController.swift */; };
 		02F2695B1C87B97E00D46519 /* MyGamesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */; };
 		02F5D0101C84C12F00A95B92 /* CustomProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */; };
+		02FFA96C1DC994BF00D83D81 /* TestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FFA96B1DC994BF00D83D81 /* TestTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +121,7 @@
 		02F269581C87A37300D46519 /* MyGamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyGamesViewController.swift; sourceTree = "<group>"; };
 		02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyGamesTableViewCell.swift; sourceTree = "<group>"; };
 		02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomProtocols.swift; sourceTree = "<group>"; };
+		02FFA96B1DC994BF00D83D81 /* TestTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -304,6 +306,7 @@
 		02ED11EB1C518FFF001923EB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				02FFA96B1DC994BF00D83D81 /* TestTableViewController.swift */,
 				024DDF0C1C8BF2DA000E34D7 /* Settings */,
 				024DDF091C8BF262000E34D7 /* Home */,
 				024DDF071C8BF24C000E34D7 /* MyGames */,
@@ -423,6 +426,7 @@
 				021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */,
 				02AB4F961C754FA800DAEF0E /* GamePointAnnotation.swift in Sources */,
 				02EFBF561C6BEB9B001774A2 /* GameTableViewCell.swift in Sources */,
+				02FFA96C1DC994BF00D83D81 /* TestTableViewController.swift in Sources */,
 				0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */,
 				02BE277E1C4DD58F0062C890 /* AppDelegate.swift in Sources */,
 				0275B8171D1B82D700611621 /* NotificationsManager.swift in Sources */,
