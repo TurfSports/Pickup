@@ -429,7 +429,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SEGUE_SHOW_GAMES {
-            let gamesViewController = segue.destination as! GameListViewController
+            let gamesViewController = segue.destination as! GameListTableViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 gamesViewController.selectedGameType = gameTypes[(indexPath as NSIndexPath).row]
                 gamesViewController.gameTypes = self.gameTypes

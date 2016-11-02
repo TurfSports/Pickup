@@ -1,5 +1,5 @@
 //
-//  GameListViewController.swift
+//  GameListTableViewController.swift
 //  Pickup
 //
 //  Created by Nathan Dudley on 2/16/16.
@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import Parse
 
-class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, DismissalDelegate {
+class GameListTableViewController: UITableViewController, CLLocationManagerDelegate, DismissalDelegate {
 
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let SEGUE_SHOW_GAMES_MAP = "showGamesMapView"
@@ -34,36 +34,35 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     @IBOutlet weak var btnAddNewGame: UIBarButtonItem!
-    @IBOutlet weak var tableGameList: UITableView!
     @IBOutlet weak var btnViewMap: UIBarButtonItem!
-    @IBOutlet weak var noGamesBlur: UIVisualEffectView!
-    @IBOutlet weak var lblNoGames: UILabel!
+    //@IBOutlet weak var noGamesBlur: UIVisualEffectView!
+    //@IBOutlet weak var lblNoGames: UILabel!
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    //@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     
     //https://www.andrewcbancroft.com/2015/03/17/basics-of-pull-to-refresh-for-swift-developers/
-    lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
+    //lazy var refreshControl: UIRefreshControl = {
+       // let refreshControl = UIRefreshControl()
         
-    refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), for: UIControlEvents.valueChanged)
+   // refreshControl.addTarget(self, action: #selector(GameListTableViewController.loadGamesFromParse), for: UIControlEvents.valueChanged)
 //    refreshControl.addTarget(self, action: "loadGamesFromParse", forControlEvents: UIControlEvents.ValueChanged)
-        return refreshControl
-    }()
+    //    return refreshControl
+   // }()
     
     //MARK: - View Lifecycle Management
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableGameList.tableFooterView = UIView(frame: CGRect.zero)
-        self.tableGameList.addSubview(self.refreshControl)
+        //tableGameList.tableFooterView = UIView(frame: CGRect.zero)
+        //self.tableGameList.addSubview(self.refreshControl)
         
-        lblNoGames.text = "No \(selectedGameType.name) games within \(Settings.sharedSettings.gameDistance) \(Settings.sharedSettings.distanceUnit)"
-        noGamesBlur.isHidden = true
+        //lblNoGames.text = "No \(selectedGameType.name) games within \(Settings.sharedSettings.gameDistance) \(Settings.sharedSettings.distanceUnit)"
+        //noGamesBlur.isHidden = true
         
         
-        activityIndicator.startAnimating()
-        self.activityIndicator.isHidden = false
+        //activityIndicator.startAnimating()
+        //self.activityIndicator.isHidden = false
         
         setUsersCurrentLocation()
         
@@ -75,23 +74,23 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        noGamesBlur.isHidden = true
+       // noGamesBlur.isHidden = true
         loadGamesFromParse()
-        self.tableGameList.reloadData()
+        self.tableView.reloadData()
     }
     
     fileprivate func blurScreen() {
-        noGamesBlur.isHidden = false
+        //noGamesBlur.isHidden = false
     }
     
     // MARK: - Table view data source
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return sortedGames.count
     }
     
     
-    private func tableView(_ tableView : UITableView,  titleForHeaderInSection section: Int)->String {
+    override func tableView(_ tableView : UITableView,  titleForHeaderInSection section: Int)->String {
         var sectionTitle = ""
         
         if !sectionTitles.isEmpty {
@@ -101,22 +100,26 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         return sectionTitle
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        let sortedGamesSectionCount = sortedGames[section].count
+        print("SortedGames: \(sortedGamesSectionCount)")
+        
         return sortedGames[section].count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Theme.GAME_LIST_ROW_HEIGHT
-    }
+    //override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    //    return Theme.GAME_LIST_ROW_HEIGHT
+    //}
     
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
         header.textLabel?.textAlignment = .center
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: self)
     }
     
@@ -236,10 +239,10 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                 self.blurScreen()
             } else {
                 self.sortedGames = self.sortGamesByDate(self.games)
-                self.refreshControl.endRefreshing()
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.isHidden = true
-                self.tableGameList.reloadData()
+                //self.refreshControl.endRefreshing()
+                //self.activityIndicator.stopAnimating()
+                //self.activityIndicator.isHidden = true
+                self.tableView.reloadData()
             }
 
         }
@@ -257,7 +260,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             locationManager.stopUpdatingLocation()
         }
         
-        tableGameList.reloadData()
+        self.tableView.reloadData()
     }
          
     func setUsersCurrentLocation() {
@@ -429,7 +432,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let gameDetailsViewController = segue.destination as! GameDetailsViewController
             var game: Game
             
-            if let indexPath = tableGameList.indexPathForSelectedRow {
+            if let indexPath = self.tableView.indexPathForSelectedRow {
                 game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
             } else {
                 game = self.newGame!
