@@ -10,8 +10,14 @@ import UIKit
 import Parse
 import CoreLocation
 
-class TestTableViewController: UITableViewController, CLLocationManagerDelegate {
+class TestTableViewController: UITableViewController, CLLocationManagerDelegate, DismissalDelegate {
 
+    let SEGUE_SHOW_GAME_DETAILS = "testShowGameDetails"
+    let SEGUE_SHOW_GAMES_MAP = "showGamesMapView"
+    let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
+    
+    var newGame: Game!
+    
     var selectedGameType:GameType!
     var gameTypes:[GameType]!
     var games: [Game] = []
@@ -86,7 +92,7 @@ class TestTableViewController: UITableViewController, CLLocationManagerDelegate 
         
         if !sortedGames.isEmpty {
             
-            let game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
+            let game = sortedGames[indexPath.section][indexPath.row]
         
             cell?.lblGameDate.text = relevantDateInfo(game.eventDate as Date)
             cell?.lblLocationName.text = games[indexPath.row].locationName
@@ -141,6 +147,10 @@ class TestTableViewController: UITableViewController, CLLocationManagerDelegate 
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Theme.GAME_LIST_ROW_HEIGHT
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: self)
     }
     
     
@@ -368,7 +378,62 @@ class TestTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
 
 
+    //MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
+            
+            let gameDetailsViewController = segue.destination as! GameDetailsViewController
+            var game: Game
+            
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                game = sortedGames[indexPath.section][indexPath.row]
+            } else {
+                game = self.newGame!
+            }
+            
+            gameDetailsViewController.game = game
+            gameDetailsViewController.gameTypes = self.gameTypes
+            
+            if game.userIsOwner == true {
+                gameDetailsViewController.userStatus = .user_OWNED
+            } else if game.userJoined == true {
+                gameDetailsViewController.userStatus = .user_JOINED
+            } else {
+                gameDetailsViewController.userStatus = .user_NOT_JOINED
+            }
+            
+            gameDetailsViewController.navigationItem.leftItemsSupplementBackButton = true
+            
+        } else if segue.identifier == SEGUE_SHOW_GAMES_MAP {
+            
+            let gameMapViewController = segue.destination as! GameMapViewController
+            gameMapViewController.games = self.games
+            gameMapViewController.selectedGameType = self.selectedGameType
+            
+        } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
+            
+            let navigationController = segue.destination as! UINavigationController
+            let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
+            newGameTableViewController.dismissalDelegate = self
+            newGameTableViewController.gameTypes = self.gameTypes
+            newGameTableViewController.selectedGameType = self.selectedGameType
+        }
+        
+    }
     
+    //MARK: - Dismissal Delegate
+    
+    func finishedShowing(_ viewController: UIViewController) {
+        
+        self.dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: self)
+        
+        return
+    }
+    
+    func setNewGame(_ game: Game) {
+//        self.newGame = game
+    }
 
     
 

@@ -76,7 +76,7 @@ class GameListTableViewController: UITableViewController, CLLocationManagerDeleg
     override func viewDidAppear(_ animated: Bool) {
        // noGamesBlur.isHidden = true
         loadGamesFromParse()
-        self.tableView.reloadData()
+        //self.tableView.reloadData()
     }
     
     fileprivate func blurScreen() {
