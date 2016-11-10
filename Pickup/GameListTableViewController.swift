@@ -108,9 +108,9 @@ class GameListTableViewController: UITableViewController, CLLocationManagerDeleg
         return sortedGames[section].count
     }
     
-    //override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    //    return Theme.GAME_LIST_ROW_HEIGHT
-    //}
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Theme.GAME_LIST_ROW_HEIGHT
+    }
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {

@@ -128,7 +128,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: SEGUE_SHOW_GAMES, sender: self)
+//        performSegue(withIdentifier: SEGUE_SHOW_GAMES, sender: self)
+        performSegue(withIdentifier: "showTestTableViewController", sender: self)
     }
     
     
