@@ -61,7 +61,26 @@
 		02F269591C87A37300D46519 /* MyGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F269581C87A37300D46519 /* MyGamesViewController.swift */; };
 		02F2695B1C87B97E00D46519 /* MyGamesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */; };
 		02F5D0101C84C12F00A95B92 /* CustomProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */; };
+		D0BD959E1EC28D4400E29671 /* PickupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD959D1EC28D4400E29671 /* PickupUITests.swift */; };
+		D0BD95AC1EC28D4D00E29671 /* PickupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D0BD95A01EC28D4400E29671 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02BE27721C4DD58F0062C890 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02BE27791C4DD58F0062C890;
+			remoteInfo = Pickup;
+		};
+		D0BD95AE1EC28D4D00E29671 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02BE27721C4DD58F0062C890 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02BE27791C4DD58F0062C890;
+			remoteInfo = Pickup;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		020441101CA4A65E0050746C /* LocationSearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +139,12 @@
 		02F269581C87A37300D46519 /* MyGamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyGamesViewController.swift; sourceTree = "<group>"; };
 		02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyGamesTableViewCell.swift; sourceTree = "<group>"; };
 		02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomProtocols.swift; sourceTree = "<group>"; };
+		D0BD959B1EC28D4400E29671 /* PickupUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickupUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0BD959D1EC28D4400E29671 /* PickupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupUITests.swift; sourceTree = "<group>"; };
+		D0BD959F1EC28D4400E29671 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0BD95A91EC28D4D00E29671 /* PickupTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickupTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupTests.swift; sourceTree = "<group>"; };
+		D0BD95AD1EC28D4D00E29671 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +166,20 @@
 				024026EA1C5FDF61002F1B39 /* ParseUI.framework in Frameworks */,
 				024026EC1C5FDF61002F1B39 /* Parse.framework in Frameworks */,
 				024026EB1C5FDF61002F1B39 /* Bolts.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0BD95981EC28D4400E29671 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0BD95A61EC28D4D00E29671 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +281,8 @@
 			isa = PBXGroup;
 			children = (
 				02BE277C1C4DD58F0062C890 /* Pickup */,
+				D0BD959C1EC28D4400E29671 /* PickupUITests */,
+				D0BD95AA1EC28D4D00E29671 /* PickupTests */,
 				02BE277B1C4DD58F0062C890 /* Products */,
 				02DB6FEE1C740FEB00FF5C20 /* Assets.xcassets */,
 			);
@@ -251,6 +292,8 @@
 			isa = PBXGroup;
 			children = (
 				02BE277A1C4DD58F0062C890 /* Pickup.app */,
+				D0BD959B1EC28D4400E29671 /* PickupUITests.xctest */,
+				D0BD95A91EC28D4D00E29671 /* PickupTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -329,6 +372,24 @@
 			name = DataConversion;
 			sourceTree = "<group>";
 		};
+		D0BD959C1EC28D4400E29671 /* PickupUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D0BD959D1EC28D4400E29671 /* PickupUITests.swift */,
+				D0BD959F1EC28D4400E29671 /* Info.plist */,
+			);
+			path = PickupUITests;
+			sourceTree = "<group>";
+		};
+		D0BD95AA1EC28D4D00E29671 /* PickupTests */ = {
+			isa = PBXGroup;
+			children = (
+				D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */,
+				D0BD95AD1EC28D4D00E29671 /* Info.plist */,
+			);
+			path = PickupTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -349,13 +410,49 @@
 			productReference = 02BE277A1C4DD58F0062C890 /* Pickup.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D0BD959A1EC28D4400E29671 /* PickupUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0BD95A41EC28D4400E29671 /* Build configuration list for PBXNativeTarget "PickupUITests" */;
+			buildPhases = (
+				D0BD95971EC28D4400E29671 /* Sources */,
+				D0BD95981EC28D4400E29671 /* Frameworks */,
+				D0BD95991EC28D4400E29671 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D0BD95A11EC28D4400E29671 /* PBXTargetDependency */,
+			);
+			name = PickupUITests;
+			productName = PickupUITests;
+			productReference = D0BD959B1EC28D4400E29671 /* PickupUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		D0BD95A81EC28D4D00E29671 /* PickupTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0BD95B01EC28D4D00E29671 /* Build configuration list for PBXNativeTarget "PickupTests" */;
+			buildPhases = (
+				D0BD95A51EC28D4D00E29671 /* Sources */,
+				D0BD95A61EC28D4D00E29671 /* Frameworks */,
+				D0BD95A71EC28D4D00E29671 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D0BD95AF1EC28D4D00E29671 /* PBXTargetDependency */,
+			);
+			name = PickupTests;
+			productName = PickupTests;
+			productReference = D0BD95A91EC28D4D00E29671 /* PickupTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		02BE27721C4DD58F0062C890 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Pickup;
 				TargetAttributes = {
@@ -371,6 +468,18 @@
 								enabled = 1;
 							};
 						};
+					};
+					D0BD959A1EC28D4400E29671 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = CWLLFTCWHP;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 02BE27791C4DD58F0062C890;
+					};
+					D0BD95A81EC28D4D00E29671 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = CWLLFTCWHP;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 02BE27791C4DD58F0062C890;
 					};
 				};
 			};
@@ -388,6 +497,8 @@
 			projectRoot = "";
 			targets = (
 				02BE27791C4DD58F0062C890 /* Pickup */,
+				D0BD95A81EC28D4D00E29671 /* PickupTests */,
+				D0BD959A1EC28D4400E29671 /* PickupUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -401,6 +512,20 @@
 				023127881CFCAF0C00863EFF /* home.gpx in Resources */,
 				02DB6FEF1C740FEB00FF5C20 /* Assets.xcassets in Resources */,
 				02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0BD95991EC28D4400E29671 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0BD95A71EC28D4D00E29671 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,7 +575,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D0BD95971EC28D4400E29671 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0BD959E1EC28D4400E29671 /* PickupUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0BD95A51EC28D4D00E29671 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0BD95AC1EC28D4D00E29671 /* PickupTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D0BD95A11EC28D4400E29671 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02BE27791C4DD58F0062C890 /* Pickup */;
+			targetProxy = D0BD95A01EC28D4400E29671 /* PBXContainerItemProxy */;
+		};
+		D0BD95AF1EC28D4D00E29671 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02BE27791C4DD58F0062C890 /* Pickup */;
+			targetProxy = D0BD95AE1EC28D4D00E29671 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		02BE27811C4DD58F0062C890 /* Main.storyboard */ = {
@@ -617,6 +771,80 @@
 			};
 			name = Release;
 		};
+		D0BD95A21EC28D4400E29671 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = CWLLFTCWHP;
+				INFOPLIST_FILE = PickupUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.JustinCarver.PickupUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "27862d2a-1a4a-4396-a78c-29475e353d44";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Pickup;
+			};
+			name = Debug;
+		};
+		D0BD95A31EC28D4400E29671 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = CWLLFTCWHP;
+				INFOPLIST_FILE = PickupUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.JustinCarver.PickupUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "27862d2a-1a4a-4396-a78c-29475e353d44";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Pickup;
+			};
+			name = Release;
+		};
+		D0BD95B11EC28D4D00E29671 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = CWLLFTCWHP;
+				INFOPLIST_FILE = PickupTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.JustinCarver.PickupTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pickup.app/Pickup";
+			};
+			name = Debug;
+		};
+		D0BD95B21EC28D4D00E29671 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = CWLLFTCWHP;
+				INFOPLIST_FILE = PickupTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.JustinCarver.PickupTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pickup.app/Pickup";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -637,6 +865,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D0BD95A41EC28D4400E29671 /* Build configuration list for PBXNativeTarget "PickupUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0BD95A21EC28D4400E29671 /* Debug */,
+				D0BD95A31EC28D4400E29671 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D0BD95B01EC28D4D00E29671 /* Build configuration list for PBXNativeTarget "PickupTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0BD95B11EC28D4D00E29671 /* Debug */,
+				D0BD95B21EC28D4D00E29671 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
