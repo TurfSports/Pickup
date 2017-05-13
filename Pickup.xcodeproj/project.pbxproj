@@ -61,6 +61,7 @@
 		02F269591C87A37300D46519 /* MyGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F269581C87A37300D46519 /* MyGamesViewController.swift */; };
 		02F2695B1C87B97E00D46519 /* MyGamesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */; };
 		02F5D0101C84C12F00A95B92 /* CustomProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */; };
+		1C4FC480A3F603BB11804E8A /* Pods_Pickup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9064DF1AD6495310DDAA1270 /* Pods_Pickup.framework */; };
 		D0BD959E1EC28D4400E29671 /* PickupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD959D1EC28D4400E29671 /* PickupUITests.swift */; };
 		D0BD95AC1EC28D4D00E29671 /* PickupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */; };
 /* End PBXBuildFile section */
@@ -139,12 +140,15 @@
 		02F269581C87A37300D46519 /* MyGamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyGamesViewController.swift; sourceTree = "<group>"; };
 		02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyGamesTableViewCell.swift; sourceTree = "<group>"; };
 		02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomProtocols.swift; sourceTree = "<group>"; };
+		5091787D301275EBC3986F5A /* Pods-Pickup.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pickup.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pickup/Pods-Pickup.debug.xcconfig"; sourceTree = "<group>"; };
+		9064DF1AD6495310DDAA1270 /* Pods_Pickup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pickup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BD959B1EC28D4400E29671 /* PickupUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickupUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BD959D1EC28D4400E29671 /* PickupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupUITests.swift; sourceTree = "<group>"; };
 		D0BD959F1EC28D4400E29671 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0BD95A91EC28D4D00E29671 /* PickupTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickupTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupTests.swift; sourceTree = "<group>"; };
 		D0BD95AD1EC28D4D00E29671 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F91693C21A3EF51960606CB5 /* Pods-Pickup.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pickup.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pickup/Pods-Pickup.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +169,7 @@
 				024026EE1C5FDF8A002F1B39 /* AudioToolbox.framework in Frameworks */,
 				024026EA1C5FDF61002F1B39 /* ParseUI.framework in Frameworks */,
 				024026EC1C5FDF61002F1B39 /* Parse.framework in Frameworks */,
+				1C4FC480A3F603BB11804E8A /* Pods_Pickup.framework in Frameworks */,
 				024026EB1C5FDF61002F1B39 /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,6 +290,8 @@
 				D0BD95AA1EC28D4D00E29671 /* PickupTests */,
 				02BE277B1C4DD58F0062C890 /* Products */,
 				02DB6FEE1C740FEB00FF5C20 /* Assets.xcassets */,
+				F2EE6A64E3941A296780CBFB /* Pods */,
+				74172A83EC371B8F2A2AF53A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -372,6 +379,14 @@
 			name = DataConversion;
 			sourceTree = "<group>";
 		};
+		74172A83EC371B8F2A2AF53A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9064DF1AD6495310DDAA1270 /* Pods_Pickup.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D0BD959C1EC28D4400E29671 /* PickupUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -390,6 +405,15 @@
 			path = PickupTests;
 			sourceTree = "<group>";
 		};
+		F2EE6A64E3941A296780CBFB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5091787D301275EBC3986F5A /* Pods-Pickup.debug.xcconfig */,
+				F91693C21A3EF51960606CB5 /* Pods-Pickup.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -397,9 +421,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 02BE278C1C4DD58F0062C890 /* Build configuration list for PBXNativeTarget "Pickup" */;
 			buildPhases = (
+				204A174A2F19B9F55EB08C14 /* [CP] Check Pods Manifest.lock */,
 				02BE27761C4DD58F0062C890 /* Sources */,
 				02BE27771C4DD58F0062C890 /* Frameworks */,
 				02BE27781C4DD58F0062C890 /* Resources */,
+				571FA4EA4F727A7C1A910FED /* [CP] Embed Pods Frameworks */,
+				062543E8EF872F355F3C01E3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -530,6 +557,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		062543E8EF872F355F3C01E3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Pickup/Pods-Pickup-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		204A174A2F19B9F55EB08C14 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		571FA4EA4F727A7C1A910FED /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Pickup/Pods-Pickup-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		02BE27761C4DD58F0062C890 /* Sources */ = {
@@ -714,6 +789,7 @@
 		};
 		02BE278D1C4DD58F0062C890 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5091787D301275EBC3986F5A /* Pods-Pickup.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
@@ -744,6 +820,7 @@
 		};
 		02BE278E1C4DD58F0062C890 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F91693C21A3EF51960606CB5 /* Pods-Pickup.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
@@ -873,6 +950,7 @@
 				D0BD95A31EC28D4400E29671 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D0BD95B01EC28D4D00E29671 /* Build configuration list for PBXNativeTarget "PickupTests" */ = {
 			isa = XCConfigurationList;
@@ -881,6 +959,7 @@
 				D0BD95B21EC28D4D00E29671 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

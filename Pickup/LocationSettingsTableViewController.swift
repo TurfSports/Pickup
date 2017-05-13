@@ -198,7 +198,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
 
         geocoder.geocodeAddressString(zipcode, completionHandler: {(placemarks, error) -> Void in
             if((error) != nil){
-                print("Error", error)
+                print("Error", error ?? "Error in geocoder")
                 self.zipLabel.text = "Invalid Zip"
             } else if let placemark = placemarks?.first {
                 

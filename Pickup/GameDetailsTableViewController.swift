@@ -33,7 +33,7 @@ class GameDetailsTableViewController: UITableViewController {
     }
     
     @IBAction func addToCalendar(_ sender: UIButton) {
-        insertGameIntoCalendar()
+        _ = insertGameIntoCalendar()
         UIApplication.shared.openURL(URL(string: "calshow:\(game.eventDate.timeIntervalSinceReferenceDate)")!)
     }
     

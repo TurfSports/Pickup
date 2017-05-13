@@ -207,7 +207,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         for gameType in self.gameTypes {
 //            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
-          let gameTypeObject = PFObject(outDataWithClassName: "GameType", objectId: gameType.id)
+            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
+
             let gameQuery = PFQuery(className: "Game")
             gameQuery.whereKey("gameType", equalTo: gameTypeObject)
             gameQuery.whereKey("date", greaterThanOrEqualTo: Date().addingTimeInterval(-1.5 * 60 * 60))
@@ -344,7 +345,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         //3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as UITextField
-            print("Text field: \(textField.text)")
+            guard let text = textField.text else { print("Text field: nil"); return }
+            print("Text field: \(text)")
         }))
         
         (alert.actions[0] as UIAlertAction).isEnabled = false
@@ -372,7 +374,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         geocoder.geocodeAddressString(zipcode, completionHandler: {(placemarks, error) -> Void in
             if((error) != nil){
-                print("Error", error)
+                print("Error", error ?? "Error Validating ZipCode")
             } else if let placemark = placemarks?.first {
                 
                 let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate

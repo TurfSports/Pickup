@@ -92,9 +92,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let installation = PFInstallation.current()
-        installation["user"] = PFUser.current()
-        installation.setDeviceTokenFrom(deviceToken)
-        installation.saveInBackground()
+        installation?["user"] = PFUser.current()
+        installation?.setDeviceTokenFrom(deviceToken)
+        installation?.saveInBackground()
         
 //        PFPush.subscribeToChannelInBackgr ound("") { (succeeded: Bool, error: NSError?) in
 //            if succeeded {

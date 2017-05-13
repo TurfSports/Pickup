@@ -45,13 +45,13 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     let navBarTitle: [GameStatus: String] = [.create: "New Game", .edit: "Edit Game"]
     
     //If editing a game, this will be passed through the segue
-    //else it will be initialized in this view controller
+    //else it will be initialized in  this view controller
     var game: Game!
     var gameObject: PFObject!
     
     var selectedGameType: GameType!
     
-    var gameTypes: [GameType]!
+    var gameTypes: [GameType] = []
     var address: String? {
         didSet {
             tableView.reloadData()
@@ -575,7 +575,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     fileprivate func setGameObjectFields(_ gameObject: PFObject) {
         
 //        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
-        gameObject["gameType"] = PFObject(outDataWithClassName: "GameType", objectId: self.game.gameType.id)
+        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
         
         gameObject["date"] = self.game.eventDate
         let point = PFGeoPoint(latitude:self.game.latitude, longitude: self.game.longitude)

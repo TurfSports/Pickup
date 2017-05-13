@@ -18,7 +18,7 @@ class GameType {
     
     var gameCount:Int = -1
     
-    init (id: String, name: String, displayName: String, sortOrder: Int, imageName: String) {
+    init(id: String, name: String, displayName: String, sortOrder: Int, imageName: String) {
         self.id = id
         self.name = name
         self.displayName = displayName

@@ -28,7 +28,7 @@ class ParseDataController {
     
     var gameDetailsLoaded:Bool = false {
         didSet {
-            
+          
         }
     }
     
@@ -61,14 +61,6 @@ class ParseDataController {
                     self.gameTypesLoaded = true
                 }
             }
-            
-
         }
     }
-    
-    
-
-    
-    
-    
 }

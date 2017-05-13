@@ -183,7 +183,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         let gameQuery = PFQuery(className: "Game")
         
 //        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
-      gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
+
+      gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
         
         var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
         
@@ -192,7 +193,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         }
         
 //        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
-      gameQuery.whereKey("gameType", equalTo: PFObject(outDataWithClassName: "GameType", objectId: selectedGameType.id))
+      gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
         
         if Settings.sharedSettings.distanceUnit == "miles" {
             let gameDistance = Double(Settings.sharedSettings.gameDistance)
@@ -229,7 +230,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                     self.games.append(game)
                 }
             } else {
-                print(error)
+                print(error ?? "Error finding objects in background")
             }
             
             if self.games.count == 0 {
