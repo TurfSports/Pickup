@@ -87,7 +87,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         if editingNotes == false  {
             if enteredDataIsValid() == true {
-                FIr.
+                FirebaseController.shared.
                 
                 if !NotificationsManager.notificationsInitiated() {
                     NotificationsManager.registerNotifications()

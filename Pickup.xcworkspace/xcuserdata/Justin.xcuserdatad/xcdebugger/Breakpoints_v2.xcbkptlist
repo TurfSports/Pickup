@@ -42,12 +42,12 @@
                   moduleName = "Pickup"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Justin/Documents/Pickup/HomeTableViewController.swift"
-                  timestampString = "516831443.649753"
+                  timestampString = "516832051.440603"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "241"
                   endingLineNumber = "241"
-                  offsetFromSymbolStart = "3943">
+                  offsetFromSymbolStart = "3028">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -57,12 +57,12 @@
                   moduleName = "Pickup"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Justin/Documents/Pickup/HomeTableViewController.swift"
-                  timestampString = "516831443.652584"
+                  timestampString = "516832051.442322"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "242"
                   endingLineNumber = "242"
-                  offsetFromSymbolStart = "30">
+                  offsetFromSymbolStart = "28">
                </Location>
             </Locations>
          </BreakpointContent>
