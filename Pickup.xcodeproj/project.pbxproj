@@ -490,6 +490,7 @@
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = CWLLFTCWHP;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -799,7 +800,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nathan Dudley (V42V9L2APE)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = CWLLFTCWHP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -815,8 +816,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pickup.PickupSports;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "50159460-406c-41a4-9fdc-809a465fd9e9";
-				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: *";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -830,7 +831,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nathan Dudley (V42V9L2APE)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = CWLLFTCWHP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -846,8 +847,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pickup.PickupSports;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "50159460-406c-41a4-9fdc-809a465fd9e9";
-				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: *";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
