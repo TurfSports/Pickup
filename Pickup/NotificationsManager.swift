@@ -16,22 +16,19 @@ class NotificationsManager {
     }
     
     static func notificationsInitiated() -> Bool {
-        if let notifactionsRegistered: Bool = UserDefaults.standard.bool(forKey: "notifactionsRegistered") {
-            return notifactionsRegistered
-        }
+        let notifactionsRegistered: Bool = UserDefaults.standard.bool(forKey: "notifactionsRegistered")
+        return notifactionsRegistered
     }
     
     static func registerNotifications() {
         
-        if let notifactionsRegistered: Bool = UserDefaults.standard.bool(forKey: "notifactionsRegistered") {
-            if notifactionsRegistered == false {
-                let application: UIApplication = UIApplication.shared
-                
-                let userNotificationTypes: UIUserNotificationType = [.alert, .badge, .sound]
-                let settings = UIUserNotificationSettings(types: userNotificationTypes, categories: nil)
-                application.registerUserNotificationSettings(settings)
-                application.registerForRemoteNotifications()
-            }
+        let notifactionsRegistered: Bool = UserDefaults.standard.bool(forKey: "notifactionsRegistered")
+        if notifactionsRegistered == false {
+            let application: UIApplication = UIApplication.shared
+            let userNotificationTypes: UIUserNotificationType = [.alert, .badge, .sound]
+            let settings = UIUserNotificationSettings(types: userNotificationTypes, categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
         }
     }
 }

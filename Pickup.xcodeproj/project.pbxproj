@@ -62,6 +62,7 @@
 		02F2695B1C87B97E00D46519 /* MyGamesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */; };
 		02F5D0101C84C12F00A95B92 /* CustomProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */; };
 		1C4FC480A3F603BB11804E8A /* Pods_Pickup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9064DF1AD6495310DDAA1270 /* Pods_Pickup.framework */; };
+		D02508071ECE33A30024DA8A /* GoogleService-Info-2.plist in Resources */ = {isa = PBXBuildFile; fileRef = D02508061ECE33A30024DA8A /* GoogleService-Info-2.plist */; };
 		D0BD959E1EC28D4400E29671 /* PickupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD959D1EC28D4400E29671 /* PickupUITests.swift */; };
 		D0BD95AC1EC28D4D00E29671 /* PickupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */; };
 /* End PBXBuildFile section */
@@ -142,6 +143,7 @@
 		02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomProtocols.swift; sourceTree = "<group>"; };
 		5091787D301275EBC3986F5A /* Pods-Pickup.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pickup.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pickup/Pods-Pickup.debug.xcconfig"; sourceTree = "<group>"; };
 		9064DF1AD6495310DDAA1270 /* Pods_Pickup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pickup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D02508061ECE33A30024DA8A /* GoogleService-Info-2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-2.plist"; sourceTree = "<group>"; };
 		D0BD959B1EC28D4400E29671 /* PickupUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickupUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BD959D1EC28D4400E29671 /* PickupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupUITests.swift; sourceTree = "<group>"; };
 		D0BD959F1EC28D4400E29671 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */,
 				02BE27891C4DD58F0062C890 /* Info.plist */,
 				023127871CFCAF0C00863EFF /* home.gpx */,
+				D02508061ECE33A30024DA8A /* GoogleService-Info-2.plist */,
 			);
 			name = SupportFiles;
 			sourceTree = "<group>";
@@ -485,7 +488,7 @@
 				TargetAttributes = {
 					02BE27791C4DD58F0062C890 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = V42V9L2APE;
+						DevelopmentTeam = CWLLFTCWHP;
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -535,6 +538,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D02508071ECE33A30024DA8A /* GoogleService-Info-2.plist in Resources */,
 				02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */,
 				023127881CFCAF0C00863EFF /* home.gpx in Resources */,
 				02DB6FEF1C740FEB00FF5C20 /* Assets.xcassets in Resources */,
@@ -796,7 +800,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nathan Dudley (V42V9L2APE)";
-				DEVELOPMENT_TEAM = V42V9L2APE;
+				DEVELOPMENT_TEAM = CWLLFTCWHP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -811,8 +815,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pickup.PickupSports;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "27862d2a-1a4a-4396-a78c-29475e353d44";
-				PROVISIONING_PROFILE_SPECIFIER = "XC: com.pickup.PickupSports";
+				PROVISIONING_PROFILE = "50159460-406c-41a4-9fdc-809a465fd9e9";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: *";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -827,7 +831,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nathan Dudley (V42V9L2APE)";
-				DEVELOPMENT_TEAM = V42V9L2APE;
+				DEVELOPMENT_TEAM = CWLLFTCWHP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -842,8 +846,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pickup.PickupSports;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "27862d2a-1a4a-4396-a78c-29475e353d44";
-				PROVISIONING_PROFILE_SPECIFIER = "XC: com.pickup.PickupSports";
+				PROVISIONING_PROFILE = "50159460-406c-41a4-9fdc-809a465fd9e9";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: *";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

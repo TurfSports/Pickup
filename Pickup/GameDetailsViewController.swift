@@ -163,8 +163,10 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 slotsAvailable += -1
                 object?["slotsAvailable"] = slotsAvailable
                 
-                object?.saveInBackground()
-                _ = self.navigationController?.popViewController(animated: true)
+                DispatchQueue.main.async {
+                    object?.saveInBackground()
+                    _ = self.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }
@@ -188,7 +190,9 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 var slotsAvailable = object?["slotsAvailable"] as! Int
                 slotsAvailable += 1
                 object?["slotsAvailable"] = slotsAvailable
+                DispatchQueue.main.async {
                 _ = self.navigationController?.popViewController(animated: true)
+                }
             }
         }
         
@@ -209,7 +213,9 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 LocalNotifications.cancelGameNotification(self.game)
                 
                 self.removeGameFromUserDefaults()
+                DispatchQueue.main.async {
                 _ = self.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }

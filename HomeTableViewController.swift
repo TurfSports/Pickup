@@ -64,6 +64,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
+        loadGameCounts()
+        
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
             loadGameTypesFromParse()
         } else {
@@ -198,7 +200,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             self.saveGameTypesToUserDefaults()
             GameTypeList.sharedGameTypes.setGameTypeList(self.gameTypes)
             self.activityIndicator.stopAnimating()
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -237,7 +241,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             gameQuery.countObjectsInBackground(block: { (count: Int32, error: Error?) -> Void in
                 let gameCount = Int(count)
                 gameType.setGameCount(gameCount)
-                self.gameCountLoaded = true
+                DispatchQueue.main.async {
+                    self.gameCountLoaded = true
+                }
             })
             
             refresher.endRefreshing()
@@ -276,10 +282,12 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 
                 self.newGame.userJoined = true
                 
-                if showAlert == true {
-                    self.showAlert(notification)
-                } else {
-                    self.performSegue(withIdentifier: self.SEGUE_SHOW_GAME_DETAILS, sender: self)
+                DispatchQueue.main.async {
+                    if showAlert == true {
+                        self.showAlert(notification)
+                    } else {
+                        self.performSegue(withIdentifier: self.SEGUE_SHOW_GAME_DETAILS, sender: self)
+                    }
                 }
             }
         }

@@ -109,25 +109,15 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             let longitude:CLLocationDegrees = game.longitude
             let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
             if self.currentLocation != nil && Settings.sharedSettings.defaultLocation == "none" {
-                if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!) {
+            let distance: Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!)
                     var suffix = "mi"
-                    if Settings.sharedSettings.distanceUnit == "kilometers" {
-                        suffix = "km"
-                    }
-                    cell?.lblDistance.text = "\(distance) \(suffix)"
-
+                if Settings.sharedSettings.distanceUnit == "kilometers" {
+                    suffix = "km"
                 }
-            } else {
-                if let distance:Double = getDistanceBetweenLocations(gameLocation, location2: CLLocation(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)) {
-                    var suffix = "mi"
-                    if Settings.sharedSettings.distanceUnit == "kilometers" {
-                        suffix = "km"
-                    }
-                    cell?.lblDistance.text = "\(distance) \(suffix)"
-                }
+                cell?.lblDistance.text = "\(distance) \(suffix)"
             }
         }
-        
+    
         return cell!
         
     }
@@ -228,11 +218,13 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
                 }
                 
             } else {
-                print(error)
+                print(error ?? "Unable to load games from parse")
             }
-      
-            self.sortedGames = self.sortGamesByOwner(self.games)
-            self.tableGameList.reloadData()
+            
+            DispatchQueue.main.async {
+                self.sortedGames = self.sortGamesByOwner(self.games)
+                self.tableGameList.reloadData()
+            }
         }
     }
     
@@ -246,7 +238,9 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
                 
                 for gameTypeObject in gameTypeObjects {
                     let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
-                    self.gameTypes.append(gameType)
+                    DispatchQueue.main.async {
+                        self.gameTypes.append(gameType)
+                    }
                 }
             }
             

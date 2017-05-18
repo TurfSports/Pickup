@@ -58,7 +58,9 @@ class ParseDataController {
                 for gameTypeObject in gameTypeObjects {
                     let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
                     gameTypes.append(gameType)
-                    self.gameTypesLoaded = true
+                    DispatchQueue.main.async {
+                        self.gameTypesLoaded = true
+                    }
                 }
             }
         }

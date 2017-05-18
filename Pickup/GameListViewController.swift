@@ -213,36 +213,37 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         }
         
         gameQuery.findObjectsInBackground { (objects, error) -> Void in
-            if let gameObjects = objects {
-                self.games.removeAll(keepingCapacity: true)
-                for gameObject in gameObjects {
-                    let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
-                    
-                    if (gameObject["owner"] as AnyObject).objectId == PFUser.current()?.objectId {
-                        game.userIsOwner = true
-                    }
-                    
-                    if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
-                        if joinedGames.contains(game.id) {
-                            game.userJoined = true
+            DispatchQueue.main.async {
+                if let gameObjects = objects {
+                    self.games.removeAll(keepingCapacity: true)
+                    for gameObject in gameObjects {
+                        let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
+                        
+                        if (gameObject["owner"] as AnyObject).objectId == PFUser.current()?.objectId {
+                            game.userIsOwner = true
                         }
+                        
+                        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
+                            if joinedGames.contains(game.id) {
+                                game.userJoined = true
+                            }
+                        }
+                        self.games.append(game)
                     }
-                    self.games.append(game)
+                } else {
+                    print(error ?? "Error finding objects in background")
                 }
-            } else {
-                print(error ?? "Error finding objects in background")
+                
+                if self.games.count == 0 {
+                    self.blurScreen()
+                } else {
+                    self.sortedGames = self.sortGamesByDate(self.games)
+                    self.refreshControl.endRefreshing()
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
+                    self.tableGameList.reloadData()
+                }
             }
-            
-            if self.games.count == 0 {
-                self.blurScreen()
-            } else {
-                self.sortedGames = self.sortGamesByDate(self.games)
-                self.refreshControl.endRefreshing()
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.isHidden = true
-                self.tableGameList.reloadData()
-            }
-
         }
     }
 

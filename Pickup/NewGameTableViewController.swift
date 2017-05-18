@@ -11,6 +11,11 @@ import CoreLocation
 import Parse
 
 
+var emptyGameType: GameType = GameType.init(id: "", name: "", displayName: "", sortOrder: 1, imageName: "")
+
+var emptyGame: Game = Game.init(id: "", gameType: emptyGameType, totalSlots: 1, availableSlots: 1, eventDate: Date.init(), locationName: "", ownerId: "", gameNotes: "")
+
+
 class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate, NewGameTableViewDelegate, Dismissable {
 
     let GAME_TYPE_PICKER = 0
@@ -46,7 +51,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     //If editing a game, this will be passed through the segue
     //else it will be initialized in  this view controller
-    var game: Game!
+
+    var game: Game = emptyGame
+    
     var gameObject: PFObject!
     
     var selectedGameType: GameType!
@@ -115,43 +122,44 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setHeightForGameNotesTableCell()
+        DispatchQueue.main.async {
+            
+        self.setHeightForGameNotesTableCell()
         
-        txtGameNotes.delegate = self
-        txtLocationName.delegate = self
+        self.txtGameNotes.delegate = self
+        self.txtLocationName.delegate = self
 //        txtLocationName.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-        txtLocationName.addTarget(self, action: #selector(NewGameTableViewController.textFieldDidChange(_:)), for: UIControlEvents.editingChanged)
+        self.txtLocationName.addTarget(self, action: #selector(NewGameTableViewController.textFieldDidChange(_:)), for: UIControlEvents.editingChanged)
         
         self.MIN_PLAYERS = 1
         
-        btnCreate.title = editButtonTitle[self.gameStatus]!
-        self.navigationItem.title = navBarTitle[self.gameStatus]!
+        self.btnCreate.title = self.editButtonTitle[self.gameStatus]!
+        self.navigationItem.title = self.navBarTitle[self.gameStatus]!
         
-        if gameStatus == .edit && self.game != nil {
-            getGameObjectFromParse()
-            sportTableViewCell.isUserInteractionEnabled = false
-            sportTableViewCell.selectionStyle = .none
-            sportTableViewCell.backgroundColor = Theme.UNEDITABLE_CELL_COLOR
-            txtLocationName.isEnabled = true
-            txtLocationName.isHidden = false
-            setStoredValues()
-        } else if gameStatus == .create {
-            createDefaultGame()
-            txtLocationName.isEnabled = false
-            txtLocationName.isHidden = true
-            setDefaultInitialValues()
+        if self.gameStatus == .edit {
+            self.getGameObjectFromParse()
+            self.sportTableViewCell.isUserInteractionEnabled = false
+            self.sportTableViewCell.selectionStyle = .none
+            self.sportTableViewCell.backgroundColor = Theme.UNEDITABLE_CELL_COLOR
+            self.txtLocationName.isEnabled = true
+            self.txtLocationName.isHidden = false
+            self.setStoredValues()
+        } else if self.gameStatus == .create {
+            self.createDefaultGame()
+            self.txtLocationName.isEnabled = false
+            self.txtLocationName.isHidden = true
+            self.setDefaultInitialValues()
         }
-        
-        
+            
         self.MIN_PLAYERS = self.game.totalSlots - self.game.availableSlots - 1
         if self.MIN_PLAYERS < 1 {
             self.MIN_PLAYERS = 1
         }
 
-        btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
-        btnCreate.tintColor = Theme.ACCENT_COLOR
-        btnMap.tintColor = Theme.ACCENT_COLOR
-        removeTopWhiteSpace()
+        self.btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
+        self.btnCreate.tintColor = Theme.ACCENT_COLOR
+        self.btnMap.tintColor = Theme.ACCENT_COLOR
+        self.removeTopWhiteSpace()
 
         self.datePicker.minimumDate = Date()
         self.datePicker.maximumDate = Date().addingTimeInterval(2 * 7 * 24 * 60 * 60)
@@ -159,7 +167,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         //Attempting to get rid of extra cell on bottom, not sure if this is working
         self.tableView.tableFooterView = self.footerView
-        
+        }
     }
     
     func setHeightForGameNotesTableCell() {
@@ -191,33 +199,40 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     fileprivate func createDefaultGame() {
         
+        DispatchQueue.main.async {
+        
         let defaultGameType: GameType
         if self.selectedGameType == nil {
-            defaultGameType = self.gameTypes[0]
+            defaultGameType = emptyGameType
         } else {
             defaultGameType = self.selectedGameType
         }
         
         self.numberOfPlayersPicker.selectRow(9, inComponent: 0, animated: false)
         
-        let currentUser = PFUser.current()
-        self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: earliestSuggestedGameTime(), locationName: "", ownerId: (currentUser?.objectId)!, gameNotes: "")
+        var currentUser = PFUser.current()
+        if currentUser == nil { currentUser = PFUser.init() }
+        self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: "", ownerId: (currentUser?.objectId) ?? "_userID", gameNotes: "")
         
         self.game.userIsOwner = true
         self.game.userJoined = true
-        self.game.ownerId = (currentUser?.objectId)!
+        self.game.ownerId = (currentUser?.objectId) ?? "_userID"
+        }
     }
     
     fileprivate func setDefaultInitialValues() {
         
-        lblPlayers.text = ""
+        DispatchQueue.main.async {
         
-        lblSport.text = self.game.gameType.displayName
-        sportPicker.selectRow(self.game.gameType.sortOrder - 1, inComponent: 0, animated: false)
+        self.lblPlayers.text = ""
+        
+        self.lblSport.text = self.game.gameType.displayName
+        self.sportPicker.selectRow(self.game.gameType.sortOrder - 1, inComponent: 0, animated: false)
         
         //Round to second nearest five minute increment
-        self.datePicker.date = earliestSuggestedGameTime()
-        lblDate.text = DateUtilities.dateString(self.datePicker.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+        self.datePicker.date = self.earliestSuggestedGameTime()
+        self.lblDate.text = DateUtilities.dateString(self.datePicker.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+        }
     }
     
     func removeTopWhiteSpace() {
@@ -375,7 +390,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
         
         if (indexPath as NSIndexPath).section == 2 && (indexPath as NSIndexPath).row == 0 {
-            rowHeight = self.gameNotesTableViewHeight
+            DispatchQueue.main.async {
+                rowHeight = self.gameNotesTableViewHeight
+            }
         }
         
         return rowHeight
