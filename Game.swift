@@ -13,6 +13,19 @@ import CoreLocation
 
 class Game {
     
+    private let kGameType:String = "GameType"
+    private let kTotalSlots:String = "Total Slots"
+    private let kAvailableSlots:String = "Available Slots"
+    private let kEventDate:String = "Event Date"
+    private let kLocationName:String = "Location Name"
+    private let kOwnerId:String = "Owner ID"
+    private let kGameNotes:String = "Game Notes"
+    private let kUserJoined:String = "User Joined Bool"
+    private let kUserIsOwner:String = "User Is Owner Bool"
+    private let kIsCancelled:String = "Is Cancelled Bool"
+    private let kLatitude:String = "Latitude"
+    private let kLongitude:String = "Longitude"
+    
     var id:String
     var gameType:GameType
     var totalSlots:Int
@@ -45,5 +58,13 @@ class Game {
         self.longitude = longitude
     }
     
+    var jsonData: Data? {
+        return try? JSONSerialization.data(withJSONObject: gameDictionary, options: .prettyPrinted)
+    }
+    
+    var gameDictionary: [String: Any] {
+        
+        return [kGameType: gameType, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDate, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kUserJoined: userJoined, kUserIsOwner: userIsOwner, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude]
+    }
     
 }

@@ -87,7 +87,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         if editingNotes == false  {
             if enteredDataIsValid() == true {
-                FirebaseController.shared.
+                FirebaseController.shared.save(game: game, with: UUID.init(), success: { (success) in
+                    if success == false {
+                        print("Error saving")
+                    }
+                })
                 
                 if !NotificationsManager.notificationsInitiated() {
                     NotificationsManager.registerNotifications()
