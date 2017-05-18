@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import Firebase
 import Parse
 
 
@@ -86,7 +87,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         if editingNotes == false  {
             if enteredDataIsValid() == true {
-                saveParseGameObject()
+                FIr.
                 
                 if !NotificationsManager.notificationsInitiated() {
                     NotificationsManager.registerNotifications()
