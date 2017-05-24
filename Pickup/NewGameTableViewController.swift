@@ -54,7 +54,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 
     var game: Game = emptyGame
     
-    var gameObject: PFObject!
+    var gameObject: [String: Any]!
     
     var selectedGameType: GameType!
     
@@ -217,14 +217,14 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
         
         self.numberOfPlayersPicker.selectRow(9, inComponent: 0, animated: false)
+            
         
-        var currentUser = PFUser.current()
-        if currentUser == nil { currentUser = PFUser.init() }
-        self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: "", ownerId: (currentUser?.objectId) ?? "_userID", gameNotes: "")
+        
+        self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: "", ownerId: (currentUser.objectId) ?? "_userID", gameNotes: "")
         
         self.game.userIsOwner = true
         self.game.userJoined = true
-        self.game.ownerId = (currentUser?.objectId) ?? "_userID"
+        self.game.ownerId = (currentUser.objectId) ?? "_userID"
         }
     }
     
@@ -581,13 +581,13 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         */
     }
     
-    fileprivate func saveParseGameObject() {
+    fileprivate func saveGame() {
         
-        var gameObject: PFObject
+        var gameObject: [String: Any]
         //TODO: - Figure out how to save the PFObject back - or at least why it's not being saved
         
         if gameStatus == .create {
-            gameObject = PFObject(className: "Game")
+            // Create a game
             
         } else { //gameStatus == .EDIT
             gameObject = self.gameObject

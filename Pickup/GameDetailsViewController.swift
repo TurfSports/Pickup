@@ -98,7 +98,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
                 self.leaveGame()
                 break
             case .user_OWNED:
-                self.cancelGameOnParse()
                 break
             }
             
@@ -112,7 +111,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     //MARK: - Joining/Leaving game
     
     fileprivate func joinGame() {
-        self.joinPFUserToPFGame()
         self.addGameToUserDefaults()
         self.game.availableSlots += -1
         self.game.userJoined = !self.game.userJoined
@@ -142,82 +140,23 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     
     
     
-    //MARK: - Parse
-    fileprivate func joinPFUserToPFGame() {
-        let gameQuery = PFQuery(className: "Game")
-        gameQuery.whereKey("objectId", equalTo: self.game.id)
-        
-        gameQuery.getFirstObjectInBackground {
-            (object: PFObject?, error: Error?) -> Void in
-            if error != nil || object == nil {
-                print("User is creator")
-                print("The getFirstObject on Game request failed.")
-            } else {
-                let currentUser = PFUser.current()
-                let gameRelations = object?.relation(forKey: "players")
-                gameRelations?.add(currentUser!)
-                
-                //Decrement slots available
-                var slotsAvailable = object?["slotsAvailable"] as! Int
-                slotsAvailable += -1
-                object?["slotsAvailable"] = slotsAvailable
-                
-                DispatchQueue.main.async {
-                    object?.saveInBackground()
-                    _ = self.navigationController?.popViewController(animated: true)
-                }
-            }
-        }
-    }
     
+    //==========================================================================
+    //  MARK: - Firebase
+    //==========================================================================
     
-    fileprivate func removePFUserFromPFGame() {
-        let gameQuery = PFQuery(className: "Game")
-        gameQuery.whereKey("objectId", equalTo: self.game.id)
-        
-        gameQuery.getFirstObjectInBackground {
-            (object: PFObject?, error: Error?) -> Void in
-            if error != nil || object == nil {
-                print("The getFirstObject on Game request failed.")
-            } else {
-                let currentUser = PFUser.current()
-                let gameRelations = object?.relation(forKey: "players")
-                gameRelations?.remove(currentUser!)
-                object?.saveInBackground()
-                
-                //Increment slots available
-                var slotsAvailable = object?["slotsAvailable"] as! Int
-                slotsAvailable += 1
-                object?["slotsAvailable"] = slotsAvailable
-                DispatchQueue.main.async {
-                _ = self.navigationController?.popViewController(animated: true)
-                }
-            }
-        }
+    fileprivate func add(_ user: String, to Game: Game) {
         
     }
     
-    fileprivate func cancelGameOnParse() {
-        let gameQuery = PFQuery(className: "Game")
-        gameQuery.whereKey("objectId", equalTo: self.game.id)
+    fileprivate func remove(_ user: String, to Game: Game) {
         
-        gameQuery.getFirstObjectInBackground {
-            (object: PFObject?, error: Error?) -> Void in
-            if error != nil || object == nil {
-                print("The getFirstObject on Game request failed.")
-            } else {
-                object?["isCancelled"] = true
-                object?.saveInBackground()
-                
-                LocalNotifications.cancelGameNotification(self.game)
-                
-                self.removeGameFromUserDefaults()
-                DispatchQueue.main.async {
-                _ = self.navigationController?.popViewController(animated: true)
-                }
-            }
-        }
     }
+    
+    fileprivate func cancel(_ Game: Game) {
+        
+    }
+
 
     
     //MARK: - User Defaults

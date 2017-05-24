@@ -13,7 +13,7 @@ import FirebaseStorage
 
 class FirebaseController {
     
-    let folderRef = FIRStorage.storage().reference(forURL: "gs://pickup-a837a.appspot.com/")
+    let folderRef = Storage.storage().reference(forURL: "gs://pickup-a837a.appspot.com/")
     
     static let shared = FirebaseController()
     

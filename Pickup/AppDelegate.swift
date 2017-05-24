@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        FIRApp.configure()
+        FirebaseApp.configure()
         Theme.applyTheme()
         
         // Initialize Parse.
@@ -25,19 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // https://parse.com/policies
         
         //Set up current user
-        let currentUser = PFUser.current()
-        
-        if currentUser == nil {
-            PFAnonymousUtils.logIn {
-                (user: PFUser?, error: Error?) -> Void in
-                if error != nil || user == nil {
-                    print("Anonymous login failed.")
-                } else {
-                    user!["deviceType"] = UIDevice.current.name
-                    user?.saveInBackground()
-                }
-            }
-        }
         
         if NotificationsManager.notificationsInitiated() {
             NotificationsManager.registerNotifications()

@@ -35,8 +35,7 @@ class ParseDataController {
     init() {}
     
     func getGameTypes() -> [GameType] {
-        loadGameTypesFromParse()
-        return gameTypes
+        return []
     }
     
     
@@ -44,24 +43,4 @@ class ParseDataController {
     
     //Perhaps this class can control retrieval of all data from Parse
     
-    fileprivate func loadGameTypesFromParse() {
-        var gameTypes:[GameType] = []
-        let gameTypeQuery = PFQuery(className: "GameType")
-        
-        gameTypeQuery.findObjectsInBackground { (objects, error) -> Void in
-            
-            if let gameTypeObjects = objects {
-                
-                gameTypes.removeAll(keepingCapacity: true)
-                
-                for gameTypeObject in gameTypeObjects {
-                    let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
-                    gameTypes.append(gameType)
-                    DispatchQueue.main.async {
-                        self.gameTypesLoaded = true
-                    }
-                }
-            }
-        }
-    }
 }

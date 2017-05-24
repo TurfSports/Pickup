@@ -46,7 +46,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
-            loadGameTypesFromParse()
+            loadGameTypesFromFirebase()
         } else {
             loadGameTypesFromUserDefaults()
         }
@@ -183,70 +183,16 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     }
     
     
-    //MARK: - Parse
+    //MARK: - Load from firebase
     
-    fileprivate func loadGamesFromParse() {
-        let gameQuery = PFQuery(className: "Game")
+    //TODO: - Setup Load From Firebase
+    
+    func loadGamesFromFirebase() {
         
-        gameQuery.whereKey("date", greaterThanOrEqualTo: Date().addingTimeInterval(-1.5 * 60 * 60))
-        gameQuery.whereKey("date", lessThanOrEqualTo: Date().addingTimeInterval(2 * 7 * 24 * 60 * 60))
-        gameQuery.whereKey("objectId", containedIn: getJoinedGamesFromUserDefaults())
-        gameQuery.whereKey("isCancelled", equalTo: false)
-        
-        gameQuery.findObjectsInBackground { (objects, error) -> Void in
-            if let gameObjects = objects {
-                self.games.removeAll(keepingCapacity: true)
-                
-                var gameObjectCount = 0
-                
-                for gameObject in gameObjects {
-                    
-                    let gameId = (gameObject["gameType"] as AnyObject).objectId as String!
-
-                    let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.getGameTypeById(gameId!))
-                    
-                    if (gameObject["owner"] as AnyObject).objectId == PFUser.current()?.objectId {
-                        game.userIsOwner = true
-                    }
-                    
-                    game.userJoined = true
-                    self.games.append(game)
-                    gameObjectCount += 1
-                }
-                
-                if gameObjectCount == 0 {
-                    self.blurNoGames.isHidden = false
-                }
-                
-            } else {
-                print(error ?? "Unable to load games from parse")
-            }
-            
-            DispatchQueue.main.async {
-                self.sortedGames = self.sortGamesByOwner(self.games)
-                self.tableGameList.reloadData()
-            }
-        }
     }
     
-    fileprivate func loadGameTypesFromParse() {
+    func loadGameTypesFromFirebase() {
         
-        let gameTypeQuery = PFQuery(className: "GameType")
-        gameTypeQuery.findObjectsInBackground { (objects, error) -> Void in
-            if let gameTypeObjects = objects {
-                
-                self.gameTypes.removeAll(keepingCapacity: true)
-                
-                for gameTypeObject in gameTypeObjects {
-                    let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
-                    DispatchQueue.main.async {
-                        self.gameTypes.append(gameType)
-                    }
-                }
-            }
-            
-            self.saveGameTypesToUserDefaults()
-        }
     }
     
     //MARK: - Sorting functions
