@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Parse
 import MapKit
 
 class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetailsViewDelegate {

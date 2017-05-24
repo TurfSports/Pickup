@@ -64,7 +64,23 @@ class Game {
     
     var gameDictionary: [String: Any] {
         
-        return [kGameType: gameType, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDate, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kUserJoined: userJoined, kUserIsOwner: userIsOwner, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude]
+        let eventDateString = String(describing: eventDate)
+        
+        return [kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kUserJoined: userJoined, kUserIsOwner: userIsOwner, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude]
     }
-    
+}
+
+enum GameKeys {
+    case kGameType = "GameType"
+    case kTotalSlots = "Total Slots"
+    case kAvailableSlots = "Available Slots"
+    case kEventDate = "Event Date"
+    case kLocationName = "Location Name"
+    case kOwnerId = "Owner ID"
+    case kGameNotes = "Game Notes"
+    case kUserJoined = "User Joined Bool"
+    case kUserIsOwner = "User Is Owner Bool"
+    case kIsCancelled = "Is Cancelled Bool"
+    case kLatitude = "Latitude"
+    case kLongitude = "Longitude"
 }

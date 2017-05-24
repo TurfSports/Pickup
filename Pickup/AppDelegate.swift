@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Parse
 import Firebase
 
 @UIApplicationMain
@@ -24,9 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialize Parse.
         // Parse Licensing Agreement
         // https://parse.com/policies
-        
-        Parse.setApplicationId("vXTZeIEcllE2fqSPJab5OdZkCbB9TmfW9DIutXJn",
-            clientKey: "xUjfmNs7umcLNLUdINYj6jfe5Y4dQx6CT8JMEpqJ")
         
         //Set up current user
         let currentUser = PFUser.current()
@@ -93,18 +89,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: - Remote notifications
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let installation = PFInstallation.current()
-        installation?["user"] = PFUser.current()
-        installation?.setDeviceTokenFrom(deviceToken)
-        installation?.saveInBackground()
+        // Setup User
         
-//        PFPush.subscribeToChannelInBackgr ound("") { (succeeded: Bool, error: NSError?) in
-//            if succeeded {
-//                print("ParseStarterProject successfully subscribed to push notifications on the broadcast channel.");
-//            } else {
-//                print("ParseStarterProject failed to subscribe to push notifications on the broadcast channel with error = %@.", error)
-//            }
-//        }
+//        let installation = PFInstallation.current()
+//        installation?["user"] = PFUser.current()
+//        installation?.setDeviceTokenFrom(deviceToken)
+//        installation?.saveInBackground()
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

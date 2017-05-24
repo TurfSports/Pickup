@@ -4,27 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Bolts.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>GTMSessionFetcher.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>GoogleToolboxForMac.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Parse.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>ParseUI.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -42,6 +27,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+<<<<<<< Updated upstream
 		<key>0D4663E57FE1D1007A609C37FB525AFC</key>
 		<dict>
 			<key>primary</key>
@@ -52,17 +38,20 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>757C6A3CC1F827517BF1F5AE2457CC22</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A760316124FD796EF09C09479E9F0021</key>
+=======
+		<key>757C6A3CC1F827517BF1F5AE2457CC22</key>
+>>>>>>> Stashed changes
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>C052BEBFBD0AB5218CC64BA3450F6547</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F957EABCA56BD8F5B626798CC7B344D3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

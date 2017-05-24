@@ -10,6 +10,12 @@ import Foundation
 
 class GameType {
     
+    private let kId = "id"
+    private let kName = "name"
+    private let kdisplayName = "displayName"
+    private let ksortOrder = "sortOrder"
+    private let kimageName = "imageName"
+    
     let id:String
     let name:String
     let displayName:String
@@ -58,6 +64,10 @@ class GameType {
         let gameType = GameType.init(id: id!, name: name!, displayName: displayName!, sortOrder: sortOrder!, imageName: imageName!)
         
         return gameType
+    }
+    
+    var dictionaryRep: [String: Any] {
+        return [kId: id, kName: name, ksortOrder: sortOrder, kimageName: imageName, kdisplayName: displayName]
     }
     
 }

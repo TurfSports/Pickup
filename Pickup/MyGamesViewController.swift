@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 import Firebase
-import Parse
+
 
 class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, MyGamesTableViewDelegate, DismissalDelegate {
 

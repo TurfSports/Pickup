@@ -7,23 +7,22 @@
 //
 
 import Foundation
-import Parse
 
 class GameConverter {
     
-    static func convertParseObject(_ gameObject: PFObject, selectedGameType: GameType) -> Game {
+    static func convert(_ dictionary: [String: Any], to selectedGameType: GameType) -> Game {
      
         
         let id = gameObject.objectId!
         let gameType = selectedGameType
-        let availableSlots = gameObject["slotsAvailable"] as! Int
-        let totalSlots = gameObject["totalSlots"] as! Int
-        let eventDate = gameObject["date"] as! Date
-        let locationName = gameObject["locationName"] as! String
-        let owner = (gameObject["owner"] as AnyObject).objectId!
-        let gameNotes = gameObject["gameNotes"] as! String
-        let latitude =  (gameObject["location"]! as AnyObject).latitude
-        let longitude = (gameObject["location"]! as AnyObject).longitude
+        let availableSlots = dictionary[GameKeys.kAvailableSlots] as! Int
+        let totalSlots = dictionary[GameKeys.kTotalSlots] as! Int
+        let eventDate = dictionary[GameKeys.kEventDate] as! Date
+        let locationName = dictionary[GameKeys.kLocationName] as! String
+        let owner = (dictionary[GameKeys.kOwnerId] as AnyObject).objectId!
+        let gameNotes = dictionary[GameKeys.kGameNotes] as! String
+        let latitude =  (dictionary[GameKeys.kLatitude]! as AnyObject).latitude
+        let longitude = (gameObject[GameKeys.kLongitude]! as AnyObject).longitude
         let game = Game.init(id: id, gameType: gameType, totalSlots: totalSlots, availableSlots: availableSlots, eventDate: eventDate, locationName: locationName, ownerId: owner!, gameNotes: gameNotes)
         
         game.setCoordinates(latitude!, longitude: longitude!)

@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreLocation
-import Parse
 
 class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, DismissalDelegate {
 

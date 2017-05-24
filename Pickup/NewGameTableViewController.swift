@@ -9,12 +9,11 @@
 import UIKit
 import CoreLocation
 import Firebase
-import Parse
 
 
-var emptyGameType: GameType = GameType.init(id: "", name: "", displayName: "", sortOrder: 1, imageName: "")
+var emptyGameType: GameType = GameType.init(id: "1", name: "None", displayName: "Freelancer", sortOrder: 1, imageName: "basketball")
 
-var emptyGame: Game = Game.init(id: "", gameType: emptyGameType, totalSlots: 1, availableSlots: 1, eventDate: Date.init(), locationName: "", ownerId: "", gameNotes: "")
+var emptyGame: Game = Game.init(id: "0", gameType: emptyGameType, totalSlots: 1, availableSlots: 1, eventDate: Date.init(), locationName: "", ownerId: "Freelancer", gameNotes: "")
 
 
 class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate, NewGameTableViewDelegate, Dismissable {
@@ -87,9 +86,13 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         if editingNotes == false  {
             if enteredDataIsValid() == true {
-                FirebaseController.shared.save(game: game, with: UUID.init(), success: { (success) in
+                GameController.put(game: self.game, withUUID: UUID.init(), success: { (success) in
                     if success == false {
                         print("Error saving")
+                        let alertController: UIAlertController = UIAlertController.init(title: "Error saving your game. Please try again.", message: "Ok", preferredStyle: .alert)
+                        self.present(alertController, animated: true, completion: nil)
+                    } else {
+                        self.dismiss(animated: true, completion: nil)
                     }
                 })
                 
@@ -563,7 +566,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     //MARK: - Parse
     
     fileprivate func getGameObjectFromParse() {
-        
+        /*
         print("Getting game object from Parse")
         let gameQuery = PFQuery(className:"Game")
         gameQuery.getObjectInBackground(withId: self.game.id) {
@@ -575,6 +578,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 self.gameObject = nil
             }
         }
+        */
     }
     
     fileprivate func saveParseGameObject() {
