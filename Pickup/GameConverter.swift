@@ -13,19 +13,19 @@ class GameConverter {
     static func convert(_ dictionary: [String: Any], to selectedGameType: GameType) -> Game {
      
         
-        let id = gameObject.objectId!
+        let id = dictionary.first?.key
         let gameType = selectedGameType
-        let availableSlots = dictionary[GameKeys.kAvailableSlots] as! Int
-        let totalSlots = dictionary[GameKeys.kTotalSlots] as! Int
-        let eventDate = dictionary[GameKeys.kEventDate] as! Date
-        let locationName = dictionary[GameKeys.kLocationName] as! String
-        let owner = (dictionary[GameKeys.kOwnerId] as AnyObject).objectId!
-        let gameNotes = dictionary[GameKeys.kGameNotes] as! String
-        let latitude =  (dictionary[GameKeys.kLatitude]! as AnyObject).latitude
-        let longitude = (gameObject[GameKeys.kLongitude]! as AnyObject).longitude
-        let game = Game.init(id: id, gameType: gameType, totalSlots: totalSlots, availableSlots: availableSlots, eventDate: eventDate, locationName: locationName, ownerId: owner!, gameNotes: gameNotes)
+        let availableSlots = dictionary[GameKeys.kAvailableSlots.key()] as! Int
+        let totalSlots = dictionary[GameKeys.kTotalSlots.key()] as! Int
+        let eventDate = dictionary[GameKeys.kEventDate.key()] as! Date
+        let locationName = dictionary[GameKeys.kLocationName.key()] as! String
+        let owner = (dictionary[GameKeys.kOwnerId.key()] as! String)
+        let gameNotes = dictionary[GameKeys.kGameNotes.key()] as! String
+        let latitude =  (dictionary[GameKeys.kLatitude.key()]! as! Double)
+        let longitude = (dictionary[GameKeys.kLongitude.key()]! as! Double)
+        let game = Game.init(id: id!, gameType: gameType, totalSlots: totalSlots, availableSlots: availableSlots, eventDate: eventDate, locationName: locationName, ownerId: owner, gameNotes: gameNotes)
         
-        game.setCoordinates(latitude!, longitude: longitude!)
+        game.setCoordinates(latitude, longitude: longitude)
         
         return game
     }

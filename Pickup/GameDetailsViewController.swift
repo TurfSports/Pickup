@@ -124,7 +124,8 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     }
     
     fileprivate func leaveGame() {
-        self.removePFUserFromPFGame()
+        // remove User from game
+        
         self.removeGameFromUserDefaults()
         self.game.userJoined = !self.game.userJoined
         self.game.availableSlots += 1

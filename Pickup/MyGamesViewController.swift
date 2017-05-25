@@ -57,7 +57,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     override func viewDidAppear(_ animated: Bool) {
         blurNoGames.isHidden = true
-        loadGamesFromParse()
+        loadGamesFromFirebase()
         self.tableGameList.reloadData()
     }
     

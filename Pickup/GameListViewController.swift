@@ -28,7 +28,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation? {
         didSet {
-            loadGamesFromParse()
+            // Load Games from Firebase
         }
     }
     
@@ -45,7 +45,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         
-    refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), for: UIControlEvents.valueChanged)
+//    refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), for: UIControlEvents.valueChanged)
 //    refreshControl.addTarget(self, action: "loadGamesFromParse", forControlEvents: UIControlEvents.ValueChanged)
         return refreshControl
     }()
@@ -75,7 +75,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     override func viewDidAppear(_ animated: Bool) {
         noGamesBlur.isHidden = true
-        loadGamesFromParse()
+//        loadGamesFromParse()
         self.tableGameList.reloadData()
     }
     
@@ -175,7 +175,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         return cell!
     }
-    
+    /*
     //MARK: - Parse
     
     func loadGamesFromParse() {
@@ -246,6 +246,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         }
     }
 
+     */
     
     //MARK: - Location Manager Delegate
     //TODO: Abstract location methods into their own class

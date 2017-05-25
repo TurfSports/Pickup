@@ -218,13 +218,14 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         self.numberOfPlayersPicker.selectRow(9, inComponent: 0, animated: false)
             
+        // TODO: - Add default user
         
-        
-        self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: "", ownerId: (currentUser.objectId) ?? "_userID", gameNotes: "")
+        self.game = Game.init(id: "_newGame", gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: "", ownerId: "userID", gameNotes: "")
         
         self.game.userIsOwner = true
         self.game.userJoined = true
-        self.game.ownerId = (currentUser.objectId) ?? "_userID"
+            // Insert user id
+        self.game.ownerId = "_userID"
         }
     }
     
@@ -581,6 +582,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         */
     }
     
+    /*
     fileprivate func saveGame() {
         
         var gameObject: [String: Any]
@@ -593,18 +595,22 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             gameObject = self.gameObject
         }
         
-        setGameObjectFields(gameObject)
-        saveGameObjectInBackground(gameObject)
+//        setGameObjectFields(gameObject)
+//        saveGameObjectInBackground(gameObject)
 
     }
     
-    fileprivate func setGameObjectFields(_ gameObject: PFObject) {
+    
+    // Parse Save
+
+    
+    fileprivate func setGameObjectFields(_ gameObject: ) {
         
 //        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
         gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
         
         gameObject["date"] = self.game.eventDate
-        let point = PFGeoPoint(latitude:self.game.latitude, longitude: self.game.longitude)
+        let point = (latitude:self.game.latitude, longitude: self.game.longitude)
         gameObject["location"] = point
         gameObject["locationName"] = self.game.locationName
         gameObject["gameNotes"] = self.game.gameNotes
@@ -617,8 +623,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             gameObject.relation(forKey: "players").add(PFUser.current()!)
         }
     }
+   
     
-    fileprivate func saveGameObjectInBackground (_ gameObject: PFObject) {
+    fileprivate func saveGameObjectInBackground (_ gameObject: Any) {
         print("Saving object in background with block")
         gameObject.saveInBackground {
             (success: Bool, error: Error?) -> Void in
@@ -645,6 +652,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             }
         }
     }
+     */
     
     //MARK: - User Defaults
     

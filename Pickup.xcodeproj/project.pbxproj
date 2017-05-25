@@ -58,7 +58,6 @@
 		02EFBF561C6BEB9B001774A2 /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EFBF551C6BEB9B001774A2 /* GameTableViewCell.swift */; };
 		02F08F381C529FEE00A76EFB /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F371C529FEE00A76EFB /* Game.swift */; };
 		02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F391C52A5ED00A76EFB /* Player.swift */; };
-		02F269591C87A37300D46519 /* MyGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F269581C87A37300D46519 /* MyGamesViewController.swift */; };
 		02F2695B1C87B97E00D46519 /* MyGamesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */; };
 		02F5D0101C84C12F00A95B92 /* CustomProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */; };
 		1C4FC480A3F603BB11804E8A /* Pods_Pickup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9064DF1AD6495310DDAA1270 /* Pods_Pickup.framework */; };
@@ -68,6 +67,7 @@
 		D09408641ECE3C69005B2D2B /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09408631ECE3C69005B2D2B /* FirebaseController.swift */; };
 		D0BD959E1EC28D4400E29671 /* PickupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD959D1EC28D4400E29671 /* PickupUITests.swift */; };
 		D0BD95AC1EC28D4D00E29671 /* PickupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */; };
+		D0F775871ED75C6200DFC8D6 /* MyGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F269581C87A37300D46519 /* MyGamesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -625,7 +625,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02F269591C87A37300D46519 /* MyGamesViewController.swift in Sources */,
+				D0F775871ED75C6200DFC8D6 /* MyGamesViewController.swift in Sources */,
 				02071DEC1C8EB6DD00A00991 /* GameTypeListSingleton.swift in Sources */,
 				024DDF101C8C03EF000E34D7 /* DistanceEnum.swift in Sources */,
 				025330F71C56FAA600B6ABDD /* Theme.swift in Sources */,

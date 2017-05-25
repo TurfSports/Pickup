@@ -10,12 +10,14 @@ import Foundation
 
 class PlayerTypeConverter {
     
-    static func convertParseObject (_ playerObject: PFUser) -> Player {
+    static func convertParseObject (_ playerDictionary: [String: Any]) -> Player {
         
-        let id = playerObject.objectId!
-        let username = playerObject.username!
+        let id = playerDictionary.first?.key
+        let username = playerDictionary["username"] as? String
         
-        let player = Player.init(id: id, username: username)
+        guard id != nil, username != nil else { return Player(id: "_userID", username: "username") }
+        
+        let player = Player.init(id: id!, username: username!)
         
         return player
     }

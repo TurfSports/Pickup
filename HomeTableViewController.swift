@@ -27,7 +27,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation? {
         didSet {
-            loadGameCounts()
+            // Load Game Counts
         }
     }
     
@@ -51,11 +51,12 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
 //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
 //
 //      iOS 9.3
-        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithSegue(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithSegue"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithAlert"), object: nil)
+        // Add load games with segue and alert
+//        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGamesFromParseWithSegue(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithSegue"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithAlert"), object: nil)
 
 //        refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
-        refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), for: UIControlEvents.valueChanged)
+//        refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)
         self.tableView.addSubview(activityIndicator)
         
@@ -63,10 +64,10 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
-        loadGameCounts()
+//        loadGameCounts()
         
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
-            loadGameTypesFromParse()
+//            loadGameTypesFromParse()
         } else {
             loadGameTypesFromUserDefaults()
         }
@@ -89,7 +90,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     override func viewDidAppear(_ animated: Bool) {
         if currentLocation != nil {
-            loadGameCounts()
+//            loadGameCounts()
         }
     }
     
@@ -180,6 +181,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     
     //MARK: - Parse
+    
+    /*
     
     fileprivate func loadGameTypesFromParse() {
         
@@ -291,6 +294,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             }
         }
     }
+     */
     
     //MARK: - Notification Alert
     

@@ -13,18 +13,18 @@ import CoreLocation
 
 class Game {
     
-    private let kGameType:String = "GameType"
-    private let kTotalSlots:String = "Total Slots"
-    private let kAvailableSlots:String = "Available Slots"
-    private let kEventDate:String = "Event Date"
-    private let kLocationName:String = "Location Name"
-    private let kOwnerId:String = "Owner ID"
-    private let kGameNotes:String = "Game Notes"
-    private let kUserJoined:String = "User Joined Bool"
-    private let kUserIsOwner:String = "User Is Owner Bool"
-    private let kIsCancelled:String = "Is Cancelled Bool"
-    private let kLatitude:String = "Latitude"
-    private let kLongitude:String = "Longitude"
+    private let kGameType:String = "gameType"
+    private let kTotalSlots:String = "totalSlots"
+    private let kAvailableSlots:String = "availableSlots"
+    private let kEventDate:String = "eventDate"
+    private let kLocationName:String = "locationName"
+    private let kOwnerId:String = "ownerID"
+    private let kGameNotes:String = "gameNotes"
+    private let kUserJoined:String = "userJoinedBool"
+    private let kUserIsOwner:String = "userIsOwnerBool"
+    private let kIsCancelled:String = "isCancelledBool"
+    private let kLatitude:String = "latitude"
+    private let kLongitude:String = "longitude"
     
     var id:String
     var gameType:GameType
@@ -66,21 +66,50 @@ class Game {
         
         let eventDateString = String(describing: eventDate)
         
-        return [kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kUserJoined: userJoined, kUserIsOwner: userIsOwner, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude]
+        return [id: [kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kUserJoined: userJoined, kUserIsOwner: userIsOwner, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude]]
     }
 }
 
 enum GameKeys {
-    case kGameType = "GameType"
-    case kTotalSlots = "Total Slots"
-    case kAvailableSlots = "Available Slots"
-    case kEventDate = "Event Date"
-    case kLocationName = "Location Name"
-    case kOwnerId = "Owner ID"
-    case kGameNotes = "Game Notes"
-    case kUserJoined = "User Joined Bool"
-    case kUserIsOwner = "User Is Owner Bool"
-    case kIsCancelled = "Is Cancelled Bool"
-    case kLatitude = "Latitude"
-    case kLongitude = "Longitude"
+    case kGameType
+    case kTotalSlots
+    case kAvailableSlots
+    case kEventDate
+    case kLocationName
+    case kOwnerId
+    case kGameNotes
+    case kUserJoined
+    case kUserIsOwner
+    case kIsCancelled
+    case kLatitude
+    case kLongitude
+    
+    func key() -> String {
+        switch self {
+        case .kGameType:
+            return "gameType"
+        case .kTotalSlots:
+            return "totalSlots"
+        case .kAvailableSlots:
+            return "availableSlots"
+        case .kEventDate:
+            return "eventDate"
+        case .kLocationName:
+            return "locationName"
+        case .kOwnerId:
+            return "ownerID"
+        case .kGameNotes:
+            return "gameNotes"
+        case .kUserJoined:
+            return "userJoinedBool"
+        case .kUserIsOwner:
+            return "userIsOwnerBool"
+        case .kIsCancelled:
+            return "isCancelledBool"
+        case .kLatitude:
+            return "latitude"
+        case .kLongitude:
+            return "longitude"
+        }
+    }
 }

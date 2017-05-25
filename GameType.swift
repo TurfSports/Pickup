@@ -10,7 +10,6 @@ import Foundation
 
 class GameType {
     
-    private let kId = "id"
     private let kName = "name"
     private let kdisplayName = "displayName"
     private let ksortOrder = "sortOrder"
@@ -67,7 +66,27 @@ class GameType {
     }
     
     var dictionaryRep: [String: Any] {
-        return [kId: id, kName: name, ksortOrder: sortOrder, kimageName: imageName, kdisplayName: displayName]
+        return [id: [kName: name, ksortOrder: sortOrder, kimageName: imageName, kdisplayName: displayName]]
     }
     
+}
+
+enum GameTypeKeys {
+    case kName
+    case kdisplayName
+    case ksortOrder
+    case kimageName
+    
+    func key() -> String {
+        switch self {
+        case .kName:
+            return "name"
+        case .kdisplayName:
+            return "displayName"
+        case .ksortOrder:
+            return "sortOrder"
+        case .kimageName:
+            return "imageName"
+        }
+    }
 }
