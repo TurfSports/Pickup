@@ -109,10 +109,10 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             let latitude:CLLocationDegrees = game.latitude
             let longitude:CLLocationDegrees = game.longitude
             let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-            if self.currentLocation != nil && Settings.sharedSettings.defaultLocation == "none" {
+            if self.currentLocation != nil && Settings.shared.defaultLocation == "none" {
             let distance: Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!)
                     var suffix = "mi"
-                if Settings.sharedSettings.distanceUnit == "kilometers" {
+                if Settings.shared.distanceUnit == "kilometers" {
                     suffix = "km"
                 }
                 cell?.lblDistance.text = "\(distance) \(suffix)"
@@ -281,7 +281,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         
         var distanceUnitMeasurement: Double
         
-        if Settings.sharedSettings.distanceUnit == "miles" {
+        if Settings.shared.distanceUnit == "miles" {
             distanceUnitMeasurement = METERS_IN_MILE
         } else {
             distanceUnitMeasurement = METERS_IN_KILOMETER

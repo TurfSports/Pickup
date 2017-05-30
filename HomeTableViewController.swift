@@ -60,7 +60,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         self.tableView.addSubview(refresher)
         self.tableView.addSubview(activityIndicator)
         
-        _ = GameTypeList.sharedGameTypes
+        _ = GameTypeList.shared
         
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
@@ -162,7 +162,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             }
         }
         
-        GameTypeList.sharedGameTypes.setGameTypeList(self.gameTypes)
+        GameTypeList.shared.setGameTypeList(self.gameTypes)
         activityIndicator.stopAnimating()
     }
     
@@ -333,7 +333,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         
-        if (!CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .authorizedWhenInUse) && Settings.sharedSettings.defaultLocation == "none" {
+        if (!CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .authorizedWhenInUse) && Settings.shared.defaultLocation == "none" {
             getZipCodeFromUserWithAlert()
         }
         
@@ -404,9 +404,9 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 
                 (alert.actions[0] as UIAlertAction).isEnabled = true
                 
-                Settings.sharedSettings.defaultLocation = zipcode
-                Settings.sharedSettings.defaultLatitude = coordinates.latitude
-                Settings.sharedSettings.defaultLongitude = coordinates.longitude
+                Settings.shared.defaultLocation = zipcode
+                Settings.shared.defaultLatitude = coordinates.latitude
+                Settings.shared.defaultLongitude = coordinates.longitude
             }
         })
 

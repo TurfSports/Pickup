@@ -94,14 +94,14 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        if Settings.sharedSettings.defaultLocation == "none" {
+        if Settings.shared.defaultLocation == "none" {
             if let location = locations.first {
                 let span = MKCoordinateSpanMake(0.05, 0.05)
                 let region = MKCoordinateRegion(center: location.coordinate, span: span)
                 newGameMap.setRegion(region, animated: false)
             }
         } else {
-            computeViewSettings(Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
+            computeViewSettings(Settings.shared.defaultLatitude, longitude: Settings.shared.defaultLongitude)
         }
         
     }
@@ -131,7 +131,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         var latDelta:CLLocationDegrees = 0.02
         var longDelta:CLLocationDegrees = 0.02
         
-        if Settings.sharedSettings.defaultLocation != "none" {
+        if Settings.shared.defaultLocation != "none" {
             latDelta = 0.2
             longDelta = 0.2
         }

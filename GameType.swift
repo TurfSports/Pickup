@@ -15,13 +15,13 @@ class GameType {
     private let ksortOrder = "sortOrder"
     private let kimageName = "imageName"
     
-    let id:String
-    let name:String
-    let displayName:String
-    var sortOrder:Int
-    let imageName:String
+    let id: String
+    let name: String
+    let displayName: String
+    var sortOrder: Int
+    let imageName: String
     
-    var gameCount:Int = -1
+    var gameCount: Int = -1
     
     init(id: String, name: String, displayName: String, sortOrder: Int, imageName: String) {
         self.id = id

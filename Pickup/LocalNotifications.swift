@@ -17,18 +17,18 @@ struct LocalNotifications {
         
         let settings = UIApplication.shared.currentUserNotificationSettings
         
-        if settings!.types != UIUserNotificationType() && Settings.sharedSettings.gameReminder != 0 {
+        if settings!.types != UIUserNotificationType() && Settings.shared.gameReminder != 0 {
             let notification = UILocalNotification()
             
             
             let timeUntilGame = (Calendar.current as NSCalendar).components(.minute, from: Date(), to: game.eventDate as Date, options: []).minute
-            let timeUntilGameString = getTimeUntilGameFromSettings(timeUntilGame!, gameReminder: Settings.sharedSettings.gameReminder)
+            let timeUntilGameString = getTimeUntilGameFromSettings(timeUntilGame!, gameReminder: Settings.shared.gameReminder)
             
-            notification.fireDate = game.eventDate.addingTimeInterval(-1 * Double(Settings.sharedSettings.gameReminder) * 60) as Date
+            notification.fireDate = game.eventDate.addingTimeInterval(-1 * Double(Settings.shared.gameReminder) * 60) as Date
             
             var showAlert = "true"
             
-            if timeUntilGame! < Settings.sharedSettings.gameReminder {
+            if timeUntilGame! < Settings.shared.gameReminder {
                 showAlert = "false"
             }
             

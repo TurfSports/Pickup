@@ -10,19 +10,9 @@ import Foundation
 
 class GameTypeList {
     
-    class var sharedGameTypes: GameTypeList {
-        
-        struct Singleton {
-            static let instance = GameTypeList()
-        }
-        
-        return Singleton.instance
-    }
+    static let shared = GameTypeList()
     
     var gameTypeList: [GameType] = []
-    
-    init() {}
-    
     
     func setGameTypeList(_ gameTypeList: [GameType]) {
         self.gameTypeList = gameTypeList

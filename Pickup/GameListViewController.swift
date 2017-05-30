@@ -57,7 +57,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
         self.tableGameList.addSubview(self.refreshControl)
         
-        lblNoGames.text = "No \(selectedGameType.name) games within \(Settings.sharedSettings.gameDistance) \(Settings.sharedSettings.distanceUnit)"
+        lblNoGames.text = "No \(selectedGameType.name) games within \(Settings.shared.gameDistance) \(Settings.shared.distanceUnit)"
         noGamesBlur.isHidden = true
         
         
@@ -152,18 +152,18 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let latitude:CLLocationDegrees = game.latitude
             let longitude:CLLocationDegrees = game.longitude
             let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-            if self.currentLocation != nil && Settings.sharedSettings.defaultLocation == "none" {
+            if self.currentLocation != nil && Settings.shared.defaultLocation == "none" {
                 let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!)
                     var suffix = "mi"
-                    if Settings.sharedSettings.distanceUnit == "kilometers" {
+                    if Settings.shared.distanceUnit == "kilometers" {
                         suffix = "km"
                     }
                     cell?.lblDistance.text = "\(distance) \(suffix)"
                 
             } else {
-                let distance:Double = getDistanceBetweenLocations(gameLocation, location2: CLLocation(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude))
+                let distance:Double = getDistanceBetweenLocations(gameLocation, location2: CLLocation(latitude: Settings.shared.defaultLatitude, longitude: Settings.shared.defaultLongitude))
                     var suffix = "mi"
-                    if Settings.sharedSettings.distanceUnit == "kilometers" {
+                    if Settings.shared.distanceUnit == "kilometers" {
                         suffix = "km"
                     }
                     cell?.lblDistance.text = "\(distance) \(suffix)"
@@ -276,7 +276,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         var distanceUnitMeasurement: Double
         
-        if Settings.sharedSettings.distanceUnit == "miles" {
+        if Settings.shared.distanceUnit == "miles" {
             distanceUnitMeasurement = METERS_IN_MILE
         } else {
             distanceUnitMeasurement = METERS_IN_KILOMETER

@@ -26,19 +26,19 @@ class Game {
     private let kLatitude:String = "latitude"
     private let kLongitude:String = "longitude"
     
-    var id:String
-    var gameType:GameType
-    var totalSlots:Int
-    var availableSlots:Int
-    var eventDate:Date
-    var locationName:String
-    var ownerId:String
-    var gameNotes:String
+    var id: String
+    var gameType: GameType
+    var totalSlots: Int
+    var availableSlots: Int
+    var eventDate: Date
+    var locationName: String
+    var ownerId: String
+    var gameNotes: String
     lazy var userJoined = false
     lazy var userIsOwner = false
     lazy var isCancelled = false
-    lazy var latitude:Double = 0.0
-    lazy var longitude:Double = 0.0
+    lazy var latitude: Double = 0.0
+    lazy var longitude: Double = 0.0
     
     init (id: String, gameType: GameType, totalSlots: Int,
         availableSlots: Int, eventDate: Date, locationName: String,

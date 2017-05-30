@@ -30,18 +30,18 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
     @IBAction func saveSettings(_ sender: UIBarButtonItem) {
         
         //Save the settings in user defaults
-        Settings.sharedSettings.gameDistance = tempSettings.gameDistance
-        Settings.sharedSettings.distanceUnit = tempSettings.distanceUnit
-        Settings.sharedSettings.defaultLocation = tempSettings.defaultLocation
-        Settings.sharedSettings.defaultLatitude = tempSettings.defaultLatitude
-        Settings.sharedSettings.defaultLongitude = tempSettings.defaultLongitude
-        Settings.sharedSettings.showCreatedGames = tempSettings.showCreatedGames
-        if Settings.sharedSettings.gameReminder != tempSettings.gameReminder {
+        Settings.shared.gameDistance = tempSettings.gameDistance
+        Settings.shared.distanceUnit = tempSettings.distanceUnit
+        Settings.shared.defaultLocation = tempSettings.defaultLocation
+        Settings.shared.defaultLatitude = tempSettings.defaultLatitude
+        Settings.shared.defaultLongitude = tempSettings.defaultLongitude
+        Settings.shared.showCreatedGames = tempSettings.showCreatedGames
+        if Settings.shared.gameReminder != tempSettings.gameReminder {
             updateLocalGameNotifications(tempSettings.gameReminder)
-            Settings.sharedSettings.gameReminder = tempSettings.gameReminder
+            Settings.shared.gameReminder = tempSettings.gameReminder
         }
         
-        let serializedSettings = Settings.serializeSettings(Settings.sharedSettings)
+        let serializedSettings = Settings.serializeSettings(Settings.shared)
         UserDefaults.standard.set(serializedSettings, forKey: "settings")
         
         self.dismiss(animated: true, completion: nil)
@@ -63,13 +63,13 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         applyStyles()
         
         tempSettings = Settings.init()
-        tempSettings.gameDistance = Settings.sharedSettings.gameDistance
-        tempSettings.gameReminder = Settings.sharedSettings.gameReminder
-        tempSettings.distanceUnit = Settings.sharedSettings.distanceUnit
-        tempSettings.defaultLocation = Settings.sharedSettings.defaultLocation
-        tempSettings.defaultLatitude = Settings.sharedSettings.defaultLatitude
-        tempSettings.defaultLongitude = Settings.sharedSettings.defaultLongitude
-        tempSettings.showCreatedGames = Settings.sharedSettings.showCreatedGames
+        tempSettings.gameDistance = Settings.shared.gameDistance
+        tempSettings.gameReminder = Settings.shared.gameReminder
+        tempSettings.distanceUnit = Settings.shared.distanceUnit
+        tempSettings.defaultLocation = Settings.shared.defaultLocation
+        tempSettings.defaultLatitude = Settings.shared.defaultLatitude
+        tempSettings.defaultLongitude = Settings.shared.defaultLongitude
+        tempSettings.showCreatedGames = Settings.shared.showCreatedGames
         
         self.lblGameDistanceSubtext.text = "Show games within \(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
         
@@ -204,11 +204,11 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
                         
                         
                         let originalFireDate = notification.fireDate
-                        let gameDate = originalFireDate?.addingTimeInterval(Double((Settings.sharedSettings.gameReminder) * 60))
+                        let gameDate = originalFireDate?.addingTimeInterval(Double((Settings.shared.gameReminder) * 60))
                         
                         let timeUntilGame = (Calendar.current as NSCalendar).components(.minute, from: Date(), to: gameDate!, options: []).minute
                         
-                        let newFireDate = originalFireDate?.addingTimeInterval(Double((tempSettings.gameReminder - Settings.sharedSettings.gameReminder) * -60))
+                        let newFireDate = originalFireDate?.addingTimeInterval(Double((tempSettings.gameReminder - Settings.shared.gameReminder) * -60))
                         
                         //Get attributes from user data and then create game in order to schedule local notification
                         let gameId = notification.userInfo!["selectedGameId"] as! String

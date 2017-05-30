@@ -11,14 +11,7 @@ import Foundation
 
 class Settings {
     
-    class var sharedSettings: Settings {
-        
-        struct Singleton {
-            static let instance = Settings()
-        }
-        
-        return Singleton.instance
-    }
+    static let shared = Settings()
     
     var gameDistance = 10
     var distanceUnit = "miles"

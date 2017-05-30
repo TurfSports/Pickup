@@ -50,16 +50,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let settingsFromUserDefaults = UserDefaults.standard.object(forKey: "settings") as? [String: String] {
             
             let storedSettings = Settings.deserializeSettings(settingsFromUserDefaults)
-            Settings.sharedSettings.gameDistance = storedSettings.gameDistance
-            Settings.sharedSettings.distanceUnit = storedSettings.distanceUnit
-            Settings.sharedSettings.gameReminder = storedSettings.gameReminder
-            Settings.sharedSettings.defaultLocation = storedSettings.defaultLocation
-            Settings.sharedSettings.defaultLatitude = storedSettings.defaultLatitude
-            Settings.sharedSettings.defaultLongitude = storedSettings.defaultLongitude
-            Settings.sharedSettings.showCreatedGames = storedSettings.showCreatedGames
+            Settings.shared.gameDistance = storedSettings.gameDistance
+            Settings.shared.distanceUnit = storedSettings.distanceUnit
+            Settings.shared.gameReminder = storedSettings.gameReminder
+            Settings.shared.defaultLocation = storedSettings.defaultLocation
+            Settings.shared.defaultLatitude = storedSettings.defaultLatitude
+            Settings.shared.defaultLongitude = storedSettings.defaultLongitude
+            Settings.shared.showCreatedGames = storedSettings.showCreatedGames
             
         } else {
-            let settings = Settings.sharedSettings
+            let settings = Settings.shared
             let serializedSettings = Settings.serializeSettings(settings)
             UserDefaults.standard.set(serializedSettings, forKey: "settings")
         }
