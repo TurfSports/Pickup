@@ -63,6 +63,8 @@
 		D08387B91ED4B4DA009CCCAC /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08387B81ED4B4DA009CCCAC /* NetworkController.swift */; };
 		D08387BD1ED4B549009CCCAC /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08387BC1ED4B549009CCCAC /* GameController.swift */; };
 		D09408641ECE3C69005B2D2B /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09408631ECE3C69005B2D2B /* FirebaseController.swift */; };
+		D0B4020E1ED8B55B00448088 /* GameKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */; };
+		D0B402101ED8B57900448088 /* GameTypeKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */; };
 		D0BD959E1EC28D4400E29671 /* PickupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD959D1EC28D4400E29671 /* PickupUITests.swift */; };
 		D0BD95AC1EC28D4D00E29671 /* PickupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */; };
 		D0F775871ED75C6200DFC8D6 /* MyGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F269581C87A37300D46519 /* MyGamesViewController.swift */; };
@@ -147,6 +149,8 @@
 		D08387B81ED4B4DA009CCCAC /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		D08387BC1ED4B549009CCCAC /* GameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		D09408631ECE3C69005B2D2B /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
+		D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameKeysEnum.swift; sourceTree = "<group>"; };
+		D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeKeysEnum.swift; sourceTree = "<group>"; };
 		D0BD959B1EC28D4400E29671 /* PickupUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickupUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BD959D1EC28D4400E29671 /* PickupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupUITests.swift; sourceTree = "<group>"; };
 		D0BD959F1EC28D4400E29671 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -282,6 +286,8 @@
 				028C1EE71C88E151000634AA /* GameStatusEnum.swift */,
 				02B82DFE1C88EC010028CD47 /* LocationStatusEnum.swift */,
 				02A8F2581C77F41900A04DE6 /* DateFormatterEnum.swift */,
+				D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */,
+				D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */,
 			);
 			name = Enum;
 			sourceTree = "<group>";
@@ -624,6 +630,7 @@
 				D0F775871ED75C6200DFC8D6 /* MyGamesViewController.swift in Sources */,
 				02071DEC1C8EB6DD00A00991 /* GameTypeListSingleton.swift in Sources */,
 				024DDF101C8C03EF000E34D7 /* DistanceEnum.swift in Sources */,
+				D0B4020E1ED8B55B00448088 /* GameKeysEnum.swift in Sources */,
 				025330F71C56FAA600B6ABDD /* Theme.swift in Sources */,
 				028C1EE81C88E151000634AA /* GameStatusEnum.swift in Sources */,
 				02F5D0101C84C12F00A95B92 /* CustomProtocols.swift in Sources */,
@@ -658,6 +665,7 @@
 				024DDF061C8BE7E0000E34D7 /* GeneralSettingsTableViewController.swift in Sources */,
 				02D7ED291C87FEDA0010A683 /* UserStatusEnum.swift in Sources */,
 				020988711C7D28D700FB7F92 /* GameDetailsTableViewController.swift in Sources */,
+				D0B402101ED8B57900448088 /* GameTypeKeysEnum.swift in Sources */,
 				02ED31BD1C6940A900B53DD3 /* GameTypeConverter.swift in Sources */,
 				02A8F25B1C77F6F300A04DE6 /* DateUtilities.swift in Sources */,
 			);

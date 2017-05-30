@@ -70,23 +70,3 @@ class GameType {
     }
     
 }
-
-enum GameTypeKeys {
-    case kName
-    case kdisplayName
-    case ksortOrder
-    case kimageName
-    
-    func key() -> String {
-        switch self {
-        case .kName:
-            return "name"
-        case .kdisplayName:
-            return "displayName"
-        case .ksortOrder:
-            return "sortOrder"
-        case .kimageName:
-            return "imageName"
-        }
-    }
-}
