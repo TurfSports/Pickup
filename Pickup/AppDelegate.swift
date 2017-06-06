@@ -19,10 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         Theme.applyTheme()
-        
+                
         // Initialize Parse.
         // Parse Licensing Agreement
         // https://parse.com/policies
+        
+        GameController.loadGames { (Games) in
+            loadedGames = Games
+        }
         
         //Set up current user
         

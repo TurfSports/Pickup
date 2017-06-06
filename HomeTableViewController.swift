@@ -10,6 +10,8 @@ import UIKit
 import CoreLocation
 import MapKit
 
+var loadedGameTypes: [GameType] = []
+
 class HomeTableViewController: UITableViewController, CLLocationManagerDelegate, DismissalDelegate {
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
@@ -67,7 +69,11 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
 //        loadGameCounts()
         
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
-//            loadGameTypesFromParse()
+            GameTypeController.loadGameTypes { (gameTypeArray) in
+                self.gameTypes = gameTypeArray
+                loadedGameTypes = gameTypeArray
+                self.tableView.reloadData()
+            }
         } else {
             loadGameTypesFromUserDefaults()
         }

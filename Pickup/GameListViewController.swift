@@ -9,8 +9,15 @@
 import UIKit
 import CoreLocation
 
-class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, DismissalDelegate {
+var loadedGames: [Game] = [] {
+    didSet {
+        let notification = Notification(name: Notification.Name(rawValue: "loadedGames"))
+        NotificationCenter.default.post(notification)
+    }
+}
 
+class GameListViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, DismissalDelegate {
+    
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     let SEGUE_SHOW_GAMES_MAP = "showGamesMapView"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
@@ -20,13 +27,13 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     let METERS_IN_MILE = 1609.34
     let METERS_IN_KILOMETER = 1000.0
     
-    var selectedGameType:GameType!
-    var gameTypes:[GameType]!
-    var games:[Game] = []
-    var sortedGames:[[Game]] = [[]]
+    var selectedGameType: GameType?
+    var gameTypes: [GameType]!
+    var games: [Game] = []
+    var sortedGames: [[Game]] = [[]]
     var newGame: Game?
     let locationManager = CLLocationManager()
-    var currentLocation:CLLocation? {
+    var currentLocation: CLLocation? {
         didSet {
             // Load Games from Firebase
         }
@@ -45,8 +52,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         
-//    refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), for: UIControlEvents.valueChanged)
-//    refreshControl.addTarget(self, action: "loadGamesFromParse", forControlEvents: UIControlEvents.ValueChanged)
+        //    refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), for: UIControlEvents.valueChanged)
+        //    refreshControl.addTarget(self, action: "loadGamesFromParse", forControlEvents: UIControlEvents.ValueChanged)
         return refreshControl
     }()
     
@@ -54,10 +61,18 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        GameController.loadGames { (games) in
+            DispatchQueue.main.async {
+                self.games = games
+                loadedGames = games
+                self.tableGameList.reloadData()
+            }
+        }
+        
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
         self.tableGameList.addSubview(self.refreshControl)
         
-        lblNoGames.text = "No \(selectedGameType.name) games within \(Settings.shared.gameDistance) \(Settings.shared.distanceUnit)"
+        lblNoGames.text = "No \(selectedGameType?.name ?? "") games within \(Settings.shared.gameDistance) \(Settings.shared.distanceUnit)"
         noGamesBlur.isHidden = true
         
         
@@ -66,7 +81,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         setUsersCurrentLocation()
         
-        self.title = selectedGameType.displayName
+        self.title = selectedGameType?.displayName
         
         btnViewMap.tintColor = Theme.ACCENT_COLOR
         btnAddNewGame.tintColor = Theme.ACCENT_COLOR
@@ -75,8 +90,13 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     override func viewDidAppear(_ animated: Bool) {
         noGamesBlur.isHidden = true
-//        loadGamesFromParse()
+        //        loadGamesFromParse()
         self.tableGameList.reloadData()
+        GameController.loadGames { (games) in
+            DispatchQueue.main.async {
+                self.games = games
+            }
+        }
     }
     
     fileprivate func blurScreen() {
@@ -119,7 +139,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         performSegue(withIdentifier: SEGUE_SHOW_GAME_DETAILS, sender: self)
     }
     
-
+    
     //MARK: - Table View Data Source
     
     private func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> GameTableViewCell {
@@ -127,7 +147,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GameTableViewCell
         
         if !sortedGames.isEmpty {
-
+            
             let game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
             
             cell?.lblLocationName.text = game.locationName
@@ -154,19 +174,19 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             let gameLocation:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
             if self.currentLocation != nil && Settings.shared.defaultLocation == "none" {
                 let distance:Double = getDistanceBetweenLocations(gameLocation, location2: self.currentLocation!)
-                    var suffix = "mi"
-                    if Settings.shared.distanceUnit == "kilometers" {
-                        suffix = "km"
-                    }
-                    cell?.lblDistance.text = "\(distance) \(suffix)"
+                var suffix = "mi"
+                if Settings.shared.distanceUnit == "kilometers" {
+                    suffix = "km"
+                }
+                cell?.lblDistance.text = "\(distance) \(suffix)"
                 
             } else {
                 let distance:Double = getDistanceBetweenLocations(gameLocation, location2: CLLocation(latitude: Settings.shared.defaultLatitude, longitude: Settings.shared.defaultLongitude))
-                    var suffix = "mi"
-                    if Settings.shared.distanceUnit == "kilometers" {
-                        suffix = "km"
-                    }
-                    cell?.lblDistance.text = "\(distance) \(suffix)"
+                var suffix = "mi"
+                if Settings.shared.distanceUnit == "kilometers" {
+                    suffix = "km"
+                }
+                cell?.lblDistance.text = "\(distance) \(suffix)"
                 
             }
         } else {
@@ -175,77 +195,78 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         return cell!
     }
-    /*
-    //MARK: - Parse
     
-    func loadGamesFromParse() {
-        let gameQuery = PFQuery(className: "Game")
-        
-//        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
-
-      gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
-        
-        var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
-        
-        if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
-        }
-        
-//        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
-      gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
-        
-        if Settings.sharedSettings.distanceUnit == "miles" {
-            let gameDistance = Double(Settings.sharedSettings.gameDistance)
-            gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:gameDistance)
-        } else {
-            let gameDistance = Double(Settings.sharedSettings.gameDistance)
-            gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinKilometers:gameDistance)
-        }
-        
-        gameQuery.whereKey("date", greaterThanOrEqualTo: Date().addingTimeInterval(-1.5 * 60 * 60))
-        gameQuery.whereKey("date", lessThanOrEqualTo: Date().addingTimeInterval(2 * 7 * 24 * 60 * 60))
-        gameQuery.whereKey("isCancelled", equalTo: false)
-        gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
-        
-        if Settings.sharedSettings.showCreatedGames == false {
-            gameQuery.whereKey("owner", notEqualTo: PFUser.current()!)
-        }
-        
-        gameQuery.findObjectsInBackground { (objects, error) -> Void in
-            DispatchQueue.main.async {
-                if let gameObjects = objects {
-                    self.games.removeAll(keepingCapacity: true)
-                    for gameObject in gameObjects {
-                        let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
-                        
-                        if (gameObject["owner"] as AnyObject).objectId == PFUser.current()?.objectId {
-                            game.userIsOwner = true
-                        }
-                        
-                        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
-                            if joinedGames.contains(game.id) {
-                                game.userJoined = true
-                            }
-                        }
-                        self.games.append(game)
-                    }
-                } else {
-                    print(error ?? "Error finding objects in background")
-                }
-                
-                if self.games.count == 0 {
-                    self.blurScreen()
-                } else {
-                    self.sortedGames = self.sortGamesByDate(self.games)
-                    self.refreshControl.endRefreshing()
-                    self.activityIndicator.stopAnimating()
-                    self.activityIndicator.isHidden = true
-                    self.tableGameList.reloadData()
-                }
-            }
-        }
-    }
-
+    /*
+     //MARK: - Parse
+     
+     func loadGamesFromParse() {
+     let gameQuery = PFQuery(className: "Game")
+     
+     //        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+     
+     gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+     
+     var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
+     
+     if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+     userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
+     }
+     
+     //        gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+     gameQuery.whereKey("gameType", equalTo: PFObject(withoutDataWithClassName: "GameType", objectId: selectedGameType.id))
+     
+     if Settings.sharedSettings.distanceUnit == "miles" {
+     let gameDistance = Double(Settings.sharedSettings.gameDistance)
+     gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:gameDistance)
+     } else {
+     let gameDistance = Double(Settings.sharedSettings.gameDistance)
+     gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinKilometers:gameDistance)
+     }
+     
+     gameQuery.whereKey("date", greaterThanOrEqualTo: Date().addingTimeInterval(-1.5 * 60 * 60))
+     gameQuery.whereKey("date", lessThanOrEqualTo: Date().addingTimeInterval(2 * 7 * 24 * 60 * 60))
+     gameQuery.whereKey("isCancelled", equalTo: false)
+     gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
+     
+     if Settings.sharedSettings.showCreatedGames == false {
+     gameQuery.whereKey("owner", notEqualTo: PFUser.current()!)
+     }
+     
+     gameQuery.findObjectsInBackground { (objects, error) -> Void in
+     DispatchQueue.main.async {
+     if let gameObjects = objects {
+     self.games.removeAll(keepingCapacity: true)
+     for gameObject in gameObjects {
+     let game = GameConverter.convertParseObject(gameObject, selectedGameType: self.selectedGameType)
+     
+     if (gameObject["owner"] as AnyObject).objectId == PFUser.current()?.objectId {
+     game.userIsOwner = true
+     }
+     
+     if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
+     if joinedGames.contains(game.id) {
+     game.userJoined = true
+     }
+     }
+     self.games.append(game)
+     }
+     } else {
+     print(error ?? "Error finding objects in background")
+     }
+     
+     if self.games.count == 0 {
+     self.blurScreen()
+     } else {
+     self.sortedGames = self.sortGamesByDate(self.games)
+     self.refreshControl.endRefreshing()
+     self.activityIndicator.stopAnimating()
+     self.activityIndicator.isHidden = true
+     self.tableGameList.reloadData()
+     }
+     }
+     }
+     }
+     
      */
     
     //MARK: - Location Manager Delegate
@@ -261,7 +282,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         tableGameList.reloadData()
     }
-         
+    
     func setUsersCurrentLocation() {
         self.locationManager.requestWhenInUseAuthorization()
         
@@ -292,7 +313,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     //MARK: - Dismissal Delegate
-
+    
     func finishedShowing(_ viewController: UIViewController) {
         
         self.dismiss(animated: true, completion: nil)
@@ -309,7 +330,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     //MARK: - Sort Dates
     //TODO: Abstract date functions into separate class
     func sortGamesByDate(_ games: [Game]) -> [[Game]] {
-
+        
         var todayGames:[Game] = []
         var tomorrowGames:[Game] = []
         var thisWeekGames:[Game] = []
@@ -327,20 +348,20 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         for game in sortedGameArray {
             switch(dateCompare(game.eventDate as Date)) {
-                case "TODAY":
-                    todayGames.append(game)
-                    break
-                case "TOMORROW":
-                    tomorrowGames.append(game)
-                    break
-                case "THIS WEEK":
-                    thisWeekGames.append(game)
-                    break
-                case "NEXT WEEK":
-                    nextWeekGames.append(game)
-                    break
-                default:
-                    break
+            case "TODAY":
+                todayGames.append(game)
+                break
+            case "TOMORROW":
+                tomorrowGames.append(game)
+                break
+            case "THIS WEEK":
+                thisWeekGames.append(game)
+                break
+            case "NEXT WEEK":
+                nextWeekGames.append(game)
+                break
+            default:
+                break
             }
         }
         
@@ -405,20 +426,20 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         var relevantDateString = ""
         
         switch(dateCompare(eventDate)) {
-            case "TODAY":
-                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
-                break
-            case "TOMORROW":
-                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
-                break
-            case "THIS WEEK":
-                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
-                break
-            case "NEXT WEEK":
-                relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
-                break
-            default:
-                break
+        case "TODAY":
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
+            break
+        case "TOMORROW":
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
+            break
+        case "THIS WEEK":
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+            break
+        case "NEXT WEEK":
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+            break
+        default:
+            break
         }
         
         return relevantDateString

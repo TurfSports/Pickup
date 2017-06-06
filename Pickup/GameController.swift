@@ -13,7 +13,7 @@ class GameController {
     static let endUrl = URL.init(string: "https://pickup-a837a.firebaseio.com")
     
     static func put(game: Game, withUUID: UUID, success: @escaping (_ success: Bool) -> Void) {
-        let urlWithUUID = endUrl?.appendingPathComponent("Games").appendingPathComponent(withUUID.uuidString).appendingPathExtension("json")
+        let urlWithUUID = endUrl?.appendingPathComponent("Games").appendingPathComponent(game.id).appendingPathExtension("json")
         guard let url = urlWithUUID else { success(false); return }
         
         NetworkController.performRequest(for: url, httpMethod: .put, body: game.jsonData) { (data, error) in
@@ -27,6 +27,24 @@ class GameController {
                     print("Put Game Info")
                     return
                 }
+            }
+        }
+    }
+    
+    static let gameURL = URL(string: "https://pickup-a837a.firebaseio.com/Games")
+    
+    static func loadGames(completion: @escaping (_ games: [Game]) -> Void) {
+        var gameArray: [Game] = []
+        guard let url = GameController.gameURL else { completion([]); return }
+        NetworkController.performRequest(for: url, httpMethod: .get, urlParameters: nil, body: nil) { (data, error) in
+            DispatchQueue.main.async {
+                guard data != nil && error == nil else { completion([]); return }
+                guard let jsonDictionary = (try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)) as? [[String: Any]] else { completion([]); return }
+                
+                for game in jsonDictionary {
+                    gameArray.append(Game(gameDictionary: game)!)
+                }
+                completion(gameArray)
             }
         }
     }
