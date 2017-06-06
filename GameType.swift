@@ -10,16 +10,17 @@ import Foundation
 
 class GameType {
     
+    private let kGameTypeID = "gameTypeID"
     private let kName = "name"
-    private let kdisplayName = "displayName"
-    private let ksortOrder = "sortOrder"
-    private let kimageName = "imageName"
+    private let kDisplayName = "displayName"
+    private let kSortOrder = "sortOrder"
+    private let kImageName = "imageName"
     
-    let id: String
-    let name: String
-    let displayName: String
-    var sortOrder: Int
-    let imageName: String
+    var id: String = UUID.init().uuidString
+    var name: String = ""
+    var displayName: String = ""
+    var sortOrder: Int = 0
+    var imageName: String = ""
     
     var gameCount: Int = -1
     
@@ -64,9 +65,22 @@ class GameType {
         
         return gameType
     }
+
+    init?(dictionary: [String: Any]) {
+        guard let name = dictionary[kName] as? String,
+        let displayName = dictionary[kDisplayName] as? String,
+        let imageName = dictionary[kImageName] as? String,
+        let sortOrder = dictionary[kSortOrder] as? Int
+        else { return }
+    
+        self.name = name
+        self.displayName = displayName
+        self.imageName = imageName
+        self.sortOrder = sortOrder
+    }
     
     var dictionaryRep: [String: Any] {
-        return [id: [kName: name, ksortOrder: sortOrder, kimageName: imageName, kdisplayName: displayName]]
+        return [kGameTypeID: id, kName: name, kSortOrder: sortOrder, kImageName: imageName, kDisplayName: displayName]
     }
     
 }

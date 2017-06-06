@@ -10,6 +10,7 @@ import Foundation
 
 enum GameKeys {
     
+    case kGameID
     case kGameType
     case kTotalSlots
     case kAvailableSlots
@@ -25,6 +26,8 @@ enum GameKeys {
     
     func key() -> String {
         switch self {
+        case .kGameID:
+            return "gameID"
         case .kGameType:
             return "gameType"
         case .kTotalSlots:
