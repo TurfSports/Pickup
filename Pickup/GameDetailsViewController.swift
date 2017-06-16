@@ -198,8 +198,8 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         lblLocationName.text = game.locationName
         lblOpenings.text = ("\(game.availableSlots) openings (\(game.totalSlots - game.availableSlots - 1) joined)")
         
-        self.embeddedView.lblDay.text = DateUtilities.dateString(self.game.eventDate, dateFormatString: DateFormatter.MONTH_DAY_YEAR.rawValue)
-        self.embeddedView.lblTime.text = DateUtilities.dateString(self.game.eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
+        self.embeddedView.lblDay.text = DateUtilities.dateString(self.game.eventDate, dateFormat: DateFormatter.MONTH_DAY_YEAR.rawValue)
+        self.embeddedView.lblTime.text = DateUtilities.dateString(self.game.eventDate, dateFormat: DateFormatter.TWELVE_HOUR_TIME.rawValue)
         self.embeddedView.lblGameNotes.text = game.gameNotes
         self.embeddedView.game = self.game
         self.embeddedView.tableView.reloadData()

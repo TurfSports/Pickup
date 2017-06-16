@@ -62,8 +62,8 @@ class GameDetailsTableViewController: UITableViewController {
         
         lblGameNotes.sizeToFit()
         
-        lblDay.text = DateUtilities.dateString(game.eventDate, dateFormatString: DateFormatter.MONTH_DAY_YEAR.rawValue)
-        lblTime.text = DateUtilities.dateString(game.eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
+        lblDay.text = DateUtilities.dateString(game.eventDate, dateFormat: DateFormatter.MONTH_DAY_YEAR.rawValue)
+        lblTime.text = DateUtilities.dateString(game.eventDate, dateFormat: DateFormatter.TWELVE_HOUR_TIME.rawValue)
         lblAddress.text = ""
         
         let geoCoder = CLGeocoder()

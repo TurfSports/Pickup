@@ -10,12 +10,21 @@ import Foundation
 
 struct DateUtilities {
     
-    static func dateString(_ date: Date, dateFormatString: String) -> String {
+    static func dateString(_ date: Date, dateFormat: String) -> String {
         
         let dayTimePeriodFormatter = Foundation.DateFormatter()
-        dayTimePeriodFormatter.dateFormat = dateFormatString
+        dayTimePeriodFormatter.dateFormat = dateFormat
         
         return dayTimePeriodFormatter.string(from: date)
     }
     
+    static func dateFrom(_ string: String, dateFormat: String) -> Date {
+        
+        let dayTimePeriodFormatter = Foundation.DateFormatter()
+        dayTimePeriodFormatter.dateFormat = dateFormat
+        
+        guard let date = dayTimePeriodFormatter.date(from: string) else { return Date() }
+        
+        return date
+    }
 }

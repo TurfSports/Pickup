@@ -56,10 +56,9 @@ class Game {
     
     init?(gameDictionary: [String: Any]) {
         guard let id = gameDictionary.first?.key,
-        let gameType = gameDictionary[kGameType] as? GameType,
+        let gameType = GameType.init(dictionary: (gameDictionary[kGameType] as? [String: Any])!),
         let totalSlots = gameDictionary[kTotalSlots] as? Int,
         let availableSlots = gameDictionary[kAvailableSlots] as? Int,
-        let eventDate = gameDictionary[kEventDate] as? Date,
         let locationName = gameDictionary[kLocationName] as? String,
         let ownerId = gameDictionary[kOwnerId] as? String,
         let gameNotes = gameDictionary[kGameNotes] as? String,
@@ -67,7 +66,9 @@ class Game {
         let userIsOwner = gameDictionary[kUserIsOwner] as? Bool,
         let isCancelled = gameDictionary[kIsCancelled] as? Bool,
         let latitude = gameDictionary[kLatitude] as? Double,
-        let longitude = gameDictionary[kLongitude] as? Double
+        let longitude = gameDictionary[kLongitude] as? Double,
+        let eventDate = gameDictionary[kEventDate] as? String
+
         
         else { return nil }
         
@@ -75,7 +76,7 @@ class Game {
         self.gameType = gameType
         self.totalSlots = totalSlots
         self.availableSlots = availableSlots
-        self.eventDate = eventDate
+        self.eventDate = DateUtilities.dateFrom(eventDate, dateFormat: DateFormatter.MONTH_DAY_YEAR.rawValue)
         self.locationName = locationName
         self.ownerId = ownerId
         self.gameNotes = gameNotes

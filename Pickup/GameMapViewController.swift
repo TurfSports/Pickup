@@ -44,7 +44,7 @@ class GameMapViewController: UIViewController, MKMapViewDelegate {
                 annotation.coordinate = location
                 annotation.title = game.locationName
                 annotation.subtitle = DateUtilities.dateString(game.eventDate,
-                    dateFormatString: "\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+                    dateFormat: "\(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
                 annotation.game = game
                 gameMap.addAnnotation(annotation)
                 todayGameCount += 1
