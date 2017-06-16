@@ -450,7 +450,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         if segue.identifier == SEGUE_SHOW_GAMES {
             let gamesViewController = segue.destination as! GameListViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                gamesViewController.selectedGameType = gameTypes[(indexPath as NSIndexPath).row]
+                gamesViewController.selectedGameType = gameTypes[indexPath.row]
                 gamesViewController.gameTypes = self.gameTypes
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true

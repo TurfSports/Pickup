@@ -23,7 +23,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     var sectionTitles:[String] = []
     var gameTypes:[GameType] = []
     var games:[Game] = []
-    var sortedGames:[[Game]] = [[]]
+    var sortedGames:[Game] = []
     
     let locationManager = CLLocationManager()
     var currentLocation:CLLocation? {
@@ -68,7 +68,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sortedGames[section].count
+        return sortedGames.count
     }
     
     private func tableView(_ tableView : UITableView,  titleForHeaderInSection section: Int)->String {
@@ -99,10 +99,10 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         
         if !sortedGames.isEmpty {
             
-            let game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
+            let game = sortedGames[indexPath.row]
             
             cell?.lblLocationName.text = game.locationName
-            cell?.lblGameDate.text = relevantDateInfo(game.eventDate as Date)
+            cell?.lblGameDate.text = relevantDateInfo(game.eventDate)
             cell?.lblDistance.text = ""
             cell?.imgGameType.image = UIImage(named: game.gameType.imageName)
             
@@ -211,11 +211,11 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         return returnedGameType
     }
     
-    fileprivate func sortGamesByOwner(_ games: [Game]) -> [[Game]] {
+    fileprivate func sortGamesByOwner(_ games: [Game]) -> [Game] {
         
         var createdGames:[Game] = []
         var joinedGames:[Game] = []
-        var combinedGamesArray:[[Game]] = [[]]
+        var combinedGamesArray:[Game] = []
         
         //TODO: This won't work on a new year
         let sortedGameArray = games.sorted { (gameOne, gameTwo) -> Bool in
@@ -238,12 +238,17 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         combinedGamesArray.removeAll()
         
         if !createdGames.isEmpty {
-            combinedGamesArray.append(createdGames)
+            for game in createdGames {
+                combinedGamesArray.append(game)
+            }
             self.sectionTitles.append("Created Games")
+
         }
         
         if !joinedGames.isEmpty {
-            combinedGamesArray.append(joinedGames)
+            for game in createdGames {
+                combinedGamesArray.append(game)
+            }
             self.sectionTitles.append("Joined Games")
         }
         
@@ -348,16 +353,16 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         
         switch(dateCompare(eventDate)) {
         case "TODAY":
-            relevantDateString = "Today  \(DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue))"
+            relevantDateString = "Today  \(DateUtilities.dateString(eventDate, dateFormat: DateFormatter.TWELVE_HOUR_TIME.rawValue))"
             break
         case "TOMORROW":
-            relevantDateString = "Tomorrow  \(DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue))"
+            relevantDateString = "Tomorrow  \(DateUtilities.dateString(eventDate, dateFormat: DateFormatter.TWELVE_HOUR_TIME.rawValue))"
             break
         case "THIS WEEK":
-            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormat: "\(DateFormatter.WEEKDAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
             break
         case "NEXT WEEK":
-            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormat: "\(DateFormatter.WEEKDAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
             break
         default:
             break
@@ -396,7 +401,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             var game: Game
             
             if let indexPath = tableGameList.indexPathForSelectedRow {
-                game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
+                game = sortedGames[indexPath.row]
             } else {
                 game = self.newGame!
             }

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class Player {
     
     let id:String
@@ -18,7 +17,4 @@ class Player {
         self.id = id
         self.username = username
     }
-    
-
-    
 }

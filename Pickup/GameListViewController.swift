@@ -30,12 +30,15 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     var selectedGameType: GameType?
     var gameTypes: [GameType]!
     var games: [Game] = []
-    var sortedGames: [[Game]] = [[]]
+    var sortedGames: [Game] = []
     var newGame: Game?
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation? {
         didSet {
-            // Load Games from Firebase
+            GameController.loadGames { (games) in
+                self.games = games
+                self.tableGameList.reloadData()
+            }
         }
     }
     
@@ -52,8 +55,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         
-        //    refreshControl.addTarget(self, action: #selector(GameListViewController.loadGamesFromParse), for: UIControlEvents.valueChanged)
-        //    refreshControl.addTarget(self, action: "loadGamesFromParse", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(self.loadGames), for: UIControlEvents.valueChanged)
+//        refreshControl.addTarget(self, action: "loadGamesFromFirebase", for: UIControlEvents.valueChanged)
         return refreshControl
     }()
     
@@ -65,6 +68,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             DispatchQueue.main.async {
                 self.games = games
                 loadedGames = games
+                self.sortedGames = games.filter { $0.gameType.name == (self.selectedGameType?.name)! }
                 self.tableGameList.reloadData()
             }
         }
@@ -88,15 +92,16 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
     }
     
+    func loadGames() {
+        GameController.loadGames { (games) in
+            self.games = games
+            loadedGames = games
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         noGamesBlur.isHidden = true
-        //        loadGamesFromParse()
         self.tableGameList.reloadData()
-        GameController.loadGames { (games) in
-            DispatchQueue.main.async {
-                self.games = games
-            }
-        }
     }
     
     fileprivate func blurScreen() {
@@ -121,7 +126,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sortedGames[section].count
+        return sortedGames.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -142,16 +147,16 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     //MARK: - Table View Data Source
     
-    private func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> GameTableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> GameTableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GameTableViewCell
         
-        if !sortedGames.isEmpty {
-            
-            let game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
+        if !self.games.isEmpty {
+        
+            let game = sortedGames[indexPath.row]
             
             cell?.lblLocationName.text = game.locationName
-            cell?.lblGameDate.text = relevantDateInfo(game.eventDate as Date)
+            cell?.lblGameDate.text = relevantDateInfo(game.eventDate)
             cell?.lblDistance.text = ""
             
             if game.userJoined == true {
@@ -187,7 +192,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                     suffix = "km"
                 }
                 cell?.lblDistance.text = "\(distance) \(suffix)"
-                
             }
         } else {
             blurScreen()
@@ -427,16 +431,16 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         switch(dateCompare(eventDate)) {
         case "TODAY":
-            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormat: DateFormatter.TWELVE_HOUR_TIME.rawValue)
             break
         case "TOMORROW":
-            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: DateFormatter.TWELVE_HOUR_TIME.rawValue)
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormat: DateFormatter.TWELVE_HOUR_TIME.rawValue)
             break
         case "THIS WEEK":
-            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormat: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
             break
         case "NEXT WEEK":
-            relevantDateString = DateUtilities.dateString(eventDate, dateFormatString: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+            relevantDateString = DateUtilities.dateString(eventDate, dateFormat: "\(DateFormatter.WEEKDAY.rawValue) \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
             break
         default:
             break
@@ -453,7 +457,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             var game: Game
             
             if let indexPath = tableGameList.indexPathForSelectedRow {
-                game = sortedGames[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
+                game = sortedGames[indexPath.row]
             } else {
                 game = self.newGame!
             }

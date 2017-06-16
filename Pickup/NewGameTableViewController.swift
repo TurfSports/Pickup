@@ -2,7 +2,6 @@
 //  NewGameTableViewController.swift
 //  Pickup
 //
-//  Created by Nathan Dudley on 2/17/16.
 //  Copyright © 2016 Pickup. All rights reserved.
 //
 
@@ -77,7 +76,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     func loadGames() {
-        self.game = loadedGames[0]
+        
     }
     
     func save(game: Game, completion: @escaping (Bool) -> Void) {
@@ -141,7 +140,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     @IBAction func datePickerValueChanged(_ sender: UIDatePicker) {
         
         
-        lblDate.text = DateUtilities.dateString(sender.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+        lblDate.text = DateUtilities.dateString(sender.date, dateFormat: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
         
         if self.gameObject != nil {
             self.gameObject["eventDate"] = sender.date
@@ -155,6 +154,10 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         super.viewDidLoad()
         
         DispatchQueue.main.async {
+            
+        self.gameTypes = loadedGameTypes
+        
+        self.createDefaultGame()
             
         self.setHeightForGameNotesTableCell()
         
@@ -209,8 +212,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.gameNotesTableViewHeight = self.tableView.bounds.height - heightAboveGameNotes
     }
     
-
-    
     fileprivate func setStoredValues() {
         
         guard let game = self.game else { return }
@@ -222,7 +223,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         numberOfPlayersPicker.selectRow(game.availableSlots, inComponent: 0, animated: false)
         
         datePicker.date = game.eventDate as Date
-        lblDate.text = DateUtilities.dateString(datePicker.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+        lblDate.text = DateUtilities.dateString(datePicker.date, dateFormat: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
         
         txtLocationName.text = game.locationName
         
@@ -235,9 +236,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     fileprivate func createDefaultGame() {
         
-        guard let address = self.address else { return }
-        
         DispatchQueue.main.async {
+            
+        if self.address == nil {
+            self.setGameAddress("")
+        }
         
         let defaultGameType: GameType
         if self.selectedGameType == nil {
@@ -250,7 +253,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             
         // TODO: - Add default user
         
-        let game = Game.init(id: UUID.init().uuidString, gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: address, ownerId: "userID", gameNotes: "")
+        let game = Game.init(id: UUID.init().uuidString, gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: self.address!, ownerId: "userID", gameNotes: "")
         
         game.userIsOwner = true
         game.userJoined = true
@@ -274,7 +277,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         
         //Round to second nearest five minute increment
         self.datePicker.date = self.earliestSuggestedGameTime()
-        self.lblDate.text = DateUtilities.dateString(self.datePicker.date, dateFormatString: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
+        self.lblDate.text = DateUtilities.dateString(self.datePicker.date, dateFormat: "\(DateFormatter.MONTH_ABBR_AND_DAY.rawValue)  \(DateFormatter.TWELVE_HOUR_TIME.rawValue)")
         }
     }
     
@@ -360,12 +363,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         let cell = tableView.cellForRow(at: indexPath)
         cell?.backgroundColor = UIColor.white
         
-        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 0 && gameStatus == .create {
+        if (indexPath as IndexPath).section == 0 && (indexPath as IndexPath).row == 0 && gameStatus == .create {
             sportRowSelected = !sportRowSelected
             dateRowSelected = false
             playerRowSelected = false
             animateReloadTableView()
-        } else if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 2 {
+        } else if (indexPath as IndexPath).section == 0 && (indexPath as IndexPath).row == 2 {
             playerRowSelected = !playerRowSelected
             if lblPlayers.text == "" || lblPlayers.text == nil {
                 lblPlayers.text = "\(numberOfPlayersPicker.selectedRow(inComponent: 0) + 1)"
@@ -374,11 +377,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             }
             sportRowSelected = false
             dateRowSelected = false
-        } else if (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 0 {
+        } else if (indexPath as IndexPath).section == 1 && (indexPath as IndexPath).row == 0 {
             dateRowSelected = !dateRowSelected
             sportRowSelected = false
             playerRowSelected = false
-        } else if (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 2 {
+        } else if (indexPath as IndexPath).section == 1 && (indexPath as IndexPath).row == 2 {
             performSegue(withIdentifier: SEGUE_NEW_GAME_MAP, sender: self)
             sportRowSelected = false
             dateRowSelected = false
@@ -400,7 +403,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 
         var rowHeight:CGFloat = 44.0
         
-        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 1 {
+        if (indexPath as IndexPath).section == 0 && (indexPath as IndexPath).row == 1 {
             if sportRowSelected == false {
                 rowHeight = 0.0
             } else {
@@ -408,7 +411,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             }
         }
         
-        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 3 {
+        if (indexPath as IndexPath).section == 0 && (indexPath as IndexPath).row == 3 {
             if playerRowSelected == false {
                 rowHeight = 0.0
             } else {
@@ -416,7 +419,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             }
         }
         
-        if (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 1 {
+        if (indexPath as IndexPath).section == 1 && (indexPath as IndexPath).row == 1 {
             if dateRowSelected == false {
                 datePicker.isHidden = true
                 rowHeight = 0.0
@@ -426,13 +429,13 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             }
         }
         
-        if (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 2 {
+        if (indexPath as IndexPath).section == 1 && (indexPath as IndexPath).row == 2 {
             if address != nil {
                 rowHeight = 115
             }
         }
         
-        if (indexPath as NSIndexPath).section == 2 && (indexPath as NSIndexPath).row == 0 {
+        if (indexPath as IndexPath).section == 2 && (indexPath as IndexPath).row == 0 {
             DispatchQueue.main.async {
                 rowHeight = self.gameNotesTableViewHeight
             }
@@ -443,7 +446,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
-        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 0 && self.gameStatus == .edit {
+        if (indexPath as IndexPath).section == 0 && (indexPath as IndexPath).row == 0 && self.gameStatus == .edit {
             let cell = tableView.cellForRow(at: indexPath)
             cell?.isUserInteractionEnabled = false
             cell?.selectionStyle = .none
@@ -640,7 +643,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     fileprivate func setGameObjectFields(_ gameObject: ) {
         
-//        gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
         gameObject["gameType"] = PFObject(withoutDataWithClassName: "GameType", objectId: self.game.gameType.id)
         
         gameObject["date"] = self.game.eventDate
