@@ -10,13 +10,11 @@ import Foundation
 
 class GameType {
     
-    private let kGameTypeID = "gameTypeID"
     private let kName = "name"
     private let kDisplayName = "displayName"
     private let kSortOrder = "sortOrder"
     private let kImageName = "imageName"
     
-    var id: String = UUID.init().uuidString
     var name: String = ""
     var displayName: String = ""
     var sortOrder: Int = 0
@@ -24,8 +22,7 @@ class GameType {
     
     var gameCount: Int = -1
     
-    init(id: String, name: String, displayName: String, sortOrder: Int, imageName: String) {
-        self.id = id
+    init(name: String, displayName: String, sortOrder: Int, imageName: String) {
         self.name = name
         self.displayName = displayName
         self.sortOrder = sortOrder
@@ -39,31 +36,6 @@ class GameType {
     
     func increaseGameCount(_ count: Int) {
         gameCount += count
-    }
-
-    static func serializeGameType(_ game: GameType) -> [String: String] {
-        var serializedGameType: [String: String] = [:]
-        
-        serializedGameType["id"] = game.id
-        serializedGameType["name"] = game.name
-        serializedGameType["displayName"] = game.displayName
-        serializedGameType["sortOrder"] = "\(game.sortOrder)"
-        serializedGameType["imageName"] = game.imageName
-        
-        return serializedGameType
-    }
-    
-    static func deserializeGameType(_ serializedGameType: [String: String]) -> GameType  {
-        
-        let id = serializedGameType["id"]
-        let name = serializedGameType["name"]
-        let displayName = serializedGameType["displayName"]
-        let sortOrder = Int(serializedGameType["sortOrder"]!)
-        let imageName = serializedGameType["imageName"]
-        
-        let gameType = GameType.init(id: id!, name: name!, displayName: displayName!, sortOrder: sortOrder!, imageName: imageName!)
-        
-        return gameType
     }
 
     init?(dictionary: [String: Any]) {
@@ -80,7 +52,7 @@ class GameType {
     }
     
     var dictionaryRep: [String: Any] {
-        return [kGameTypeID: id, kName: name, kSortOrder: sortOrder, kImageName: imageName, kDisplayName: displayName]
+        return [kName: name, kSortOrder: sortOrder, kImageName: imageName, kDisplayName: displayName]
     }
     
 }
