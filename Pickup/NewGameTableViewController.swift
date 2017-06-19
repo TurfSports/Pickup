@@ -75,10 +75,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
     }
     
-    func loadGames() {
-        
-    }
-    
     func save(game: Game, completion: @escaping (Bool) -> Void) {
         
         GameController.put(game: game, withUUID: UUID.init(), success: { (success) in
@@ -98,7 +94,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         if editingNotes == false  {
             if enteredDataIsValid() == true {
                 self.game?.gameNotes = txtGameNotes.text
-                self.game?.gameType = self.selectedGameType
+                if selectedGameType == nil { game?.gameType = loadedGameTypes[0] }
+                else { self.game?.gameType = self.selectedGameType }
                 if let game = self.game {
                     save(game: game, completion: { (success) in
                         if success {
@@ -196,7 +193,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
         self.btnCreate.tintColor = Theme.ACCENT_COLOR
         self.btnMap.tintColor = Theme.ACCENT_COLOR
-        self.removeTopWhiteSpace()
+//        self.removeTopWhiteSpace()
 
         self.datePicker.minimumDate = Date()
         self.datePicker.maximumDate = Date().addingTimeInterval(2 * 7 * 24 * 60 * 60)
@@ -273,7 +270,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         self.lblPlayers.text = ""
         
         self.lblSport.text = game.gameType.displayName
-        self.sportPicker.selectRow(game.gameType.sortOrder - 1, inComponent: 0, animated: false)
+        self.sportPicker.selectRow(game.gameType.sortOrder, inComponent: 0, animated: false)
         
         //Round to second nearest five minute increment
         self.datePicker.date = self.earliestSuggestedGameTime()
@@ -281,12 +278,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
         }
     }
     
-    func removeTopWhiteSpace() {
-        let dummyViewHeight: CGFloat = 40
-        let dummyView:UIView = UIView.init(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.size.width, height: dummyViewHeight))
-        self.tableView.tableHeaderView = dummyView
-        self.tableView.contentInset = UIEdgeInsetsMake(-dummyViewHeight, 0, 0, 0)
-    }
+//    func removeTopWhiteSpace() {
+//        let dummyViewHeight: CGFloat = 40
+//        let dummyView:UIView = UIView.init(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.size.width, height: dummyViewHeight))
+//        self.tableView.tableHeaderView = dummyView
+//        self.tableView.contentInset = UIEdgeInsetsMake(-dummyViewHeight, 0, 0, 0)
+//    }
     
     
     //MARK: - Picker view delegate
@@ -339,6 +336,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             case GAME_TYPE_PICKER:
                 self.game?.gameType = gameTypes[row]
                 lblSport.text = gameTypes[row].displayName
+                self.selectedGameType = gameTypes[row]
                 break
             case NUMBER_OF_PLAYERS_PICKER:
                 
