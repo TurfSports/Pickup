@@ -164,27 +164,24 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             gameTypeArray = gameTypeArrayFromDefaults.mutableCopy() as! NSMutableArray
             
             for gameType in gameTypeArray {
-                self.gameTypes.append(GameType.deserializeGameType(gameType as! [String : String]))
+                guard let castedGameType = GameType(dictionary: gameType as! [String: Any]) else { continue }
+                self.gameTypes.append(castedGameType)
             }
         }
         
-        GameTypeList.shared.setGameTypeList(self.gameTypes)
-        activityIndicator.stopAnimating()
     }
     
     fileprivate func saveGameTypesToUserDefaults() {
         
-        let gameTypeArray: NSMutableArray = []
+        var gameTypeArray: [GameType] = []
         
         for gameType in self.gameTypes {
-            let serializedGameType = GameType.serializeGameType(gameType)
-            gameTypeArray.add(serializedGameType)
+            gameTypeArray.append(gameType)
         }
         
         UserDefaults.standard.set(gameTypeArray, forKey: "gameTypes")
         UserDefaults.standard.set(Date(), forKey: "gameTypePullTimeStamp")
     }
-    
     
     //MARK: - Parse
     

@@ -18,10 +18,10 @@ class GameTypeList {
         self.gameTypeList = gameTypeList
     }
     
-    func getGameTypeById(_ id: String) -> GameType? {
+    func getGameTypeBy(name: String) -> GameType? {
         
         for gameType in self.gameTypeList {
-            if gameType.id == id {
+            if gameType.name == name {
                 return gameType
             }
         }
