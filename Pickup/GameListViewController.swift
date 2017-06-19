@@ -35,10 +35,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation? {
         didSet {
-            GameController.loadGames { (games) in
-                self.games = games
-                self.tableGameList.reloadData()
-            }
+            self.loadGames()
         }
     }
     
@@ -56,7 +53,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         let refreshControl = UIRefreshControl()
         
         refreshControl.addTarget(self, action: #selector(self.loadGames), for: UIControlEvents.valueChanged)
-//        refreshControl.addTarget(self, action: "loadGamesFromFirebase", for: UIControlEvents.valueChanged)
         return refreshControl
     }()
     
@@ -64,24 +60,13 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        GameController.loadGames { (games) in
-            DispatchQueue.main.async {
-                self.games = games
-                loadedGames = games
-                self.sortedGames = games.filter { $0.gameType.name == (self.selectedGameType?.name)! }
-                self.tableGameList.reloadData()
-            }
-        }
+        activityIndicator.startAnimating()
+        self.activityIndicator.isHidden = false
         
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
         self.tableGameList.addSubview(self.refreshControl)
         
         lblNoGames.text = "No \(selectedGameType?.name ?? "") games within \(Settings.shared.gameDistance) \(Settings.shared.distanceUnit)"
-        noGamesBlur.isHidden = true
-        
-        
-        activityIndicator.startAnimating()
-        self.activityIndicator.isHidden = false
         
         setUsersCurrentLocation()
         
@@ -90,22 +75,46 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         btnViewMap.tintColor = Theme.ACCENT_COLOR
         btnAddNewGame.tintColor = Theme.ACCENT_COLOR
         
+        self.loadGames()
+        
     }
     
     func loadGames() {
         GameController.loadGames { (games) in
-            self.games = games
-            loadedGames = games
+            DispatchQueue.main.async {
+                self.games = games
+                loadedGames = games
+                self.sort(games)
+                self.blurScreenIfNeeded()
+                self.tableGameList.reloadData()
+                self.refreshControl.endRefreshing()
+            }
         }
     }
     
+    func sort(_ games: [Game]?) {
+        guard let gamesToSort = games else {
+            self.sortedGames = loadedGames.filter { $0.gameType.name == (self.selectedGameType?.name) }
+            return
+        }
+        self.sortedGames = gamesToSort.filter { $0.gameType.name == (self.selectedGameType?.name)! }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
-        noGamesBlur.isHidden = true
+        self.sort(nil)
+        self.blurScreenIfNeeded()
         self.tableGameList.reloadData()
     }
     
-    fileprivate func blurScreen() {
-        noGamesBlur.isHidden = false
+    fileprivate func blurScreenIfNeeded() {
+        if sortedGames.count == 0 {
+            noGamesBlur.isHidden = false
+        } else {
+            noGamesBlur.isHidden = true
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+
+        }
     }
     
     // MARK: - Table view data source
@@ -152,7 +161,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GameTableViewCell
         
         if !self.games.isEmpty {
-        
+            
             let game = sortedGames[indexPath.row]
             
             cell?.lblLocationName.text = game.locationName
@@ -194,15 +203,13 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
                 cell?.lblDistance.text = "\(distance) \(suffix)"
             }
         } else {
-            blurScreen()
+            blurScreenIfNeeded()
         }
         
         return cell!
     }
     
     /*
-     //MARK: - Parse
-     
      func loadGamesFromParse() {
      let gameQuery = PFQuery(className: "Game")
      

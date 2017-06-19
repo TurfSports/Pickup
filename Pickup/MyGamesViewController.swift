@@ -46,7 +46,9 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
-            loadGameTypesFromFirebase()
+            GameTypeController.loadGameTypes(gameTypes: { (gameTypes) in
+                self.gameTypes = gameTypes
+            })
         } else {
             loadGameTypesFromUserDefaults()
         }
@@ -57,7 +59,6 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     override func viewDidAppear(_ animated: Bool) {
         blurNoGames.isHidden = true
-        loadGamesFromFirebase()
         self.tableGameList.reloadData()
     }
     
@@ -163,7 +164,8 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             gameTypeArray = gameTypeArrayFromDefaults.mutableCopy() as! NSMutableArray
             
             for gameType in gameTypeArray {
-                self.gameTypes.append(GameType.deserializeGameType(gameType as! [String : String]))
+                guard let castedGameType = GameType(dictionary: gameType as! [String: Any]) else { continue }
+                self.gameTypes.append(castedGameType)
             }
         }
         
@@ -171,29 +173,16 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     fileprivate func saveGameTypesToUserDefaults() {
         
-        let gameTypeArray: NSMutableArray = []
+        var gameTypeArray: [GameType] = []
         
         for gameType in self.gameTypes {
-            let serializedGameType = GameType.serializeGameType(gameType)
-            gameTypeArray.add(serializedGameType)
+            gameTypeArray.append(gameType)
         }
         
         UserDefaults.standard.set(gameTypeArray, forKey: "gameTypes")
         UserDefaults.standard.set(Date(), forKey: "gameTypePullTimeStamp")
     }
     
-    
-    //MARK: - Load from firebase
-    
-    //TODO: - Setup Load From Firebase
-    
-    func loadGamesFromFirebase() {
-        
-    }
-    
-    func loadGameTypesFromFirebase() {
-        
-    }
     
     //MARK: - Sorting functions
     
@@ -202,7 +191,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         var returnedGameType = self.gameTypes[0]
         
         for gameType in self.gameTypes {
-            if gameId == gameType.id {
+            if gameId == gameType.name {
                 returnedGameType = gameType
                 break
             }

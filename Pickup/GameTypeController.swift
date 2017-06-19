@@ -22,7 +22,9 @@ class GameTypeController {
                 
                 let gameTypeArray = jsonDictionary.flatMap { GameType(dictionary: $0.1) }
                 
-                gameTypes(gameTypeArray)
+                let sortedGameTypes = gameTypeArray.sorted { $0.0.sortOrder < $0.1.sortOrder }
+                
+                gameTypes(sortedGameTypes)
                 
             }
         }
