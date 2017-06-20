@@ -66,8 +66,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
-//        loadGameCounts()
-        
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
             GameTypeController.loadGameTypes { (gameTypeArray) in
                 self.gameTypes = gameTypeArray
