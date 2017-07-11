@@ -32,6 +32,7 @@ class GameController {
     }
     
     static let gameURL = URL(string: "https://pickup-a837a.firebaseio.com/Games")
+    static let tempURL = URL(string: "")
     
     static func loadGames(completion: @escaping (_ games: [Game]) -> Void) {
         var gameArray: [Game] = []
@@ -41,8 +42,12 @@ class GameController {
                 guard let data = data, error == nil else { completion([]); return }
                 guard let jsonDictionary = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String: [String: Any]] else { completion([]); print("Fuck") ; return }
                 
+                var gameNumber = 0
+                
                 for game in jsonDictionary {
-                    gameArray.append(Game(gameDictionary: game.value)!)
+                    gameNumber += 1
+                    guard let game = Game(gameDictionary: game.value) else { completion([]); print("Game #\(gameNumber) can't initialize"); continue }
+                    gameArray.append(game)
                 }
                 completion(gameArray)
             }

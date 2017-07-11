@@ -250,8 +250,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             
         // TODO: - Add default user
         
-        let game = Game.init(id: UUID.init().uuidString, gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: self.address!, ownerId: "userID", gameNotes: "")
-        
+        let game = Game.init(id: UUID.init().uuidString, gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: self.address!, ownerId: "userID", userIDs: [], gameNotes: "")
         game.userIsOwner = true
         game.userJoined = true
             // Insert user id

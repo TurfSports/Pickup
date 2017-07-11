@@ -76,6 +76,14 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             loadGameTypesFromUserDefaults()
         }
         
+        FirebaseController.shared.getGameTypeImages { (gotImages) in
+            if gotImages {
+                print("Got images")
+            } else {
+                
+            }
+        }
+        
         addNewGameButton.tintColor = Theme.ACCENT_COLOR
         settingsButton.tintColor = Theme.PRIMARY_LIGHT_COLOR
         self.navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
@@ -112,6 +120,13 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? HomeTableViewCell
         
         let gameType = gameTypes[(indexPath as NSIndexPath).row]
+        
+        if UIImage(named: gameType.imageName) == nil {
+            var imageName = gameType.imageName.lowercased()
+            let chars = imageName.characters
+            let realChars = chars.dropLast(4)
+            gameType.imageName = String.init(realChars) + "Icon"
+        }
         
         cell?.lblSport.text = gameType.displayName
         cell?.imgSport.image = UIImage(named: gameType.imageName)

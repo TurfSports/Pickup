@@ -9,25 +9,26 @@
 import Foundation
 import CoreLocation
 
-
+let defaultPlayer = Player.init(id: "Default", username: "Default", userImage: nil, joinedGames: [], userImageEndpoint: "nil")
 
 class Game {
     
-    private let kGameID: String = "gameID"
+    private let kGameID: String = "uid"
     private let kGameType: String = "gameType"
     private let kTotalSlots: String = "totalSlots"
-    private let kAvailableSlots: String = "availableSlots"
-    private let kEventDate: String = "eventDate"
+    private let kAvailableSlots: String = "slotsAvailable"
+    private let kEventDate: String = "date"
     private let kLocationName: String = "locationName"
-    private let kOwnerId: String = "ownerID"
-    private let kGameNotes: String = "gameNotes"
-    private let kUserJoined: String = "userJoinedBool"
-    private let kUserIsOwner: String = "userIsOwnerBool"
-    private let kIsCancelled: String = "isCancelledBool"
+    private let kOwnerId: String = "ownerUid"
+    private let kGameNotes: String = "notes"
+    private let kUserIsOwner: String = "userIsOwner"
+    private let kIsCancelled: String = "isCancelled"
     private let kLatitude: String = "latitude"
     private let kLongitude: String = "longitude"
+    private let kUserIDs: String = "playerIDs"
     
     var id: String = UUID.init().uuidString
+    var userIDs: [String]
     var gameType: GameType
     var totalSlots: Int
     var availableSlots: Int
@@ -43,7 +44,7 @@ class Game {
     
     init(id: String, gameType: GameType, totalSlots: Int,
         availableSlots: Int, eventDate: Date, locationName: String,
-        ownerId: String, gameNotes: String) {
+        ownerId: String, userIDs: ([String]), gameNotes: String) {
         self.id = id
         self.gameType = gameType
         self.totalSlots = totalSlots
@@ -52,6 +53,7 @@ class Game {
         self.locationName = locationName
         self.ownerId = ownerId
         self.gameNotes = gameNotes
+        self.userIDs = [ownerId]
     }
     
     init?(gameDictionary: [String: Any]) {
@@ -62,16 +64,16 @@ class Game {
         let locationName = gameDictionary[kLocationName] as? String,
         let ownerId = gameDictionary[kOwnerId] as? String,
         let gameNotes = gameDictionary[kGameNotes] as? String,
-        let userJoined = gameDictionary[kUserJoined] as? Bool,
         let userIsOwner = gameDictionary[kUserIsOwner] as? Bool,
         let isCancelled = gameDictionary[kIsCancelled] as? Bool,
         let latitude = gameDictionary[kLatitude] as? Double,
         let longitude = gameDictionary[kLongitude] as? Double,
-        let eventDate = gameDictionary[kEventDate] as? String
-
+        let eventDate = gameDictionary[kEventDate] as? String,
+        let userIDs = gameDictionary[kUserIDs] as? [String]
         
         else { return nil }
         
+        self.userIDs = userIDs
         self.id = id
         self.gameType = gameType
         self.totalSlots = totalSlots
@@ -80,11 +82,16 @@ class Game {
         self.locationName = locationName
         self.ownerId = ownerId
         self.gameNotes = gameNotes
-        self.userJoined = userJoined
         self.userIsOwner = userIsOwner
         self.isCancelled = isCancelled
         self.latitude = latitude
         self.longitude = longitude
+        if userIDs.contains(defaultPlayer.id) {
+            self.userJoined = true
+        }
+        if defaultPlayer.id == ownerId {
+            self.userIsOwner = true
+        }
     }
     
     func setCoordinates (_ latitude: Double, longitude: Double) {
@@ -100,7 +107,7 @@ class Game {
         
         let eventDateString = String(describing: eventDate)
         
-        return [kGameID: id, kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kUserJoined: userJoined, kUserIsOwner: userIsOwner, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude]
+        return [kGameID: id, kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kUserIsOwner: userIsOwner, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude, kUserIDs: userIDs]
     }
 }
 
