@@ -315,8 +315,8 @@
 		02BE277C1C4DD58F0062C890 /* Pickup */ = {
 			isa = PBXGroup;
 			children = (
-				02ED11EA1C518FF1001923EB /* View */,
-				02ED11EB1C518FFF001923EB /* Controller */,
+				02ED11EA1C518FF1001923EB /* Storyboards */,
+				02ED11EB1C518FFF001923EB /* View Controllers */,
 				02ED11E91C518FEC001923EB /* Model */,
 				D095B02B1F1544F20045B461 /* Controllers */,
 				02D821751C5C2F38000999B6 /* SupportFiles */,
@@ -329,6 +329,9 @@
 			isa = PBXGroup;
 			children = (
 				02DB6FEE1C740FEB00FF5C20 /* Assets.xcassets */,
+				025330F61C56FAA600B6ABDD /* Theme.swift */,
+				028C63AE1CB2DD740086D42E /* LocalNotifications.swift */,
+				0275B8161D1B82D700611621 /* NotificationsManager.swift */,
 				D09408631ECE3C69005B2D2B /* FirebaseController.swift */,
 				D095B0291F15436B0045B461 /* ImageController.swift */,
 				D08387B81ED4B4DA009CCCAC /* NetworkController.swift */,
@@ -355,16 +358,16 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		02ED11EA1C518FF1001923EB /* View */ = {
+		02ED11EA1C518FF1001923EB /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
 				02BE27811C4DD58F0062C890 /* Main.storyboard */,
 				02BE27861C4DD58F0062C890 /* LaunchScreen.storyboard */,
 			);
-			name = View;
+			name = Storyboards;
 			sourceTree = "<group>";
 		};
-		02ED11EB1C518FFF001923EB /* Controller */ = {
+		02ED11EB1C518FFF001923EB /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				024DDF0C1C8BF2DA000E34D7 /* Settings */,
@@ -373,11 +376,8 @@
 				024DDF081C8BF259000E34D7 /* GameList */,
 				024DDF0A1C8BF298000E34D7 /* GameDetails */,
 				024DDF0B1C8BF2A6000E34D7 /* NewGame */,
-				025330F61C56FAA600B6ABDD /* Theme.swift */,
-				028C63AE1CB2DD740086D42E /* LocalNotifications.swift */,
-				0275B8161D1B82D700611621 /* NotificationsManager.swift */,
 			);
-			name = Controller;
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		55C17A8D713F811DE659EFEF /* Frameworks */ = {
