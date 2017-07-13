@@ -21,7 +21,6 @@ class Game {
     private let kLocationName: String = "locationName"
     private let kOwnerId: String = "ownerUid"
     private let kGameNotes: String = "notes"
-    private let kUserIsOwner: String = "userIsOwner"
     private let kIsCancelled: String = "isCancelled"
     private let kLatitude: String = "latitude"
     private let kLongitude: String = "longitude"
@@ -64,7 +63,6 @@ class Game {
         let locationName = gameDictionary[kLocationName] as? String,
         let ownerId = gameDictionary[kOwnerId] as? String,
         let gameNotes = gameDictionary[kGameNotes] as? String,
-        let userIsOwner = gameDictionary[kUserIsOwner] as? Bool,
         let isCancelled = gameDictionary[kIsCancelled] as? Bool,
         let latitude = gameDictionary[kLatitude] as? Double,
         let longitude = gameDictionary[kLongitude] as? Double,
@@ -82,7 +80,6 @@ class Game {
         self.locationName = locationName
         self.ownerId = ownerId
         self.gameNotes = gameNotes
-        self.userIsOwner = userIsOwner
         self.isCancelled = isCancelled
         self.latitude = latitude
         self.longitude = longitude
@@ -91,6 +88,8 @@ class Game {
         }
         if defaultPlayer.id == ownerId {
             self.userIsOwner = true
+        } else {
+            self.userIsOwner = false
         }
     }
     
@@ -107,7 +106,7 @@ class Game {
         
         let eventDateString = String(describing: eventDate)
         
-        return [kGameID: id, kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kUserIsOwner: userIsOwner, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude, kUserIDs: userIDs]
+        return [kGameID: id, kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude, kUserIDs: userIDs]
     }
 }
 
