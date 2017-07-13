@@ -332,7 +332,6 @@
 				025330F61C56FAA600B6ABDD /* Theme.swift */,
 				028C63AE1CB2DD740086D42E /* LocalNotifications.swift */,
 				0275B8161D1B82D700611621 /* NotificationsManager.swift */,
-				D09408631ECE3C69005B2D2B /* FirebaseController.swift */,
 				D095B0291F15436B0045B461 /* ImageController.swift */,
 				D08387B81ED4B4DA009CCCAC /* NetworkController.swift */,
 				02BE277D1C4DD58F0062C890 /* AppDelegate.swift */,
@@ -403,6 +402,7 @@
 				D08387BC1ED4B549009CCCAC /* GameController.swift */,
 				D01697CF1EDF66CB00896DD7 /* GameTypeController.swift */,
 				D095B02C1F1546010045B461 /* PlayerController.swift */,
+				D09408631ECE3C69005B2D2B /* FirebaseController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
