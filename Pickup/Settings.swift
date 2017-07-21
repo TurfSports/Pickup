@@ -11,7 +11,7 @@ import Foundation
 
 class Settings {
     
-    static let shared = Settings()
+    static var shared = Settings()
     
     var gameDistance = 10
     var distanceUnit = "miles"
@@ -21,9 +21,14 @@ class Settings {
     var defaultLongitude = -111.640160
     var showCreatedGames = true
     
-    init () {}
+    static func saveSettings(_ settings: [String: String]) {
+        UserDefaults.standard.set(settings, forKey: "Settings")
+    }
     
-    
+    static func loadSettings() {
+        guard let userSettings = UserDefaults.standard.dictionary(forKey: "Settings") else { return }
+        self.shared = deserializeSettings(userSettings)
+    }
     
     static func serializeSettings(_ settings: Settings) -> [String: String] {
         var serializedSettings: [String: String] = [:]
@@ -40,19 +45,27 @@ class Settings {
         return serializedSettings
     }
     
-    static func deserializeSettings(_ serializedSettings: [String: String]) -> Settings  {
+    static func deserializeSettings(_ serializedSettings: [String: Any]) -> Settings  {
         
         let settings = Settings.init()
         
-        settings.gameDistance = Int(serializedSettings["GameDistance"]!)!
-        settings.distanceUnit = serializedSettings["DistanceUnit"]!
-        settings.gameReminder = Int(serializedSettings["GameReminder"]!)!
-        settings.defaultLocation = serializedSettings["DefaultLocation"]!
-        settings.defaultLatitude = Double(serializedSettings["DefaultLatitude"]!)!
-        settings.defaultLongitude = Double(serializedSettings["DefaultLongitude"]!)!
+        guard let gameDistance = serializedSettings["GameDistance"] as? Int,
+        let distanceUnit = serializedSettings["DistanceUnit"] as? String,
+        let gameReminder = serializedSettings["GameReminder"] as? Int,
+        let defaultLocation = serializedSettings["DefaultLocation"] as? String,
+        let defaultLatitude = serializedSettings["DefaultLatitude"] as? Double,
+        let defaultLongitude = serializedSettings["DefaultLongitude"] as? Double,
+        let showCreatedGames = serializedSettings["ShowCreatedGames"] as? Int
         
-        let showCreatedGames = Int(serializedSettings["ShowCreatedGames"]!)!
-        settings.showCreatedGames = (showCreatedGames == 1 ? true : false)
+            else { return settings }
+        
+        settings.gameDistance = gameDistance
+        settings.distanceUnit = distanceUnit
+        settings.gameReminder = gameReminder
+        settings.defaultLocation = defaultLocation
+        settings.defaultLatitude = defaultLatitude
+        settings.defaultLongitude = defaultLongitude
+        settings.showCreatedGames = showCreatedGames == 1
         
         return settings
     }
