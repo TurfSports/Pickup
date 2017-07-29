@@ -12,7 +12,7 @@ import MapKit
 
 var loadedGameTypes: [GameType] = []
 
-class HomeTableViewController: UITableViewController, CLLocationManagerDelegate, DismissalDelegate {
+class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocationManagerDelegate {
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
@@ -26,12 +26,14 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             self.tableView.reloadData()
         }
     }
-    let locationManager = CLLocationManager()
-    var currentLocation:CLLocation? {
+
+    var currentLocation: CLLocation? {
         didSet {
             // Load Game Counts
         }
     }
+    
+    
     
     @IBOutlet weak var refresher: UIRefreshControl!
     @IBOutlet weak var addNewGameButton: UIBarButtonItem!
@@ -44,21 +46,33 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         return activityIndicator
     }()
     
+    func loadGameTypes() {
+        GameTypeController.shared.loadGameTypes { (gameTypes) in
+            self.gameTypes = gameTypes
+        }
+        refreshControl?.endRefreshing()
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-////      iOS 9.2
-//      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
-//      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
-//
-//      iOS 9.3
+        loadGameTypes()
+        
+        OverallLocation.manager.delegate = self
+        
+        ////      iOS 9.2
+        //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
+        //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
+        //
+        //      iOS 9.3
         // Add load games with segue and alert
-//        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGamesFromParseWithSegue(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithSegue"), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithAlert"), object: nil)
-
-//        refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
-//        refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), for: UIControlEvents.valueChanged)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGamesFromParseWithSegue(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithSegue"), object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(HomeTableViewController.loadGameFromParseWithAlert(_:)), name: NSNotification.Name(rawValue: "com.pickup.loadGameFromNotificationWithAlert"), object: nil)
+        
+        //        refresher.addTarget(self, action: "loadGameCounts", forControlEvents: UIControlEvents.ValueChanged)
+        //        refresher.addTarget(self, action: #selector(HomeTableViewController.loadGameCounts), for: UIControlEvents.valueChanged)
+        
         self.tableView.addSubview(refresher)
         self.tableView.addSubview(activityIndicator)
         
@@ -67,7 +81,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
-            GameTypeController.loadGameTypes { (gameTypeArray) in
+            GameTypeController.shared.loadGameTypes() { (gameTypeArray) in
                 self.gameTypes = gameTypeArray
                 loadedGameTypes = gameTypeArray
                 self.tableView.reloadData()
@@ -102,7 +116,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     override func viewDidAppear(_ animated: Bool) {
         if currentLocation != nil {
-//            loadGameCounts()
+            //            loadGameCounts()
         }
     }
     
@@ -199,117 +213,117 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     //MARK: - Parse
     
     /*
-    
-    fileprivate func loadGameTypesFromParse() {
-        
-        let gameTypeQuery = PFQuery(className: "GameType")
-        gameTypeQuery.order(byAscending: "sortOrder")
-        gameTypeQuery.findObjectsInBackground { (objects, error) -> Void in
-            if let gameTypeObjects = objects {
-                
-                self.gameTypes.removeAll(keepingCapacity: true)
-                
-                for gameTypeObject in gameTypeObjects {
-                    let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
-                    self.gameTypes.append(gameType)
-                }
-            }
-            
-            self.saveGameTypesToUserDefaults()
-            GameTypeList.sharedGameTypes.setGameTypeList(self.gameTypes)
-            self.activityIndicator.stopAnimating()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
-    
-    func loadGameCounts() {
-        
-        for gameType in self.gameTypes {
-//            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
-            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
-
-            let gameQuery = PFQuery(className: "Game")
-            gameQuery.whereKey("gameType", equalTo: gameTypeObject)
-            gameQuery.whereKey("date", greaterThanOrEqualTo: Date().addingTimeInterval(-1.5 * 60 * 60))
-            gameQuery.whereKey("date", lessThanOrEqualTo: Date().addingTimeInterval(2 * 7 * 24 * 60 * 60))
-            gameQuery.whereKey("isCancelled", equalTo: false)
-            gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
-            
-            if Settings.sharedSettings.showCreatedGames == false {
-                gameQuery.whereKey("owner", notEqualTo: PFUser.current()!)
-            }
-            
-            var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
-            
-            if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-                userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
-            }
-            
-            if Settings.sharedSettings.distanceUnit == "miles" {
-                let gameDistance = Double(Settings.sharedSettings.gameDistance)
-                gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:gameDistance)
-            } else {
-                let gameDistance = Double(Settings.sharedSettings.gameDistance)
-                gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinKilometers:gameDistance)
-            }
-            
-            gameQuery.countObjectsInBackground(block: { (count: Int32, error: Error?) -> Void in
-                let gameCount = Int(count)
-                gameType.setGameCount(gameCount)
-                DispatchQueue.main.async {
-                    self.gameCountLoaded = true
-                }
-            })
-            
-            refresher.endRefreshing()
-        }
-    }
-    
-    func loadGameFromParseWithSegue(_ notification: Notification) {
-        loadGameFromParse(false, notification: notification)
-    }
-    
-    func loadGameFromParseWithAlert(_ notification: Notification) {
-        loadGameFromParse(true, notification: notification)
-    }
-    
-    func loadGameFromParse(_ showAlert: Bool, notification: Notification) {
-        
-        let gameId = (notification as NSNotification).userInfo!["selectedGameId"]
-        let gameQuery = PFQuery(className: "Game")
-        gameQuery.whereKey("objectId", equalTo: gameId!)
-        
-        gameQuery.getFirstObjectInBackground {
-            (game: PFObject?, error: Error?) -> Void in
-            if error != nil || game == nil {
-                print("Home table view controller")
-                print("The getFirstObject on Game request failed.")
-            } else {
-                
-                self.gameTypes = GameTypeList.sharedGameTypes.gameTypeList
-                let gameTypeId = (game?["gameType"] as AnyObject).objectId!
-                
-                self.newGame = GameConverter.convertParseObject(game!, selectedGameType: GameTypeList.sharedGameTypes.getGameTypeById(gameTypeId!)!)
-                
-                if (game?["owner"] as AnyObject).objectId! == PFUser.current()?.objectId! {
-                    self.newGame.userIsOwner = true
-                }
-                
-                self.newGame.userJoined = true
-                
-                DispatchQueue.main.async {
-                    if showAlert == true {
-                        self.showAlert(notification)
-                    } else {
-                        self.performSegue(withIdentifier: self.SEGUE_SHOW_GAME_DETAILS, sender: self)
-                    }
-                }
-            }
-        }
-    }
+     
+     fileprivate func loadGameTypesFromParse() {
+     
+     let gameTypeQuery = PFQuery(className: "GameType")
+     gameTypeQuery.order(byAscending: "sortOrder")
+     gameTypeQuery.findObjectsInBackground { (objects, error) -> Void in
+     if let gameTypeObjects = objects {
+     
+     self.gameTypes.removeAll(keepingCapacity: true)
+     
+     for gameTypeObject in gameTypeObjects {
+     let gameType = GameTypeConverter.convertParseObject(gameTypeObject)
+     self.gameTypes.append(gameType)
+     }
+     }
+     
+     self.saveGameTypesToUserDefaults()
+     GameTypeList.sharedGameTypes.setGameTypeList(self.gameTypes)
+     self.activityIndicator.stopAnimating()
+     DispatchQueue.main.async {
+     self.tableView.reloadData()
+     }
+     }
+     }
+     
+     
+     func loadGameCounts() {
+     
+     for gameType in self.gameTypes {
+     //            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
+     let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
+     
+     let gameQuery = PFQuery(className: "Game")
+     gameQuery.whereKey("gameType", equalTo: gameTypeObject)
+     gameQuery.whereKey("date", greaterThanOrEqualTo: Date().addingTimeInterval(-1.5 * 60 * 60))
+     gameQuery.whereKey("date", lessThanOrEqualTo: Date().addingTimeInterval(2 * 7 * 24 * 60 * 60))
+     gameQuery.whereKey("isCancelled", equalTo: false)
+     gameQuery.whereKey("slotsAvailable", greaterThanOrEqualTo: 1)
+     
+     if Settings.sharedSettings.showCreatedGames == false {
+     gameQuery.whereKey("owner", notEqualTo: PFUser.current()!)
+     }
+     
+     var userGeoPoint = PFGeoPoint(latitude: Settings.sharedSettings.defaultLatitude, longitude: Settings.sharedSettings.defaultLongitude)
+     
+     if Settings.sharedSettings.defaultLocation == "none" && CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+     userGeoPoint = PFGeoPoint(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: self.currentLocation!.coordinate.longitude)
+     }
+     
+     if Settings.sharedSettings.distanceUnit == "miles" {
+     let gameDistance = Double(Settings.sharedSettings.gameDistance)
+     gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinMiles:gameDistance)
+     } else {
+     let gameDistance = Double(Settings.sharedSettings.gameDistance)
+     gameQuery.whereKey("location", nearGeoPoint:userGeoPoint, withinKilometers:gameDistance)
+     }
+     
+     gameQuery.countObjectsInBackground(block: { (count: Int32, error: Error?) -> Void in
+     let gameCount = Int(count)
+     gameType.setGameCount(gameCount)
+     DispatchQueue.main.async {
+     self.gameCountLoaded = true
+     }
+     })
+     
+     refresher.endRefreshing()
+     }
+     }
+     
+     func loadGameFromParseWithSegue(_ notification: Notification) {
+     loadGameFromParse(false, notification: notification)
+     }
+     
+     func loadGameFromParseWithAlert(_ notification: Notification) {
+     loadGameFromParse(true, notification: notification)
+     }
+     
+     func loadGameFromParse(_ showAlert: Bool, notification: Notification) {
+     
+     let gameId = (notification as NSNotification).userInfo!["selectedGameId"]
+     let gameQuery = PFQuery(className: "Game")
+     gameQuery.whereKey("objectId", equalTo: gameId!)
+     
+     gameQuery.getFirstObjectInBackground {
+     (game: PFObject?, error: Error?) -> Void in
+     if error != nil || game == nil {
+     print("Home table view controller")
+     print("The getFirstObject on Game request failed.")
+     } else {
+     
+     self.gameTypes = GameTypeList.sharedGameTypes.gameTypeList
+     let gameTypeId = (game?["gameType"] as AnyObject).objectId!
+     
+     self.newGame = GameConverter.convertParseObject(game!, selectedGameType: GameTypeList.sharedGameTypes.getGameTypeById(gameTypeId!)!)
+     
+     if (game?["owner"] as AnyObject).objectId! == PFUser.current()?.objectId! {
+     self.newGame.userIsOwner = true
+     }
+     
+     self.newGame.userJoined = true
+     
+     DispatchQueue.main.async {
+     if showAlert == true {
+     self.showAlert(notification)
+     } else {
+     self.performSegue(withIdentifier: self.SEGUE_SHOW_GAME_DETAILS, sender: self)
+     }
+     }
+     }
+     }
+     }
      */
     
     //MARK: - Notification Alert
@@ -336,12 +350,12 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        let location:CLLocationCoordinate2D = manager.location!.coordinate
+        let location: CLLocationCoordinate2D = manager.location!.coordinate
         print(location)
         currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
         
         if currentLocation != nil {
-            locationManager.stopUpdatingLocation()
+            manager.stopUpdatingLocation()
         }
         
         self.tableView.reloadData()
@@ -365,7 +379,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         alert.addTextField(configurationHandler: { (textField) -> Void in
             textField.keyboardType = UIKeyboardType.numberPad
             
-//            textField.addTarget(self, action: "textChanged:", forControlEvents: UIControlEvents.EditingChanged)
+            //            textField.addTarget(self, action: "textChanged:", forControlEvents: UIControlEvents.EditingChanged)
             textField.addTarget(self, action: #selector(HomeTableViewController.textChanged(_:)), for: .editingChanged)
         })
         
@@ -425,17 +439,17 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                 Settings.shared.defaultLongitude = coordinates.longitude
             }
         })
-
+        
         
     }
     
     func setUsersCurrentLocation() {
-        self.locationManager.requestWhenInUseAuthorization()
+        OverallLocation.manager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
+            OverallLocation.manager.delegate = self
+            OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            OverallLocation.manager.startUpdatingLocation()
         }
     }
     
