@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="77s-jv-yDE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="77s-jv-yDE">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
@@ -89,10 +89,10 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="zaU-lS-0eR"/>
                                             <exclude reference="b4c-Od-cVK"/>
                                             <exclude reference="hEG-uM-OG9"/>
                                             <exclude reference="weW-Fe-AdB"/>
+                                            <exclude reference="zaU-lS-0eR"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -231,10 +231,10 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="wF5-u0-fcp"/>
                                 <exclude reference="JRL-HQ-WYF"/>
                                 <exclude reference="G90-RR-7pl"/>
                                 <exclude reference="OBq-KE-AT2"/>
+                                <exclude reference="wF5-u0-fcp"/>
                             </mask>
                         </variation>
                     </view>
@@ -434,8 +434,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="U8X-wf-lIS"/>
                                                     <exclude reference="vaU-Z1-6cl"/>
+                                                    <exclude reference="U8X-wf-lIS"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -564,6 +564,10 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="5On-nW-RMk"/>
+                                                    <exclude reference="7Wy-ok-1rf"/>
+                                                    <exclude reference="8iv-5H-P2t"/>
+                                                    <exclude reference="ul5-LR-Yd4"/>
                                                     <exclude reference="TSV-h3-fGj"/>
                                                     <exclude reference="bqL-HT-9WF"/>
                                                     <exclude reference="ebA-Qg-n8J"/>
@@ -572,10 +576,6 @@
                                                     <exclude reference="6KV-G8-NXQ"/>
                                                     <exclude reference="MyL-vt-4r3"/>
                                                     <exclude reference="n6M-nw-ySO"/>
-                                                    <exclude reference="5On-nW-RMk"/>
-                                                    <exclude reference="7Wy-ok-1rf"/>
-                                                    <exclude reference="8iv-5H-P2t"/>
-                                                    <exclude reference="ul5-LR-Yd4"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -588,10 +588,10 @@
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
+                                                <exclude reference="IRR-CZ-mE3"/>
                                                 <exclude reference="7i4-YJ-eTi"/>
                                                 <exclude reference="D0F-l9-pML"/>
                                                 <exclude reference="XH8-lL-czj"/>
-                                                <exclude reference="IRR-CZ-mE3"/>
                                             </mask>
                                         </variation>
                                     </tableViewCell>
@@ -788,8 +788,8 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="WKB-n7-o5k"/>
                                 <exclude reference="Nw1-GX-QU5"/>
+                                <exclude reference="WKB-n7-o5k"/>
                             </mask>
                         </variation>
                     </view>
@@ -921,14 +921,14 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkIcon" translatesAutoresizingMaskIntoConstraints="NO" id="YDl-Uc-fea">
-                                                    <rect key="frame" x="375" y="33.5" width="24" height="24"/>
+                                                    <rect key="frame" x="336" y="33.5" width="24" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="gjr-OG-3jt"/>
                                                         <constraint firstAttribute="height" constant="24" id="xE9-aX-GQB"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joined" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Oo-95-INf">
-                                                    <rect key="frame" x="328.5" y="38.5" width="45.5" height="18"/>
+                                                    <rect key="frame" x="289.5" y="38.5" width="45.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                                                     <color key="textColor" red="0.30588235289999999" green="0.36862745099999999" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -960,20 +960,20 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="dII-Fx-WTw"/>
+                                                    <exclude reference="oIR-me-nUS"/>
                                                     <exclude reference="4MT-eY-mIH"/>
                                                     <exclude reference="Hue-Bs-fVq"/>
                                                     <exclude reference="S9V-a3-uqj"/>
                                                     <exclude reference="Za4-sM-87k"/>
-                                                    <exclude reference="6eu-Ja-iXa"/>
-                                                    <exclude reference="Q4p-c9-bwI"/>
-                                                    <exclude reference="ZI3-FR-1ir"/>
                                                     <exclude reference="6jC-ls-jPa"/>
                                                     <exclude reference="IxC-3Y-fcj"/>
                                                     <exclude reference="OQH-mn-VdV"/>
                                                     <exclude reference="ZCM-na-Ins"/>
                                                     <exclude reference="u1F-j0-tJE"/>
-                                                    <exclude reference="oIR-me-nUS"/>
+                                                    <exclude reference="dII-Fx-WTw"/>
+                                                    <exclude reference="6eu-Ja-iXa"/>
+                                                    <exclude reference="Q4p-c9-bwI"/>
+                                                    <exclude reference="ZI3-FR-1ir"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -985,8 +985,8 @@
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="Xg3-jg-UY0"/>
                                                 <exclude reference="h5C-YR-03U"/>
+                                                <exclude reference="Xg3-jg-UY0"/>
                                             </mask>
                                         </variation>
                                         <connections>
@@ -1230,7 +1230,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgt-ke-94N">
-                                                    <rect key="frame" x="284" y="3" width="111" height="30"/>
+                                                    <rect key="frame" x="249" y="3" width="111" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <state key="normal" title="Add to Calendar">
                                                         <color key="titleColor" red="0.77254901960784317" green="0.85098039215686272" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1302,7 +1302,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJ9-Q1-h0U">
-                                                    <rect key="frame" x="27" y="-2" width="360" height="20.5"/>
+                                                    <rect key="frame" x="27" y="-2" width="325" height="20.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" id="5Z7-Cs-SVe"/>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="iJ8-R6-Pfb"/>
@@ -1318,7 +1318,7 @@
                                                     </variation>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tvs-zm-PhE">
-                                                    <rect key="frame" x="300" y="12" width="95" height="30"/>
+                                                    <rect key="frame" x="265" y="12" width="95" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <state key="normal" title="Open in Maps">
                                                         <color key="titleColor" red="0.7725490196" green="0.85098039219999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1385,7 +1385,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WWM-Qv-3AR">
-                                                    <rect key="frame" x="27" y="0.0" width="360" height="20.5"/>
+                                                    <rect key="frame" x="27" y="0.0" width="325" height="20.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" id="F80-3b-heI"/>
                                                     </constraints>
@@ -1420,7 +1420,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cancel Game" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZOw-Km-ZhE">
-                                                    <rect key="frame" x="155.5" y="12" width="103" height="20.5"/>
+                                                    <rect key="frame" x="138" y="12" width="103" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.89374575410000001" green="0.077562373929999998" blue="0.03012152882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2202,7 +2202,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EX3-XH-P1m">
-                                                    <rect key="frame" x="335" y="11.5" width="71" height="71"/>
+                                                    <rect key="frame" x="296" y="11.5" width="71" height="71"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="71" id="TZd-Y5-Her"/>
                                                         <constraint firstAttribute="width" constant="71" id="j9J-y2-mnY"/>
@@ -2227,14 +2227,14 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="c3z-v1-KqS"/>
-                                                    <exclude reference="h6w-1A-bTc"/>
-                                                    <exclude reference="tNe-KB-Qjd"/>
                                                     <exclude reference="YsK-fe-Fou"/>
                                                     <exclude reference="3C3-ux-GT2"/>
                                                     <exclude reference="Ks6-SU-peO"/>
                                                     <exclude reference="iaG-9l-tOh"/>
                                                     <exclude reference="n1f-iF-Xd5"/>
+                                                    <exclude reference="c3z-v1-KqS"/>
+                                                    <exclude reference="h6w-1A-bTc"/>
+                                                    <exclude reference="tNe-KB-Qjd"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -2329,7 +2329,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="zix-ak-tv9">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="77s-jv-yDE" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="Main Storyboard" automaticallyAdjustsScrollViewInsets="NO" id="77s-jv-yDE" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="2aM-N9-r6b">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
