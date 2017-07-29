@@ -20,8 +20,7 @@ class FirebaseController {
     static let shared = FirebaseController()
     
     func save(game: Game, with UUID: UUID, success: @escaping (Bool) -> Void) {
-        game.id = UUID.uuidString
-        guard game.jsonData != nil else { success(false); return }
+        game.id = UUID
         DispatchQueue.main.async {
             success(true)
             return

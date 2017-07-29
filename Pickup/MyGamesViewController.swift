@@ -40,15 +40,17 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        OverallLocation.manager.delegate = self
+        
         self.btnAddGame.tintColor = Theme.ACCENT_COLOR
         self.btnSettings.tintColor = Theme.PRIMARY_LIGHT_COLOR
         
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
-            GameTypeController.loadGameTypes(gameTypes: { (gameTypes) in
+            GameTypeController.shared.loadGameTypes() { (gameTypes) in
                 self.gameTypes = gameTypes
-            })
+            }
         } else {
             loadGameTypesFromUserDefaults()
         }

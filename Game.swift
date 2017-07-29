@@ -9,8 +9,6 @@
 import Foundation
 import CoreLocation
 
-let defaultPlayer = Player.init(id: "Default", username: "Default", userImage: nil, joinedGames: [], userImageEndpoint: "nil")
-
 class Game {
     
     private let kGameID: String = "uid"
@@ -26,7 +24,7 @@ class Game {
     private let kLongitude: String = "longitude"
     private let kUserIDs: String = "playerIDs"
     
-    var id: String = UUID.init().uuidString
+    var id: UUID = UUID.init()
     var userIDs: [String]
     var gameType: GameType
     var totalSlots: Int
@@ -41,7 +39,7 @@ class Game {
     lazy var latitude: Double = 0.0
     lazy var longitude: Double = 0.0
     
-    init(id: String, gameType: GameType, totalSlots: Int,
+    init(id: UUID, gameType: GameType, totalSlots: Int,
         availableSlots: Int, eventDate: Date, locationName: String,
         ownerId: String, userIDs: ([String]), gameNotes: String) {
         self.id = id
@@ -72,7 +70,11 @@ class Game {
         else { return nil }
         
         self.userIDs = userIDs
-        self.id = id
+        if UUID.init(uuidString: id) != nil {
+            self.id = UUID.init(uuidString: id)!
+        } else {
+            self.id = UUID.init()
+        }
         self.gameType = gameType
         self.totalSlots = totalSlots
         self.availableSlots = availableSlots
@@ -106,7 +108,7 @@ class Game {
         
         let eventDateString = String(describing: eventDate)
         
-        return [kGameID: id, kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude, kUserIDs: userIDs]
+        return [kGameID: id.uuidString, kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude, kUserIDs: userIDs]
     }
 }
 
