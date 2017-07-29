@@ -32,7 +32,12 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     var games: [Game] = []
     var sortedGames: [Game] = []
     var newGame: Game?
-    var currentLocation: CLLocation?
+    let locationManager = CLLocationManager()
+    var currentLocation: CLLocation? {
+        didSet {
+            self.loadGames()
+        }
+    }
     
     @IBOutlet weak var btnAddNewGame: UIBarButtonItem!
     @IBOutlet weak var tableGameList: UITableView!
@@ -55,8 +60,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        OverallLocation.manager.delegate = self
-        
         activityIndicator.startAnimating()
         self.activityIndicator.isHidden = false
         
@@ -77,7 +80,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     func loadGames() {
-        GameController.shared.loadGames { (games) in
+        GameController.loadGames { (games) in
             DispatchQueue.main.async {
                 self.games = games
                 loadedGames = games
@@ -90,34 +93,11 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     func sort(_ games: [Game]?) {
-        
-        guard let gamesToSort = games else { return }
-
-        var sortedGames: [Game] = []
-        
-        if games != nil {
-            sortedGames = gamesToSort.filter { $0.gameType.name == (self.selectedGameType?.name) }
+        guard let gamesToSort = games else {
+            self.sortedGames = loadedGames.filter { $0.gameType.name == (self.selectedGameType?.name) }
+            return
         }
-        
-        if Settings.shared.showCreatedGames == false {
-            sortedGames = sortedGames.filter { $0.ownerId != defaultPlayer.id }
-        }
-        
-        /*
-        if Settings.shared.distanceUnit == DistanceUnit.KILOMETERS.rawValue {
-            
-            OverallLocation.manager.requestLocation()
-            currentLocation = OverallLocation.manager.location
-            
-            let gameDistance = Double(Settings.shared.gameDistance)
-            let filteredGamesByDistance = sortedGames.filter { $0.latitude.distance(to: (currentLocation?.coordinate.latitude)!) <= gameDistance * 1.60934 && $0.longitude.distance(to: (currentLocation?.coordinate.longitude)!) <= gameDistance * 1.60934 }
-            sortedGames = filteredGamesByDistance
-        } else {
-            let gameDistance = Double(Settings.shared.gameDistance)
-            let filteredGamesByDistance = sortedGames.filter { $0.latitude.distance(to: (currentLocation?.coordinate.latitude)!) <= gameDistance && $0.longitude.distance(to: (currentLocation?.coordinate.longitude)!) <= gameDistance }
-            sortedGames = filteredGamesByDistance
-         }
-         */
+        self.sortedGames = gamesToSort.filter { $0.gameType.name == (self.selectedGameType?.name)! }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -308,19 +288,19 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
         
         if currentLocation != nil {
-            manager.stopUpdatingLocation()
+            locationManager.stopUpdatingLocation()
         }
         
         tableGameList.reloadData()
     }
     
     func setUsersCurrentLocation() {
-        OverallLocation.manager.requestWhenInUseAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
-            OverallLocation.manager.delegate = self
-            OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            OverallLocation.manager.startUpdatingLocation()
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
         }
     }
     

@@ -7,25 +7,15 @@
 //
 
 import Foundation
-import Firebase
 
 class GameController {
     
-    static let shared = GameController()
+    static let endUrl = URL.init(string: "https://pickup-a837a.firebaseio.com")
     
-    var ref = Database.database().reference()
-    
-    let endUrl = URL.init(string: "https://pickup-a837a.firebaseio.com")
-    
-    func put(game: Game, with UUID: UUID, success: @escaping (_ success: Bool) -> Void) {
-        ref.child("Games").child(UUID.uuidString).setValue(game.gameDictionary)
-        success(true)
-        return
-    }
-    
-    func put(game: Game, with UUID: UUID, to url: URL, success: @escaping (_ success: Bool) -> Void) {
-        let urlWithUUID = endUrl?.appendingPathComponent("Games").appendingPathComponent(game.id.uuidString).appendingPathExtension("json")
+    static func put(game: Game, withUUID: UUID, success: @escaping (_ success: Bool) -> Void) {
+        let urlWithUUID = endUrl?.appendingPathComponent("Games").appendingPathComponent(game.id).appendingPathExtension("json")
         guard let url = urlWithUUID else { success(false); return }
+        
         NetworkController.performRequest(for: url, httpMethod: .put, body: game.jsonData) { (data, error) in
             DispatchQueue.main.async {
                 if error != nil {
@@ -41,45 +31,18 @@ class GameController {
         }
     }
     
-    let gameURL = URL(string: "https://pickup-a837a.firebaseio.com/Games")
-    let tempURL = URL(string: "")
+    static let gameURL = URL(string: "https://pickup-a837a.firebaseio.com/Games")
     
-    func loadGames(completion: @escaping (_ games: [Game]) -> Void) {
-        
+    static func loadGames(completion: @escaping (_ games: [Game]) -> Void) {
         var gameArray: [Game] = []
-        
-        ref.child("Games").observeSingleEvent(of: .value, with: { (snapShot) in
-            DispatchQueue.main.async {
-                guard let jsonObject = snapShot.value as? [String: [String: Any]] else { completion([]); print("Fuck") ; return }
-                
-                var gameNumber = 0
-                
-                for game in jsonObject {
-                    gameNumber += 1
-                    guard let game = Game(gameDictionary: game.value) else { completion([]); print("Game #\(gameNumber) can't initialize"); continue }
-                    gameArray.append(game)
-                }
-                completion(gameArray)
-            }
-        })
-    }
-    
-    func loadGames(from url: URL, completion: @escaping (_ games: [Game]) -> Void) {
-        
-        var gameArray: [Game] = []
-        guard let url = self.gameURL?.appendingPathExtension("json") else { completion([]); return }
-        
+        guard let url = GameController.gameURL?.appendingPathExtension("json") else { completion([]); return }
         NetworkController.performRequest(for: url, httpMethod: .get, urlParameters: nil, body: nil) { (data, error) in
             DispatchQueue.main.async {
                 guard let data = data, error == nil else { completion([]); return }
                 guard let jsonDictionary = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String: [String: Any]] else { completion([]); print("Fuck") ; return }
                 
-                var gameNumber = 0
-                
                 for game in jsonDictionary {
-                    gameNumber += 1
-                    guard let game = Game(gameDictionary: game.value) else { completion([]); print("Game #\(gameNumber) can't initialize"); continue }
-                    gameArray.append(game)
+                    gameArray.append(Game(gameDictionary: game.value)!)
                 }
                 completion(gameArray)
             }
