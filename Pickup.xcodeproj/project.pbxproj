@@ -11,6 +11,7 @@
 		02071DEA1C8E1AA600A00991 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02071DE91C8E1AA600A00991 /* Settings.swift */; };
 		02071DEC1C8EB6DD00A00991 /* GameTypeListSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02071DEB1C8EB6DD00A00991 /* GameTypeListSingleton.swift */; };
 		020988711C7D28D700FB7F92 /* GameDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020988701C7D28D700FB7F92 /* GameDetailsTableViewController.swift */; };
+		021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */; };
 		0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */; };
 		023127881CFCAF0C00863EFF /* home.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 023127871CFCAF0C00863EFF /* home.gpx */; };
 		024026EB1C5FDF61002F1B39 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024026E81C5FDF61002F1B39 /* Bolts.framework */; };
@@ -33,6 +34,7 @@
 		0275B8171D1B82D700611621 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0275B8161D1B82D700611621 /* NotificationsManager.swift */; };
 		028C1EE81C88E151000634AA /* GameStatusEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028C1EE71C88E151000634AA /* GameStatusEnum.swift */; };
 		028C63AF1CB2DD740086D42E /* LocalNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028C63AE1CB2DD740086D42E /* LocalNotifications.swift */; };
+		02947B4E1C6FAB9200283778 /* PlayerTypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */; };
 		02A8F2591C77F41900A04DE6 /* DateFormatterEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A8F2581C77F41900A04DE6 /* DateFormatterEnum.swift */; };
 		02A8F25B1C77F6F300A04DE6 /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */; };
 		02AB4F961C754FA800DAEF0E /* GamePointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB4F951C754FA800DAEF0E /* GamePointAnnotation.swift */; };
@@ -49,6 +51,8 @@
 		02E30FAC1C8F099500140273 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E30FAB1C8F099500140273 /* AboutViewController.swift */; };
 		02ED11ED1C51904C001923EB /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED11EC1C51904C001923EB /* GameType.swift */; };
 		02ED31BB1C693CEF00B53DD3 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */; };
+		02ED31BD1C6940A900B53DD3 /* GameTypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED31BC1C6940A900B53DD3 /* GameTypeConverter.swift */; };
+		02ED31C11C6992B500B53DD3 /* GameConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ED31C01C6992B500B53DD3 /* GameConverter.swift */; };
 		02EFBF561C6BEB9B001774A2 /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EFBF551C6BEB9B001774A2 /* GameTableViewCell.swift */; };
 		02F08F381C529FEE00A76EFB /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F371C529FEE00A76EFB /* Game.swift */; };
 		02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F08F391C52A5ED00A76EFB /* Player.swift */; };
@@ -61,6 +65,7 @@
 		D08387BD1ED4B549009CCCAC /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08387BC1ED4B549009CCCAC /* GameController.swift */; };
 		D09408641ECE3C69005B2D2B /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09408631ECE3C69005B2D2B /* FirebaseController.swift */; };
 <<<<<<< HEAD
+<<<<<<< HEAD
 		D095B02A1F15436B0045B461 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D095B0291F15436B0045B461 /* ImageController.swift */; };
 		D095B02D1F1546010045B461 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D095B02C1F1546010045B461 /* PlayerController.swift */; };
 		D0A90C371F2A669F0014581A /* OverallLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A90C361F2A669F0014581A /* OverallLocationManager.swift */; };
@@ -68,6 +73,10 @@
 		D0A90C3C1F2D0BEF0014581A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A90C3B1F2D0BEF0014581A /* LoginViewController.swift */; };
 		D0A90C3F1F2D0F3A0014581A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0A90C3E1F2D0F3A0014581A /* Login.storyboard */; };
 >>>>>>> Added Login view controller and storyboard
+=======
+		D0A90C3C1F2D0BEF0014581A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A90C3B1F2D0BEF0014581A /* LoginViewController.swift */; };
+		D0A90C3F1F2D0F3A0014581A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0A90C3E1F2D0F3A0014581A /* Login.storyboard */; };
+>>>>>>> fd300f538538cf63b3830a9ed48725079d573da7
 		D0B4020E1ED8B55B00448088 /* GameKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */; };
 		D0B402101ED8B57900448088 /* GameTypeKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */; };
 		D0BD959E1EC28D4400E29671 /* PickupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD959D1EC28D4400E29671 /* PickupUITests.swift */; };
@@ -97,6 +106,7 @@
 		02071DE91C8E1AA600A00991 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		02071DEB1C8EB6DD00A00991 /* GameTypeListSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeListSingleton.swift; sourceTree = "<group>"; };
 		020988701C7D28D700FB7F92 /* GameDetailsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsTableViewController.swift; sourceTree = "<group>"; };
+		021DF6741C6AF8EE005BEAF6 /* ParseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
 		0223A05B1C600F7D00B5A966 /* GameDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
 		023127871CFCAF0C00863EFF /* home.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = home.gpx; path = ../home.gpx; sourceTree = "<group>"; };
 		024026E71C5FDF61002F1B39 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
@@ -121,6 +131,7 @@
 		0275B8161D1B82D700611621 /* NotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		028C1EE71C88E151000634AA /* GameStatusEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStatusEnum.swift; sourceTree = "<group>"; };
 		028C63AE1CB2DD740086D42E /* LocalNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotifications.swift; sourceTree = "<group>"; };
+		02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTypeConverter.swift; sourceTree = "<group>"; };
 		02A8F2581C77F41900A04DE6 /* DateFormatterEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateFormatterEnum.swift; path = ../DateFormatterEnum.swift; sourceTree = "<group>"; };
 		02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateUtilities.swift; path = ../DateUtilities.swift; sourceTree = "<group>"; };
 		02AB4F951C754FA800DAEF0E /* GamePointAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamePointAnnotation.swift; path = ../GamePointAnnotation.swift; sourceTree = "<group>"; };
@@ -139,6 +150,8 @@
 		02E30FAB1C8F099500140273 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		02ED11EC1C51904C001923EB /* GameType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameType.swift; path = ../GameType.swift; sourceTree = "<group>"; };
 		02ED31BA1C693CEF00B53DD3 /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeTableViewController.swift; path = ../HomeTableViewController.swift; sourceTree = "<group>"; };
+		02ED31BC1C6940A900B53DD3 /* GameTypeConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeConverter.swift; sourceTree = "<group>"; };
+		02ED31C01C6992B500B53DD3 /* GameConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameConverter.swift; sourceTree = "<group>"; };
 		02EFBF551C6BEB9B001774A2 /* GameTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTableViewCell.swift; sourceTree = "<group>"; };
 		02F08F371C529FEE00A76EFB /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = ../Game.swift; sourceTree = "<group>"; };
 		02F08F391C52A5ED00A76EFB /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
@@ -152,6 +165,7 @@
 		D08387BC1ED4B549009CCCAC /* GameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		D09408631ECE3C69005B2D2B /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 <<<<<<< HEAD
+<<<<<<< HEAD
 		D095B0291F15436B0045B461 /* ImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 		D095B02C1F1546010045B461 /* PlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		D0A90C361F2A669F0014581A /* OverallLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverallLocationManager.swift; sourceTree = "<group>"; };
@@ -159,6 +173,10 @@
 		D0A90C3B1F2D0BEF0014581A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D0A90C3E1F2D0F3A0014581A /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 >>>>>>> Added Login view controller and storyboard
+=======
+		D0A90C3B1F2D0BEF0014581A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		D0A90C3E1F2D0F3A0014581A /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+>>>>>>> fd300f538538cf63b3830a9ed48725079d573da7
 		D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameKeysEnum.swift; sourceTree = "<group>"; };
 		D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeKeysEnum.swift; sourceTree = "<group>"; };
 		D0BD959B1EC28D4400E29671 /* PickupUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickupUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -328,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 <<<<<<< HEAD
+<<<<<<< HEAD
 				02ED11EA1C518FF1001923EB /* Storyboards */,
 				02ED11EB1C518FFF001923EB /* View Controllers */,
 =======
@@ -335,8 +354,13 @@
 				D0A90C3A1F2D0A370014581A /* ViewControllers */,
 				02ED11EB1C518FFF001923EB /* Controller */,
 >>>>>>> Added Login view controller and storyboard
+=======
+				02ED11EA1C518FF1001923EB /* View */,
+				D0A90C3A1F2D0A370014581A /* ViewControllers */,
+				02ED11EB1C518FFF001923EB /* Controller */,
+>>>>>>> fd300f538538cf63b3830a9ed48725079d573da7
 				02ED11E91C518FEC001923EB /* Model */,
-				D095B02B1F1544F20045B461 /* Controllers */,
+				02ED31C21C6992BF00B53DD3 /* DataConversion */,
 				02D821751C5C2F38000999B6 /* SupportFiles */,
 				024026CC1C5FDD83002F1B39 /* Frameworks */,
 			);
@@ -347,18 +371,14 @@
 			isa = PBXGroup;
 			children = (
 				02DB6FEE1C740FEB00FF5C20 /* Assets.xcassets */,
-				02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */,
-				025330F61C56FAA600B6ABDD /* Theme.swift */,
-				028C63AE1CB2DD740086D42E /* LocalNotifications.swift */,
-				0275B8161D1B82D700611621 /* NotificationsManager.swift */,
-				D095B0291F15436B0045B461 /* ImageController.swift */,
+				D09408631ECE3C69005B2D2B /* FirebaseController.swift */,
 				D08387B81ED4B4DA009CCCAC /* NetworkController.swift */,
 				02BE277D1C4DD58F0062C890 /* AppDelegate.swift */,
+				02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */,
 				02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */,
 				02BE27891C4DD58F0062C890 /* Info.plist */,
 				023127871CFCAF0C00863EFF /* home.gpx */,
 				D02508061ECE33A30024DA8A /* GoogleService-Info.plist */,
-				D0A90C361F2A669F0014581A /* OverallLocationManager.swift */,
 			);
 			name = SupportFiles;
 			sourceTree = "<group>";
@@ -376,19 +396,20 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		02ED11EA1C518FF1001923EB /* Storyboards */ = {
+		02ED11EA1C518FF1001923EB /* View */ = {
 			isa = PBXGroup;
 			children = (
 				02BE27811C4DD58F0062C890 /* Main.storyboard */,
 				02BE27861C4DD58F0062C890 /* LaunchScreen.storyboard */,
 				D0A90C3E1F2D0F3A0014581A /* Login.storyboard */,
 			);
-			name = Storyboards;
+			name = View;
 			sourceTree = "<group>";
 		};
-		02ED11EB1C518FFF001923EB /* View Controllers */ = {
+		02ED11EB1C518FFF001923EB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 <<<<<<< HEAD
 				024DDF0C1C8BF2DA000E34D7 /* Settings */,
 				024DDF091C8BF262000E34D7 /* Home */,
@@ -397,6 +418,8 @@
 				024DDF0A1C8BF298000E34D7 /* GameDetails */,
 				024DDF0B1C8BF2A6000E34D7 /* NewGame */,
 =======
+=======
+>>>>>>> fd300f538538cf63b3830a9ed48725079d573da7
 				025330F61C56FAA600B6ABDD /* Theme.swift */,
 				028C63AE1CB2DD740086D42E /* LocalNotifications.swift */,
 				0275B8161D1B82D700611621 /* NotificationsManager.swift */,
@@ -413,9 +436,12 @@
 				02ED31BC1C6940A900B53DD3 /* GameTypeConverter.swift */,
 				02947B4D1C6FAB9200283778 /* PlayerTypeConverter.swift */,
 				02ED31C01C6992B500B53DD3 /* GameConverter.swift */,
+<<<<<<< HEAD
 >>>>>>> Added Login view controller and storyboard
+=======
+>>>>>>> fd300f538538cf63b3830a9ed48725079d573da7
 			);
-			name = "View Controllers";
+			name = DataConversion;
 			sourceTree = "<group>";
 		};
 		55C17A8D713F811DE659EFEF /* Frameworks */ = {
@@ -436,14 +462,30 @@
 			sourceTree = "<group>";
 		};
 <<<<<<< HEAD
+<<<<<<< HEAD
 		D095B02B1F1544F20045B461 /* Controllers */ = {
+=======
+		D0A90C3A1F2D0A370014581A /* ViewControllers */ = {
+>>>>>>> fd300f538538cf63b3830a9ed48725079d573da7
 			isa = PBXGroup;
 			children = (
-				D08387BC1ED4B549009CCCAC /* GameController.swift */,
-				D01697CF1EDF66CB00896DD7 /* GameTypeController.swift */,
-				D095B02C1F1546010045B461 /* PlayerController.swift */,
-				D09408631ECE3C69005B2D2B /* FirebaseController.swift */,
+				D0A90C3D1F2D0BF50014581A /* Login */,
+				024DDF0C1C8BF2DA000E34D7 /* Settings */,
+				024DDF091C8BF262000E34D7 /* Home */,
+				024DDF071C8BF24C000E34D7 /* MyGames */,
+				024DDF081C8BF259000E34D7 /* GameList */,
+				024DDF0A1C8BF298000E34D7 /* GameDetails */,
+				024DDF0B1C8BF2A6000E34D7 /* NewGame */,
 			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		D0A90C3D1F2D0BF50014581A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				D0A90C3B1F2D0BEF0014581A /* LoginViewController.swift */,
+			);
+<<<<<<< HEAD
 			name = Controllers;
 =======
 		D0A90C3A1F2D0A370014581A /* ViewControllers */ = {
@@ -467,6 +509,9 @@
 			);
 			name = Login;
 >>>>>>> Added Login view controller and storyboard
+=======
+			name = Login;
+>>>>>>> fd300f538538cf63b3830a9ed48725079d573da7
 			sourceTree = "<group>";
 		};
 		D0BD959C1EC28D4400E29671 /* PickupUITests */ = {
@@ -691,12 +736,13 @@
 				02071DEC1C8EB6DD00A00991 /* GameTypeListSingleton.swift in Sources */,
 				024DDF101C8C03EF000E34D7 /* DistanceEnum.swift in Sources */,
 				D0B4020E1ED8B55B00448088 /* GameKeysEnum.swift in Sources */,
-				D095B02A1F15436B0045B461 /* ImageController.swift in Sources */,
 				025330F71C56FAA600B6ABDD /* Theme.swift in Sources */,
 				028C1EE81C88E151000634AA /* GameStatusEnum.swift in Sources */,
 				02F5D0101C84C12F00A95B92 /* CustomProtocols.swift in Sources */,
+				02947B4E1C6FAB9200283778 /* PlayerTypeConverter.swift in Sources */,
 				024DDF0E1C8BF2F8000E34D7 /* LocationSettingsTableViewController.swift in Sources */,
 				028C63AF1CB2DD740086D42E /* LocalNotifications.swift in Sources */,
+				021DF6751C6AF8EE005BEAF6 /* ParseDataController.swift in Sources */,
 				02AB4F961C754FA800DAEF0E /* GamePointAnnotation.swift in Sources */,
 				02EFBF561C6BEB9B001774A2 /* GameTableViewCell.swift in Sources */,
 				0223A05C1C600F7D00B5A966 /* GameDetailsViewController.swift in Sources */,
@@ -705,14 +751,13 @@
 				02DB6FF11C74153F00FF5C20 /* GameMapViewController.swift in Sources */,
 				02599E8B1C75896500ECE1A9 /* NewGameTableViewController.swift in Sources */,
 				02A8F2591C77F41900A04DE6 /* DateFormatterEnum.swift in Sources */,
-				D095B02D1F1546010045B461 /* PlayerController.swift in Sources */,
 				02ED11ED1C51904C001923EB /* GameType.swift in Sources */,
+				02ED31C11C6992B500B53DD3 /* GameConverter.swift in Sources */,
 				D08387B91ED4B4DA009CCCAC /* NetworkController.swift in Sources */,
 				02B2F8801C60666C009863AB /* HomeTableViewCell.swift in Sources */,
 				02ED31BB1C693CEF00B53DD3 /* HomeTableViewController.swift in Sources */,
 				D09408641ECE3C69005B2D2B /* FirebaseController.swift in Sources */,
 				02B82DFF1C88EC010028CD47 /* LocationStatusEnum.swift in Sources */,
-				D0A90C371F2A669F0014581A /* OverallLocationManager.swift in Sources */,
 				D08387BD1ED4B549009CCCAC /* GameController.swift in Sources */,
 				024978631C7FAF3700312B03 /* NewGameMapViewController.swift in Sources */,
 				02071DEA1C8E1AA600A00991 /* Settings.swift in Sources */,
@@ -727,6 +772,7 @@
 				02D7ED291C87FEDA0010A683 /* UserStatusEnum.swift in Sources */,
 				020988711C7D28D700FB7F92 /* GameDetailsTableViewController.swift in Sources */,
 				D0B402101ED8B57900448088 /* GameTypeKeysEnum.swift in Sources */,
+				02ED31BD1C6940A900B53DD3 /* GameTypeConverter.swift in Sources */,
 				02A8F25B1C77F6F300A04DE6 /* DateUtilities.swift in Sources */,
 				D01697D01EDF66CB00896DD7 /* GameTypeController.swift in Sources */,
 			);
@@ -885,7 +931,7 @@
 					"$(PROJECT_DIR)/Pickup",
 				);
 				INFOPLIST_FILE = Pickup/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -917,7 +963,7 @@
 					"$(PROJECT_DIR)/Pickup",
 				);
 				INFOPLIST_FILE = Pickup/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
