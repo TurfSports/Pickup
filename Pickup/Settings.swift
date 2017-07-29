@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import CoreLocation
 
 class Settings {
     
@@ -17,9 +17,24 @@ class Settings {
     var distanceUnit = "miles"
     var gameReminder = 0
     var defaultLocation = "none"
+    var userLocation: CLLocation?
     var defaultLatitude = 40.247015
     var defaultLongitude = -111.640160
     var showCreatedGames = true
+
+    init() {
+        
+    }
+    
+    init(gameDistance: Int?, distanceUnit: String?, gameReminder: Int?, userLocation: CLLocation?, defaultLocation: String?, defaultLatitude: Double?, defaultLongitude: Double?, showCreatedGames: Bool?) {
+        self.gameDistance = gameDistance ?? 10
+        self.distanceUnit = distanceUnit ?? "miles"
+        self.gameReminder = gameReminder ?? 0
+        self.defaultLocation = defaultLocation ?? "none"
+        self.defaultLatitude = defaultLatitude ?? 40.247015
+        self.defaultLongitude = defaultLongitude ?? -111.64016
+        self.showCreatedGames = showCreatedGames ?? true
+    }
     
     static func saveSettings(_ settings: [String: String]) {
         UserDefaults.standard.set(settings, forKey: "Settings")
