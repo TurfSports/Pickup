@@ -62,6 +62,8 @@
 		D09408641ECE3C69005B2D2B /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09408631ECE3C69005B2D2B /* FirebaseController.swift */; };
 		D095B02A1F15436B0045B461 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D095B0291F15436B0045B461 /* ImageController.swift */; };
 		D095B02D1F1546010045B461 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D095B02C1F1546010045B461 /* PlayerController.swift */; };
+		D09B81F61F2D1C6000ED533A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D09B81F51F2D1C6000ED533A /* Login.storyboard */; };
+		D09B81F81F2D1C6F00ED533A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09B81F71F2D1C6F00ED533A /* LoginViewController.swift */; };
 		D0A90C371F2A669F0014581A /* OverallLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A90C361F2A669F0014581A /* OverallLocationManager.swift */; };
 		D0B4020E1ED8B55B00448088 /* GameKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */; };
 		D0B402101ED8B57900448088 /* GameTypeKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */; };
@@ -148,6 +150,8 @@
 		D09408631ECE3C69005B2D2B /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 		D095B0291F15436B0045B461 /* ImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 		D095B02C1F1546010045B461 /* PlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
+		D09B81F51F2D1C6000ED533A /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		D09B81F71F2D1C6F00ED533A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D0A90C361F2A669F0014581A /* OverallLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverallLocationManager.swift; sourceTree = "<group>"; };
 		D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameKeysEnum.swift; sourceTree = "<group>"; };
 		D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeKeysEnum.swift; sourceTree = "<group>"; };
@@ -365,6 +369,7 @@
 			children = (
 				02BE27811C4DD58F0062C890 /* Main.storyboard */,
 				02BE27861C4DD58F0062C890 /* LaunchScreen.storyboard */,
+				D09B81F51F2D1C6000ED533A /* Login.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -372,6 +377,7 @@
 		02ED11EB1C518FFF001923EB /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D09B81F91F2D1C7500ED533A /* Login */,
 				024DDF0C1C8BF2DA000E34D7 /* Settings */,
 				024DDF091C8BF262000E34D7 /* Home */,
 				024DDF071C8BF24C000E34D7 /* MyGames */,
@@ -408,6 +414,14 @@
 				D09408631ECE3C69005B2D2B /* FirebaseController.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		D09B81F91F2D1C7500ED533A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				D09B81F71F2D1C6F00ED533A /* LoginViewController.swift */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		D0BD959C1EC28D4400E29671 /* PickupUITests */ = {
@@ -552,6 +566,7 @@
 			files = (
 				D02508071ECE33A30024DA8A /* GoogleService-Info.plist in Resources */,
 				02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */,
+				D09B81F61F2D1C6000ED533A /* Login.storyboard in Resources */,
 				023127881CFCAF0C00863EFF /* home.gpx in Resources */,
 				02DB6FEF1C740FEB00FF5C20 /* Assets.xcassets in Resources */,
 				02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */,
@@ -627,6 +642,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D09B81F81F2D1C6F00ED533A /* LoginViewController.swift in Sources */,
 				D0F775871ED75C6200DFC8D6 /* MyGamesViewController.swift in Sources */,
 				02071DEC1C8EB6DD00A00991 /* GameTypeListSingleton.swift in Sources */,
 				024DDF101C8C03EF000E34D7 /* DistanceEnum.swift in Sources */,
