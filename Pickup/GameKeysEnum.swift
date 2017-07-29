@@ -23,6 +23,7 @@ enum GameKeys {
     case kIsCancelled
     case kLatitude
     case kLongitude
+    case kUserIDs
     
     func key() -> String {
         switch self {
@@ -52,6 +53,8 @@ enum GameKeys {
             return "latitude"
         case .kLongitude:
             return "longitude"
+        case .kUserIDs:
+            return "userIDs"
         }
     }
 }

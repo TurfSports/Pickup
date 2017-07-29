@@ -34,8 +34,6 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableViewSearchResults: UITableView!
     
-    
-    let locationManager = CLLocationManager()
     var currentLocation:CLLocation?
 
     @IBAction func cancelModal(_ sender: UIBarButtonItem) {
@@ -57,6 +55,8 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        OverallLocation.manager.delegate = self
         
         tableViewSearchResults.isHidden = true
         tableViewSearchResults.tableFooterView = UIView(frame: CGRect.zero)
@@ -84,11 +84,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     //MARK: - Location Manager Delegate
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
-            if #available(iOS 9.0, *) {
-                locationManager.requestLocation()
-            } else {
-                // Fallback on earlier versions
-            }
+            OverallLocation.manager.requestLocation()
         }
     }
     
@@ -111,17 +107,12 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     func setUsersCurrentLocation() {
-        self.locationManager.requestWhenInUseAuthorization()
+        OverallLocation.manager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            if #available(iOS 9.0, *) {
-                locationManager.requestLocation()
-            } else {
-                //TODO: - What about iOS 8? I don't know if the below line is the correct syntax
-                locationManager.startUpdatingLocation()
-            }
+            OverallLocation.manager.delegate = self
+            OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            OverallLocation.manager.requestLocation()
         }
     }
     

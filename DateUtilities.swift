@@ -21,10 +21,14 @@ struct DateUtilities {
     static func dateFrom(_ string: String, dateFormat: String) -> Date {
         
         let dayTimePeriodFormatter = Foundation.DateFormatter()
-        dayTimePeriodFormatter.dateFormat = dateFormat
+        dayTimePeriodFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         
-        guard let date = dayTimePeriodFormatter.date(from: string) else { return Date() }
+        let date = dayTimePeriodFormatter.date(from: string)!
         
-        return date
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day, .hour], from: date)
+        let finalDate = calendar.date(from:components)
+        
+        return finalDate!
     }
 }

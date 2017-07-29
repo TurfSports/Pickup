@@ -90,7 +90,7 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
     
     fileprivate func checkGameReminderCell() {
         switch(tempSettings.gameReminder) {
-        case 0:
+        case 1:
             let indexPath = IndexPath(row: 0, section: 1)
             let cell = tableView.cellForRow(at: indexPath)
             cell?.accessoryType = .checkmark
@@ -122,12 +122,12 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         switch((indexPath as NSIndexPath).section) {
-        case 0:
+        case 1:
             if (indexPath as NSIndexPath).row == 0 {
                 performSegue(withIdentifier: SEGUE_DISTANCE_SETTINGS, sender: self)
             }
             break
-        case 1:
+        case 2:
             let uncheckCell = tableView.cellForRow(at: getSelectedGameReminderCellIndexPath())
             let cell = tableView.cellForRow(at: indexPath)
             	
@@ -137,7 +137,7 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
             tempSettings.gameReminder = self.selectedCellGameReminder[(indexPath as NSIndexPath).row]
             
             break
-        case 2:
+        case 3:
             performSegue(withIdentifier: SEGUE_ABOUT, sender: self)
             break
         default:
