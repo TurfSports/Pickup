@@ -23,8 +23,7 @@ class GameConverter {
         let gameNotes = dictionary[GameKeys.kGameNotes.key()] as! String
         let latitude =  (dictionary[GameKeys.kLatitude.key()]! as! Double)
         let longitude = (dictionary[GameKeys.kLongitude.key()]! as! Double)
-        let userIDs = (dictionary[GameKeys.kUserIDs.key()]! as! [String])
-        let game = Game.init(id: id!, gameType: gameType, totalSlots: totalSlots, availableSlots: availableSlots, eventDate: eventDate, locationName: locationName, ownerId: owner, userIDs: userIDs, gameNotes: gameNotes)
+        let game = Game.init(id: id!, gameType: gameType, totalSlots: totalSlots, availableSlots: availableSlots, eventDate: eventDate, locationName: locationName, ownerId: owner, gameNotes: gameNotes)
         
         game.setCoordinates(latitude, longitude: longitude)
         

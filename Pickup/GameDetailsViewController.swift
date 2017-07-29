@@ -170,7 +170,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
             UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
         } else {
             var gameIdArray: [String] = []
-            gameIdArray.append(game.id.uuidString)
+            gameIdArray.append(game.id)
             UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
         }
         

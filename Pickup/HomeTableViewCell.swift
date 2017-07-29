@@ -17,6 +17,7 @@ class HomeTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         self.imgSport?.layer.cornerRadius = Theme.GAME_TYPE_CELL_HEIGHT / 2 - 4
         self.imgSport?.layer.masksToBounds = true
         

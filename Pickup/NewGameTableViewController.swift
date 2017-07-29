@@ -77,7 +77,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     func save(game: Game, completion: @escaping (Bool) -> Void) {
         
-        GameController.shared.put(game: game, with: game.id, success: { (success) in
+        GameController.put(game: game, withUUID: UUID.init(), success: { (success) in
             completion(success)
             if success == false {
                 print("Error saving")
@@ -250,7 +250,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             
         // TODO: - Add default user
         
-        let game = Game.init(id: UUID.init(), gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: Date.init(), locationName: self.address!, ownerId: "userID", userIDs: [], gameNotes: "")
+        let game = Game.init(id: UUID.init().uuidString, gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: self.earliestSuggestedGameTime(), locationName: self.address!, ownerId: "userID", gameNotes: "")
+        
         game.userIsOwner = true
         game.userJoined = true
             // Insert user id
