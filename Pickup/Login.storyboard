@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="xjT-3m-eTc">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="0jp-DL-qMQ">
+            <objects>
+                <navigationController id="xjT-3m-eTc" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="OvH-wY-wqL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="GJR-8v-gSq" kind="relationship" relationship="rootViewController" id="5gF-gS-QKO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iAb-Bg-qfY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1938" y="399"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="nwG-Ck-Bdd">
+            <objects>
+                <viewController id="GJR-8v-gSq" customClass="LoginViewController" customModule="Pickup" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="K7p-YW-uQU"/>
+                        <viewControllerLayoutGuide type="bottom" id="tpx-0R-iqy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kvt-HG-yId">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dcO-lc-5MN">
+                                <rect key="frame" x="12" y="567" width="353" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="dcO-lc-5MN" secondAttribute="height" multiplier="343:80" constant="10" id="rSW-vY-2Dd"/>
+                                </constraints>
+                                <state key="normal" image="fbLogin"/>
+                                <connections>
+                                    <action selector="facebookLoginButtonTapped:" destination="GJR-8v-gSq" eventType="touchUpInside" id="q8m-wK-fAv"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYs-LM-Mi7">
+                                <rect key="frame" x="16" y="487.5" width="343" height="68"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="FYs-LM-Mi7" secondAttribute="height" multiplier="343:68" id="WF3-wQ-rGP"/>
+                                </constraints>
+                                <state key="normal" image="gLogin"/>
+                                <connections>
+                                    <action selector="googleLoginButtonTapped:" destination="GJR-8v-gSq" eventType="touchUpInside" id="3IY-xq-VlA"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="FYs-LM-Mi7" secondAttribute="trailing" id="2l7-Ld-OHH"/>
+                            <constraint firstItem="dcO-lc-5MN" firstAttribute="leading" secondItem="kvt-HG-yId" secondAttribute="leadingMargin" constant="-4" id="9z3-qs-ffI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="dcO-lc-5MN" secondAttribute="trailing" constant="-6" id="HX7-F0-jJw"/>
+                            <constraint firstItem="tpx-0R-iqy" firstAttribute="top" secondItem="dcO-lc-5MN" secondAttribute="bottom" constant="20" id="O7L-jB-7RI"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="FYs-LM-Mi7" secondAttribute="leading" id="cUF-Om-T5r"/>
+                            <constraint firstItem="tpx-0R-iqy" firstAttribute="top" secondItem="FYs-LM-Mi7" secondAttribute="bottom" constant="111.5" id="fH5-k4-9Vn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="YL3-qW-MDi"/>
+                    <connections>
+                        <segue destination="19Z-9n-Plb" kind="show" id="PVo-Nr-LQV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aln-XG-agI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1122.4000000000001" y="398.95052473763121"/>
+        </scene>
+        <!--Main-->
+        <scene sceneID="CS0-xl-1Yl">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" id="19Z-9n-Plb" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dzd-qI-QQK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-414" y="399"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="fbLogin" width="416" height="101"/>
+        <image name="gLogin" width="499" height="98"/>
+    </resources>
+</document>
