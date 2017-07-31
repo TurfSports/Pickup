@@ -12,9 +12,6 @@ class InitialUITabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if defaultPlayer.firstName == "firstName" {
-            self.performSegue(withIdentifier: "toLoginView", sender: self)
-        }
     }
     
     /*

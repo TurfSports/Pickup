@@ -43,6 +43,9 @@
                                     <constraint firstAttribute="height" constant="80" id="hzL-eT-xQ9"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="fbLogin"/>
+                                <connections>
+                                    <action selector="facebookLoginButtonTapped:" destination="y3V-zY-Da5" eventType="touchUpInside" id="f0W-zE-IZQ"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nt1-ec-dgT">
                                 <rect key="frame" x="16" y="504" width="343" height="67"/>
@@ -74,7 +77,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gs1-8X-6cm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-874" y="233"/>
+            <point key="canvasLocation" x="-710" y="232"/>
         </scene>
         <!--Main-->
         <scene sceneID="9VZ-0b-dKm">
@@ -82,7 +85,7 @@
                 <viewControllerPlaceholder storyboardName="Main" id="6fr-ze-2xz" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4L8-nF-Nl6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-305" y="232"/>
+            <point key="canvasLocation" x="-131" y="231"/>
         </scene>
     </scenes>
     <resources>

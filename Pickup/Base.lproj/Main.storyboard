@@ -131,6 +131,7 @@
                         <outlet property="settingsButton" destination="8zz-2e-Ilk" id="TYa-pl-wvA"/>
                         <segue destination="Q6f-CY-rt6" kind="show" identifier="showGamesTableViewController" id="PR9-um-aFv"/>
                         <segue destination="2Oq-YX-z2v" kind="show" identifier="showGameDetailsViewController" id="9Z0-r9-d2O"/>
+                        <segue destination="vUc-36-DZK" kind="show" identifier="toLoginView" id="mhM-Zv-ZHU"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9A5-t6-d05" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2331,7 +2332,7 @@
                 <viewControllerPlaceholder storyboardName="Login" id="vUc-36-DZK" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xcy-k2-ucx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="252" y="-1135"/>
+            <point key="canvasLocation" x="2273" y="-649"/>
         </scene>
         <!--InitialUI Tab Bar Controller-->
         <scene sceneID="zix-ak-tv9">
@@ -2346,7 +2347,6 @@
                     <connections>
                         <segue destination="stp-6H-42L" kind="relationship" relationship="viewControllers" id="KKj-ox-rmE"/>
                         <segue destination="Z5j-ge-pPF" kind="relationship" relationship="viewControllers" id="1Kc-G2-aMI"/>
-                        <segue destination="vUc-36-DZK" kind="show" identifier="toLoginView" id="DKS-Xb-8TV"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mag-jh-SXe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2444,8 +2444,8 @@
         <image name="settingsIcon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hon-da-Emo"/>
         <segue reference="VLK-qk-4Vj"/>
-        <segue reference="J4I-yY-pBk"/>
+        <segue reference="hon-da-Emo"/>
+        <segue reference="g09-s2-G55"/>
     </inferredMetricsTieBreakers>
 </document>

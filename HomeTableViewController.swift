@@ -9,8 +9,10 @@
 import UIKit
 import CoreLocation
 import MapKit
+import FBSDKLoginKit
 
 var loadedGameTypes: [GameType] = []
+var facebookLoginManager = FBSDKLoginManager.init()
 
 class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocationManagerDelegate {
     
@@ -54,8 +56,15 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
+        
+        let facebookAccessToken = FBSDKAccessToken.current()
+        
+        if facebookAccessToken == nil {
+            self.performSegue(withIdentifier: "toLoginView", sender: self)
+        } else {
+            print("Already logged in")
+        }
         
         loadGameTypes()
         
