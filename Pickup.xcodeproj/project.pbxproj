@@ -64,6 +64,7 @@
 		D095B02D1F1546010045B461 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D095B02C1F1546010045B461 /* PlayerController.swift */; };
 		D09B81F61F2D1C6000ED533A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D09B81F51F2D1C6000ED533A /* Login.storyboard */; };
 		D09B81F81F2D1C6F00ED533A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09B81F71F2D1C6F00ED533A /* LoginViewController.swift */; };
+		D09B81FB1F2D220D00ED533A /* InitialUITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09B81FA1F2D220D00ED533A /* InitialUITabBarController.swift */; };
 		D0A90C371F2A669F0014581A /* OverallLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A90C361F2A669F0014581A /* OverallLocationManager.swift */; };
 		D0B4020E1ED8B55B00448088 /* GameKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */; };
 		D0B402101ED8B57900448088 /* GameTypeKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */; };
@@ -152,6 +153,7 @@
 		D095B02C1F1546010045B461 /* PlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		D09B81F51F2D1C6000ED533A /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		D09B81F71F2D1C6F00ED533A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		D09B81FA1F2D220D00ED533A /* InitialUITabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialUITabBarController.swift; sourceTree = "<group>"; };
 		D0A90C361F2A669F0014581A /* OverallLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverallLocationManager.swift; sourceTree = "<group>"; };
 		D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameKeysEnum.swift; sourceTree = "<group>"; };
 		D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeKeysEnum.swift; sourceTree = "<group>"; };
@@ -384,6 +386,7 @@
 				024DDF081C8BF259000E34D7 /* GameList */,
 				024DDF0A1C8BF298000E34D7 /* GameDetails */,
 				024DDF0B1C8BF2A6000E34D7 /* NewGame */,
+				D09B81FA1F2D220D00ED533A /* InitialUITabBarController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -669,6 +672,7 @@
 				D09408641ECE3C69005B2D2B /* FirebaseController.swift in Sources */,
 				02B82DFF1C88EC010028CD47 /* LocationStatusEnum.swift in Sources */,
 				D0A90C371F2A669F0014581A /* OverallLocationManager.swift in Sources */,
+				D09B81FB1F2D220D00ED533A /* InitialUITabBarController.swift in Sources */,
 				D08387BD1ED4B549009CCCAC /* GameController.swift in Sources */,
 				024978631C7FAF3700312B03 /* NewGameMapViewController.swift in Sources */,
 				02071DEA1C8E1AA600A00991 /* Settings.swift in Sources */,

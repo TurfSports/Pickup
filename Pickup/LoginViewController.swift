@@ -7,21 +7,35 @@
 //
 
 import UIKit
+import FBSDKLoginKit
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet var facebookLoginButton: FBSDKLoginButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        facebookLoginButton.readPermissions = ["public_profile"]
     }
     
+    @IBAction func googleLoginButtonTapped(_ sender: Any) {
+        
+        
+    }
 
+    @IBAction func facebookLoginButtonTapped(_ sender: Any) {
+        let manager = FBSDKLoginManager.init()
+        manager.logIn(withReadPermissions: [], from: self) { (loginResult, error) in
+            guard loginResult?.isCancelled != true && error == nil else {
+                let alertController = UIAlertController.init(title: "Something went wrong when we tried to log you in. Please try again", message: nil, preferredStyle: .alert)
+                let okAction = UIAlertAction.init(title: "Ok", style: .cancel, handler: nil)
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true, completion: nil)
+                return
+            }
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
