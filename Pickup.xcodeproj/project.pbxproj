@@ -64,10 +64,10 @@
 		D095B02D1F1546010045B461 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D095B02C1F1546010045B461 /* PlayerController.swift */; };
 		D09B81F61F2D1C6000ED533A /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D09B81F51F2D1C6000ED533A /* Login.storyboard */; };
 		D09B81F81F2D1C6F00ED533A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09B81F71F2D1C6F00ED533A /* LoginViewController.swift */; };
-		D09B81FB1F2D220D00ED533A /* InitialUITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09B81FA1F2D220D00ED533A /* InitialUITabBarController.swift */; };
 		D0A90C371F2A669F0014581A /* OverallLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A90C361F2A669F0014581A /* OverallLocationManager.swift */; };
 		D0B4020E1ED8B55B00448088 /* GameKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */; };
 		D0B402101ED8B57900448088 /* GameTypeKeysEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */; };
+		D0BBD8641F3102B7009DBA63 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BBD8631F3102B7009DBA63 /* ProfileTableViewController.swift */; };
 		D0BD959E1EC28D4400E29671 /* PickupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD959D1EC28D4400E29671 /* PickupUITests.swift */; };
 		D0BD95AC1EC28D4D00E29671 /* PickupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */; };
 		D0F775871ED75C6200DFC8D6 /* MyGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F269581C87A37300D46519 /* MyGamesViewController.swift */; };
@@ -153,10 +153,10 @@
 		D095B02C1F1546010045B461 /* PlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		D09B81F51F2D1C6000ED533A /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		D09B81F71F2D1C6F00ED533A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		D09B81FA1F2D220D00ED533A /* InitialUITabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialUITabBarController.swift; sourceTree = "<group>"; };
 		D0A90C361F2A669F0014581A /* OverallLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverallLocationManager.swift; sourceTree = "<group>"; };
 		D0B4020D1ED8B55B00448088 /* GameKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameKeysEnum.swift; sourceTree = "<group>"; };
 		D0B4020F1ED8B57900448088 /* GameTypeKeysEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeKeysEnum.swift; sourceTree = "<group>"; };
+		D0BBD8631F3102B7009DBA63 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		D0BD959B1EC28D4400E29671 /* PickupUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickupUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BD959D1EC28D4400E29671 /* PickupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupUITests.swift; sourceTree = "<group>"; };
 		D0BD959F1EC28D4400E29671 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -277,6 +277,7 @@
 		024DDF0C1C8BF2DA000E34D7 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				D0BBD8631F3102B7009DBA63 /* ProfileTableViewController.swift */,
 				02E30FAB1C8F099500140273 /* AboutViewController.swift */,
 				024DDF051C8BE7E0000E34D7 /* GeneralSettingsTableViewController.swift */,
 				024DDF0D1C8BF2F8000E34D7 /* LocationSettingsTableViewController.swift */,
@@ -386,7 +387,6 @@
 				024DDF081C8BF259000E34D7 /* GameList */,
 				024DDF0A1C8BF298000E34D7 /* GameDetails */,
 				024DDF0B1C8BF2A6000E34D7 /* NewGame */,
-				D09B81FA1F2D220D00ED533A /* InitialUITabBarController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -672,10 +672,10 @@
 				D09408641ECE3C69005B2D2B /* FirebaseController.swift in Sources */,
 				02B82DFF1C88EC010028CD47 /* LocationStatusEnum.swift in Sources */,
 				D0A90C371F2A669F0014581A /* OverallLocationManager.swift in Sources */,
-				D09B81FB1F2D220D00ED533A /* InitialUITabBarController.swift in Sources */,
 				D08387BD1ED4B549009CCCAC /* GameController.swift in Sources */,
 				024978631C7FAF3700312B03 /* NewGameMapViewController.swift in Sources */,
 				02071DEA1C8E1AA600A00991 /* Settings.swift in Sources */,
+				D0BBD8641F3102B7009DBA63 /* ProfileTableViewController.swift in Sources */,
 				02DB6FF31C7415E800FF5C20 /* GameListViewController.swift in Sources */,
 				02E30FAC1C8F099500140273 /* AboutViewController.swift in Sources */,
 				02F08F3A1C52A5ED00A76EFB /* Player.swift in Sources */,

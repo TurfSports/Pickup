@@ -57,7 +57,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         let facebookAccessToken = FBSDKAccessToken.current()
         
         if facebookAccessToken == nil {

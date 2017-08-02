@@ -55,7 +55,8 @@ class Game {
     
     init?(gameDictionary: [String: Any]) {
         guard let id = gameDictionary.first?.key,
-        let gameType = GameType.init(dictionary: (gameDictionary[kGameType] as? [String: Any])!),
+        let gameTypeValue = gameDictionary[kGameType] as? [String: Any],
+        let gameType = GameType.init(dictionary: gameTypeValue),
         let totalSlots = gameDictionary[kTotalSlots] as? Int,
         let availableSlots = gameDictionary[kAvailableSlots] as? Int,
         let locationName = gameDictionary[kLocationName] as? String,

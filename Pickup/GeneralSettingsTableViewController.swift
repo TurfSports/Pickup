@@ -15,36 +15,20 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
     
     let selectedCellGameReminder: [Int] = [0, 30, 60, 2 * 60, 24 * 60]
     
-    @IBOutlet weak var btnSave: UIBarButtonItem!
-    @IBOutlet weak var btnCancel: UIBarButtonItem!
     @IBOutlet weak var switchShowCreatedGames: UISwitch!
     @IBOutlet weak var lblGameDistanceSubtext: UILabel!
     
     var tempSettings: Settings!
     
-    @IBAction func cancelSettings(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-
-    @IBAction func saveSettings(_ sender: UIBarButtonItem) {
-        
-        //Save the settings in user defaults
-        Settings.shared.gameDistance = tempSettings.gameDistance
-        Settings.shared.distanceUnit = tempSettings.distanceUnit
-        Settings.shared.defaultLocation = tempSettings.defaultLocation
-        Settings.shared.defaultLatitude = tempSettings.defaultLatitude
-        Settings.shared.defaultLongitude = tempSettings.defaultLongitude
-        Settings.shared.showCreatedGames = tempSettings.showCreatedGames
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         if Settings.shared.gameReminder != tempSettings.gameReminder {
             updateLocalGameNotifications(tempSettings.gameReminder)
-            Settings.shared.gameReminder = tempSettings.gameReminder
         }
         
-        let serializedSettings = Settings.serializeSettings(Settings.shared)
-        UserDefaults.standard.set(serializedSettings, forKey: "settings")
-        
-        self.dismiss(animated: true, completion: nil)
+        let serializedSettings = Settings.serializeSettings(tempSettings)
+        Settings.saveSettings(serializedSettings)
+        Settings.shared = tempSettings
     }
     
     @IBAction func switchShowCreatedGamesChanged(_ sender: UISwitch) {
@@ -54,62 +38,54 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         } else {
             tempSettings.showCreatedGames = false
         }
-        
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         applyStyles()
-        
-        tempSettings = Settings.init()
-        tempSettings.gameDistance = Settings.shared.gameDistance
-        tempSettings.gameReminder = Settings.shared.gameReminder
-        tempSettings.distanceUnit = Settings.shared.distanceUnit
-        tempSettings.defaultLocation = Settings.shared.defaultLocation
-        tempSettings.defaultLatitude = Settings.shared.defaultLatitude
-        tempSettings.defaultLongitude = Settings.shared.defaultLongitude
-        tempSettings.showCreatedGames = Settings.shared.showCreatedGames
+        tempSettings = Settings.shared
+        Settings.loadSettings()
+    }
+    
+    func loadSettings() {
         
         self.lblGameDistanceSubtext.text = "Show games within \(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
         
-        if tempSettings.showCreatedGames == true {
+        if Settings.shared.showCreatedGames == true {
             self.switchShowCreatedGames.isOn = true
         } else {
             self.switchShowCreatedGames.isOn = false
         }
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.lblGameDistanceSubtext.text = "Show games within \(tempSettings.gameDistance) \(tempSettings.distanceUnit)"
-        
         //Set game reminder
         checkGameReminderCell()
+        loadSettings()
     }
     
     fileprivate func checkGameReminderCell() {
         switch(tempSettings.gameReminder) {
-        case 1:
-            let indexPath = IndexPath(row: 0, section: 1)
+        case 0:
+            let indexPath = IndexPath(row: 0, section: 2)
             let cell = tableView.cellForRow(at: indexPath)
             cell?.accessoryType = .checkmark
             break
         case 30:
-            let indexPath = IndexPath(row: 1, section: 1)
+            let indexPath = IndexPath(row: 1, section: 2)
             let cell = tableView.cellForRow(at: indexPath)
             cell?.accessoryType = .checkmark
             break
         case 60:
-            let indexPath = IndexPath(row: 2, section: 1)
+            let indexPath = IndexPath(row: 2, section: 2)
             let cell = tableView.cellForRow(at: indexPath)
             cell?.accessoryType = .checkmark
         case 2 * 60:
-            let indexPath = IndexPath(row: 3, section: 1)
+            let indexPath = IndexPath(row: 3, section: 2)
             let cell = tableView.cellForRow(at: indexPath)
             cell?.accessoryType = .checkmark
         case 24 * 60:
-            let indexPath = IndexPath(row: 4, section: 1)
+            let indexPath = IndexPath(row: 4, section: 2)
             let cell = tableView.cellForRow(at: indexPath)
             cell?.accessoryType = .checkmark
         default:
@@ -134,8 +110,7 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
             uncheckCell?.accessoryType = .none
             cell?.accessoryType = .checkmark
             
-            tempSettings.gameReminder = self.selectedCellGameReminder[(indexPath as NSIndexPath).row]
-            
+            tempSettings.gameReminder = self.selectedCellGameReminder[indexPath.row]
             break
         case 3:
             performSegue(withIdentifier: SEGUE_ABOUT, sender: self)
@@ -151,19 +126,19 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         
         switch(tempSettings.gameReminder) {
         case 30:
-            indexPath = IndexPath(row: 1, section: 1)
+            indexPath = IndexPath(row: 1, section: 2)
             break
         case 60:
-            indexPath = IndexPath(row: 2, section: 1)
+            indexPath = IndexPath(row: 2, section: 2)
             break
         case 2 * 60:
-            indexPath = IndexPath(row: 3, section: 1)
+            indexPath = IndexPath(row: 3, section: 2)
             break
         case 24 * 60:
-            indexPath = IndexPath(row: 4, section: 1)
+            indexPath = IndexPath(row: 4, section: 2)
             break
         default:
-            indexPath = IndexPath(row: 0, section: 1)
+            indexPath = IndexPath(row: 0, section: 2)
             break
         }
         
@@ -172,17 +147,14 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
 
 
     //MARK: - Main Settings Delegate
-    func updateTempSettings(_ tempSettings: Settings) {
-        self.tempSettings = tempSettings
+    func update(settings: Settings) {
+        tempSettings = settings
     }
     
     
     //MARK: - Styles
     func applyStyles() {
-        btnSave.tintColor = Theme.ACCENT_COLOR
-        btnSave.style = .done
         switchShowCreatedGames.onTintColor = Theme.ACCENT_COLOR
-        btnCancel.tintColor = Theme.PRIMARY_LIGHT_COLOR
     }
     
     //MARK: - Navigation
@@ -191,7 +163,7 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
         if segue.identifier == SEGUE_DISTANCE_SETTINGS {
             let locationSettingsTableViewController = segue.destination as! LocationSettingsTableViewController
                 locationSettingsTableViewController.settingsDelegate = self
-                locationSettingsTableViewController.tempSettings = self.tempSettings
+                locationSettingsTableViewController.tempSettings = tempSettings
         }
     }
     
@@ -204,7 +176,7 @@ class GeneralSettingsTableViewController: UITableViewController, MainSettingsDel
                         
                         
                         let originalFireDate = notification.fireDate
-                        let gameDate = originalFireDate?.addingTimeInterval(Double((Settings.shared.gameReminder) * 60))
+                        let gameDate = originalFireDate?.addingTimeInterval(Double((tempSettings.gameReminder) * 60))
                         
                         let timeUntilGame = (Calendar.current as NSCalendar).components(.minute, from: Date(), to: gameDate!, options: []).minute
                         

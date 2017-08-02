@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         FirebaseApp.configure()
+        
+        let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+        
         Database.database().isPersistenceEnabled = true
         Theme.applyTheme()
         
@@ -55,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         //Initialize settings
-        if let settingsFromUserDefaults = UserDefaults.standard.object(forKey: "Settings") as? [String: String] {
+        if let settingsFromUserDefaults = UserDefaults.standard.object(forKey: "Settings") as? [String: Any] {
             
             let storedSettings = Settings.deserializeSettings(settingsFromUserDefaults)
             Settings.shared.gameDistance = storedSettings.gameDistance

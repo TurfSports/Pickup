@@ -100,7 +100,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        settingsDelegate.updateTempSettings(self.tempSettings)
+        settingsDelegate.update(settings: self.tempSettings)
     }
     
     func handleSwitch() {

@@ -28,7 +28,7 @@ protocol GameDetailsViewDelegate {
 }
 
 protocol MainSettingsDelegate {
-    func updateTempSettings(_ tempSettings: Settings)
+    func update(settings: Settings)
 }
 
 

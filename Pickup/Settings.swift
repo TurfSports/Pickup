@@ -36,7 +36,7 @@ class Settings {
         self.showCreatedGames = showCreatedGames ?? true
     }
     
-    static func saveSettings(_ settings: [String: String]) {
+    static func saveSettings(_ settings: [String: Any]) {
         UserDefaults.standard.set(settings, forKey: "Settings")
     }
     
@@ -45,16 +45,16 @@ class Settings {
         self.shared = deserializeSettings(userSettings)
     }
     
-    static func serializeSettings(_ settings: Settings) -> [String: String] {
-        var serializedSettings: [String: String] = [:]
+    static func serializeSettings(_ settings: Settings) -> [String: Any] {
+        var serializedSettings: [String: Any] = [:]
         
-        serializedSettings["GameDistance"] = "\(settings.gameDistance)"
+        serializedSettings["GameDistance"] = settings.gameDistance
         serializedSettings["DistanceUnit"] = settings.distanceUnit
-        serializedSettings["GameReminder"] = "\(settings.gameReminder)"
+        serializedSettings["GameReminder"] = settings.gameReminder
         serializedSettings["DefaultLocation"] = settings.defaultLocation
-        serializedSettings["DefaultLatitude"] = "\(settings.defaultLatitude)"
-        serializedSettings["DefaultLongitude"] = "\(settings.defaultLongitude)"
-        serializedSettings["ShowCreatedGames"] = (settings.showCreatedGames ? "1" : "0")
+        serializedSettings["DefaultLatitude"] = settings.defaultLatitude
+        serializedSettings["DefaultLongitude"] = settings.defaultLongitude
+        serializedSettings["ShowCreatedGames"] = settings.showCreatedGames ? true : false
 
         
         return serializedSettings
@@ -70,7 +70,7 @@ class Settings {
         let defaultLocation = serializedSettings["DefaultLocation"] as? String,
         let defaultLatitude = serializedSettings["DefaultLatitude"] as? Double,
         let defaultLongitude = serializedSettings["DefaultLongitude"] as? Double,
-        let showCreatedGames = serializedSettings["ShowCreatedGames"] as? Int
+        let showCreatedGames = serializedSettings["ShowCreatedGames"] as? Bool
         
             else { return settings }
         
@@ -80,7 +80,7 @@ class Settings {
         settings.defaultLocation = defaultLocation
         settings.defaultLatitude = defaultLatitude
         settings.defaultLongitude = defaultLongitude
-        settings.showCreatedGames = showCreatedGames == 1
+        settings.showCreatedGames = showCreatedGames
         
         return settings
     }
