@@ -17,15 +17,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let fbLoginButton = FBSDKLoginButton.init()
-        
-        self.view.addSubview(fbLoginButton)
-        
-        fbLoginButton.center = self.view.center
-                
-        fbLoginButton.readPermissions = ["public_profile", "email"]
-    }
+        }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -44,7 +36,7 @@ class LoginViewController: UIViewController {
 
     @IBAction func facebookLoginButtonTapped(_ sender: Any) {
         let manager = FBSDKLoginManager.init()
-        manager.logIn(withReadPermissions: ["public_profile"], from: self) { (loginResult, error) in
+        manager.logIn(withReadPermissions: ["public_profile", "email"], from: self) { (loginResult, error) in
             guard loginResult?.isCancelled != true && error == nil else {
                 let alertController = UIAlertController.init(title: "Something went wrong when we tried to log you in. Please try again", message: nil, preferredStyle: .alert)
                 let okAction = UIAlertAction.init(title: "Ok", style: .cancel, handler: nil)
@@ -53,6 +45,7 @@ class LoginViewController: UIViewController {
                 return
             }
             self.loginResult = loginResult
+            self.dismiss(animated: true, completion: nil)
         }
     }
     

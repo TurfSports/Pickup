@@ -72,20 +72,11 @@
                     <navigationItem key="navigationItem" id="S2q-tr-DmT"/>
                     <connections>
                         <outlet property="facebookLoginButton" destination="0RZ-u9-dyu" id="361-A0-hfL"/>
-                        <segue destination="6fr-ze-2xz" kind="show" id="4sr-PW-9So"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gs1-8X-6cm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-710" y="232"/>
-        </scene>
-        <!--Main-->
-        <scene sceneID="9VZ-0b-dKm">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="6fr-ze-2xz" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4L8-nF-Nl6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-131" y="231"/>
         </scene>
     </scenes>
     <resources>
