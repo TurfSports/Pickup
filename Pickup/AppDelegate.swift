@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import CoreLocation
+import FirebaseAuth
 import FBSDKLoginKit
 
 @UIApplicationMain
@@ -23,6 +24,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+        
+        Auth.auth().signIn(with: credential) { (user, error) in
+            if let error = error {
+                print("Could not login to firebase. ErrorCode: \(error.localizedDescription)")
+                return
+            } else {
+                print("Logged into firebase with current user")
+            }
+        }
         
         Database.database().isPersistenceEnabled = true
         Theme.applyTheme()

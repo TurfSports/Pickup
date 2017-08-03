@@ -6,6 +6,7 @@ target ‘Pickup’ do
   use_frameworks!
 
 pod 'FBSDKLoginKit'
+pod ‘GoogleSignIn’
 pod 'Firebase/Auth'
 pod ‘Firebase/Core’
 pod ‘Firebase/Database’
