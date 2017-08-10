@@ -55,6 +55,8 @@
 		02F2695B1C87B97E00D46519 /* MyGamesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */; };
 		02F5D0101C84C12F00A95B92 /* CustomProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */; };
 		2BEE622EDC0E096B73587A4C /* Pods_Pickup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBA0BD9A58AAF7A7D88D5DA2 /* Pods_Pickup.framework */; };
+		D013CA7F1F34EEC3004392AC /* QuestionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D013CA7E1F34EEC3004392AC /* QuestionsTableViewController.swift */; };
+		D013CA811F3B8948004392AC /* EmailLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D013CA801F3B8948004392AC /* EmailLoginViewController.swift */; };
 		D01697D01EDF66CB00896DD7 /* GameTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01697CF1EDF66CB00896DD7 /* GameTypeController.swift */; };
 		D02508071ECE33A30024DA8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D02508061ECE33A30024DA8A /* GoogleService-Info.plist */; };
 		D08387B91ED4B4DA009CCCAC /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08387B81ED4B4DA009CCCAC /* NetworkController.swift */; };
@@ -144,6 +146,8 @@
 		02F2695A1C87B97E00D46519 /* MyGamesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyGamesTableViewCell.swift; sourceTree = "<group>"; };
 		02F5D00F1C84C12F00A95B92 /* CustomProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomProtocols.swift; sourceTree = "<group>"; };
 		302F06E8CC883C4D6C6C14F5 /* Pods-Pickup.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pickup.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pickup/Pods-Pickup.debug.xcconfig"; sourceTree = "<group>"; };
+		D013CA7E1F34EEC3004392AC /* QuestionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionsTableViewController.swift; sourceTree = "<group>"; };
+		D013CA801F3B8948004392AC /* EmailLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailLoginViewController.swift; sourceTree = "<group>"; };
 		D01697CF1EDF66CB00896DD7 /* GameTypeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeController.swift; sourceTree = "<group>"; };
 		D02508061ECE33A30024DA8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D08387B81ED4B4DA009CCCAC /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
@@ -423,6 +427,8 @@
 			isa = PBXGroup;
 			children = (
 				D09B81F71F2D1C6F00ED533A /* LoginViewController.swift */,
+				D013CA7E1F34EEC3004392AC /* QuestionsTableViewController.swift */,
+				D013CA801F3B8948004392AC /* EmailLoginViewController.swift */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -648,6 +654,7 @@
 				D09B81F81F2D1C6F00ED533A /* LoginViewController.swift in Sources */,
 				D0F775871ED75C6200DFC8D6 /* MyGamesViewController.swift in Sources */,
 				02071DEC1C8EB6DD00A00991 /* GameTypeListSingleton.swift in Sources */,
+				D013CA7F1F34EEC3004392AC /* QuestionsTableViewController.swift in Sources */,
 				024DDF101C8C03EF000E34D7 /* DistanceEnum.swift in Sources */,
 				D0B4020E1ED8B55B00448088 /* GameKeysEnum.swift in Sources */,
 				D095B02A1F15436B0045B461 /* ImageController.swift in Sources */,
@@ -669,6 +676,7 @@
 				D08387B91ED4B4DA009CCCAC /* NetworkController.swift in Sources */,
 				02B2F8801C60666C009863AB /* HomeTableViewCell.swift in Sources */,
 				02ED31BB1C693CEF00B53DD3 /* HomeTableViewController.swift in Sources */,
+				D013CA811F3B8948004392AC /* EmailLoginViewController.swift in Sources */,
 				D09408641ECE3C69005B2D2B /* FirebaseController.swift in Sources */,
 				02B82DFF1C88EC010028CD47 /* LocationStatusEnum.swift in Sources */,
 				D0A90C371F2A669F0014581A /* OverallLocationManager.swift in Sources */,

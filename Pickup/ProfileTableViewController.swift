@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import GoogleSignIn
 import FBSDKLoginKit
 
 class ProfileTableViewController: UITableViewController {
@@ -18,6 +20,13 @@ class ProfileTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     @IBAction func logOutButtonTapped(_ sender: Any) {
-        facebookLoginManager.logOut()
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            facebookLoginManager.logOut()
+            GIDSignIn.sharedInstance().signOut()
+        } catch let signOutError {
+            print ("Error signing out: \(signOutError)")
+        }
     }
 }

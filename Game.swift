@@ -86,10 +86,10 @@ class Game {
         self.isCancelled = isCancelled
         self.latitude = latitude
         self.longitude = longitude
-        if userIDs.contains(defaultPlayer.id) {
+        if userIDs.contains(currentPlayer.id) {
             self.userJoined = true
         }
-        if defaultPlayer.id == ownerId {
+        if currentPlayer.id == ownerId {
             self.userIsOwner = true
         } else {
             self.userIsOwner = false

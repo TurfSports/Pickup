@@ -10,6 +10,8 @@ import UIKit
 import CoreLocation
 import MapKit
 import FBSDKLoginKit
+import GoogleSignIn
+import FirebaseAuth
 
 var loadedGameTypes: [GameType] = []
 var facebookLoginManager = FBSDKLoginManager.init()
@@ -28,7 +30,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
             self.tableView.reloadData()
         }
     }
-
+    
     var currentLocation: CLLocation? {
         didSet {
             // Load Game Counts
@@ -57,13 +59,15 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         let facebookAccessToken = FBSDKAccessToken.current()
         
-        if facebookAccessToken == nil {
-            self.performSegue(withIdentifier: "toLoginView", sender: self)
-        } else {
-            print("Already logged in")
+        DispatchQueue.main.async {
+            if facebookAccessToken == nil && Auth.auth().currentUser == nil {
+                self.performSegue(withIdentifier: "toLoginView", sender: self)
+            } else {
+                print("Already logged in")
+            }
         }
         
         loadGameTypes()

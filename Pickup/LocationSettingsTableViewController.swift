@@ -136,7 +136,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
     //MARK: - Table View Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 1 {
+        if indexPath.section == 0 && indexPath.row == 1 {
             distanceRowSelected = !distanceRowSelected
             animateReloadTableView()
         } else if (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 0 {

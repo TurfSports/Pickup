@@ -41,8 +41,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     @IBOutlet weak var lblNoGames: UILabel!
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
-    
+
     //https://www.andrewcbancroft.com/2015/03/17/basics-of-pull-to-refresh-for-swift-developers/
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -100,24 +99,28 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         }
         
         if Settings.shared.showCreatedGames == false {
-            sortedGames = sortedGames.filter { $0.ownerId != defaultPlayer.id }
+            sortedGames = sortedGames.filter { $0.ownerId != currentPlayer.id }
         }
         
-        /*
+        OverallLocation.manager.requestLocation()
+        currentLocation = OverallLocation.manager.location
+        
         if Settings.shared.distanceUnit == DistanceUnit.KILOMETERS.rawValue {
             
-            OverallLocation.manager.requestLocation()
-            currentLocation = OverallLocation.manager.location
-            
+            guard currentLocation != nil else { self.sortedGames = sortedGames; return }
             let gameDistance = Double(Settings.shared.gameDistance)
             let filteredGamesByDistance = sortedGames.filter { $0.latitude.distance(to: (currentLocation?.coordinate.latitude)!) <= gameDistance * 1.60934 && $0.longitude.distance(to: (currentLocation?.coordinate.longitude)!) <= gameDistance * 1.60934 }
             sortedGames = filteredGamesByDistance
+            
         } else {
+            
             let gameDistance = Double(Settings.shared.gameDistance)
+            guard currentLocation != nil else { self.sortedGames = sortedGames; return }
             let filteredGamesByDistance = sortedGames.filter { $0.latitude.distance(to: (currentLocation?.coordinate.latitude)!) <= gameDistance && $0.longitude.distance(to: (currentLocation?.coordinate.longitude)!) <= gameDistance }
             sortedGames = filteredGamesByDistance
          }
-         */
+
+        self.sortedGames = sortedGames
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -322,6 +325,10 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             OverallLocation.manager.startUpdatingLocation()
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
     }
     
     func getDistanceBetweenLocations(_ location1: CLLocation, location2: CLLocation) -> Double {
