@@ -148,10 +148,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 return
             }
 
-            if let email = user?.email {
-                currentPlayer.email = email
-            }
-
             if let id = user?.uid {
                 currentPlayer.id = id
             }
@@ -246,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                     return currentUser.email!
                 }
                 
-                let player = Player.init(id: currentUser.uid, email: email, firstName: firstName ?? "FirstName", lastName: lastName ?? "LastName", userImage: nil, userCreationDate: Date.init(), userImageEndpoint: photoUrlString, createdGames: [], joinedGames: [], age: "", gender: "undisclosed", sportsmanship: "", skills: [:])
+                let player = Player.init(id: currentUser.uid, firstName: firstName ?? "FirstName", lastName: lastName ?? "LastName", userImage: nil, userCreationDate: Date.init(), userImageEndpoint: photoUrlString, createdGames: [], joinedGames: [], age: "", gender: "undisclosed", sportsmanship: "", skills: [:])
                 currentPlayer = player
             }
         }

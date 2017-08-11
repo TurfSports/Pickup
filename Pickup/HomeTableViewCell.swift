@@ -19,14 +19,9 @@ class HomeTableViewCell: UITableViewCell {
         super.awakeFromNib()
         self.imgSport?.layer.cornerRadius = Theme.GAME_TYPE_CELL_HEIGHT / 2 - 4
         self.imgSport?.layer.masksToBounds = true
-        
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
     }
-
 }

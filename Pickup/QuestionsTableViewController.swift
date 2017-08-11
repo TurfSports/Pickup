@@ -104,7 +104,7 @@ class QuestionsTableViewController: UITableViewController, UIPickerViewDelegate,
         guard let password = passwordTextView.text, password != "" else { presentAlertController(with: "Please check that you have input a password", message: "It is recomended that your password has one number and  one uppercase letter", and: []); return }
         guard let age = self.age else { presentAlertController(with: "Please check that you have input your age and try again", and: []); return }
         guard let firstName = firstNameTextField.text, firstName != "" else { presentAlertController(with: "Please check that you have input your first name and try again", and: []); return }
-        guard (lastNameTextField.text?.characters.count)! >= 1, let lastName = lastNameTextField.text, lastName != "" else { self.presentAlertController(with: "Please check that you have input your last name and try again", and: []); return }
+        guard (lastNameTextField.text?.characters.count)! >= 2, var lastName = lastNameTextField.text, lastName != "" else { self.presentAlertController(with: "Please check that you have input your last name and try again", and: []); return }
         
         let gender = genders[genderSegmentedController.selectedSegmentIndex]
         
@@ -114,10 +114,12 @@ class QuestionsTableViewController: UITableViewController, UIPickerViewDelegate,
                 currentPlayer.userImage = nil
                 currentPlayer.age = "\(age)"
                 currentPlayer.firstName = firstName
-                currentPlayer.lastName = lastName
-                currentPlayer.email = email
+                currentPlayer.lastInitials = "\(lastName.characters.first ?? "a")"
+                let firstCharacterIndex = lastName.characters.index(of: lastName.characters.first!)
+                let secondCharacterIndex = lastName.characters.index(after: firstCharacterIndex!)
+                let secondCharacter = lastName.characters[secondCharacterIndex]
+                currentPlayer.lastInitials += "\(secondCharacter)"
                 currentPlayer.gender = gender
-                currentPlayer.password = password
                 Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
                     if let uid = user?.uid {
                         currentPlayer.id = uid
@@ -136,11 +138,13 @@ class QuestionsTableViewController: UITableViewController, UIPickerViewDelegate,
         let yesAction = UIAlertAction.init(title: "Yes", style: .default) { (_) in
             currentPlayer.age = "\(age)"
             currentPlayer.firstName = firstName
-            currentPlayer.lastName = lastName
-            currentPlayer.email = email
+            currentPlayer.lastInitials = "\(lastName.characters.first ?? "a")".capitalized
+            let firstCharacterIndex = lastName.characters.index(of: lastName.characters.first!)
+            let secondCharacterIndex = lastName.characters.index(after: firstCharacterIndex!)
+            let secondCharacter = lastName.characters[secondCharacterIndex]
+            currentPlayer.lastInitials += "\(secondCharacter)".lowercased()
             currentPlayer.gender = gender
             currentPlayer.userImage = self.imageView.image!
-            currentPlayer.password = password
             Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
                 if let uid = user?.uid {
                     currentPlayer.id = uid

@@ -23,10 +23,19 @@ class GameController {
         return
     }
     
-    func put(game: Game, with UUID: UUID, to url: URL, success: @escaping (_ success: Bool) -> Void) {
-        let urlWithUUID = endUrl?.appendingPathComponent("Games").appendingPathComponent(game.id.uuidString).appendingPathExtension("json")
-        guard let url = urlWithUUID else { success(false); return }
-        NetworkController.performRequest(for: url, httpMethod: .put, body: game.jsonData) { (data, error) in
+    func put(game: Game, with UUID: UUID, to url: URL?, success: @escaping (_ success: Bool) -> Void) {
+        
+        let newUrl: URL
+        
+        if url == nil {
+            newUrl = endUrl!
+        } else {
+            newUrl = url!
+        }
+        
+        let urlWithUUID = newUrl.appendingPathComponent("Games").appendingPathComponent(game.id.uuidString).appendingPathExtension("json")
+        
+        NetworkController.performRequest(for: urlWithUUID, httpMethod: .put, body: game.jsonData) { (data, error) in
             DispatchQueue.main.async {
                 if error != nil {
                     print(error?.localizedDescription ?? "error")

@@ -77,7 +77,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     func save(game: Game, completion: @escaping (Bool) -> Void) {
         
-        GameController.shared.put(game: game, with: game.id, success: { (success) in
+        GameController.shared.put(game: game, with: game.id, to: nil, success: { (success) in
             completion(success)
             if success == false {
                 print("Error saving")
