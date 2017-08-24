@@ -76,7 +76,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     }
     
     func loadGames() {
-        GameController.shared.loadGames { (games) in
+        GameController.shared.loadGames(of: selectedGameType!) { (games) in
             DispatchQueue.main.async {
                 self.games = games
                 loadedGames = games
