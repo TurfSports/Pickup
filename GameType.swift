@@ -20,7 +20,7 @@ class GameType {
     var sortOrder: Int = 0
     var imageName: String = ""
     
-    var gameCount: Int = -1
+    var gameCount: Int = 0
     
     init(name: String, displayName: String, sortOrder: Int, imageName: String) {
         self.name = name
