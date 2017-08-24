@@ -16,7 +16,7 @@ import FirebaseAuth
 var loadedGameTypes: [GameType] = []
 var facebookLoginManager = FBSDKLoginManager.init()
 
-class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocationManagerDelegate {
+class HomeTableViewController: UITableViewController, DismissalDelegate {
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
@@ -106,9 +106,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
                 }
             }
         }
-        
-        OverallLocation.manager.delegate = self
-        
+            
         ////      iOS 9.2
         //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
         //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
@@ -374,28 +372,6 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         self.present(alertController, animated: true, completion: nil)
     }
     
-    //MARK: - Location Manager Delegate
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        let location: CLLocationCoordinate2D = manager.location!.coordinate
-        print(location)
-        currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        
-        if currentLocation != nil {
-            manager.stopUpdatingLocation()
-        }
-        
-        self.tableView.reloadData()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        
-        if (!CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .authorizedWhenInUse) && Settings.shared.defaultLocation == "none" {
-            getZipCodeFromUserWithAlert()
-        }
-        
-    }
     
     func getZipCodeFromUserWithAlert() {
         
@@ -475,8 +451,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         OverallLocation.manager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
-            OverallLocation.manager.delegate = self
-            OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             OverallLocation.manager.startUpdatingLocation()
         }
     }

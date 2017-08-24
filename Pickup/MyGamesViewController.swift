@@ -253,14 +253,15 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        let location:CLLocationCoordinate2D = manager.location!.coordinate
-        currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        guard let location = manager.location else { manager.stopUpdatingLocation(); return }
+        let locationCordinate: CLLocationCoordinate2D = location.coordinate
         
-        if currentLocation != nil {
-            locationManager.stopUpdatingLocation()
+        manager.stopUpdatingLocation()
+        guard currentLocation != nil else { currentLocation = location; self.tableGameList.reloadData();return }
+        if getDistanceBetweenLocations(location, location2: currentLocation!) >= CLLocationDistance.init(500) {
+            currentLocation = CLLocation(latitude: locationCordinate.latitude, longitude: locationCordinate.longitude)
+            tableGameList.reloadData()
         }
-        
-        tableGameList.reloadData()
     }
     
     func setUsersCurrentLocation() {
