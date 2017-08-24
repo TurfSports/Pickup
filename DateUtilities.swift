@@ -27,7 +27,7 @@ struct DateUtilities {
             dayTimePeriodFormatter.dateFormat = dateFormat
         }
         
-        let date = dayTimePeriodFormatter.date(from: string)!
+        guard let date = dayTimePeriodFormatter.date(from: string) else { return Date() }
         
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month, .day, .hour], from: date)
