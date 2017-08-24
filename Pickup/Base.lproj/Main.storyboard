@@ -16,7 +16,7 @@
             <objects>
                 <navigationController storyboardIdentifier="MainNavigationController" id="stp-6H-42L" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Games" image="gamesIcon" id="4jT-dC-cA3"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qvl-mQ-had">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Qvl-mQ-had">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2102,7 +2102,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NewGameNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="d1I-4M-Fr0" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="i6K-HU-WSu">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="i6K-HU-WSu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2314,7 +2314,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Z5j-ge-pPF" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="My Games" image="myGamesIcon" selectedImage="myGamesIcon" id="svv-i4-dPa"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="9py-s3-Hus">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="9py-s3-Hus">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

@@ -47,11 +47,11 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
-        if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
-            GameTypeController.shared.loadGameTypes() { (gameTypes) in
-                self.gameTypes = gameTypes
-            }
-        } else {
+        GameTypeController.shared.loadGameTypes() { (gameTypes) in
+            self.gameTypes = gameTypes
+        }
+        
+        if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) != ComparisonResult.orderedAscending {
             loadGameTypesFromUserDefaults()
         }
         

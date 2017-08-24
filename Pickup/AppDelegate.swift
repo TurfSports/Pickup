@@ -15,6 +15,7 @@ import FBSDKLoginKit
 
 var loginProvider = ""
 let kLoginProvider = "loginProvider"
+let gamesLoadedNotificationName = NSNotification.Name.init("gamesLoaded")
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
@@ -44,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             GIDSignIn.sharedInstance().signInSilently()
         }
         
-        Database.database().isPersistenceEnabled = true
+//        Database.database().isPersistenceEnabled = true
         
         // Load Games and location
         
@@ -54,6 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         GameController.shared.loadGames { (Games) in
             DispatchQueue.main.async {
+                NotificationCenter.default.post(name: gamesLoadedNotificationName, object: nil)
                 loadedGames = Games
             }
         }

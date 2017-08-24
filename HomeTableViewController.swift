@@ -24,7 +24,6 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     
     var newGame: Game!
-    var gameTypes:[GameType] = []
     var gameCountLoaded:Bool = false {
         didSet {
             self.tableView.reloadData()
@@ -37,7 +36,16 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         }
     }
     
-    
+    var imagesTriedToLoad: Bool = false
+    var imagesLoaded: Bool = false
+    var images: [String: UIImage] = [:] {
+        didSet {
+            if images.count == loadedGameTypes.count {
+                imagesLoaded = true
+            }
+            self.tableView.reloadData()
+        }
+    }
     
     @IBOutlet weak var refresher: UIRefreshControl!
     @IBOutlet weak var addNewGameButton: UIBarButtonItem!
@@ -50,15 +58,29 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         return activityIndicator
     }()
     
-    func loadGameTypes() {
-        GameTypeController.shared.loadGameTypes { (gameTypes) in
-            self.gameTypes = gameTypes
+    func loadCellImages(dictionary: @escaping ([String: UIImage]) -> Void) {
+        FirebaseController.shared.getGameTypeImages { (imageDictionary) in
+            DispatchQueue.main.async {
+                dictionary(imageDictionary)
+            }
         }
-        refreshControl?.endRefreshing()
+    }
+    
+    func reloadDataAndEndRefresher() {
+        self.tableView.reloadData()
+        self.refreshControl?.endRefreshing()
+    }
+    
+    func switchGameCountLoaded() {
+        self.gameCountLoaded = !self.gameCountLoaded
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(switchGameCountLoaded), name: gamesLoadedNotificationName, object: nil)
+        
+        self.refreshControl?.addTarget(self, action: #selector(reloadDataAndEndRefresher), for: .valueChanged)
         
         let facebookAccessToken = FBSDKAccessToken.current()
         
@@ -70,7 +92,20 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
             }
         }
         
-        loadGameTypes()
+        GameTypeController.shared.loadGameTypes { (gameTypes) in
+            DispatchQueue.main.async {
+                loadedGameTypes = gameTypes
+                self.loadCellImages { (imageDictionary) in
+                    DispatchQueue.main.async {
+                        self.images = imageDictionary
+                        self.refresher.endRefreshing()
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.hidesWhenStopped = true
+                        self.refresher.isHidden = true
+                    }
+                }
+            }
+        }
         
         OverallLocation.manager.delegate = self
         
@@ -94,21 +129,9 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
-            GameTypeController.shared.loadGameTypes() { (gameTypeArray) in
-                self.gameTypes = gameTypeArray
-                loadedGameTypes = gameTypeArray
-                self.tableView.reloadData()
-            }
+            
         } else {
             loadGameTypesFromUserDefaults()
-        }
-        
-        FirebaseController.shared.getGameTypeImages { (gotImages) in
-            if gotImages {
-                print("Got images")
-            } else {
-                
-            }
         }
         
         addNewGameButton.tintColor = Theme.ACCENT_COLOR
@@ -140,32 +163,24 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return gameTypes.count
+        return loadedGameTypes.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> HomeTableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? HomeTableViewCell
         
-        let gameType = gameTypes[(indexPath as NSIndexPath).row]
+        let gameType = loadedGameTypes[indexPath.row]
+        let gameTypeImageName = gameType.imageName
+        cell?.gameTypeImagesLoaded = imagesLoaded
+        cell?.gameCountLoaded = gameCountLoaded
         
-        if UIImage(named: gameType.imageName) == nil {
-            var imageName = gameType.imageName.lowercased()
-            let chars = imageName.characters
-            let realChars = chars.dropLast(4)
-            gameType.imageName = String.init(realChars) + "Icon"
-        }
-        
-        cell?.lblSport.text = gameType.displayName
-        cell?.imgSport.image = UIImage(named: gameType.imageName)
-        
-        if self.gameCountLoaded {
-            if gameType.gameCount > 0 {
-                cell?.lblAvailableGames.text = "\(gameType.gameCount) games"
+        if imagesLoaded && images.count == loadedGameTypes.count {
+            print("Trying to put \(gameTypeImageName) at index \(indexPath.row)")
+            if let image = images[gameType.imageName] {
+                cell?.updateCellWith(gameType: gameType, and: image)
             } else {
-                cell?.lblAvailableGames.text = "No games"
+                cell?.updateCellWith(gameType: gameType, and: nil)
             }
-        } else {
-            cell?.lblAvailableGames.text = ""
         }
         
         return cell!
@@ -205,7 +220,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
             
             for gameType in gameTypeArray {
                 guard let castedGameType = GameType(dictionary: gameType as! [String: Any]) else { continue }
-                self.gameTypes.append(castedGameType)
+                loadedGameTypes.append(castedGameType)
             }
         }
         
@@ -215,7 +230,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         
         var gameTypeArray: [GameType] = []
         
-        for gameType in self.gameTypes {
+        for gameType in loadedGameTypes {
             gameTypeArray.append(gameType)
         }
         
@@ -487,18 +502,18 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         if segue.identifier == SEGUE_SHOW_GAMES {
             let gamesViewController = segue.destination as! GameListViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                gamesViewController.selectedGameType = gameTypes[indexPath.row]
-                gamesViewController.gameTypes = self.gameTypes
+                gamesViewController.selectedGameType = loadedGameTypes[indexPath.row]
+                gamesViewController.gameTypes = loadedGameTypes
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
             let navigationController = segue.destination as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             newGameTableViewController.dismissalDelegate = self
-            newGameTableViewController.gameTypes = self.gameTypes
+            newGameTableViewController.gameTypes = loadedGameTypes
         } else if segue.identifier == SEGUE_SHOW_MY_GAMES {
             let myGamesViewController = segue.destination as! MyGamesViewController
-            myGamesViewController.gameTypes = self.gameTypes
+            myGamesViewController.gameTypes = loadedGameTypes
         } else if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             let gameDetailsViewController = segue.destination as! GameDetailsViewController
             

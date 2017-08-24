@@ -1,56 +1,73 @@
-//
-//  FirebaseController.swift
-//  Pods
-//
-//  Created by Justin Carver on 5/18/17.
-//
-//
-
-import Foundation
-import UIKit
-import Firebase
-import FirebaseStorage
-
-class FirebaseController {
+ //
+ //  FirebaseController.swift
+ //  Pods
+ //
+ //  Created by Justin Carver on 5/18/17.
+ //
+ //
+ 
+ import Foundation
+ import UIKit
+ import Firebase
+ import FirebaseStorage
+ 
+ class FirebaseController {
     
-    let folderRef = Storage.storage().reference(forURL: "gs://pickup-a837a.appspot.com/")
-    var imageFolders: [StorageReference] = []
-    var images: [UIImage] = []
+    var imageNames: [String] {
+        var tempArray: [String] = []
+        guard loadedGameTypes.count != 0 else { return [] }
+        for gametype in loadedGameTypes {
+            tempArray.append(gametype.imageName)
+        }
+        return tempArray
+    }
     
     static let shared = FirebaseController()
     
-    func save(game: Game, with UUID: UUID, success: @escaping (Bool) -> Void) {
-        game.id = UUID
+    var storage = Storage.storage()
+    var folderRef = Storage.storage().reference().child("GameTypeImages")
+    
+    func createFolderReferences(folderReferences: @escaping ([String: StorageReference?]) -> Void) {
+        
+        var folders: [String: StorageReference?] = [:]
+        
         DispatchQueue.main.async {
-            success(true)
+            
+            guard loadedGameTypes.count != 0 else { folderReferences([:]); return }
+            
+            for imageName in self.imageNames {
+                folders[imageName] = self.folderRef.child(imageName)
+            }
+            
+            folderReferences(folders)
             return
         }
     }
     
-    func createFolderReferences(sucess: @escaping (Bool) -> Void) {
-        let gameTypeImageFolderRef = folderRef.child("GameTypeImages")
-        imageFolders.append(gameTypeImageFolderRef.child("basketball.png"))
-        imageFolders.append(gameTypeImageFolderRef.child("baseball.png"))
-        imageFolders.append(gameTypeImageFolderRef.child("frisbee.png"))
-    }
-    
-    func getGameTypeImages(gotImages: @escaping (Bool) -> Void) {
+    func getGameTypeImages(images: @escaping ([String: UIImage]) -> Void) {
         
-        createFolderReferences { (success) in
-            if !success {
-                gotImages(false)
-                return
+        var loadedGameTypeImages: [String : UIImage] = [:]
+        
+        createFolderReferences { (foldersRefs) in
+            DispatchQueue.main.async {
+                if foldersRefs.count == 0 {
+                    images([:])
+                    print("Failed to load game type images")
+                    return
+                } else {
+                    for folder in foldersRefs {
+                        folder.value?.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+                            guard let data = data, error == nil else { print(error?.localizedDescription ?? "Error loaded image for folder \(folder.key)"); images([:]); return }
+                            guard let image = UIImage.init(data: data) else { return }
+                            loadedGameTypeImages[folder.key] = image
+                            if  loadedGameTypeImages.count == foldersRefs.count {
+                                images(loadedGameTypeImages)
+                            }
+                        }
+                    }
+                }
             }
         }
-        
-        for folderRef in imageFolders {
-            folderRef.getData(maxSize: Int64.init(100)) { (data, error) in
-                guard let data = data, error == nil else { gotImages(false); print("Failed to load game type images"); return }
-                guard let image = UIImage.init(data: data) else { gotImages(false); return }
-                self.images.append(image)
-                print("Loaded game type images \(data)")
-            }
-        }
     }
-}
-
+ }
+ 
