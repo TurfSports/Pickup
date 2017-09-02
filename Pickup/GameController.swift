@@ -9,6 +9,8 @@
 import Foundation
 import Firebase
 
+let gamesRef = Database.database().reference().child("Games")
+
 class GameController {
     
     static let shared = GameController()
@@ -72,12 +74,15 @@ class GameController {
                 guard let jsonObject = snapShot.value as? [String: [String: Any]] else { completion([]); print("Fuck") ; return }
                 
                 var gameNumber = 0
+                var loadedGames = 0
                 
                 for game in jsonObject {
                     gameNumber += 1
                     guard let game = Game(gameDictionary: game.value) else { completion([]); print("Game #\(gameNumber) can't initialize"); continue }
+                    loadedGames += 1
                     arrayOfGameType.append(game)
                 }
+                gameType.gameCount = loadedGames
                 completion(arrayOfGameType)
             }
         })
@@ -100,8 +105,8 @@ class GameController {
                 var gameNumber = 0
                 
                 for arrayOfGames in jsonGameTypes {
+                    gameNumber += 1
                     for games in arrayOfGames {
-                        gameNumber += 1
                         guard let value = games.value as? [String: Any] else { print("Game #\(gameNumber) can't initialize"); continue }
                         guard let game = Game(gameDictionary: value) else { print("Game #\(gameNumber) can't initialize"); continue }
                         gameArray.append(game)
@@ -125,12 +130,15 @@ class GameController {
                 guard let jsonObject = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String: [String: Any]] else { completion([]); print("Fuck") ; return }
                 
                 var gameNumber = 0
+                var loadedGames = 0
                 
                 for game in jsonObject {
                     gameNumber += 1
                     guard let game = Game(gameDictionary: game.value) else { completion([]); print("Game #\(gameNumber) can't initialize"); continue }
+                    loadedGames += 1
                     arrayOfGameType.append(game)
                 }
+                gameType.gameCount = loadedGames
                 completion(arrayOfGameType)
             }
         }
@@ -159,6 +167,7 @@ class GameController {
                         gameNumber += 1
                         guard let value = games.value as? [String: Any] else { print("Game #\(gameNumber) can't initialize"); continue }
                         guard let game = Game(gameDictionary: value) else { print("Game #\(gameNumber) can't initialize"); continue }
+                        game.gameType.gameCount += 1
                         gameArray.append(game)
                     }
                 }

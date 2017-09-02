@@ -47,6 +47,19 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
         }
     }
     
+    var gameTypesDictionary: [String: GameType] {
+        
+        guard loadedGameTypes.count != 0 else { return [:] }
+        
+        var gameTypes: [String: GameType] = [:]
+        
+        for gameType in loadedGameTypes {
+            gameTypes[gameType.name] = gameType
+        }
+        
+        return gameTypes
+    }
+    
     @IBOutlet weak var refresher: UIRefreshControl!
     @IBOutlet weak var addNewGameButton: UIBarButtonItem!
     @IBOutlet weak var settingsButton: UIBarButtonItem!
@@ -72,7 +85,20 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
     }
     
     func switchGameCountLoaded() {
-        self.gameCountLoaded = !self.gameCountLoaded
+        changeGameCount(byAdding: loadedGames)
+    }
+    
+    func changeGameCount(byAdding games: [Game]) {
+        DispatchQueue.main.async {
+            
+            guard loadedGameTypes.count != 0, games.count != 0 else { return }
+            
+            for game in games {
+                self.gameTypesDictionary[game.gameType.name]?.gameCount += 1
+            }
+            
+            self.gameCountLoaded = !self.gameCountLoaded
+        }
     }
     
     override func viewDidLoad() {
@@ -94,6 +120,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
         
         GameTypeController.shared.loadGameTypes { (gameTypes) in
             DispatchQueue.main.async {
+                self.switchGameCountLoaded()
                 loadedGameTypes = gameTypes
                 self.loadCellImages { (imageDictionary) in
                     DispatchQueue.main.async {
@@ -106,7 +133,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
                 }
             }
         }
-            
+        
         ////      iOS 9.2
         //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
         //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithAlert:", name: "com.pickup.loadGameFromNotificationWithAlert", object: nil)
@@ -150,7 +177,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         if currentLocation != nil {
-            //            loadGameCounts()
+            
         }
     }
     
@@ -173,12 +200,14 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
         cell?.gameCountLoaded = gameCountLoaded
         
         if imagesLoaded && images.count == loadedGameTypes.count {
-            print("Trying to put \(gameTypeImageName) at index \(indexPath.row)")
             if let image = images[gameType.imageName] {
+                print("Successfully passed \(gameTypeImageName) to cell at row \(indexPath.row)")
                 cell?.updateCellWith(gameType: gameType, and: image)
             } else {
                 cell?.updateCellWith(gameType: gameType, and: nil)
             }
+        } else {
+            cell?.updateCellWith(gameType: gameType, and: nil)
         }
         
         return cell!
@@ -268,7 +297,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
      func loadGameCounts() {
      
      for gameType in self.gameTypes {
-     //            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
+     let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
      let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
      
      let gameQuery = PFQuery(className: "Game")
