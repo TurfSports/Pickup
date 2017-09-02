@@ -13,15 +13,31 @@ import GoogleSignIn
 
 class PlayerContoller {
     
-    var shared = PlayerContoller()
+    static let shared = PlayerContoller()
     var ref = Database.database().reference()
     
     let endUrl = URL.init(string: "https://pickup-a837a.firebaseio.com")
     
     func put(player: Player, success: @escaping (Bool) -> Void) {
-        ref.child("Players").child("\(player.id)").setValue(player)
+        ref.child("Players").child(player.id).setValue(player.jsonDictionary)
         success(true)
         return
+    }
+    
+    func put(createdGames: [Game], or joinedGames: [Game], for player: Player) {
+        if createdGames.count != 0 && joinedGames.count == 0 {
+            ref.child("Players").child(player.id).child("createdGames").setValue(createdGames)
+            return
+        } else if joinedGames.count != 0 && createdGames.count == 0 {
+            ref.child("Players").child(player.id).child("joinedGames").setValue(joinedGames)
+            return
+        } else if joinedGames.count != 0 && createdGames.count != 0 {
+            ref.child("Players").child(player.id).child("createdGames").setValue(createdGames)
+            ref.child("Players").child(player.id).child("joinedGames").setValue(joinedGames)
+            return
+        } else {
+            return
+        }
     }
     
     func put(player: Player, to url: URL?, success: @escaping (Bool) -> Void) {
@@ -54,9 +70,9 @@ class PlayerContoller {
     func getPlayer(completion: @escaping (_ player: Player?) -> Void) {
         ref.child("Players").child("\(currentPlayer.id)").observeSingleEvent(of: .value, with: { (snapShot) in
            
-            guard let jsonObject = snapShot.value as? [String: [String: Any]] else { completion(nil); print("Fuck") ; return }
+            guard let jsonObject = snapShot.value as? [String: Any] else { completion(nil); print("Fuck") ; return }
             
-            guard let user = Player(dictionary: jsonObject) else { completion(nil); print("Could not  create user"); return }
+            guard let user = Player(dictionary: jsonObject) else { completion(nil); print("Could not create user"); return }
             
             currentPlayer = user
         })

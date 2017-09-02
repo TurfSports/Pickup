@@ -18,15 +18,23 @@ class ProfileTableViewController: UITableViewController {
     }
     
     // MARK: - Table view data source
-
-    @IBAction func logOutButtonTapped(_ sender: Any) {
+    
+    func logOut() {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
             facebookLoginManager.logOut()
             GIDSignIn.sharedInstance().signOut()
+            self.performSegue(withIdentifier: "toLoginView", sender: self)
         } catch let signOutError {
             print ("Error signing out: \(signOutError)")
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 0 {
+            logOut()
         }
     }
 }

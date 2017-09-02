@@ -25,12 +25,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         self.navigationController!.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
     }
     
-    // MARK: - Email Login
-    
-    @IBAction func emailLoginButtonTapped(_ sender: Any) {
-        
-    }
-    
     // MARK: - Google Login
     
     @IBAction func googleLoginButtonTapped(_ sender: Any) {
@@ -55,6 +49,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 self.present(self.failedLoginAlertController, animated: true, completion: nil)
                 return
             }
+            
             let notification = Notification(name: Notification.Name(rawValue: "facebookLoggedIn"))
             NotificationCenter.default.post(notification)
 
