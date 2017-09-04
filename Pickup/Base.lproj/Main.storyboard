@@ -1603,8 +1603,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Number Of Games Joined" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="keT-b6-Xxj">
-                                                    <rect key="frame" x="15" y="12" width="198" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Number Of Games Created" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="keT-b6-Xxj">
+                                                    <rect key="frame" x="15" y="12" width="208" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -1627,8 +1627,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Number Of Games Created" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hdr-sk-7O3">
-                                                    <rect key="frame" x="15" y="12" width="208" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Number Of Games Joined" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hdr-sk-7O3">
+                                                    <rect key="frame" x="15" y="12" width="198" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -1654,6 +1654,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="My Profile" id="pXn-zx-xCV"/>
                     <connections>
+                        <outlet property="ageDetailOutlet" destination="4Mj-ey-4lT" id="tyO-LC-NaK"/>
+                        <outlet property="genderDetailOutlet" destination="Abb-4o-BAz" id="Yze-Ti-vJC"/>
+                        <outlet property="nameDetailOutlet" destination="fDr-pG-AZo" id="DbP-gJ-NP7"/>
+                        <outlet property="numberOfGamesCreatedDetailOutlet" destination="oas-WU-9gP" id="FQ0-Xk-n9q"/>
+                        <outlet property="numberOfJoinedCreatedDetailOutlet" destination="iKo-dF-VIR" id="6Mr-0H-F4n"/>
                         <segue destination="12C-BN-fjS" kind="presentation" identifier="toLoginView" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="V7A-TR-pOk"/>
                     </connections>
                 </tableViewController>
