@@ -9,7 +9,9 @@
 import Foundation
 import UIKit
 
-var currentPlayer = Player.init(id: UUID.init().uuidString, firstName: "firstName", lastName: "LastName", userImage: nil, userCreationDate: Date.init(), userImageEndpoint: "nil", createdGames: [], joinedGames: [], age: "age", gender: "Undisclosed", sportsmanship: "nil", skills: [:])
+let kPlayerID = "PlayerID"
+
+var currentPlayer = Player.init(id: "", firstName: "firstName", lastName: "LastName", userImage: nil, userCreationDate: Date.init(), userImageEndpoint: "nil", createdGames: [], joinedGames: [], age: "age", gender: "Undisclosed", sportsmanship: "nil", skills: [:])
 
 class Player {
 
@@ -56,17 +58,27 @@ class Player {
     
     init?(dictionary: [String: Any]) {
         
-        guard let id = dictionary.first?.key,
+        guard var id = dictionary.first?.key,
         let firstName = dictionary[kFirstName] as? String,
         let lastName = dictionary[kLastInitials] as? String,
-        let userImageEndpoint = dictionary[kUserImage] as? String,
-        let joinedGames = dictionary[kJoinedGames] as? [Game],
-        let createdGames = dictionary[kCreatedGames] as? [Game],
-        let userCreationDate = dictionary[kUserCreationDate] as? Date,
+        let userImageEndpoint = dictionary[kUserImageEndPoint] as? String,
+        let userCreationDate = dictionary[kUserCreationDate] as? String,
         let age = dictionary[kAge] as? String,
         let gender = dictionary[kGender] as? String
             
         else { return nil }
+        
+        if let joinedGames = dictionary[kJoinedGames] as? [Game] {
+            self.joinedGames = joinedGames
+        } else {
+            self.joinedGames = []
+        }
+        
+        if let createdGames = dictionary[kCreatedGames] as? [Game] {
+            self.createdGames = createdGames
+        } else {
+            self.createdGames = []
+        }
         
         if let sportsmanship = dictionary[kSportsmanship] as? String {
             self.sportsmanship = sportsmanship
@@ -80,13 +92,16 @@ class Player {
             self.skills = [:]
         }
         
+        if id.characters.last == "1" && id.characters.dropLast().last == "-" {
+            id = "\(id.characters.dropLast(2))"
+        }
+        
         self.id = id
         self.firstName = firstName
         self.lastInitials = lastName
         self.userImageEndpoint = userImageEndpoint
-        self.joinedGames = joinedGames
-        self.createdGames = createdGames
-        self.userCreationDate = userCreationDate
+        let creationDate = DateUtilities.dateFrom(userCreationDate)
+        self.userCreationDate = creationDate
         self.age = age
         self.gender = gender
         if userImageEndpoint != "" {
@@ -100,10 +115,10 @@ class Player {
         return try? JSONSerialization.data(withJSONObject: jsonDictionary, options: .prettyPrinted)
     }
 
-    var jsonDictionary: [String: [String: Any]] {
+    var jsonDictionary: [String: Any] {
         
         let userCreationDateString = String(describing: userCreationDate)
         
-        return [id: [kFirstName: firstName, kLastInitials: lastInitials, kAge: age, kGender: gender, kUserCreationDate: userCreationDateString, kUserImageEndPoint: userImageEndpoint, kJoinedGames: joinedGames, kCreatedGames: createdGames]]
+        return [kFirstName: firstName, kLastInitials: lastInitials, kAge: age, kGender: gender, kUserCreationDate: userCreationDateString, kUserImageEndPoint: userImageEndpoint, kJoinedGames: joinedGames, kCreatedGames: createdGames]
     }
 }

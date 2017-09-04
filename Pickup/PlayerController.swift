@@ -19,21 +19,22 @@ class PlayerContoller {
     let endUrl = URL.init(string: "https://pickup-a837a.firebaseio.com")
     
     func put(player: Player, success: @escaping (Bool) -> Void) {
-        ref.child("Players").child(player.id).setValue(player.jsonDictionary)
+        Auth.auth()
+        ref.child("Players").child(player.id).child(loginProvider).setValue(player.jsonDictionary)
         success(true)
         return
     }
     
     func put(createdGames: [Game], or joinedGames: [Game], for player: Player) {
         if createdGames.count != 0 && joinedGames.count == 0 {
-            ref.child("Players").child(player.id).child("createdGames").setValue(createdGames)
+            ref.child("Players").child(player.id).child(loginProvider).child("createdGames").setValue(createdGames)
             return
         } else if joinedGames.count != 0 && createdGames.count == 0 {
-            ref.child("Players").child(player.id).child("joinedGames").setValue(joinedGames)
+            ref.child("Players").child(player.id).child(loginProvider).child("joinedGames").setValue(joinedGames)
             return
         } else if joinedGames.count != 0 && createdGames.count != 0 {
-            ref.child("Players").child(player.id).child("createdGames").setValue(createdGames)
-            ref.child("Players").child(player.id).child("joinedGames").setValue(joinedGames)
+            ref.child("Players").child(player.id).child(loginProvider).child("createdGames").setValue(createdGames)
+            ref.child("Players").child(player.id).child(loginProvider).child("joinedGames").setValue(joinedGames)
             return
         } else {
             return
@@ -68,7 +69,7 @@ class PlayerContoller {
     }
     
     func getPlayer(completion: @escaping (_ player: Player?) -> Void) {
-        ref.child("Players").child("\(currentPlayer.id)").observeSingleEvent(of: .value, with: { (snapShot) in
+        ref.child("Players").child(currentPlayer.id).child(loginProvider).observeSingleEvent(of: .value, with: { (snapShot) in
            
             guard let jsonObject = snapShot.value as? [String: Any] else { completion(nil); print("Fuck") ; return }
             
