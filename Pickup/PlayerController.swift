@@ -15,26 +15,30 @@ class PlayerContoller {
     
     static let shared = PlayerContoller()
     var ref = Database.database().reference()
+    var playersRef = Database.database().reference().child("Players")
+    var currentLoginProviderRef: DatabaseReference {
+       return playersRef.child(currentPlayer.id).child(loginProvider)
+    }
     
-    let endUrl = URL.init(string: "https://pickup-a837a.firebaseio.com")
+    let refUrl = URL.init(string: "https://pickup-a837a.firebaseio.com")
     
     func put(player: Player, success: @escaping (Bool) -> Void) {
         Auth.auth()
-        ref.child("Players").child(player.id).child(loginProvider).setValue(player.jsonDictionary)
+        currentLoginProviderRef.setValue(player.jsonDictionary)
         success(true)
         return
     }
     
-    func put(createdGames: [Game], or joinedGames: [Game], for player: Player) {
+    func put(createdGames: [Game], or joinedGames: [Game]) {
         if createdGames.count != 0 && joinedGames.count == 0 {
-            ref.child("Players").child(player.id).child(loginProvider).child("createdGames").setValue(createdGames)
+            currentLoginProviderRef.child("createdGames").setValue(createdGames)
             return
         } else if joinedGames.count != 0 && createdGames.count == 0 {
-            ref.child("Players").child(player.id).child(loginProvider).child("joinedGames").setValue(joinedGames)
+            currentLoginProviderRef.child("joinedGames").setValue(joinedGames)
             return
         } else if joinedGames.count != 0 && createdGames.count != 0 {
-            ref.child("Players").child(player.id).child(loginProvider).child("createdGames").setValue(createdGames)
-            ref.child("Players").child(player.id).child(loginProvider).child("joinedGames").setValue(joinedGames)
+            currentLoginProviderRef.child("createdGames").setValue(createdGames)
+            currentLoginProviderRef.child("joinedGames").setValue(joinedGames)
             return
         } else {
             return
@@ -46,12 +50,12 @@ class PlayerContoller {
         let newUrl: URL
         
         if url == nil {
-            newUrl = endUrl!
+            newUrl = refUrl!
         } else {
             newUrl = url!
         }
         
-        let urlWithUUID = newUrl.appendingPathComponent("Players").appendingPathComponent(player.id).appendingPathExtension("json")
+        let urlWithUUID = newUrl.appendingPathComponent("Players").appendingPathComponent(player.id).appendingPathComponent(loginProvider).appendingPathExtension("json")
         
         NetworkController.performRequest(for: urlWithUUID, httpMethod: .put, body: player.jsonData) { (data, error) in
             DispatchQueue.main.async {
@@ -69,7 +73,7 @@ class PlayerContoller {
     }
     
     func getPlayer(completion: @escaping (_ player: Player?) -> Void) {
-        ref.child("Players").child(currentPlayer.id).child(loginProvider).observeSingleEvent(of: .value, with: { (snapShot) in
+        currentLoginProviderRef.observeSingleEvent(of: .value, with: { (snapShot) in
            
             guard let jsonObject = snapShot.value as? [String: Any] else { completion(nil); print("Fuck") ; return }
             
