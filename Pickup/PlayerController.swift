@@ -45,6 +45,10 @@ class PlayerContoller {
         }
     }
     
+    func add(game: Game, to folder: String) {
+        currentLoginProviderRef.child(folder).child(game.id.uuidString).setValue(game.gameDictionary)
+    }
+    
     func put(player: Player, to url: URL?, success: @escaping (Bool) -> Void) {
         
         let newUrl: URL
@@ -77,7 +81,7 @@ class PlayerContoller {
            
             guard let jsonObject = snapShot.value as? [String: Any] else { completion(nil); print("Fuck") ; return }
             
-            guard let user = Player(dictionary: jsonObject) else { completion(nil); print("Could not create user"); return }
+            guard let user = Player(dictionary: jsonObject, and: "") else { completion(nil); print("Could not create user"); return }
             
             currentPlayer = user
         })

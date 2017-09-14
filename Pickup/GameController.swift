@@ -9,8 +9,6 @@
 import Foundation
 import Firebase
 
-let gamesRef = Database.database().reference().child("Games")
-
 class GameController {
     
     static let shared = GameController()
