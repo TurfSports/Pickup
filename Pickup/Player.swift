@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-let kPlayerID = "PlayerID"
-
 var currentPlayer = Player.init(id: "", firstName: "firstName", lastName: "LastName", userImage: nil, userCreationDate: Date.init(), userImageEndpoint: "nil", createdGames: [], joinedGames: [], age: "age", gender: "Undisclosed", sportsmanship: "nil", skills: [:])
 
 class Player {
@@ -56,9 +54,9 @@ class Player {
         self.skills = skills
     }
     
-    init?(dictionary: [String: Any]) {
+    init?(dictionary: [String: Any], and id: String) {
         
-        guard var id = dictionary.first?.key,
+        guard var uid = dictionary[kUID] as? String,
         let firstName = dictionary[kFirstName] as? String,
         let lastName = dictionary[kLastInitials] as? String,
         let userImageEndpoint = dictionary[kUserImageEndPoint] as? String,
@@ -92,11 +90,15 @@ class Player {
             self.skills = [:]
         }
         
-        if id.characters.last == "1" && id.characters.dropLast().last == "-" {
-            id = "\(id.characters.dropLast(2))"
+        if id == "" && uid == "" {
+            if let loadedUID = UserDefaults.standard.string(forKey: kUID) {
+                uid = loadedUID
+            } else {
+                uid = UUID.init().uuidString
+            }
         }
         
-        self.id = id
+        self.id = uid
         self.firstName = firstName
         self.lastInitials = lastName
         self.userImageEndpoint = userImageEndpoint
@@ -119,6 +121,6 @@ class Player {
         
         let userCreationDateString = String(describing: userCreationDate)
         
-        return [kFirstName: firstName, kLastInitials: lastInitials, kAge: age, kGender: gender, kUserCreationDate: userCreationDateString, kUserImageEndPoint: userImageEndpoint, kJoinedGames: joinedGames, kCreatedGames: createdGames]
+        return [kFirstName: firstName, kUID: id, kLastInitials: lastInitials, kAge: age, kGender: gender, kUserCreationDate: userCreationDateString, kUserImageEndPoint: userImageEndpoint, kJoinedGames: joinedGames, kCreatedGames: createdGames]
     }
 }
