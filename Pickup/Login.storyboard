@@ -86,6 +86,7 @@
                     <connections>
                         <outlet property="facebookLoginButton" destination="0RZ-u9-dyu" id="361-A0-hfL"/>
                         <outlet property="googleLoginButton" destination="Nt1-ec-dgT" id="ZCL-6z-fv7"/>
+                        <segue destination="Ay5-cT-XK2" kind="show" identifier="toQuestionsFromFacebookOrGoogle" id="EoI-DY-dN4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gs1-8X-6cm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -426,4 +427,7 @@
         <image name="fbLogin" width="416" height="101"/>
         <image name="gLogin" width="499" height="98"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="EoI-DY-dN4"/>
+    </inferredMetricsTieBreakers>
 </document>

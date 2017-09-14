@@ -34,9 +34,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     }
     
     func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
-        
-        viewController.dismiss(animated: true, completion: nil)
-        self.dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: "toQuestionsFromFacebookOrGoogle", sender: self)
     }
     
     // MARK: - Facebook Login
@@ -53,7 +51,21 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
             let notification = Notification(name: Notification.Name(rawValue: "facebookLoggedIn"))
             NotificationCenter.default.post(notification)
 
-            self.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "toQuestionsFromFacebookOrGoogle", sender: self)
+        }
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toQuestionsFromFacebookOrGoogle" {
+            guard let destinationVC = segue.destination as? QuestionsTableViewController else { return }
+            destinationVC.age = Int(currentPlayer.age)
+            destinationVC.image = currentPlayer.userImage
+            destinationVC.firstName = currentPlayer.firstName
+            destinationVC.lastName = currentPlayer.lastInitials
+            destinationVC.gender = currentPlayer.gender
+            destinationVC.needsEmailAndPassword = false
         }
     }
 }
