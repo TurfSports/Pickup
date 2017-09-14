@@ -76,7 +76,6 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     }
     
     func save(game: Game, completion: @escaping (Bool) -> Void) {
-        
         GameController.shared.put(game: game, with: game.id, success: { (success) in
             completion(success)
             if success == false {
@@ -84,6 +83,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 let alertController: UIAlertController = UIAlertController.init(title: "Error saving your game. Please try again.", message: "Ok", preferredStyle: .alert)
                 self.present(alertController, animated: true, completion: nil)
             } else {
+                PlayerContoller.shared.add(game: game, to: "createdGames")
                 self.dismiss(animated: true, completion: nil)
             }
         })

@@ -15,7 +15,7 @@ import FBSDKLoginKit
 
 let kLoginProvider = "loginProvider"
 let kHasLogedInBefore = "firstTimeLogin"
-let kUID = "UID"
+let kUID = "ID"
 var loginProvider = ""
 var hasLogedInBefore: Bool = false
 let facebookLoggedInNotificationName = Notification.Name(rawValue: "facebookLoggedIn")
@@ -34,11 +34,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         }
     }
     
+    func addGamesToGameArrays() {
+        DispatchQueue.main.async {
+            let gamesCreated: [Game] = loadedGames.filter({ $0.ownerId == currentPlayer.id })
+            currentPlayer.createdGames = gamesCreated
+            self.putLoadedPlayerToFirebase()
+        }
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         NotificationCenter.default.addObserver(self, selector: #selector(authFacebook), name: facebookLoggedInNotificationName, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(putLoadedPlayerToFirebase), name: facebookInformationLoadedNotificationName, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(addGamesToGameArrays), name: gamesLoadedNotificationName, object: nil)
         
         // Sign in
         
@@ -51,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         FirebaseApp.configure()
         
         if hasLogedInBefore {
-            if let playerID = UserDefaults.standard.string(forKey: kPlayerID) {
+            if let playerID = UserDefaults.standard.string(forKey: kUID) {
                 currentPlayer.id = playerID
             }
         }
@@ -185,6 +195,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func putLoadedPlayerToFirebase() {
         PlayerContoller.shared.put(player: currentPlayer, success: { (success) in
             if success {
+                hasLogedInBefore = !hasLogedInBefore
+                self.saveFirstTimeLogin(firstTimeLogin: hasLogedInBefore)
                 print("Saved player to firebase")
             }
         })
@@ -225,17 +237,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func authFacebook() {
         let facebookAccessToken = FBSDKAccessToken.current()
         
-        if !hasLogedInBefore {
-            requestFacebookInformation()
-            hasLogedInBefore = !hasLogedInBefore
-            saveFirstTimeLogin(firstTimeLogin: hasLogedInBefore)
-        } else {
-            PlayerContoller.shared.getPlayer(completion: { (player) in
-                if let unwrapedPlayer = player {
-                    currentPlayer = unwrapedPlayer
-                }
-            })
-        }
+        facebookHasLoggedInBefore()
         
         guard facebookAccessToken != nil else { print("User needs to login"); return }
         let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
@@ -260,8 +262,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func facebookHasLoggedInBefore() {
         if !hasLogedInBefore {
             requestFacebookInformation()
-            hasLogedInBefore = !hasLogedInBefore
-            saveFirstTimeLogin(firstTimeLogin: hasLogedInBefore)
         } else {
             PlayerContoller.shared.getPlayer(completion: { (player) in
                 if let unwrapedPlayer = player {
@@ -289,6 +289,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             } else {
                 currentPlayer.lastInitials = lastName + "."
             }
+            self.putLoadedPlayerToFirebase()
             NotificationCenter.default.post(name: facebookInformationLoadedNotificationName, object: nil)
         })
         
@@ -332,18 +333,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                     if self.uID == "" {
                         self.uID = id
                     }
+                    if !hasLogedInBefore {
+                        self.requestGoogleInformation()
+                    } else {
+                        PlayerContoller.shared.getPlayer(completion: { (player) in
+                            DispatchQueue.main.async {
+                                guard let player = player else { return  }
+                                currentPlayer = player
+                            }
+                        })
+                    }
                 }
             }
-        }
-        if !hasLogedInBefore {
-            requestGoogleInformation()
-            hasLogedInBefore = !hasLogedInBefore
-            saveFirstTimeLogin(firstTimeLogin: hasLogedInBefore)
-        } else {
-            PlayerContoller.shared.getPlayer(completion: { (player) in
-                guard let player = player else { return  }
-                currentPlayer = player
-            })
         }
     }
     
@@ -358,9 +359,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             return fullNameArr[0].characters.count > 1 ? fullNameArr[0] : nil
         }
         
-        var lastName: String? {
+        var lastInitials: String? {
             guard let fullNameArr = fullNameArr else { return nil }
-            return fullNameArr[1].characters.count > 1 ? fullNameArr[1] : nil
+            guard let lastName = fullNameArr[1].characters.count > 1 ? fullNameArr[1] : nil else { return nil }
+            var lastInitials: String
+            let charCount = lastName.characters.count
+            if charCount >= 3 {
+                lastInitials = String.init(lastName.characters.dropLast(charCount - 2)) + "."
+            } else {
+                lastInitials = lastName + "."
+            }
+            return lastInitials
         }
         
         var photoUrlString: String {
@@ -377,7 +386,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             uID = currentUser.uid
         }
         
-        let player = Player.init(id: uID, firstName: firstName ?? "FirstName", lastName: lastName ?? "LastName", userImage: nil, userCreationDate: Date.init(), userImageEndpoint: photoUrlString, createdGames: [], joinedGames: [], age: "", gender: "undisclosed", sportsmanship: "", skills: [:])
+        let player = Player.init(id: uID, firstName: firstName ?? "FirstName", lastName: lastInitials ?? "LastName", userImage: nil, userCreationDate: Date.init(), userImageEndpoint: photoUrlString, createdGames: [], joinedGames: [], age: "", gender: "undisclosed", sportsmanship: "", skills: [:])
         currentPlayer = player
         putLoadedPlayerToFirebase()
     }
