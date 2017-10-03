@@ -16,7 +16,8 @@ class PlayerContoller {
     static let shared = PlayerContoller()
     var ref = Database.database().reference()
     var playersRef = Database.database().reference().child("Players")
-    var currentLoginProviderRef: DatabaseReference {
+    var currentLoginProviderRef: DatabaseReference? {
+        guard currentPlayer.id != "" else { return nil }
        return playersRef.child(currentPlayer.id).child(loginProvider)
     }
     
@@ -24,12 +25,14 @@ class PlayerContoller {
     
     func put(player: Player, success: @escaping (Bool) -> Void) {
         Auth.auth()
+        guard let currentLoginProviderRef = currentLoginProviderRef else { success(false); return }
         currentLoginProviderRef.setValue(player.jsonDictionary)
         success(true)
         return
     }
     
     func put(createdGames: [Game], or joinedGames: [Game]) {
+        guard let currentLoginProviderRef = currentLoginProviderRef else { return }
         if createdGames.count != 0 && joinedGames.count == 0 {
             currentLoginProviderRef.child("createdGames").setValue(createdGames)
             return
@@ -46,6 +49,7 @@ class PlayerContoller {
     }
     
     func add(game: Game, to folder: String) {
+        guard let currentLoginProviderRef = currentLoginProviderRef else { return }
         currentLoginProviderRef.child(folder).child(game.id.uuidString).setValue(game.gameDictionary)
     }
     
@@ -77,6 +81,7 @@ class PlayerContoller {
     }
     
     func getPlayer(completion: @escaping (_ player: Player?) -> Void) {
+        guard let currentLoginProviderRef = currentLoginProviderRef else { completion(nil); return }
         currentLoginProviderRef.observeSingleEvent(of: .value, with: { (snapShot) in
            
             guard let jsonObject = snapShot.value as? [String: Any] else { completion(nil); print("Fuck") ; return }
