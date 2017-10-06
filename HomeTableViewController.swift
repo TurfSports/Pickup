@@ -79,12 +79,12 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
         }
     }
     
-    func reloadDataAndEndRefresher() {
+    @objc func reloadDataAndEndRefresher() {
         self.tableView.reloadData()
         self.refreshControl?.endRefreshing()
     }
     
-    func switchGameCountLoaded() {
+    @objc func switchGameCountLoaded() {
         changeGameCount(byAdding: loadedGames)
     }
     
@@ -430,7 +430,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
         
     }
     
-    func textChanged(_ sender:AnyObject) {
+    @objc func textChanged(_ sender:AnyObject) {
         let textField = sender as! UITextField
         var responder: UIResponder = textField
         while !(responder is UIAlertController) { responder = responder.next! }

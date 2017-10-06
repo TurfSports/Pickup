@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         }
     }
     
-    func addGamesToGameArrays() {
+    @objc func addGamesToGameArrays() {
         DispatchQueue.main.async {
             let gamesCreated: [Game] = loadedGames.filter({ $0.ownerId == currentPlayer.id })
             currentPlayer.createdGames = gamesCreated
@@ -192,7 +192,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         UserDefaults.standard.set(uid, forKey: kUID)
     }
     
-    func putLoadedPlayerToFirebase() {
+    @objc func putLoadedPlayerToFirebase() {
         PlayerContoller.shared.put(player: currentPlayer, success: { (success) in
             if success {
                 hasLogedInBefore = !hasLogedInBefore
@@ -234,7 +234,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
     
     
-    func authFacebook() {
+    @objc func authFacebook() {
         let facebookAccessToken = FBSDKAccessToken.current()
         
         facebookHasLoggedInBefore()

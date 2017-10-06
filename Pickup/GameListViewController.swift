@@ -75,7 +75,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
     }
     
-    func loadGames() {
+    @objc func loadGames() {
         GameController.shared.loadGames(of: selectedGameType!) { (games) in
             DispatchQueue.main.async {
                 self.games = games
@@ -161,7 +161,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         return sectionTitle
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sortedGames.count
     }
     
@@ -183,7 +183,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     //MARK: - Table View Data Source
     
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> GameTableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> GameTableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GameTableViewCell
         
