@@ -37,6 +37,7 @@ class EmailLoginViewController: UIViewController {
             })
             return
         }
+        
         guard let email = emailTextView.text, email != "", email.characters.last == "m" || email.characters.last == "t" else { self.presentAlertController(with: "Please check that you have entered a valid email and retry", and: []); return }
         guard let password = passwordTextView.text, password != "" else { return }
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in

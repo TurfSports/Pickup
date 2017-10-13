@@ -16,7 +16,7 @@ import FirebaseAuth
 var loadedGameTypes: [GameType] = []
 var facebookLoginManager = FBSDKLoginManager.init()
 
-class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocationManagerDelegate {
+class HomeTableViewController: UITableViewController, DismissalDelegate {
     
     let SEGUE_SHOW_GAMES = "showGamesTableViewController"
     let SEGUE_SHOW_NEW_GAME = "showNewGameTableViewController"
@@ -24,7 +24,6 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
     let SEGUE_SHOW_GAME_DETAILS = "showGameDetailsViewController"
     
     var newGame: Game!
-    var gameTypes:[GameType] = []
     var gameCountLoaded:Bool = false {
         didSet {
             self.tableView.reloadData()
@@ -37,7 +36,29 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         }
     }
     
+    var imagesTriedToLoad: Bool = false
+    var imagesLoaded: Bool = false
+    var images: [String: UIImage] = [:] {
+        didSet {
+            if images.count == loadedGameTypes.count {
+                imagesLoaded = true
+            }
+            self.tableView.reloadData()
+        }
+    }
     
+    var gameTypesDictionary: [String: GameType] {
+        
+        guard loadedGameTypes.count != 0 else { return [:] }
+        
+        var gameTypes: [String: GameType] = [:]
+        
+        for gameType in loadedGameTypes {
+            gameTypes[gameType.name] = gameType
+        }
+        
+        return gameTypes
+    }
     
     @IBOutlet weak var refresher: UIRefreshControl!
     @IBOutlet weak var addNewGameButton: UIBarButtonItem!
@@ -50,15 +71,42 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         return activityIndicator
     }()
     
-    func loadGameTypes() {
-        GameTypeController.shared.loadGameTypes { (gameTypes) in
-            self.gameTypes = gameTypes
+    func loadCellImages(dictionary: @escaping ([String: UIImage]) -> Void) {
+        FirebaseController.shared.getGameTypeImages { (imageDictionary) in
+            DispatchQueue.main.async {
+                dictionary(imageDictionary)
+            }
         }
-        refreshControl?.endRefreshing()
+    }
+    
+    @objc func reloadDataAndEndRefresher() {
+        self.tableView.reloadData()
+        self.refreshControl?.endRefreshing()
+    }
+    
+    @objc func switchGameCountLoaded() {
+        changeGameCount(byAdding: loadedGames)
+    }
+    
+    func changeGameCount(byAdding games: [Game]) {
+        DispatchQueue.main.async {
+            
+            guard loadedGameTypes.count != 0, games.count != 0 else { return }
+            
+            for game in games {
+                self.gameTypesDictionary[game.gameType.name]?.gameCount += 1
+            }
+            
+            self.gameCountLoaded = !self.gameCountLoaded
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(switchGameCountLoaded), name: gamesLoadedNotificationName, object: nil)
+        
+        self.refreshControl?.addTarget(self, action: #selector(reloadDataAndEndRefresher), for: .valueChanged)
         
         let facebookAccessToken = FBSDKAccessToken.current()
         
@@ -70,9 +118,21 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
             }
         }
         
-        loadGameTypes()
-        
-        OverallLocation.manager.delegate = self
+        GameTypeController.shared.loadGameTypes { (gameTypes) in
+            DispatchQueue.main.async {
+                self.switchGameCountLoaded()
+                loadedGameTypes = gameTypes
+                self.loadCellImages { (imageDictionary) in
+                    DispatchQueue.main.async {
+                        self.images = imageDictionary
+                        self.refresher.endRefreshing()
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.hidesWhenStopped = true
+                        self.refresher.isHidden = true
+                    }
+                }
+            }
+        }
         
         ////      iOS 9.2
         //      NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadGameFromParseWithSegue:", name: "com.pickup.loadGameFromNotificationWithSegue", object: nil)
@@ -94,21 +154,9 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
         
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) == ComparisonResult.orderedAscending {
-            GameTypeController.shared.loadGameTypes() { (gameTypeArray) in
-                self.gameTypes = gameTypeArray
-                loadedGameTypes = gameTypeArray
-                self.tableView.reloadData()
-            }
+            
         } else {
             loadGameTypesFromUserDefaults()
-        }
-        
-        FirebaseController.shared.getGameTypeImages { (gotImages) in
-            if gotImages {
-                print("Got images")
-            } else {
-                
-            }
         }
         
         addNewGameButton.tintColor = Theme.ACCENT_COLOR
@@ -129,7 +177,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
     
     override func viewDidAppear(_ animated: Bool) {
         if currentLocation != nil {
-            //            loadGameCounts()
+            
         }
     }
     
@@ -140,32 +188,26 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return gameTypes.count
+        return loadedGameTypes.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> HomeTableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? HomeTableViewCell
         
-        let gameType = gameTypes[(indexPath as NSIndexPath).row]
+        let gameType = loadedGameTypes[indexPath.row]
+        let gameTypeImageName = gameType.imageName
+        cell?.gameTypeImagesLoaded = imagesLoaded
+        cell?.gameCountLoaded = gameCountLoaded
         
-        if UIImage(named: gameType.imageName) == nil {
-            var imageName = gameType.imageName.lowercased()
-            let chars = imageName.characters
-            let realChars = chars.dropLast(4)
-            gameType.imageName = String.init(realChars) + "Icon"
-        }
-        
-        cell?.lblSport.text = gameType.displayName
-        cell?.imgSport.image = UIImage(named: gameType.imageName)
-        
-        if self.gameCountLoaded {
-            if gameType.gameCount > 0 {
-                cell?.lblAvailableGames.text = "\(gameType.gameCount) games"
+        if imagesLoaded && images.count == loadedGameTypes.count {
+            if let image = images[gameType.imageName] {
+                print("Successfully passed \(gameTypeImageName) to cell at row \(indexPath.row)")
+                cell?.updateCellWith(gameType: gameType, and: image)
             } else {
-                cell?.lblAvailableGames.text = "No games"
+                cell?.updateCellWith(gameType: gameType, and: nil)
             }
         } else {
-            cell?.lblAvailableGames.text = ""
+            cell?.updateCellWith(gameType: gameType, and: nil)
         }
         
         return cell!
@@ -205,7 +247,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
             
             for gameType in gameTypeArray {
                 guard let castedGameType = GameType(dictionary: gameType as! [String: Any]) else { continue }
-                self.gameTypes.append(castedGameType)
+                loadedGameTypes.append(castedGameType)
             }
         }
         
@@ -215,7 +257,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         
         var gameTypeArray: [GameType] = []
         
-        for gameType in self.gameTypes {
+        for gameType in loadedGameTypes {
             gameTypeArray.append(gameType)
         }
         
@@ -255,7 +297,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
      func loadGameCounts() {
      
      for gameType in self.gameTypes {
-     //            let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
+     let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
      let gameTypeObject = PFObject(withoutDataWithClassName: "GameType", objectId: gameType.id)
      
      let gameQuery = PFQuery(className: "Game")
@@ -359,28 +401,6 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         self.present(alertController, animated: true, completion: nil)
     }
     
-    //MARK: - Location Manager Delegate
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        let location: CLLocationCoordinate2D = manager.location!.coordinate
-        print(location)
-        currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        
-        if currentLocation != nil {
-            manager.stopUpdatingLocation()
-        }
-        
-        self.tableView.reloadData()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        
-        if (!CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .authorizedWhenInUse) && Settings.shared.defaultLocation == "none" {
-            getZipCodeFromUserWithAlert()
-        }
-        
-    }
     
     func getZipCodeFromUserWithAlert() {
         
@@ -410,7 +430,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         
     }
     
-    func textChanged(_ sender:AnyObject) {
+    @objc func textChanged(_ sender:AnyObject) {
         let textField = sender as! UITextField
         var responder: UIResponder = textField
         while !(responder is UIAlertController) { responder = responder.next! }
@@ -460,8 +480,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         OverallLocation.manager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
-            OverallLocation.manager.delegate = self
-            OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             OverallLocation.manager.startUpdatingLocation()
         }
     }
@@ -487,18 +506,18 @@ class HomeTableViewController: UITableViewController, DismissalDelegate, CLLocat
         if segue.identifier == SEGUE_SHOW_GAMES {
             let gamesViewController = segue.destination as! GameListViewController
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                gamesViewController.selectedGameType = gameTypes[indexPath.row]
-                gamesViewController.gameTypes = self.gameTypes
+                gamesViewController.selectedGameType = loadedGameTypes[indexPath.row]
+                gamesViewController.gameTypes = loadedGameTypes
             }
             gamesViewController.navigationItem.leftItemsSupplementBackButton = true
         } else if segue.identifier == SEGUE_SHOW_NEW_GAME {
             let navigationController = segue.destination as! UINavigationController
             let newGameTableViewController = navigationController.viewControllers.first as! NewGameTableViewController
             newGameTableViewController.dismissalDelegate = self
-            newGameTableViewController.gameTypes = self.gameTypes
+            newGameTableViewController.gameTypes = loadedGameTypes
         } else if segue.identifier == SEGUE_SHOW_MY_GAMES {
             let myGamesViewController = segue.destination as! MyGamesViewController
-            myGamesViewController.gameTypes = self.gameTypes
+            myGamesViewController.gameTypes = loadedGameTypes
         } else if segue.identifier == SEGUE_SHOW_GAME_DETAILS {
             let gameDetailsViewController = segue.destination as! GameDetailsViewController
             

@@ -18,12 +18,16 @@ struct DateUtilities {
         return dayTimePeriodFormatter.string(from: date)
     }
     
-    static func dateFrom(_ string: String, dateFormat: String) -> Date {
+    static func dateFrom(_ string: String, dateFormat: String = "") -> Date {
         
         let dayTimePeriodFormatter = Foundation.DateFormatter()
-        dayTimePeriodFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        if dateFormat == "" {
+            dayTimePeriodFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        } else {
+            dayTimePeriodFormatter.dateFormat = dateFormat
+        }
         
-        let date = dayTimePeriodFormatter.date(from: string)!
+        guard let date = dayTimePeriodFormatter.date(from: string) else { return Date() }
         
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month, .day, .hour], from: date)

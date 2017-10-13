@@ -79,7 +79,7 @@ class Game {
         self.gameType = gameType
         self.totalSlots = totalSlots
         self.availableSlots = availableSlots
-        self.eventDate = DateUtilities.dateFrom(eventDate, dateFormat: DateFormatter.MONTH_DAY_YEAR.rawValue)
+        self.eventDate = DateUtilities.dateFrom(eventDate, dateFormat: "")
         self.locationName = locationName
         self.ownerId = ownerId
         self.gameNotes = gameNotes

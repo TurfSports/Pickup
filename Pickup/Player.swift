@@ -9,29 +9,25 @@
 import Foundation
 import UIKit
 
-var currentPlayer = Player.init(id: UUID.init().uuidString, email: "", firstName: "firstName", lastName: "LastName", userImage: nil, userCreationDate: Date.init(), userImageEndpoint: "nil", createdGames: [], joinedGames: [], age: "age", gender: "Undisclosed", sportsmanship: "nil", skills: [:])
+var currentPlayer = Player.init(id: "", firstName: "firstName", lastName: "LastName", userImage: nil, userCreationDate: Date.init(), userImageEndpoint: "nil", createdGames: [], joinedGames: [], age: "age", gender: "Undisclosed", sportsmanship: "nil", skills: [:])
 
 class Player {
 
-    private let kEmail = "Email"
-    private let kFirstName = "FirstName"
-    private let kLastName = "LastName"
-    private let kJoinedGames = "UserJoinedGames"
-    private let kUserImage = "UserImage"
-    private let kUserImageEndPoint = "UserImageEndpoint"
-    private let kAge = "Age"
-    private let kGender = "Gender"
-    private let kSportsmanship = "Sportsmanship"
-    private let kSkills = "Skills"
-    private let kUserCreationDate = "UserCreationDate"
-    private let kCreatedGames = "CreatedGames"
-    private let kPassword = "Password"
+    private let kFirstName = "firstName"
+    private let kLastInitials = "lastName"
+    private let kJoinedGames = "userJoinedGames"
+    private let kUserImage = "userImage"
+    private let kUserImageEndPoint = "userImageEndpoint"
+    private let kAge = "age"
+    private let kGender = "gender"
+    private let kSportsmanship = "sportsmanship"
+    private let kSkills = "skills"
+    private let kUserCreationDate = "creationDate"
+    private let kCreatedGames = "createdGames"
     
     var id: String
-    var email: String
-    var password: String
     var firstName: String
-    var lastName: String
+    var lastInitials: String
     var userImage: UIImage?
     var userImageEndpoint: String
     var createdGames: [Game]
@@ -42,11 +38,11 @@ class Player {
     var sportsmanship: String
     var skills: [String: Any]
     
-    init(id: String, email: String, password: String = "", firstName: String, lastName: String, userImage: UIImage?, userCreationDate: Date, userImageEndpoint: String, createdGames: [Game], joinedGames: [Game], age: String, gender: String, sportsmanship: String, skills: [String: Any]) {
+    init(id: String, firstName: String, lastName: String, userImage: UIImage?, userCreationDate: Date, userImageEndpoint: String, createdGames: [Game], joinedGames: [Game], age: String, gender: String, sportsmanship: String, skills: [String: Any]) {
         
         self.id = id
         self.firstName = firstName
-        self.lastName = lastName
+        self.lastInitials = lastName
         self.userImage = userImage
         self.userImageEndpoint = userImageEndpoint
         self.createdGames = createdGames
@@ -56,43 +52,75 @@ class Player {
         self.gender = gender
         self.sportsmanship = sportsmanship
         self.skills = skills
-        self.email = email
-        self.password = password
     }
     
-    init?(dictionary: [String: Any]) {
+    init?(dictionary: [String: Any], and id: String) {
         
-        guard let id = dictionary.first?.key,
-        let email = dictionary[kEmail] as? String,
-        let password = dictionary[kPassword] as? String,
+        guard var uid = dictionary[kUID] as? String,
         let firstName = dictionary[kFirstName] as? String,
-        let lastName = dictionary[kLastName] as? String,
-        let userImageEndpoint = dictionary[kUserImage] as? String,
-        let joinedGames = dictionary[kJoinedGames] as? [Game],
-        let createdGames = dictionary[kCreatedGames] as? [Game],
-        let userCreationDate = dictionary[kUserCreationDate] as? Date,
+        let lastName = dictionary[kLastInitials] as? String,
+        let userImageEndpoint = dictionary[kUserImageEndPoint] as? String,
+        let userCreationDate = dictionary[kUserCreationDate] as? String,
         let age = dictionary[kAge] as? String,
-        let gender = dictionary[kGender] as? String,
-        let sportsmanship = dictionary[kSportsmanship] as? String,
-        let skills = dictionary[kSkills] as? [String: Any]
+        let gender = dictionary[kGender] as? String
             
         else { return nil }
         
-        self.id = id
-        self.email = email
+        if let joinedGames = dictionary[kJoinedGames] as? [Game] {
+            self.joinedGames = joinedGames
+        } else {
+            self.joinedGames = []
+        }
+        
+        if let createdGames = dictionary[kCreatedGames] as? [Game] {
+            self.createdGames = createdGames
+        } else {
+            self.createdGames = []
+        }
+        
+        if let sportsmanship = dictionary[kSportsmanship] as? String {
+            self.sportsmanship = sportsmanship
+        } else {
+            self.sportsmanship = ""
+        }
+        
+        if let skills = dictionary[kSkills] as? [String: Any] {
+            self.skills = skills
+        } else {
+            self.skills = [:]
+        }
+        
+        if id == "" && uid == "" {
+            if let loadedUID = UserDefaults.standard.string(forKey: kUID) {
+                uid = loadedUID
+            } else {
+                uid = UUID.init().uuidString
+            }
+        }
+        
+        self.id = uid
         self.firstName = firstName
-        self.lastName = lastName
+        self.lastInitials = lastName
         self.userImageEndpoint = userImageEndpoint
-        self.joinedGames = joinedGames
-        self.createdGames = createdGames
-        self.userCreationDate = userCreationDate
+        let creationDate = DateUtilities.dateFrom(userCreationDate)
+        self.userCreationDate = creationDate
         self.age = age
         self.gender = gender
-        self.sportsmanship = sportsmanship
-        self.skills = skills
-        self.password = password
-        ImageController.imageForURL(url: userImageEndpoint) { (image) in
-            self.userImage = image
+        if userImageEndpoint != "" {
+            ImageController.imageForURL(url: userImageEndpoint) { (image) in
+                self.userImage = image
+            }
         }
+    }
+    
+    var jsonData: Data? {
+        return try? JSONSerialization.data(withJSONObject: jsonDictionary, options: .prettyPrinted)
+    }
+
+    var jsonDictionary: [String: Any] {
+        
+        let userCreationDateString = String(describing: userCreationDate)
+        
+        return [kFirstName: firstName, kUID: id, kLastInitials: lastInitials, kAge: age, kGender: gender, kUserCreationDate: userCreationDateString, kUserImageEndPoint: userImageEndpoint, kJoinedGames: joinedGames, kCreatedGames: createdGames]
     }
 }
