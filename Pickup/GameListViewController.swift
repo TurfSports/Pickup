@@ -54,7 +54,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        OverallLocation.manager.delegate = self
+//        OverallLocation.manager.delegate = self
         
         activityIndicator.startAnimating()
         self.activityIndicator.isHidden = false
@@ -75,8 +75,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
     }
     
-    func loadGames() {
-        GameController.shared.loadGames { (games) in
+    @objc func loadGames() {
+        GameController.shared.loadGames(of: selectedGameType!) { (games) in
             DispatchQueue.main.async {
                 self.games = games
                 loadedGames = games
@@ -102,29 +102,33 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             sortedGames = sortedGames.filter { $0.ownerId != currentPlayer.id }
         }
         
-        OverallLocation.manager.requestLocation()
-        currentLocation = OverallLocation.manager.location
-        
-        if Settings.shared.distanceUnit == DistanceUnit.KILOMETERS.rawValue {
-            
-            guard currentLocation != nil else { self.sortedGames = sortedGames; return }
-            let gameDistance = Double(Settings.shared.gameDistance)
-            let filteredGamesByDistance = sortedGames.filter { $0.latitude.distance(to: (currentLocation?.coordinate.latitude)!) <= gameDistance * 1.60934 && $0.longitude.distance(to: (currentLocation?.coordinate.longitude)!) <= gameDistance * 1.60934 }
-            sortedGames = filteredGamesByDistance
-            
-        } else {
-            
-            let gameDistance = Double(Settings.shared.gameDistance)
-            guard currentLocation != nil else { self.sortedGames = sortedGames; return }
-            let filteredGamesByDistance = sortedGames.filter { $0.latitude.distance(to: (currentLocation?.coordinate.latitude)!) <= gameDistance && $0.longitude.distance(to: (currentLocation?.coordinate.longitude)!) <= gameDistance }
-            sortedGames = filteredGamesByDistance
-         }
+//        OverallLocation.manager.requestLocation()
+//        currentLocation = OverallLocation.manager.location
+//        
+//        if Settings.shared.distanceUnit == DistanceUnit.KILOMETERS.rawValue {
+//            
+//            guard currentLocation != nil else { self.sortedGames = sortedGames; return }
+//            let gameDistance = Double(Settings.shared.gameDistance)
+//            let filteredGamesByDistance = sortedGames.filter { $0.latitude.distance(to: (currentLocation?.coordinate.latitude)!) <= gameDistance * 1.60934 && $0.longitude.distance(to: (currentLocation?.coordinate.longitude)!) <= gameDistance * 1.60934 }
+//            sortedGames = filteredGamesByDistance
+//            
+//        } else {
+//            
+//            let gameDistance = Double(Settings.shared.gameDistance)
+//            guard currentLocation != nil else { self.sortedGames = sortedGames; return }
+//            let filteredGamesByDistance = sortedGames.filter { $0.latitude.distance(to: (currentLocation?.coordinate.latitude)!) <= gameDistance && $0.longitude.distance(to: (currentLocation?.coordinate.longitude)!) <= gameDistance }
+//            sortedGames = filteredGamesByDistance
+//         }
 
         self.sortedGames = sortedGames
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.sort(nil)
+        if let gameType = selectedGameType {
+            GameController.shared.loadGames(of: gameType) { (games) in
+                self.sort(games)
+            }
+        }
         self.blurScreenIfNeeded()
         self.tableGameList.reloadData()
     }
@@ -157,7 +161,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         return sectionTitle
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sortedGames.count
     }
     
@@ -179,7 +183,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     //MARK: - Table View Data Source
     
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> GameTableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> GameTableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GameTableViewCell
         
@@ -307,14 +311,15 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     //TODO: Abstract location methods into their own class
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        let location:CLLocationCoordinate2D = manager.location!.coordinate
-        currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        guard let location = manager.location else { manager.stopUpdatingLocation(); return }
+        let locationCordinate: CLLocationCoordinate2D = location.coordinate
         
-        if currentLocation != nil {
-            manager.stopUpdatingLocation()
+        manager.stopUpdatingLocation()
+        guard currentLocation != nil else { currentLocation = location; self.tableGameList.reloadData();return }
+        if getDistanceBetweenLocations(location, location2: currentLocation!) >= CLLocationDistance.init(500) {
+            currentLocation = CLLocation(latitude: locationCordinate.latitude, longitude: locationCordinate.longitude)
+            tableGameList.reloadData()
         }
-        
-        tableGameList.reloadData()
     }
     
     func setUsersCurrentLocation() {

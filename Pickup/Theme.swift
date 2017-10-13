@@ -27,7 +27,7 @@ struct Theme {
         sharedApplication.delegate?.window??.tintColor = PRIMARY_DARK_COLOR
         UINavigationBar.appearance().barTintColor = PRIMARY_DARK_NAV_COLOR
         UINavigationBar.appearance().isTranslucent = true
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
     }
 
     static func applyThemeToCell(_ cell: HomeTableViewCell) {
