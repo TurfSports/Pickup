@@ -111,7 +111,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     //MARK: - Joining/Leaving game
     
     fileprivate func joinGame() {
-        self.addGameToUserDefaults()
+        
         self.game.availableSlots += -1
         self.game.userJoined = !self.game.userJoined
         self.userStatus = .user_JOINED
@@ -126,7 +126,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     fileprivate func leaveGame() {
         // remove User from game
         
-        self.removeGameFromUserDefaults()
+        
         self.game.userJoined = !self.game.userJoined
         self.game.availableSlots += 1
         self.userStatus = .user_NOT_JOINED
@@ -162,29 +162,29 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     
     //MARK: - User Defaults
     
-    fileprivate func addGameToUserDefaults() {
-        
-        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
-            let gameIdArray = joinedGames.mutableCopy()
-            (gameIdArray as AnyObject).add(game.id)
-            UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
-        } else {
-            var gameIdArray: [String] = []
-            gameIdArray.append(game.id.uuidString)
-            UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
-        }
-        
-    }
-    
-    fileprivate func removeGameFromUserDefaults() {
-        
-        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
-            let gameIdArray = joinedGames.mutableCopy()
-            (gameIdArray as AnyObject).remove(game.id)
-            UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
-        }
-        
-    }
+//    fileprivate func addGameToUserDefaults() {
+//
+//        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
+//            let gameIdArray = joinedGames.mutableCopy()
+//            (gameIdArray as AnyObject).add(game.id)
+//            UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
+//        } else {
+//            var gameIdArray: [String] = []
+//            gameIdArray.append(game.id.uuidString)
+//            UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
+//        }
+//
+//    }
+//
+//    fileprivate func removeGameFromUserDefaults() {
+//
+//        if let joinedGames = UserDefaults.standard.object(forKey: "userJoinedGamesById") as? NSArray {
+//            let gameIdArray = joinedGames.mutableCopy()
+//            (gameIdArray as AnyObject).remove(game.id)
+//            UserDefaults.standard.set(gameIdArray, forKey: "userJoinedGamesById")
+//        }
+//
+//    }
     
     //MARK: - Game Details View Delegate
     
