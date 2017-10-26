@@ -58,7 +58,6 @@
 		D013CA7F1F34EEC3004392AC /* QuestionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D013CA7E1F34EEC3004392AC /* QuestionsTableViewController.swift */; };
 		D013CA811F3B8948004392AC /* EmailLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D013CA801F3B8948004392AC /* EmailLoginViewController.swift */; };
 		D01697D01EDF66CB00896DD7 /* GameTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01697CF1EDF66CB00896DD7 /* GameTypeController.swift */; };
-		D02508071ECE33A30024DA8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D02508061ECE33A30024DA8A /* GoogleService-Info.plist */; };
 		D08387B91ED4B4DA009CCCAC /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08387B81ED4B4DA009CCCAC /* NetworkController.swift */; };
 		D08387BD1ED4B549009CCCAC /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08387BC1ED4B549009CCCAC /* GameController.swift */; };
 		D09408641ECE3C69005B2D2B /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09408631ECE3C69005B2D2B /* FirebaseController.swift */; };
@@ -72,6 +71,7 @@
 		D0BBD8641F3102B7009DBA63 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BBD8631F3102B7009DBA63 /* ProfileTableViewController.swift */; };
 		D0BD959E1EC28D4400E29671 /* PickupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD959D1EC28D4400E29671 /* PickupUITests.swift */; };
 		D0BD95AC1EC28D4D00E29671 /* PickupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */; };
+		D0E6F0CA1FA106BE0002B5FE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0E6F0C91FA106BE0002B5FE /* GoogleService-Info.plist */; };
 		D0F775871ED75C6200DFC8D6 /* MyGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F269581C87A37300D46519 /* MyGamesViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -149,7 +149,6 @@
 		D013CA7E1F34EEC3004392AC /* QuestionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionsTableViewController.swift; sourceTree = "<group>"; };
 		D013CA801F3B8948004392AC /* EmailLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailLoginViewController.swift; sourceTree = "<group>"; };
 		D01697CF1EDF66CB00896DD7 /* GameTypeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTypeController.swift; sourceTree = "<group>"; };
-		D02508061ECE33A30024DA8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D08387B81ED4B4DA009CCCAC /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		D08387BC1ED4B549009CCCAC /* GameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		D09408631ECE3C69005B2D2B /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
@@ -167,6 +166,7 @@
 		D0BD95A91EC28D4D00E29671 /* PickupTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickupTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BD95AB1EC28D4D00E29671 /* PickupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupTests.swift; sourceTree = "<group>"; };
 		D0BD95AD1EC28D4D00E29671 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0E6F0C91FA106BE0002B5FE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EBA0BD9A58AAF7A7D88D5DA2 /* Pods_Pickup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pickup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2AD1E91E3546033BB362AA3 /* Pods-Pickup.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pickup.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pickup/Pods-Pickup.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -350,9 +350,9 @@
 				D08387B81ED4B4DA009CCCAC /* NetworkController.swift */,
 				02BE277D1C4DD58F0062C890 /* AppDelegate.swift */,
 				02A8F25A1C77F6F300A04DE6 /* DateUtilities.swift */,
+				D0E6F0C91FA106BE0002B5FE /* GoogleService-Info.plist */,
 				02BE27891C4DD58F0062C890 /* Info.plist */,
 				023127871CFCAF0C00863EFF /* home.gpx */,
-				D02508061ECE33A30024DA8A /* GoogleService-Info.plist */,
 				D0A90C361F2A669F0014581A /* OverallLocationManager.swift */,
 			);
 			name = SupportFiles;
@@ -575,12 +575,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D02508071ECE33A30024DA8A /* GoogleService-Info.plist in Resources */,
 				02BE27881C4DD58F0062C890 /* LaunchScreen.storyboard in Resources */,
 				D09B81F61F2D1C6000ED533A /* Login.storyboard in Resources */,
 				023127881CFCAF0C00863EFF /* home.gpx in Resources */,
 				02DB6FEF1C740FEB00FF5C20 /* Assets.xcassets in Resources */,
 				02BE27831C4DD58F0062C890 /* Main.storyboard in Resources */,
+				D0E6F0CA1FA106BE0002B5FE /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -895,7 +895,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pickup",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pickup.PickupSports;
+				PRODUCT_BUNDLE_IDENTIFIER = com.turf.TurfSports;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -928,7 +928,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pickup",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pickup.PickupSports;
+				PRODUCT_BUNDLE_IDENTIFIER = com.turf.TurfSports;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
