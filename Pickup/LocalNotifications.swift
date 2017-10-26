@@ -92,7 +92,7 @@ struct LocalNotifications {
     
     static func cancelGameNotification(_ game: Game) {
         for notification in UIApplication.shared.scheduledLocalNotifications! {// as! [UILocalNotification] {
-            if notification.userInfo!["selectedGameId"] as! String == game.id.uuidString {
+            if notification.userInfo!["selectedGameId"] as! String == game.id {
                 UIApplication.shared.cancelLocalNotification(notification)
             }
         }
