@@ -50,7 +50,7 @@ class PlayerContoller {
     
     func add(game: Game, to folder: String) {
         guard let currentLoginProviderRef = currentLoginProviderRef else { return }
-        currentLoginProviderRef.child(folder).child(game.id.uuidString).setValue(game.gameDictionary)
+        currentLoginProviderRef.child(folder).child(game.id).setValue(game.gameDictionary)
     }
     
     func put(player: Player, to url: URL?, success: @escaping (Bool) -> Void) {

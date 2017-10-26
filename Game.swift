@@ -24,7 +24,7 @@ class Game {
     private let kLongitude: String = "longitude"
     private let kUserIDs: String = "playerIDs"
     
-    var id: UUID = UUID.init()
+    var id: String = UUID.init().uuidString
     var userIDs: [String]
     var gameType: GameType
     var totalSlots: Int
@@ -39,7 +39,7 @@ class Game {
     lazy var latitude: Double = 0.0
     lazy var longitude: Double = 0.0
     
-    init(id: UUID, gameType: GameType, totalSlots: Int,
+    init(id: String, gameType: GameType, totalSlots: Int,
         availableSlots: Int, eventDate: Date, locationName: String,
         ownerId: String, userIDs: ([String]), gameNotes: String) {
         self.id = id
@@ -54,7 +54,8 @@ class Game {
     }
     
     init?(gameDictionary: [String: Any]) {
-        guard let id = gameDictionary.first?.key,
+        
+        guard let id = gameDictionary[kGameID] as? String,
         let gameTypeValue = gameDictionary[kGameType] as? [String: Any],
         let gameType = GameType.init(dictionary: gameTypeValue),
         let totalSlots = gameDictionary[kTotalSlots] as? Int,
@@ -71,11 +72,7 @@ class Game {
         else { return nil }
         
         self.userIDs = userIDs
-        if UUID.init(uuidString: id) != nil {
-            self.id = UUID.init(uuidString: id)!
-        } else {
-            self.id = UUID.init()
-        }
+        self.id = id
         self.gameType = gameType
         self.totalSlots = totalSlots
         self.availableSlots = availableSlots
@@ -109,7 +106,7 @@ class Game {
         
         let eventDateString = String(describing: eventDate)
         
-        return [kGameID: id.uuidString, kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude, kUserIDs: userIDs]
+        return [kGameID: id, kGameType: gameType.dictionaryRep, kTotalSlots: totalSlots, kAvailableSlots: availableSlots, kEventDate: eventDateString, kLocationName: locationName, kOwnerId: ownerId, kGameNotes: gameNotes, kIsCancelled: isCancelled, kLatitude: latitude, kLongitude: longitude, kUserIDs: userIDs]
     }
 }
 
