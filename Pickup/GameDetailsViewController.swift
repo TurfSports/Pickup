@@ -71,16 +71,13 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     //MARK: - Actions
     
     @IBAction func btnJoinGame(_ sender: AnyObject) {
-        
+        //        Note: Edit game functionality coming later
 //        if userStatus == .user_OWNED {
 //            performSegue(withIdentifier: SEGUE_SHOW_EDIT_GAME, sender: self)
 //        } else {
 //            showAlert()
 //        }
         showAlert()
-        print(game.id)
-        print(game.gameType.displayName)
-        
         
     }
     
@@ -111,7 +108,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
 
         }))
 
-
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -123,8 +119,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.game.userIDs.append(currentPlayer.id)
         self.game.userJoined = !self.game.userJoined
         self.userStatus = .user_JOINED
-        print("join game")
-        print(self.game)
         
         GameController.shared.put(game: self.game, with: self.game.id) { (success) in
             if (success) {
@@ -143,8 +137,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     }
     
     fileprivate func leaveGame() {
-        // remove User from game
-        
         self.game.userJoined = !self.game.userJoined
         self.game.availableSlots += 1
         if let index = game.userIDs.index(of: currentPlayer.id) {
@@ -152,7 +144,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         }
         self.userStatus = .user_NOT_JOINED
         LocalNotifications.cancelGameNotification(self.game)
-        print("leave game")
         
         GameController.shared.put(game: self.game, with: self.game.id) { (success) in
             if (success) {
@@ -170,8 +161,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     }
     
     
-    
-    
     //==========================================================================
     //  MARK: - Firebase
     //==========================================================================
@@ -187,7 +176,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     fileprivate func cancel(_ Game: Game) {
         
     }
-
 
     
     //MARK: - User Defaults
@@ -223,6 +211,7 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.embeddedView.lblAddress.text = self.address
     }
     
+    
     func setGame(_ game: Game) {
         self.game = game
         lblLocationName.text = game.locationName
@@ -238,7 +227,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     func cancelGame(_ game: Game) {
         showAlert()
     }
-    
 
     
     //MARK: - Navigation
