@@ -37,12 +37,16 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateUI()
         
+    }
+    
+    private func updateUI() {
         btnJoinGame.tintColor = Theme.ACCENT_COLOR
         self.navigationController?.navigationBar.tintColor = Theme.PRIMARY_LIGHT_COLOR
         
         if let gameDetailsTableViewController = self.childViewControllers.first as? GameDetailsTableViewController {
-        
+            
             if userStatus != .user_NOT_JOINED {
                 gameDetailsTableViewController.btnAddToCalendar.isHidden = false
             }
@@ -62,17 +66,21 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         
         btnJoinGame.title = navBarButtonTitleOptions[userStatus]
         imgGameType.image = UIImage(named: game.gameType.imageName)
-        
     }
     
+    //MARK: - Actions
     
     @IBAction func btnJoinGame(_ sender: AnyObject) {
         
-        if userStatus == .user_OWNED {
-            performSegue(withIdentifier: SEGUE_SHOW_EDIT_GAME, sender: self)
-        } else {
-            showAlert()
-        }
+//        if userStatus == .user_OWNED {
+//            performSegue(withIdentifier: SEGUE_SHOW_EDIT_GAME, sender: self)
+//        } else {
+//            showAlert()
+//        }
+        showAlert()
+        print(game.id)
+        print(game.gameType.displayName)
+        
         
     }
     
@@ -82,15 +90,15 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         let message = "Are you sure you want to \(self.alertAction[userStatus]!) this game?"
         let alertTitle = "\(self.alertTitle[userStatus]!)"
         let alertCancelTitle = "\(self.alertCancelTitle[userStatus]!)"
-        
+
         let alertController = UIAlertController(title: title, message:
             message, preferredStyle: UIAlertControllerStyle.alert)
-        
+
         alertController.addAction(UIAlertAction(title: alertCancelTitle, style: UIAlertActionStyle.default, handler: nil))
         alertController.addAction(UIAlertAction(title: alertTitle, style: UIAlertActionStyle.default, handler: { action in
-            
+
             switch(self.userStatus) {
-                
+
             case .user_NOT_JOINED:
                 self.joinGame()
                 break
@@ -100,10 +108,10 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
             case .user_OWNED:
                 break
             }
-            
+
         }))
-        
-        
+
+
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -111,32 +119,54 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
     //MARK: - Joining/Leaving game
     
     fileprivate func joinGame() {
-        
         self.game.availableSlots += -1
+        self.game.userIDs.append(currentPlayer.id)
         self.game.userJoined = !self.game.userJoined
         self.userStatus = .user_JOINED
+        print("join game")
+        print(self.game)
+        
+        GameController.shared.put(game: self.game, with: self.game.id) { (success) in
+            if (success) {
+                 print(">>>>>>> put to firebase: \(currentPlayer.id) \(self.userStatus)")
+            } else {
+                print("error putting game in firebase")
+            }
+        }
         
         LocalNotifications.scheduleGameNotification(self.game)
         
         if !NotificationsManager.notificationsInitiated() {
             NotificationsManager.registerNotifications()
         }
+        updateUI()
     }
     
     fileprivate func leaveGame() {
         // remove User from game
         
-        
         self.game.userJoined = !self.game.userJoined
         self.game.availableSlots += 1
+        if let index = game.userIDs.index(of: currentPlayer.id) {
+            game.userIDs.remove(at: index)
+        }
         self.userStatus = .user_NOT_JOINED
         LocalNotifications.cancelGameNotification(self.game)
-
+        print("leave game")
+        
+        GameController.shared.put(game: self.game, with: self.game.id) { (success) in
+            if (success) {
+                print(">>>>>>> put to firebase: \(currentPlayer.id) \(self.userStatus)")
+            } else {
+                print("error putting game in firebase")
+            }
+        }
         
         if myGamesTableViewDelegate != nil {
             myGamesTableViewDelegate?.removeGame(self.game)
             _ = navigationController?.popViewController(animated: true)
         }
+        updateUI()
     }
     
     
