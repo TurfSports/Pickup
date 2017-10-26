@@ -7,34 +7,34 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>243411369323-bpj341qd5lcr6m5ms53uj26o0jo2kqfl.apps.googleusercontent.com</string>
+	<string>610689124815-sng1ar8n74ndhlnvtd41d0dbstes411s.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.243411369323-bpj341qd5lcr6m5ms53uj26o0jo2kqfl</string>
+	<string>com.googleusercontent.apps.610689124815-sng1ar8n74ndhlnvtd41d0dbstes411s</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAL1WAlq01yOAuDAmjZF9oysEtM44ARYao</string>
+	<string>AIzaSyDtrrI8m2MCtNVULivxh1kMzRXbzkeud4I</string>
 	<key>GCM_SENDER_ID</key>
-	<string>243411369323</string>
+	<string>610689124815</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.pickup.PickupSports</string>
+	<string>com.turf.TurfSports</string>
 	<key>PROJECT_ID</key>
-	<string>pickup-a837a</string>
+	<string>turf-sports</string>
 	<key>STORAGE_BUCKET</key>
-	<string>pickup-a837a.appspot.com</string>
+	<string>turf-sports.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:243411369323:ios:520245d903c4a96e</string>
+	<string>1:610689124815:ios:32732debc4ba05ac</string>
 	<key>DATABASE_URL</key>
-	<string>https://pickup-a837a.firebaseio.com</string>
+	<string>https://turf-sports.firebaseio.com</string>
 </dict>
 </plist>
