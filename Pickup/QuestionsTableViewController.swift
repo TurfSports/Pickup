@@ -37,6 +37,7 @@ class QuestionsTableViewController: UITableViewController, UIPickerViewDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.dismiss(animated: true, completion: nil)
         agePicker.delegate = self
         agePicker.dataSource = self
         agePicker.isHidden = pickerIsHidden
