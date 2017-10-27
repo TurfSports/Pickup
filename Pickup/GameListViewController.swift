@@ -64,8 +64,6 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         
         lblNoGames.text = "No \(selectedGameType?.name ?? "") games within \(Settings.shared.gameDistance) \(Settings.shared.distanceUnit)"
         
-        setUsersCurrentLocation()
-        
         self.title = selectedGameType?.displayName
         
         btnViewMap.tintColor = Theme.ACCENT_COLOR
@@ -309,6 +307,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     
     //MARK: - Location Manager Delegate
     //TODO: Abstract location methods into their own class
+
+    /*
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         guard let location = manager.location else { manager.stopUpdatingLocation(); return }
@@ -321,6 +321,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
             tableGameList.reloadData()
         }
     }
+ 
     
     func setUsersCurrentLocation() {
         OverallLocation.manager.requestWhenInUseAuthorization()
@@ -335,6 +336,8 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error.localizedDescription)
     }
+ 
+     */
     
     func getDistanceBetweenLocations(_ location1: CLLocation, location2: CLLocation) -> Double {
         

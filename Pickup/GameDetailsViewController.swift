@@ -139,9 +139,6 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         }
     }
     
-    
-    
-    
     //==========================================================================
     //  MARK: - Firebase
     //==========================================================================
