@@ -40,6 +40,8 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(gamesWereLoaded), name: gamesLoadedNotificationName, object: nil)
+        self.games = loadedGames
         OverallLocation.manager.delegate = self
         
         self.btnAddGame.tintColor = Theme.ACCENT_COLOR
@@ -62,6 +64,10 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     override func viewDidAppear(_ animated: Bool) {
         blurNoGames.isHidden = true
         self.tableGameList.reloadData()
+    }
+    
+    @objc func gamesWereLoaded() {
+        self.games = loadedGames
     }
     
     //MARK: - Table View Delegate
