@@ -14,7 +14,7 @@ class GameController {
     static let shared = GameController()
     
     let ref = Database.database().reference().child("Games")
-    let endURL = URL(string: "https://pickup-a837a.firebaseio.com/Games")
+    let endURL = URL(string: "https://turf-sports.firebaseio.com/Games")
     let tempURL = URL(string: "")
     
     //==========================================================================
@@ -24,7 +24,7 @@ class GameController {
     // Put with firebase
     
     func put(game: Game, with UUIDString: String, success: @escaping (_ success: Bool) -> Void) {
-        ref.child(game.gameType.displayName.lowercased()).child(UUIDString).setValue(game.gameDictionary)
+        ref.child(game.gameType.name).child(UUIDString).setValue(game.gameDictionary)
         success(true)
         return
     }
@@ -41,7 +41,7 @@ class GameController {
             newUrl = url!
         }
         
-        let urlWithUUID = newUrl.appendingPathComponent(game.gameType.displayName.lowercased()).appendingPathComponent(UUIDString).appendingPathExtension("json")
+        let urlWithUUID = newUrl.appendingPathComponent(game.gameType.name).appendingPathComponent(UUIDString).appendingPathExtension("json")
         
         NetworkController.performRequest(for: urlWithUUID, httpMethod: .put, body: game.jsonData) { (data, error) in
             DispatchQueue.main.async {
@@ -67,7 +67,7 @@ class GameController {
     func loadGames(of gameType: GameType, completion: @escaping (_ games: [Game]) -> Void) {
         var arrayOfGameType: [Game] = []
         
-        ref.child(gameType.displayName.lowercased()).observeSingleEvent(of: .value, with: { (snapShot) in
+        ref.child(gameType.name).observeSingleEvent(of: .value, with: { (snapShot) in
             DispatchQueue.main.async {
                 guard let jsonObject = snapShot.value as? [String: [String: Any]] else { completion([]); print("Fuck") ; return }
                 
@@ -120,7 +120,7 @@ class GameController {
     func loadGames(from url: URL, of gameType: GameType, completion: @escaping (_ games: [Game]) -> Void) {
         
         var arrayOfGameType: [Game] = []
-        guard let url = self.endURL?.appendingPathComponent(gameType.displayName.lowercased()).appendingPathComponent("json") else { completion([]); return }
+        guard let url = self.endURL?.appendingPathComponent(gameType.name).appendingPathComponent("json") else { completion([]); return }
         
         NetworkController.performRequest(for: url, httpMethod: .get, urlParameters: nil, body: nil) { (data, error) in
             DispatchQueue.main.async {
