@@ -176,9 +176,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if currentLocation != nil {
-            
-        }
+
     }
     
     // MARK: - Table view data source
@@ -436,7 +434,7 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
         while !(responder is UIAlertController) { responder = responder.next! }
         let alert = responder as! UIAlertController
         
-        if textField.text?.characters.count == 5 {
+        if textField.text?.count == 5 {
             validateZipCode(textField.text!, alert: alert)
         }
         

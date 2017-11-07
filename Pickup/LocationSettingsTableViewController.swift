@@ -56,7 +56,7 @@ class LocationSettingsTableViewController: UITableViewController, UITextFieldDel
 
     @IBAction func textFieldEditingChanged(_ sender: AnyObject) {
         zipLabel.isHidden = true
-        if txtDefaultLocation.text!.characters.count == 5 {
+        if txtDefaultLocation.text!.count == 5 {
             validateZipCode(txtDefaultLocation.text!)
             txtDefaultLocation.resignFirstResponder()
         }

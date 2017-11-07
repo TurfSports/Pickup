@@ -281,9 +281,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             currentPlayer.age = "\(maxAge)"
             currentPlayer.gender = gender
             currentPlayer.firstName = firstName
-            let lastNameCharCount = lastName.characters.count
+            let lastNameCharCount = lastName.count
             if lastNameCharCount >= 3 {
-                let lastInitialsCharView = lastName.characters.dropLast(lastNameCharCount - 2)
+                let lastInitialsCharView = lastName.dropLast(lastNameCharCount - 2)
                 let lastInitials = String.init(lastInitialsCharView)
                 currentPlayer.lastInitials = "\(lastInitials)" + "."
             } else {
@@ -301,7 +301,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any])
         -> Bool {
             
-            let fbURLCharacters = url.absoluteString.characters
+            let fbURLCharacters = url.absoluteString
             
             if fbURLCharacters.first == "f" && fbURLCharacters.last == "D" {
                 return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, options: options)
@@ -352,20 +352,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         guard let currentUser = Auth.auth().currentUser else { return }
         let fullName = currentUser.displayName
-        let fullNameArr = fullName?.characters.split(separator: " ").map(String.init)
+        let fullNameArr = fullName?.split(separator: " ").map(String.init)
         
         var firstName: String? {
             guard let fullNameArr = fullNameArr else { return nil }
-            return fullNameArr[0].characters.count > 1 ? fullNameArr[0] : nil
+            return fullNameArr[0].count > 1 ? fullNameArr[0] : nil
         }
         
         var lastInitials: String? {
             guard let fullNameArr = fullNameArr else { return nil }
-            guard let lastName = fullNameArr[1].characters.count > 1 ? fullNameArr[1] : nil else { return nil }
+            guard let lastName = fullNameArr[1].count > 1 ? fullNameArr[1] : nil else { return nil }
             var lastInitials: String
-            let charCount = lastName.characters.count
+            let charCount = lastName.count
             if charCount >= 3 {
-                lastInitials = String.init(lastName.characters.dropLast(charCount - 2)) + "."
+                lastInitials = String.init(lastName.dropLast(charCount - 2)) + "."
             } else {
                 lastInitials = lastName + "."
             }

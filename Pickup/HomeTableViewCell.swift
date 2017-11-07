@@ -51,9 +51,8 @@ class HomeTableViewCell: UITableViewCell {
         if let image = image {
             updateWith(image: image)
         } else if gameTypeImagesLoaded && image == nil {
-            var imageName = gameType.imageName.lowercased()
-            let chars = imageName.characters
-            let realChars = chars.dropLast(4)
+            let imageName = gameType.imageName.lowercased()
+            let realChars = imageName.dropLast(4)
             let iconChar = String.init(realChars) + "Icon"
             imgSport.image = UIImage(named: iconChar)
         } else {
