@@ -83,7 +83,8 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 let alertController: UIAlertController = UIAlertController.init(title: "Error saving your game. Please try again.", message: "Ok", preferredStyle: .alert)
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                PlayerContoller.shared.add(game: game, to: "createdGames")
+                //PlayerContoller.shared.add(game: game, to: "createdGames")
+                //NotificationCenter.default.post(name: gamesLoadedNotificationName, object: nil)
                 self.dismiss(animated: true, completion: nil)
             }
         })
@@ -122,7 +123,9 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 markInvalidFields()
             }
         } else {
-            self.game?.gameNotes = txtGameNotes.text
+            var gameNotes = txtGameNotes.text
+            if txtGameNotes.text == "Add notes..." || gameNotes == nil { gameNotes = "" }
+            self.game?.gameNotes = gameNotes!
             self.txtGameNotes.resignFirstResponder()
             
             if gameStatus == .create {
@@ -250,11 +253,10 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
             
         // TODO: - Add default user
         
-        let game = Game.init(id: UUID.init().uuidString, gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: Date.init(), locationName: self.address!, ownerId: "userID", userIDs: [], gameNotes: "")
+        let game = Game.init(id: UUID.init().uuidString, gameType: defaultGameType, totalSlots: 0, availableSlots: 0, eventDate: Date.init(), locationName: self.address!, ownerId: currentPlayer.id, userIDs: [currentPlayer.id], gameNotes: "")
         game.userIsOwner = true
         game.userJoined = true
             // Insert user id
-        game.ownerId = "_userID"
             
         self.game = game
         }

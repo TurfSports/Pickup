@@ -31,7 +31,7 @@ class PlayerContoller {
         return
     }
     
-    func put(createdGames: [Game], or joinedGames: [Game]) {
+    func put(createdGames: [String], or joinedGames: [String]) {
         guard let currentLoginProviderRef = currentLoginProviderRef else { return }
         if createdGames.count != 0 && joinedGames.count == 0 {
             currentLoginProviderRef.child("createdGames").setValue(createdGames)
@@ -49,8 +49,8 @@ class PlayerContoller {
     }
     
     func add(game: Game, to folder: String) {
-        guard let currentLoginProviderRef = currentLoginProviderRef else { return }
-        currentLoginProviderRef.child(folder).child(game.id).setValue(game.gameDictionary)
+//        guard let currentLoginProviderRef = currentLoginProviderRef else { return }
+//        currentLoginProviderRef.child(folder).child(game.id).setValue(game.id)
     }
     
     func put(player: Player, to url: URL?, success: @escaping (Bool) -> Void) {
@@ -90,5 +90,11 @@ class PlayerContoller {
             
             currentPlayer = user
         })
+    }
+    
+    func getPlayersForPlayerList(userIDs: [String], completion: @escaping (_ players: [Player]) -> Void) {
+        for id in userIDs {
+            
+        }
     }
 }

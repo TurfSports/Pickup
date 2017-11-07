@@ -30,15 +30,15 @@ class Player {
     var lastInitials: String
     var userImage: UIImage?
     var userImageEndpoint: String
-    var createdGames: [Game]
-    var joinedGames: [Game]
+    var createdGames: [String]
+    var joinedGames: [String]
     var userCreationDate: Date
     var age: String
     var gender: String
     var sportsmanship: String
     var skills: [String: Any]
     
-    init(id: String, firstName: String, lastName: String, userImage: UIImage?, userCreationDate: Date, userImageEndpoint: String, createdGames: [Game], joinedGames: [Game], age: String, gender: String, sportsmanship: String, skills: [String: Any]) {
+    init(id: String, firstName: String, lastName: String, userImage: UIImage?, userCreationDate: Date, userImageEndpoint: String, createdGames: [String], joinedGames: [String], age: String, gender: String, sportsmanship: String, skills: [String: Any]) {
         
         self.id = id
         self.firstName = firstName
@@ -66,13 +66,13 @@ class Player {
             
         else { return nil }
         
-        if let joinedGames = dictionary[kJoinedGames] as? [Game] {
+        if let joinedGames = dictionary[kJoinedGames] as? [String] {
             self.joinedGames = joinedGames
         } else {
             self.joinedGames = []
         }
         
-        if let createdGames = dictionary[kCreatedGames] as? [Game] {
+        if let createdGames = dictionary[kCreatedGames] as? [String] {
             self.createdGames = createdGames
         } else {
             self.createdGames = []

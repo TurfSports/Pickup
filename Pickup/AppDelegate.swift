@@ -37,7 +37,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     @objc func addGamesToGameArrays() {
         DispatchQueue.main.async {
             let gamesCreated: [Game] = loadedGames.filter({ $0.ownerId == currentPlayer.id })
-            currentPlayer.createdGames = gamesCreated
+            var createdGamesID: [String] = []
+            for game in gamesCreated {
+                createdGamesID.append(game.id)
+            }
+            currentPlayer.createdGames = createdGamesID
             self.putLoadedPlayerToFirebase()
         }
     }

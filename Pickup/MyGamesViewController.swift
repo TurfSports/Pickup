@@ -41,17 +41,14 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(gamesWereLoaded), name: gamesLoadedNotificationName, object: nil)
-        self.games = loadedGames
         OverallLocation.manager.delegate = self
+        
+        sortedGames = sortGamesByOwner(self.games)
         
         self.btnAddGame.tintColor = Theme.ACCENT_COLOR
         self.btnSettings.tintColor = Theme.PRIMARY_LIGHT_COLOR
         
         let gameTypePullTimeStamp: Date = getLastGameTypePull()
-        
-        GameTypeController.shared.loadGameTypes() { (gameTypes) in
-            self.gameTypes = gameTypes
-        }
         
         if gameTypePullTimeStamp.compare(Date().addingTimeInterval(-24*60*60)) != ComparisonResult.orderedAscending {
             loadGameTypesFromUserDefaults()
@@ -63,20 +60,24 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     override func viewDidAppear(_ animated: Bool) {
         blurNoGames.isHidden = true
-        self.tableGameList.reloadData()
+        if loadedGames.count != 0 {
+            gamesWereLoaded()
+        }
     }
     
     @objc func gamesWereLoaded() {
         self.games = loadedGames
+        sortedGames = sortGamesByOwner(self.games)
+        self.tableGameList.reloadData()
     }
     
     //MARK: - Table View Delegate
     
-    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+    @objc func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return sectionTitles.count
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sortedGames.count
     }
     
@@ -227,7 +228,9 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             if game.userIsOwner {
                 createdGames.append(game)
             } else {
-                joinedGames.append(game)
+                if game.userIDs.contains(currentPlayer.id) {
+                    joinedGames.append(game)
+                }
             }
         }
         
@@ -243,7 +246,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         }
         
         if !joinedGames.isEmpty {
-            for game in createdGames {
+            for game in joinedGames {
                 combinedGamesArray.append(game)
             }
             self.sectionTitles.append("Joined Games")
