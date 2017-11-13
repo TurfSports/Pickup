@@ -12,6 +12,8 @@ import EventKit
 
 class GameDetailsTableViewController: UITableViewController {
 
+    // MARK: - Outlets
+    
     @IBOutlet weak var lblGameNotes: UILabel!
     @IBOutlet weak var lblDay: UILabel!
     @IBOutlet weak var lblTime: UILabel!
@@ -20,6 +22,7 @@ class GameDetailsTableViewController: UITableViewController {
     @IBOutlet weak var btnOpenMaps: UIButton!
     @IBOutlet weak var btnAddToCalendar: UIButton!
 
+    // MARK: - Variables
 
     var parentDelegate: GameDetailsViewDelegate!
     var game: Game!
@@ -32,6 +35,12 @@ class GameDetailsTableViewController: UITableViewController {
         }
     }
     
+    // MARK: - Constants
+    
+    let PlayerRoster = "AttendingPlayerCell"
+    
+    // MARK: - Actions
+    
     @IBAction func addToCalendar(_ sender: UIButton) {
         _ = insertGameIntoCalendar()
         UIApplication.shared.openURL(URL(string: "calshow:\(game.eventDate.timeIntervalSinceReferenceDate)")!)
@@ -41,6 +50,7 @@ class GameDetailsTableViewController: UITableViewController {
         openMapsForPlace()
     }
 
+    // MARK: - Actions
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,6 +139,17 @@ class GameDetailsTableViewController: UITableViewController {
         
         return height
     }
+    
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//
+//        guard let cell = tableView.cellForRow(at: indexPath) else { return UITableViewCell.init() }
+//        let player = game.userIDs[indexPath.row]
+//        if indexPath.section == 3 && cell.reuseIdentifier == PlayerRoster {
+//            cell.textLabel?.text = player
+//        }
+//
+//        return cell
+//    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath as NSIndexPath).section == 3 && (indexPath as NSIndexPath).row == 0 {
