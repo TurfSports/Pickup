@@ -140,16 +140,16 @@ class GameDetailsTableViewController: UITableViewController {
         return height
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let cell = tableView.cellForRow(at: indexPath) else { return UITableViewCell.init() }
-        let player = game.userIDs[indexPath.row]
-        if indexPath.section == 3 && cell.reuseIdentifier == PlayerRoster {
-            cell.textLabel?.text = player
-        }
-        
-        return cell
-    }
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//
+//        guard let cell = tableView.cellForRow(at: indexPath) else { return UITableViewCell.init() }
+//        let player = game.userIDs[indexPath.row]
+//        if indexPath.section == 3 && cell.reuseIdentifier == PlayerRoster {
+//            cell.textLabel?.text = player
+//        }
+//
+//        return cell
+//    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath as NSIndexPath).section == 3 && (indexPath as NSIndexPath).row == 0 {
