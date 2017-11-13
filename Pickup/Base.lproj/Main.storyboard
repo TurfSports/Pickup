@@ -1433,34 +1433,21 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="crT-N2-erZ" userLabel="Table View Cell - Player cells">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AttendingPlayerCell" textLabel="idC-0T-gdX" style="IBUITableViewCellStyleDefault" id="crT-N2-erZ" userLabel="Table View Cell - Player cells">
                                         <rect key="frame" x="0.0" y="602" width="379" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="crT-N2-erZ" id="VeJ-jm-LVh">
                                             <rect key="frame" x="0.0" y="0.0" width="379" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="L7m-mu-xDw">
-                                                    <rect key="frame" x="0.0" y="0.0" width="379" height="44"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <prototypes>
-                                                        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RosterPlayerCell" id="Nrw-9e-EAf">
-                                                            <rect key="frame" x="0.0" y="28" width="379" height="44"/>
-                                                            <autoresizingMask key="autoresizingMask"/>
-                                                            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Nrw-9e-EAf" id="1uW-kA-0Km">
-                                                                <rect key="frame" x="0.0" y="0.0" width="379" height="43.5"/>
-                                                                <autoresizingMask key="autoresizingMask"/>
-                                                            </tableViewCellContentView>
-                                                        </tableViewCell>
-                                                    </prototypes>
-                                                </tableView>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="idC-0T-gdX">
+                                                    <rect key="frame" x="16" y="0.0" width="348" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="L7m-mu-xDw" secondAttribute="bottom" id="edj-Fd-lFd"/>
-                                                <constraint firstItem="L7m-mu-xDw" firstAttribute="leading" secondItem="VeJ-jm-LVh" secondAttribute="leading" id="tTY-kh-lyz"/>
-                                                <constraint firstItem="L7m-mu-xDw" firstAttribute="top" secondItem="VeJ-jm-LVh" secondAttribute="top" id="xaD-tP-yMe"/>
-                                                <constraint firstAttribute="trailing" secondItem="L7m-mu-xDw" secondAttribute="trailing" id="xmG-hQ-PyU"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
