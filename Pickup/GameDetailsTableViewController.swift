@@ -141,6 +141,7 @@ class GameDetailsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         guard let cell = tableView.cellForRow(at: indexPath) else { return UITableViewCell.init() }
         let player = game.userIDs[indexPath.row]
         if indexPath.section == 3 && cell.reuseIdentifier == PlayerRoster {
