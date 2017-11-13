@@ -62,7 +62,7 @@ class GameListViewController: UIViewController, UITableViewDelegate, CLLocationM
         tableGameList.tableFooterView = UIView(frame: CGRect.zero)
         self.tableGameList.addSubview(self.refreshControl)
         
-        lblNoGames.text = "No \(selectedGameType?.name ?? "") games within \(Settings.shared.gameDistance) \(Settings.shared.distanceUnit)"
+        lblNoGames.text = "No \(selectedGameType?.displayName.lowercased() ?? "") games" // "within \(Settings.shared.gameDistance) \(Settings.shared.distanceUnit)"
         
         self.title = selectedGameType?.displayName
         

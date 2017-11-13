@@ -87,7 +87,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         }
     }
     
-    func tableView(_ tableView : UITableView, titleForHeaderInSection section: Int) -> String {
+    @objc func tableView(_ tableView : UITableView, titleForHeaderInSection section: Int) -> String {
         return sectionTitles[section]
     }
     
@@ -423,8 +423,15 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             var game: Game
             
             if let indexPath = tableGameList.indexPathForSelectedRow {
-                guard sortedGames.count >= indexPath.row + 1 else { return }
-                game = sortedGames[indexPath.row]
+                if indexPath.section == 0 {
+                    guard createdGames.count >= indexPath.row + 1 else { return }
+                    game = createdGames[indexPath.row]
+                } else if indexPath.section == 1 {
+                    guard joinedGames.count >= indexPath.row + 1 else { return }
+                    game = joinedGames[indexPath.row]
+                } else {
+                    return
+                }
             } else {
                 game = self.newGame!
             }

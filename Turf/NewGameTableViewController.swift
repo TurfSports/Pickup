@@ -86,6 +86,12 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
                 PlayerContoller.shared.add(game: game, to: "createdGames")
                 NotificationCenter.default.post(name: gamesLoadedNotificationName, object: nil)
                 self.dismiss(animated: true, completion: nil)
+                GameController.shared.loadGames(completion: { (games) in
+                    DispatchQueue.main.async {
+                        loadedGames = games
+                        NotificationCenter.default.post(name: gamesLoadedNotificationName, object: nil)
+                    }
+                })
             }
         })
     }
