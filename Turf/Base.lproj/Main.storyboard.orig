@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD:Turf/Base.lproj/Main.storyboard
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="77s-jv-yDE">
+=======
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="77s-jv-yDE">
+>>>>>>> 0df239ef3fe13b7f1fcccbf45ad3cef5a7ce7b68:Pickup/Base.lproj/Main.storyboard
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
+<<<<<<< HEAD:Turf/Base.lproj/Main.storyboard
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+=======
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+>>>>>>> 0df239ef3fe13b7f1fcccbf45ad3cef5a7ce7b68:Pickup/Base.lproj/Main.storyboard
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
@@ -1194,7 +1202,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DpW-hG-TOC">
+<<<<<<< HEAD:Turf/Base.lproj/Main.storyboard
+                                                    <rect key="frame" x="35" y="17" width="53" height="26"/>
+=======
                                                     <rect key="frame" x="27" y="14" width="53" height="32"/>
+>>>>>>> 0df239ef3fe13b7f1fcccbf45ad3cef5a7ce7b68:Pickup/Base.lproj/Main.storyboard
                                                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1224,7 +1236,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egy-GK-zdX">
+<<<<<<< HEAD:Turf/Base.lproj/Main.storyboard
+                                                    <rect key="frame" x="35" y="5" width="46.5" height="21"/>
+=======
                                                     <rect key="frame" x="27" y="2" width="46.5" height="27"/>
+>>>>>>> 0df239ef3fe13b7f1fcccbf45ad3cef5a7ce7b68:Pickup/Base.lproj/Main.storyboard
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="22"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
