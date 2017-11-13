@@ -78,9 +78,9 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     }
     
     @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        if section == 0 && sectionTitles[0] == "Created Games" {
             return createdGames.count
-        } else if section == 1 {
+        } else if section == 1 || sectionTitles[0] == "Joined Games" {
             return joinedGames.count
         } else {
             return 0
@@ -89,6 +89,14 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     @objc func tableView(_ tableView : UITableView, titleForHeaderInSection section: Int) -> String {
         return sectionTitles[section]
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -116,9 +124,9 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         
         var correctSortedGames: [Game] = []
         
-        if indexPath.section == 0 {
+        if indexPath.section == 0 && sectionTitles[0] == "Created Games" {
             correctSortedGames = createdGames
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == 1  || sectionTitles [0] == "Joined Games" {
             correctSortedGames = joinedGames
         } else {
             return cell!
@@ -423,10 +431,10 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
             var game: Game
             
             if let indexPath = tableGameList.indexPathForSelectedRow {
-                if indexPath.section == 0 {
+                if indexPath.section == 0 && sectionTitles[0] == "Created Games" {
                     guard createdGames.count >= indexPath.row + 1 else { return }
                     game = createdGames[indexPath.row]
-                } else if indexPath.section == 1 {
+                } else if indexPath.section == 1 || sectionTitles[0] == "Joined Games" {
                     guard joinedGames.count >= indexPath.row + 1 else { return }
                     game = joinedGames[indexPath.row]
                 } else {
