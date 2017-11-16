@@ -293,6 +293,7 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
 //    }
     
     
+    
     //MARK: - Picker view delegate
     
     @objc func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int {
@@ -495,9 +496,11 @@ class NewGameTableViewController: UITableViewController, UIPickerViewDelegate, U
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.selectAll(self)
+        textField.resignFirstResponder()
     }
     
-    @objc private func textFieldDidChange(_ textField: UITextField) {
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        
         self.game?.locationName = textField.text!
         if self.game?.locationName != "" {
             let indexPath = IndexPath(row: 2, section: 1)

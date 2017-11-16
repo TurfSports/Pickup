@@ -120,6 +120,8 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         self.game.userJoined = !self.game.userJoined
         self.userStatus = .user_JOINED
         
+        NotificationCenter.default.post(Notification.init(name: reloadMyGamesViewNotification))
+        
         GameController.shared.put(game: self.game, with: self.game.id) { (success) in
             if (success) {
                  print(">>>>>>> put to firebase: \(currentPlayer.id) \(self.userStatus)")
@@ -142,6 +144,9 @@ class GameDetailsViewController: UIViewController, MKMapViewDelegate, GameDetail
         if let index = game.userIDs.index(of: currentPlayer.id) {
             game.userIDs.remove(at: index)
         }
+        
+        NotificationCenter.default.post(Notification.init(name: reloadMyGamesViewNotification))
+        
         self.userStatus = .user_NOT_JOINED
         LocalNotifications.cancelGameNotification(self.game)
         

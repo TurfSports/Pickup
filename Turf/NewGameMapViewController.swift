@@ -23,6 +23,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     var address = ""
     var locationName = ""
     var gameLocation: CLLocationCoordinate2D?
+    var hasLoadedLocationsBefore: Bool = false
     
     var locationStatus: LocationStatus = .location_NOT_SET
     let rightNavBarButtonTitle: [LocationStatus: String] = [.location_NOT_SET: "Set Location", .location_SET: "Change Location"]
@@ -69,6 +70,14 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        OverallLocation.manager.startUpdatingLocation()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        OverallLocation.manager.stopUpdatingLocation()
+    }
+    
     fileprivate func setUpMapScreen() {
         
         btnSaveLocation.title = rightNavBarButtonTitle[locationStatus]!
@@ -91,15 +100,15 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         if Settings.shared.defaultLocation == "none" {
-            if let location = locations.first {
+            if let location = locations.first, self.hasLoadedLocationsBefore == false {
                 let span = MKCoordinateSpanMake(0.05, 0.05)
                 let region = MKCoordinateRegion(center: location.coordinate, span: span)
                 newGameMap.setRegion(region, animated: false)
+                hasLoadedLocationsBefore = true
             }
         } else {
-            computeViewSettings(Settings.shared.defaultLatitude, longitude: Settings.shared.defaultLongitude)
+            return
         }
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -111,7 +120,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         if CLLocationManager.locationServicesEnabled() {
             OverallLocation.manager.delegate = self
-            OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            OverallLocation.manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             //OverallLocation.manager.requestLocation()
         }
     }
@@ -175,22 +184,33 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
         let request = MKLocalSearchRequest()
-        request.naturalLanguageQuery = searchText
+        guard let text = searchBar.text, searchBar.text != "" else { return }
+        request.naturalLanguageQuery = text
         request.region = newGameMap.region
         let search = MKLocalSearch(request: request)
-        search.start { response, _ in
-            guard let response = response else {
+        search.start { (response, error) in
+            guard let response = response, error == nil else {
                 return
             }
             self.matchingItems = response.mapItems
             self.tableViewSearchResults.reloadData()
         }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//
+//        let request = MKLocalSearchRequest()
+//        request.naturalLanguageQuery = searchText
+//        request.region = newGameMap.region
+//        let search = MKLocalSearch(request: request)
+//        search.start { response, _ in
+//            guard let response = response else {
+//                return
+//            }
+//            self.matchingItems = response.mapItems
+//            self.tableViewSearchResults.reloadData()
+//        }
     }
     
     //MARK: - Table View Delegate
@@ -202,14 +222,13 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         return matchingItems.count
     }
     
-    private func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         let selectedItem = matchingItems[(indexPath as NSIndexPath).row].placemark
         cell.textLabel?.text = selectedItem.name
         cell.detailTextLabel?.text = parseAddress(selectedItem)
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[(indexPath as NSIndexPath).row].placemark
@@ -228,6 +247,7 @@ class NewGameMapViewController: UIViewController, MKMapViewDelegate, CLLocationM
         tableViewSearchResults.isHidden = true
         searchBar.showsCancelButton = false
         searchBar.endEditing(true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     

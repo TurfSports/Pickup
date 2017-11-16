@@ -93,6 +93,10 @@ class HomeTableViewController: UITableViewController, DismissalDelegate {
             
             guard loadedGameTypes.count != 0, games.count != 0 else { return }
             
+            for gameType in self.gameTypesDictionary {
+                gameType.value.gameCount = 0
+            }
+            
             for game in games {
                 self.gameTypesDictionary[game.gameType.name]?.gameCount += 1
             }

@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import Firebase
 
+let reloadMyGamesViewNotification: Notification.Name = Notification.Name.init("reloadMyGamesViewNotifcation")
 
 class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate, MyGamesTableViewDelegate, DismissalDelegate {
 
@@ -43,6 +44,9 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(gamesWereLoaded), name: gamesLoadedNotificationName, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.manuallyReloadTableView), name: reloadMyGamesViewNotification, object: nil)
+        
         OverallLocation.manager.delegate = self
         
         self.btnAddGame.tintColor = Theme.ACCENT_COLOR
@@ -60,6 +64,7 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     
     override func viewDidAppear(_ animated: Bool) {
         blurNoGames.isHidden = true
+        self.tableGameList.reloadData()
         if loadedGames.count > games.count {
             gamesWereLoaded()
         }
@@ -68,6 +73,11 @@ class MyGamesViewController: UIViewController, UITableViewDelegate, CLLocationMa
     @objc func gamesWereLoaded() {
         self.games = loadedGames
         sortedGames = sortGamesByOwner(self.games)
+        self.tableGameList.reloadData()
+    }
+    
+    @objc func manuallyReloadTableView() {
+        self.sortedGames = self.sortGamesByOwner(loadedGames)
         self.tableGameList.reloadData()
     }
     
