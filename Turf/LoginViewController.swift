@@ -29,6 +29,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: - Google Login
     
     @IBAction func googleLoginButtonTapped(_ sender: Any) {
+        performSegue(withIdentifier: "toQuestionsFromFacebookOrGoogle", sender: nil)
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signOut()
         GIDSignIn.sharedInstance().signIn()
